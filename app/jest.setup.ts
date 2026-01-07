@@ -1,0 +1,14 @@
+jest.useFakeTimers();
+jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+jest.mock('expo-haptics', () => ({ selectionAsync: jest.fn(), notificationAsync: jest.fn() }));
+jest.mock('expo-av', () => ({ Audio: { Recording: class {}, requestPermissionsAsync: async () => ({ granted: true }) } }));
+jest.mock('expo-notifications', () => ({ requestPermissionsAsync: jest.fn(), scheduleNotificationAsync: jest.fn() }));
+jest.mock('./src/lib/voice-engine', () => ({ speakMarcie: jest.fn() }));
+jest.mock('expo-blur', () => ({ BlurView: () => null }));
+jest.mock('react-native-svg', () => 'Svg');
+jest.mock('react-native-gesture-handler', () => ({ GestureHandlerRootView: ({ children }: any) => children }));
+jest.mock('expo-linking', () => ({ createURL: (p: string) => `https://example.com${p}` }));
+jest.mock('expo-splash-screen', () => ({ preventAutoHideAsync: jest.fn(), hideAsync: jest.fn() }));
+jest.mock('expo-status-bar', () => ({ StatusBar: () => null }));
+jest.mock('lottie-react-native', () => 'LottieView');
+jest.mock('@react-navigation/native', () => ({ NavigationContainer: ({ children }: any) => children, createNavigationContainerRef: () => ({ isReady: () => true }), CommonActions: { navigate: jest.fn() } }));
