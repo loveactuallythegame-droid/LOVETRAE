@@ -18,9 +18,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Get emails for these users
   const { data: { users } } = await serviceSupabase.auth.admin.listUsers({ page: 1, perPage: 1000 });
-  const userMap = new Map(users.map(u => [u.id, u.email]));
+  const userMap = new Map((users || []).map((u: any) => [u.id, u.email]));
 
-  const testers = profiles.map(p => ({
+  const testers = (profiles || []).map((p: any) => ({
     user_id: p.user_id,
     email: userMap.get(p.user_id) || 'Unknown',
     code: p.beta_code,
