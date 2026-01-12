@@ -31,6 +31,36 @@ const MISSING_GAMES: Game[] = [
   { id: 'missing-13', name: 'Escapism Escape Room', category: 'conflict', difficulty: 'Hard', xp: 350, description: '60-sec puzzle to escape habits.', mechanics: 'Solve riddle. Clues = real-life escapes.', marcieIntro: 'Escaped in 42s! …Wait, you used ‘work email’ as a clue? Touché.' },
   { id: 'missing-14', name: 'The Blame Flip', category: 'conflict', difficulty: 'Medium', xp: 200, description: 'Drag-and-drop rewrite of blame.', mechanics: 'Fix “You make me feel…” → drag “I feel…” to front.', marcieIntro: '‘You never listen’ → ‘I feel unheard when…’—YES.' },
   { id: 'missing-15', name: 'Micro-Betrayal Mini-Golf', category: 'creative', difficulty: 'Easy', xp: 150, description: 'Physics putt-putt for repair.', mechanics: 'Ball = small breach. Navigate assumption → hole (repair).', marcieIntro: 'Sunk it in 2 strokes? Impressive. Now apply that to actual texting.' },
+  { id: 'req-1', name: 'Bid Radar', category: 'emotional', difficulty: 'Easy', xp: 150, description: 'Log real-world bids. AI checks if partner noticed.', mechanics: 'Log bids like "sighed while cooking". AI cross-matches with partner logs.', marcieIntro: 'Oh, you thought "staring mournfully at the trash can" was a cry for help? Cute.' },
+  { id: 'req-2', name: 'Gentle Start-Up Gauntlet', category: 'conflict', difficulty: 'Hard', xp: 300, description: 'Rewrite harsh startups into gentle ones.', mechanics: 'Rewrite "You never listen!" using "I feel... about... I need..." in <20 sec.', marcieIntro: 'Ooh, "I feel like a solo podcast host" — creative, but stick to the script, Picasso.' },
+  { id: 'req-3', name: 'Love Map Speedrun', category: 'romance', difficulty: 'Medium', xp: 200, description: 'Kahoot-style quiz on partner details.', mechanics: 'Timed quiz on recent favorites. Answers pulled from shared journal.', marcieIntro: 'They changed their fave ice cream three weeks ago. If you missed that, you’re emotionally GPS-less.' },
+  { id: 'req-4', name: 'Antidote Arena', category: 'conflict', difficulty: 'Hard', xp: 350, description: 'Identify antidotes to the Four Horsemen.', mechanics: 'Hear "Four Horsemen" clip. Pick correct antidote (e.g. Gentle Start-Up).', marcieIntro: 'Contempt level: chef’s kiss. Now neutralize it before I lose faith in humanity.' },
+  { id: 'req-5', name: 'Mirror Mode', category: 'emotional', difficulty: 'Medium', xp: 250, description: 'Video response analysis.', mechanics: 'Record 15s video. AI analyzes tone/smiles. Partner guesses keywords.', marcieIntro: 'You said "resilient" — and your voice cracked. I’m filing that under "adorable."' },
+  { id: 'req-6', name: 'Dream Decoder', category: 'emotional', difficulty: 'Hard', xp: 400, description: 'Find the dream behind the conflict.', mechanics: 'One picks conflict, partner guesses underlying dream (e.g. "order = safety").', marcieIntro: 'The dishes aren’t about dishes, darling. They’re about control. Let’s not pretend.' },
+  { id: 'req-7', name: 'Tone Shift Challenge', category: 'conflict', difficulty: 'Medium', xp: 300, description: 'Say sentence in 4 tones.', mechanics: 'Read neutral sentence in Sarcastic, Anxious, Warm, Playful tones. AI scores warmth.', marcieIntro: 'That "warm" sounded like a robot ordering coffee. Try again, Siri.' },
+  { id: 'req-8', name: 'Ritual Builder', category: 'creative', difficulty: 'Easy', xp: 150, description: 'Drag-and-drop ritual creation.', mechanics: 'Combine ingredients (Coffee + News) to build rituals. Partner rates realism.', marcieIntro: '"Midnight stargazing"? Cute. Add "blanket" and "no mosquitoes" or I’m revoking your romance license.' },
+  { id: 'req-9', name: 'Conflict Dice', category: 'conflict', difficulty: 'Medium', xp: 250, description: 'Roll for conflict scenario and constraint.', mechanics: 'Get scenario + constraint (e.g. no "you" statements). Record resolution.', marcieIntro: 'Defensiveness detected! Penalty lap: Say "I contributed by..." three times.' },
+  { id: 'req-10', name: 'Appreciation Auction', category: 'emotional', difficulty: 'Medium', xp: 200, description: 'Bid on real appreciations.', mechanics: 'Bid "Emotional Coins" to identify real appreciations vs AI decoys.', marcieIntro: 'Lot 3: "You fold laundry like a Zen master." Is it real? Place your bets...' },
+  { id: 'req-11', name: 'Flooding Forecast', category: 'conflict', difficulty: 'Hard', xp: 350, description: 'Manage heart rate during mock conflict.', mechanics: 'Monitor HR. AI predicts flooding. Partner guesses calm-down method.', marcieIntro: 'Your heart’s doing salsa. Suggest: 20 minutes, a walk, and no texting me your grievances.' },
+  { id: 'req-12', name: 'Love Map Gap Quest', category: 'romance', difficulty: 'Easy', xp: 150, description: 'Find and fill gaps in knowledge.', mechanics: 'AI finds unknown areas. Partner asks curious Q to close gap.', marcieIntro: 'Darling, your Love Map has a "Here Be Dragons" zone. Time to explore.' },
+  { id: 'req-13', name: 'Shared Meaning Mural', category: 'creative', difficulty: 'Medium', xp: 250, description: 'Collaborative digital art.', mechanics: 'Add symbols representing "us". AI detects alignment.', marcieIntro: 'You both chose "storm clouds with rainbows." Trauma-bonding? Or just poetic?' },
+  { id: 'req-14', name: 'Text Tone Translator', category: 'conflict', difficulty: 'Medium', xp: 200, description: 'Rewrite risky texts.', mechanics: 'AI flags risk tones. Rewrite safer versions. Partner guesses best one.', marcieIntro: '"K." sent at 11:47 PM? That’s not a text — it’s a war crime.' },
+  { id: 'req-15', name: 'Repair Relay', category: 'conflict', difficulty: 'Hard', xp: 300, description: 'Race to repair conflict escalation.', mechanics: 'Marcie describes escalation. Players type repair attempts.', marcieIntro: 'They’re stonewalling. Your move: Humor? Touch? Or just hand them wine and walk away? GO.' },
+  { id: 'req-16', name: 'Soundtrack Sync', category: 'creative', difficulty: 'Easy', xp: 150, description: 'Pick a song for "Us This Week".', mechanics: 'Pick song. Partner guesses from clues. Mood match bonus.', marcieIntro: 'You picked "Dancing On My Own"? ...Should I call someone?' },
+  { id: 'req-17', name: 'Micro-Moment Museum', category: 'romance', difficulty: 'Easy', xp: 100, description: 'Curate small connection moments.', mechanics: 'Upload photo of tiny moment. Partner writes caption.', marcieIntro: 'Exhibit A: "Fingers brushing while reaching for toast." Title: "The Great Carb Heist." I’m crying.' },
+  { id: 'req-18', name: 'Stress Synergy Lab', category: 'emotional', difficulty: 'Medium', xp: 250, description: 'Coordinate stress management.', mechanics: 'Log stressors. AI finds overlap. Craft mutual soothing plan.', marcieIntro: 'Stress hormones detected. Prescribing: 10 mins, couch, no phones. Side effects: cuddles.' },
+  { id: 'req-19', name: 'Dream Support Sprint', category: 'romance', difficulty: 'Medium', xp: 200, description: 'Plan support for partner\'s dream.', mechanics: 'Partner names dream. You list 3 specific supports.', marcieIntro: '"Be supportive" isn’t a plan. "Buy tuner, hide my phone during practice" — now we’re talking.' },
+  { id: 'req-20', name: 'Turning Toward Tally', category: 'emotional', difficulty: 'Easy', xp: 150, description: 'Track responses to bids.', mechanics: 'Passive tracker for responding to texts/calls in <5 min.', marcieIntro: 'You left their "🌧️ u up?" text for 47 minutes. Bold choice. Let’s discuss.' },
+  { id: 'req-21', name: 'Commitment Dice', category: 'romance', difficulty: 'Easy', xp: 100, description: 'Roll for commitment prompt.', mechanics: 'Roll dice, get prompt (e.g. "Text one reason you chose them").', marcieIntro: '"Because you tolerate my snoring" — low effort, high truth. I respect it.' },
+  { id: 'req-22', name: 'Empathy Echo', category: 'emotional', difficulty: 'Hard', xp: 300, description: 'Practice validation without fixing.', mechanics: 'Partner records worry. You record validation only. AI scores empathy.', marcieIntro: 'You said "Have you tried not worrying?" — and I felt that in my soul. Try again.' },
+  { id: 'req-23', name: 'Compromise Jenga', category: 'conflict', difficulty: 'Medium', xp: 250, description: 'Build a tower of compromises.', mechanics: 'Each block is a concession. Tower stability wins.', marcieIntro: 'You put "I’ll do dishes" on top of "You’ll plan dates"? Honey, gravity always wins.' },
+  { id: 'req-24', name: 'Ritual Roulette', category: 'creative', difficulty: 'Medium', xp: 200, description: 'Spin for random ritual combo.', mechanics: 'Spin wheel, get combo (Wine + Stargazing). Try IRL.', marcieIntro: '"Microwave popcorn + Wikipedia rabbit holes" — not romantic, but so you. 10/10.' },
+  { id: 'req-25', name: 'Role Swap', category: 'conflict', difficulty: 'Hard', xp: 350, description: 'Swap roles in a conflict replay.', mechanics: 'Text replay of conflict, swapping roles. AI scores perspective.', marcieIntro: 'You nailed their "I’m fine" face. Oscar speech ready?' },
+  { id: 'req-26', name: 'Memory Lane Dash', category: 'romance', difficulty: 'Medium', xp: 200, description: 'Race to recall relationship details.', mechanics: 'AI asks about old journals/events. Speed + accuracy.', marcieIntro: 'You forgot the hotel name? But you remember how they laughed. Okay, fine — points for heart.' },
+  { id: 'req-27', name: 'Admiration Aim', category: 'romance', difficulty: 'Easy', xp: 150, description: 'Shoot compliments at partner.', mechanics: 'AR mode: Point phone at partner, shoot positive words.', marcieIntro: 'Aim for "resilient," not "stubborn." They’re synonyms, but one gets you kissed.' },
+  { id: 'req-28', name: 'Vow Remix', category: 'romance', difficulty: 'Medium', xp: 200, description: 'Update wedding vows for today.', mechanics: 'Rewrite vows with current reality (e.g. hangry handling).', marcieIntro: '"I vow to pretend I don’t see you scrolling TikTok at 2 AM" — modern romance.' },
+  { id: 'req-29', name: 'Legacy Dice', category: 'creative', difficulty: 'Medium', xp: 200, description: 'Discuss shared values/legacy.', mechanics: 'Roll for prompt about values/legacy. Record voice note.', marcieIntro: '"Sarcasm and snacks" isn’t a legacy. But I’m not judging. Much.' },
+  { id: 'req-30', name: 'Connection Conundrum', category: 'creative', difficulty: 'Hard', xp: 500, description: 'Grand finale mix of all games.', mechanics: '10-round rapid-fire mix. Unlocks custom ritual.', marcieIntro: 'You survived. Barely. Here’s your prize: A date night plan I designed. Don’t screw it up.' },
 ];
 
 export default function GameLibraryScreen({ navigation }: any) {
@@ -57,6 +87,8 @@ export default function GameLibraryScreen({ navigation }: any) {
       Alert.alert('Coming Soon', 'This game is in development. Beta testers will get early access soon!');
       return;
     }
+
+    // All req- games are now implemented
 
     // Premium Check
     if (g.difficulty === 'Hard' && !isPremium) {
@@ -116,6 +148,36 @@ export default function GameLibraryScreen({ navigation }: any) {
     else if (g.name === 'Escapism Escape Room') navigation.navigate('PlayEscapismRoom', { gameId: g.id });
     else if (g.name === 'The Blame Flip') navigation.navigate('PlayBlameFlip', { gameId: g.id });
     else if (g.name === 'Micro-Betrayal Mini-Golf') navigation.navigate('PlayMicroBetrayalGolf', { gameId: g.id });
+    else if (g.name === 'Bid Radar') navigation.navigate('PlayBidRadar', { gameId: g.id });
+    else if (g.name === 'Gentle Start-Up Gauntlet') navigation.navigate('PlayGentleStartUpGauntlet', { gameId: g.id });
+    else if (g.name === 'Love Map Speedrun') navigation.navigate('PlayLoveMapSpeedrun', { gameId: g.id });
+    else if (g.name === 'Antidote Arena') navigation.navigate('PlayAntidoteArena', { gameId: g.id });
+    else if (g.name === 'Mirror Mode') navigation.navigate('PlayMirrorMode', { gameId: g.id });
+    else if (g.name === 'Dream Decoder') navigation.navigate('PlayDreamDecoder', { gameId: g.id });
+    else if (g.name === 'Tone Shift Challenge') navigation.navigate('PlayToneShiftChallenge', { gameId: g.id });
+    else if (g.name === 'Ritual Builder') navigation.navigate('PlayRitualBuilder', { gameId: g.id });
+    else if (g.name === 'Conflict Dice') navigation.navigate('PlayConflictDice', { gameId: g.id });
+    else if (g.name === 'Appreciation Auction') navigation.navigate('PlayAppreciationAuction', { gameId: g.id });
+    else if (g.name === 'Flooding Forecast') navigation.navigate('PlayFloodingForecast', { gameId: g.id });
+    else if (g.name === 'Love Map Gap Quest') navigation.navigate('PlayLoveMapGapQuest', { gameId: g.id });
+    else if (g.name === 'Shared Meaning Mural') navigation.navigate('PlaySharedMeaningMural', { gameId: g.id });
+    else if (g.name === 'Text Tone Translator') navigation.navigate('PlayTextToneTranslator', { gameId: g.id });
+    else if (g.name === 'Repair Relay') navigation.navigate('PlayRepairRelay', { gameId: g.id });
+    else if (g.name === 'Soundtrack Sync') navigation.navigate('PlaySoundtrackSync', { gameId: g.id });
+    else if (g.name === 'Micro-Moment Museum') navigation.navigate('PlayMicroMomentMuseum', { gameId: g.id });
+    else if (g.name === 'Stress Synergy Lab') navigation.navigate('PlayStressSynergyLab', { gameId: g.id });
+    else if (g.name === 'Dream Support Sprint') navigation.navigate('PlayDreamSupportSprint', { gameId: g.id });
+    else if (g.name === 'Turning Toward Tally') navigation.navigate('PlayTurningTowardTally', { gameId: g.id });
+    else if (g.name === 'Commitment Dice') navigation.navigate('PlayCommitmentDice', { gameId: g.id });
+    else if (g.name === 'Empathy Echo') navigation.navigate('PlayEmpathyEcho', { gameId: g.id });
+    else if (g.name === 'Compromise Jenga') navigation.navigate('PlayCompromiseJenga', { gameId: g.id });
+    else if (g.name === 'Ritual Roulette') navigation.navigate('PlayRitualRoulette', { gameId: g.id });
+    else if (g.name === 'Role Swap') navigation.navigate('PlayRoleSwap', { gameId: g.id });
+    else if (g.name === 'Memory Lane Dash') navigation.navigate('PlayMemoryLaneDash', { gameId: g.id });
+    else if (g.name === 'Admiration Aim') navigation.navigate('PlayAdmirationAim', { gameId: g.id });
+    else if (g.name === 'Vow Remix') navigation.navigate('PlayVowRemix', { gameId: g.id });
+    else if (g.name === 'Legacy Dice') navigation.navigate('PlayLegacyDice', { gameId: g.id });
+    else if (g.name === 'Connection Conundrum') navigation.navigate('PlayConnectionConundrum', { gameId: g.id });
   }
   function selectCategory(c: CategoryKey) {
     setCat(c);

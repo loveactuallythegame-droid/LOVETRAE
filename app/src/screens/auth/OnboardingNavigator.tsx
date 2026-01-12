@@ -63,6 +63,36 @@ const NeedsDecoderLazy = React.lazy(() => import('../games/NeedsDecoder'));
 const EscapismRoomLazy = React.lazy(() => import('../games/EscapismRoom'));
 const BlameFlipLazy = React.lazy(() => import('../games/BlameFlip'));
 const MicroBetrayalGolfLazy = React.lazy(() => import('../games/MicroBetrayalGolf'));
+const BidRadarLazy = React.lazy(() => import('../games/BidRadar'));
+const GentleStartUpGauntletLazy = React.lazy(() => import('../games/GentleStartUpGauntlet'));
+const LoveMapSpeedrunLazy = React.lazy(() => import('../games/LoveMapSpeedrun'));
+const AntidoteArenaLazy = React.lazy(() => import('../games/AntidoteArena'));
+const MirrorModeLazy = React.lazy(() => import('../games/MirrorMode'));
+const DreamDecoderLazy = React.lazy(() => import('../games/DreamDecoder'));
+const ToneShiftChallengeLazy = React.lazy(() => import('../games/ToneShiftChallenge'));
+const RitualBuilderLazy = React.lazy(() => import('../games/RitualBuilder'));
+const ConflictDiceLazy = React.lazy(() => import('../games/ConflictDice'));
+const AppreciationAuctionLazy = React.lazy(() => import('../games/AppreciationAuction'));
+const FloodingForecastLazy = React.lazy(() => import('../games/FloodingForecast'));
+const LoveMapGapQuestLazy = React.lazy(() => import('../games/LoveMapGapQuest'));
+const SharedMeaningMuralLazy = React.lazy(() => import('../games/SharedMeaningMural'));
+const TextToneTranslatorLazy = React.lazy(() => import('../games/TextToneTranslator'));
+const RepairRelayLazy = React.lazy(() => import('../games/RepairRelay'));
+const SoundtrackSyncLazy = React.lazy(() => import('../games/SoundtrackSync'));
+const MicroMomentMuseumLazy = React.lazy(() => import('../games/MicroMomentMuseum'));
+const StressSynergyLabLazy = React.lazy(() => import('../games/StressSynergyLab'));
+const DreamSupportSprintLazy = React.lazy(() => import('../games/DreamSupportSprint'));
+const TurningTowardTallyLazy = React.lazy(() => import('../games/TurningTowardTally'));
+const CommitmentDiceLazy = React.lazy(() => import('../games/CommitmentDice'));
+const EmpathyEchoLazy = React.lazy(() => import('../games/EmpathyEcho'));
+const CompromiseJengaLazy = React.lazy(() => import('../games/CompromiseJenga'));
+const RitualRouletteLazy = React.lazy(() => import('../games/RitualRoulette'));
+const RoleSwapLazy = React.lazy(() => import('../games/RoleSwap'));
+const MemoryLaneDashLazy = React.lazy(() => import('../games/MemoryLaneDash'));
+const AdmirationAimLazy = React.lazy(() => import('../games/AdmirationAim'));
+const VowRemixLazy = React.lazy(() => import('../games/VowRemix'));
+const LegacyDiceLazy = React.lazy(() => import('../games/LegacyDice'));
+const ConnectionConundrumLazy = React.lazy(() => import('../games/ConnectionConundrum'));
 
 type RootStackParamList = {
   Splash: undefined;
@@ -114,6 +144,36 @@ type RootStackParamList = {
   PlayEscapismRoom: { gameId: string };
   PlayBlameFlip: { gameId: string };
   PlayMicroBetrayalGolf: { gameId: string };
+  PlayBidRadar: { gameId: string };
+  PlayGentleStartUpGauntlet: { gameId: string };
+  PlayLoveMapSpeedrun: { gameId: string };
+  PlayAntidoteArena: { gameId: string };
+  PlayMirrorMode: { gameId: string };
+  PlayDreamDecoder: { gameId: string };
+  PlayToneShiftChallenge: { gameId: string };
+  PlayRitualBuilder: { gameId: string };
+  PlayConflictDice: { gameId: string };
+  PlayAppreciationAuction: { gameId: string };
+  PlayFloodingForecast: { gameId: string };
+  PlayLoveMapGapQuest: { gameId: string };
+  PlaySharedMeaningMural: { gameId: string };
+  PlayTextToneTranslator: { gameId: string };
+  PlayRepairRelay: { gameId: string };
+  PlaySoundtrackSync: { gameId: string };
+  PlayMicroMomentMuseum: { gameId: string };
+  PlayStressSynergyLab: { gameId: string };
+  PlayDreamSupportSprint: { gameId: string };
+  PlayTurningTowardTally: { gameId: string };
+  PlayCommitmentDice: { gameId: string };
+  PlayEmpathyEcho: { gameId: string };
+  PlayCompromiseJenga: { gameId: string };
+  PlayRitualRoulette: { gameId: string };
+  PlayRoleSwap: { gameId: string };
+  PlayMemoryLaneDash: { gameId: string };
+  PlayAdmirationAim: { gameId: string };
+  PlayVowRemix: { gameId: string };
+  PlayLegacyDice: { gameId: string };
+  PlayConnectionConundrum: { gameId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -191,6 +251,36 @@ export default function OnboardingNavigator() {
           <Stack.Screen name="PlayEscapismRoom" component={EscapismRoomScreen} />
           <Stack.Screen name="PlayBlameFlip" component={BlameFlipScreen} />
           <Stack.Screen name="PlayMicroBetrayalGolf" component={MicroBetrayalGolfScreen} />
+            <Stack.Screen name="PlayBidRadar" component={BidRadarScreen} />
+            <Stack.Screen name="PlayGentleStartUpGauntlet" component={GentleStartUpGauntletScreen} />
+            <Stack.Screen name="PlayLoveMapSpeedrun" component={LoveMapSpeedrunScreen} />
+            <Stack.Screen name="PlayAntidoteArena" component={AntidoteArenaScreen} />
+            <Stack.Screen name="PlayMirrorMode" component={MirrorModeScreen} />
+            <Stack.Screen name="PlayDreamDecoder" component={DreamDecoderScreen} />
+            <Stack.Screen name="PlayToneShiftChallenge" component={ToneShiftChallengeScreen} />
+            <Stack.Screen name="PlayRitualBuilder" component={RitualBuilderScreen} />
+            <Stack.Screen name="PlayConflictDice" component={ConflictDiceScreen} />
+            <Stack.Screen name="PlayAppreciationAuction" component={AppreciationAuctionScreen} />
+            <Stack.Screen name="PlayFloodingForecast" component={FloodingForecastScreen} />
+            <Stack.Screen name="PlayLoveMapGapQuest" component={LoveMapGapQuestScreen} />
+            <Stack.Screen name="PlaySharedMeaningMural" component={SharedMeaningMuralScreen} />
+            <Stack.Screen name="PlayTextToneTranslator" component={TextToneTranslatorScreen} />
+            <Stack.Screen name="PlayRepairRelay" component={RepairRelayScreen} />
+            <Stack.Screen name="PlaySoundtrackSync" component={SoundtrackSyncScreen} />
+            <Stack.Screen name="PlayMicroMomentMuseum" component={MicroMomentMuseumScreen} />
+            <Stack.Screen name="PlayStressSynergyLab" component={StressSynergyLabScreen} />
+            <Stack.Screen name="PlayDreamSupportSprint" component={DreamSupportSprintScreen} />
+            <Stack.Screen name="PlayTurningTowardTally" component={TurningTowardTallyScreen} />
+            <Stack.Screen name="PlayCommitmentDice" component={CommitmentDiceScreen} />
+            <Stack.Screen name="PlayEmpathyEcho" component={EmpathyEchoScreen} />
+            <Stack.Screen name="PlayCompromiseJenga" component={CompromiseJengaScreen} />
+            <Stack.Screen name="PlayRitualRoulette" component={RitualRouletteScreen} />
+            <Stack.Screen name="PlayRoleSwap" component={RoleSwapScreen} />
+            <Stack.Screen name="PlayMemoryLaneDash" component={MemoryLaneDashScreen} />
+            <Stack.Screen name="PlayAdmirationAim" component={AdmirationAimScreen} />
+            <Stack.Screen name="PlayVowRemix" component={VowRemixScreen} />
+            <Stack.Screen name="PlayLegacyDice" component={LegacyDiceScreen} />
+            <Stack.Screen name="PlayConnectionConundrum" component={ConnectionConundrumScreen} />
           </Stack.Navigator>
           <SOSButton onPress={() => navigate('SOSBooths')} />
           <FeedbackFab />
@@ -225,6 +315,36 @@ function NeedsDecoderScreen(props: any) { return <Suspense fallback={<Loader />}
 function EscapismRoomScreen(props: any) { return <Suspense fallback={<Loader />}><EscapismRoomLazy {...props} /></Suspense>; }
 function BlameFlipScreen(props: any) { return <Suspense fallback={<Loader />}><BlameFlipLazy {...props} /></Suspense>; }
 function MicroBetrayalGolfScreen(props: any) { return <Suspense fallback={<Loader />}><MicroBetrayalGolfLazy {...props} /></Suspense>; }
+function BidRadarScreen(props: any) { return <Suspense fallback={<Loader />}><BidRadarLazy {...props} /></Suspense>; }
+function GentleStartUpGauntletScreen(props: any) { return <Suspense fallback={<Loader />}><GentleStartUpGauntletLazy {...props} /></Suspense>; }
+function LoveMapSpeedrunScreen(props: any) { return <Suspense fallback={<Loader />}><LoveMapSpeedrunLazy {...props} /></Suspense>; }
+function AntidoteArenaScreen(props: any) { return <Suspense fallback={<Loader />}><AntidoteArenaLazy {...props} /></Suspense>; }
+function MirrorModeScreen(props: any) { return <Suspense fallback={<Loader />}><MirrorModeLazy {...props} /></Suspense>; }
+function DreamDecoderScreen(props: any) { return <Suspense fallback={<Loader />}><DreamDecoderLazy {...props} /></Suspense>; }
+function ToneShiftChallengeScreen(props: any) { return <Suspense fallback={<Loader />}><ToneShiftChallengeLazy {...props} /></Suspense>; }
+function RitualBuilderScreen(props: any) { return <Suspense fallback={<Loader />}><RitualBuilderLazy {...props} /></Suspense>; }
+function ConflictDiceScreen(props: any) { return <Suspense fallback={<Loader />}><ConflictDiceLazy {...props} /></Suspense>; }
+function AppreciationAuctionScreen(props: any) { return <Suspense fallback={<Loader />}><AppreciationAuctionLazy {...props} /></Suspense>; }
+function FloodingForecastScreen(props: any) { return <Suspense fallback={<Loader />}><FloodingForecastLazy {...props} /></Suspense>; }
+function LoveMapGapQuestScreen(props: any) { return <Suspense fallback={<Loader />}><LoveMapGapQuestLazy {...props} /></Suspense>; }
+function SharedMeaningMuralScreen(props: any) { return <Suspense fallback={<Loader />}><SharedMeaningMuralLazy {...props} /></Suspense>; }
+function TextToneTranslatorScreen(props: any) { return <Suspense fallback={<Loader />}><TextToneTranslatorLazy {...props} /></Suspense>; }
+function RepairRelayScreen(props: any) { return <Suspense fallback={<Loader />}><RepairRelayLazy {...props} /></Suspense>; }
+function SoundtrackSyncScreen(props: any) { return <Suspense fallback={<Loader />}><SoundtrackSyncLazy {...props} /></Suspense>; }
+function MicroMomentMuseumScreen(props: any) { return <Suspense fallback={<Loader />}><MicroMomentMuseumLazy {...props} /></Suspense>; }
+function StressSynergyLabScreen(props: any) { return <Suspense fallback={<Loader />}><StressSynergyLabLazy {...props} /></Suspense>; }
+function DreamSupportSprintScreen(props: any) { return <Suspense fallback={<Loader />}><DreamSupportSprintLazy {...props} /></Suspense>; }
+function TurningTowardTallyScreen(props: any) { return <Suspense fallback={<Loader />}><TurningTowardTallyLazy {...props} /></Suspense>; }
+function CommitmentDiceScreen(props: any) { return <Suspense fallback={<Loader />}><CommitmentDiceLazy {...props} /></Suspense>; }
+function EmpathyEchoScreen(props: any) { return <Suspense fallback={<Loader />}><EmpathyEchoLazy {...props} /></Suspense>; }
+function CompromiseJengaScreen(props: any) { return <Suspense fallback={<Loader />}><CompromiseJengaLazy {...props} /></Suspense>; }
+function RitualRouletteScreen(props: any) { return <Suspense fallback={<Loader />}><RitualRouletteLazy {...props} /></Suspense>; }
+function RoleSwapScreen(props: any) { return <Suspense fallback={<Loader />}><RoleSwapLazy {...props} /></Suspense>; }
+function MemoryLaneDashScreen(props: any) { return <Suspense fallback={<Loader />}><MemoryLaneDashLazy {...props} /></Suspense>; }
+function AdmirationAimScreen(props: any) { return <Suspense fallback={<Loader />}><AdmirationAimLazy {...props} /></Suspense>; }
+function VowRemixScreen(props: any) { return <Suspense fallback={<Loader />}><VowRemixLazy {...props} /></Suspense>; }
+function LegacyDiceScreen(props: any) { return <Suspense fallback={<Loader />}><LegacyDiceLazy {...props} /></Suspense>; }
+function ConnectionConundrumScreen(props: any) { return <Suspense fallback={<Loader />}><ConnectionConundrumLazy {...props} /></Suspense>; }
 
 function Origin({ navigation }: any) {
   return (
