@@ -15,6 +15,24 @@ const UPCOMING_GAMES: Game[] = [
   { id: 'upcoming-2', name: 'Argue-Bot 3000', category: 'conflict', difficulty: 'Medium', xp: 300, description: 'Practice fighting with AI. (Coming Soon)', mechanics: '', marcieIntro: '' }
 ];
 
+const MISSING_GAMES: Game[] = [
+  { id: 'missing-1', name: 'Lie Detector: Lite', category: 'conflict', difficulty: 'Hard', xp: 400, description: 'Async voice response + AI prosody analysis.', mechanics: 'Partner records ≤10-sec answer. AI scores fluency and steadiness.', marcieIntro: '24/25. Only slipped on ‘uh’ once. I’ll allow it… this time.' },
+  { id: 'missing-2', name: 'Transparency Toss', category: 'conflict', difficulty: 'Medium', xp: 200, description: 'Real-time text relay of low-stakes truths.', mechanics: 'Each “toss” = truth. Partner must tap ✅ to verify.', marcieIntro: 'You tossed ‘I scrolled TikTok while you talked’… and they confirmed? Bold.' },
+  { id: 'missing-3', name: 'Boundary Bingo', category: 'conflict', difficulty: 'Medium', xp: 250, description: 'Async shared grid of boundaries.', mechanics: 'Mark squares after mutual ✅. Line = +20.', marcieIntro: 'BINGO on ‘I asked for space and didn’t feel guilty’? Someone upgraded their firmware.' },
+  { id: 'missing-4', name: 'Vibe Sync', category: 'emotional', difficulty: 'Easy', xp: 150, description: 'Synchronous slider for emotional battery.', mechanics: 'A sets level (0–100) → B guesses. Match = points.', marcieIntro: 'You guessed 68… they’re at 69. Psychic or just that in love?' },
+  { id: 'missing-5', name: 'Rewrite the Memory', category: 'emotional', difficulty: 'Hard', xp: 350, description: 'Shared canvas + AI narrative scoring.', mechanics: 'One types fragment, both edit with hope/absurdity.', marcieIntro: '‘…and then a raccoon stole his phone’? 28/30. Poetic and feral.' },
+  { id: 'missing-6', name: 'Guilt vs. Shame Sort', category: 'emotional', difficulty: 'Easy', xp: 100, description: 'Rapid swipe (Tinder-style) for emotions.', mechanics: '“I messed up” (Guilt) vs. “I’m a failure” (Shame).', marcieIntro: 'Swiped ‘I’m unlovable’ left? Wrong. Hard right to the trash.' },
+  { id: 'missing-7', name: 'Flashback Frenzy', category: 'emotional', difficulty: 'Medium', xp: 250, description: 'Async image association game.', mechanics: 'A sees image → types emotion → B guesses why.', marcieIntro: '‘Rain’ = ‘that night you didn’t come home’… and they guessed exactly? Listening level: 100.' },
+  { id: 'missing-8', name: 'The Denial Detector', category: 'conflict', difficulty: 'Medium', xp: 200, description: 'Voice-to-text audit for the word "fine".', mechanics: 'Say “Everything’s fine.” <2x “fine” = points.', marcieIntro: 'You said ‘fine’ 7 times. Congrats—you’ve unlocked Emotional Bottleneck. 🏆' },
+  { id: 'missing-9', name: 'Vulnerability Volley', category: 'emotional', difficulty: 'Hard', xp: 300, description: 'Timed text ping-pong.', mechanics: 'A replies ≤15s → B validates ≤15s.', marcieIntro: 'You blocked with ‘lol same’? That’s not a volley—that’s a miss.' },
+  { id: 'missing-10', name: 'The Touch Map: Lite', category: 'romance', difficulty: 'Medium', xp: 200, description: 'Abstract body outline coloring.', mechanics: 'Tap zones for Green/Yellow/Red comfort levels.', marcieIntro: 'They marked ‘triangle’ yellow… you green. Wanna unpack over sparkling water?' },
+  { id: 'missing-11', name: 'Avoidance Arcade', category: 'conflict', difficulty: 'Easy', xp: 150, description: 'Whac-A-Mole for avoidance phrases.', mechanics: 'Moles = “I’ll tell them later”. Whack with “Say It Now”.', marcieIntro: 'Missed ‘We should talk’? Congrats—now they think you’re leaving for a barista.' },
+  { id: 'missing-12', name: 'The Needs Decoder', category: 'emotional', difficulty: 'Medium', xp: 200, description: 'Emoji cipher for needs.', mechanics: 'A sends 3 emojis. B guesses unmet need.', marcieIntro: '🌧️☕️🐶 = ‘Let me sulk in peace with snacks and the dog’? Genius.' },
+  { id: 'missing-13', name: 'Escapism Escape Room', category: 'conflict', difficulty: 'Hard', xp: 350, description: '60-sec puzzle to escape habits.', mechanics: 'Solve riddle. Clues = real-life escapes.', marcieIntro: 'Escaped in 42s! …Wait, you used ‘work email’ as a clue? Touché.' },
+  { id: 'missing-14', name: 'The Blame Flip', category: 'conflict', difficulty: 'Medium', xp: 200, description: 'Drag-and-drop rewrite of blame.', mechanics: 'Fix “You make me feel…” → drag “I feel…” to front.', marcieIntro: '‘You never listen’ → ‘I feel unheard when…’—YES.' },
+  { id: 'missing-15', name: 'Micro-Betrayal Mini-Golf', category: 'creative', difficulty: 'Easy', xp: 150, description: 'Physics putt-putt for repair.', mechanics: 'Ball = small breach. Navigate assumption → hole (repair).', marcieIntro: 'Sunk it in 2 strokes? Impressive. Now apply that to actual texting.' },
+];
+
 export default function GameLibraryScreen({ navigation }: any) {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +45,7 @@ export default function GameLibraryScreen({ navigation }: any) {
   }, []);
 
   const filtered = useMemo(() => {
-    let list = games.filter((g) => g.category === cat);
+    let list = [...games, ...MISSING_GAMES].filter((g) => g.category === cat);
     if (previewMode) {
       list = [...list, ...UPCOMING_GAMES.filter(g => g.category === cat)];
     }
@@ -83,6 +101,21 @@ export default function GameLibraryScreen({ navigation }: any) {
     else if (g.name === 'Trust Bank') navigation.navigate('PlayTrustBank', { gameId: g.id });
     else if (g.name === 'The Iceberg') navigation.navigate('PlayTheIceberg', { gameId: g.id });
     else if (g.name === 'Secrecy Audit') navigation.navigate('PlaySecrecyAudit', { gameId: g.id });
+    else if (g.name === 'Lie Detector: Lite') navigation.navigate('PlayLieDetector', { gameId: g.id });
+    else if (g.name === 'Transparency Toss') navigation.navigate('PlayTransparencyToss', { gameId: g.id });
+    else if (g.name === 'Boundary Bingo') navigation.navigate('PlayBoundaryBingo', { gameId: g.id });
+    else if (g.name === 'Vibe Sync') navigation.navigate('PlayVibeSync', { gameId: g.id });
+    else if (g.name === 'Rewrite the Memory') navigation.navigate('PlayRewriteMemory', { gameId: g.id });
+    else if (g.name === 'Guilt vs. Shame Sort') navigation.navigate('PlayGuiltShameSort', { gameId: g.id });
+    else if (g.name === 'Flashback Frenzy') navigation.navigate('PlayFlashbackFrenzy', { gameId: g.id });
+    else if (g.name === 'The Denial Detector') navigation.navigate('PlayDenialDetector', { gameId: g.id });
+    else if (g.name === 'Vulnerability Volley') navigation.navigate('PlayVulnerabilityVolley', { gameId: g.id });
+    else if (g.name === 'The Touch Map: Lite') navigation.navigate('PlayTouchMap', { gameId: g.id });
+    else if (g.name === 'Avoidance Arcade') navigation.navigate('PlayAvoidanceArcade', { gameId: g.id });
+    else if (g.name === 'The Needs Decoder') navigation.navigate('PlayNeedsDecoder', { gameId: g.id });
+    else if (g.name === 'Escapism Escape Room') navigation.navigate('PlayEscapismRoom', { gameId: g.id });
+    else if (g.name === 'The Blame Flip') navigation.navigate('PlayBlameFlip', { gameId: g.id });
+    else if (g.name === 'Micro-Betrayal Mini-Golf') navigation.navigate('PlayMicroBetrayalGolf', { gameId: g.id });
   }
   function selectCategory(c: CategoryKey) {
     setCat(c);

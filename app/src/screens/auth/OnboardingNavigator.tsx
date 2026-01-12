@@ -47,6 +47,22 @@ const TrustBankLazy = React.lazy(() => import('../games/TrustBank'));
 const TheIcebergLazy = React.lazy(() => import('../games/TheIceberg'));
 const SecrecyAuditLazy = React.lazy(() => import('../games/SecrecyAudit'));
 
+// New Games
+const LieDetectorLazy = React.lazy(() => import('../games/LieDetector'));
+const TransparencyTossLazy = React.lazy(() => import('../games/TransparencyToss'));
+const BoundaryBingoLazy = React.lazy(() => import('../games/BoundaryBingo'));
+const VibeSyncLazy = React.lazy(() => import('../games/VibeSync'));
+const RewriteMemoryLazy = React.lazy(() => import('../games/RewriteMemory'));
+const GuiltShameSortLazy = React.lazy(() => import('../games/GuiltShameSort'));
+const FlashbackFrenzyLazy = React.lazy(() => import('../games/FlashbackFrenzy'));
+const DenialDetectorLazy = React.lazy(() => import('../games/DenialDetector'));
+const VulnerabilityVolleyLazy = React.lazy(() => import('../games/VulnerabilityVolley'));
+const TouchMapLazy = React.lazy(() => import('../games/TouchMap'));
+const AvoidanceArcadeLazy = React.lazy(() => import('../games/AvoidanceArcade'));
+const NeedsDecoderLazy = React.lazy(() => import('../games/NeedsDecoder'));
+const EscapismRoomLazy = React.lazy(() => import('../games/EscapismRoom'));
+const BlameFlipLazy = React.lazy(() => import('../games/BlameFlip'));
+const MicroBetrayalGolfLazy = React.lazy(() => import('../games/MicroBetrayalGolf'));
 
 type RootStackParamList = {
   Splash: undefined;
@@ -83,6 +99,21 @@ type RootStackParamList = {
   PlayTrustBank: { gameId: string };
   PlayTheIceberg: { gameId: string };
   PlaySecrecyAudit: { gameId: string };
+  PlayLieDetector: { gameId: string };
+  PlayTransparencyToss: { gameId: string };
+  PlayBoundaryBingo: { gameId: string };
+  PlayVibeSync: { gameId: string };
+  PlayRewriteMemory: { gameId: string };
+  PlayGuiltShameSort: { gameId: string };
+  PlayFlashbackFrenzy: { gameId: string };
+  PlayDenialDetector: { gameId: string };
+  PlayVulnerabilityVolley: { gameId: string };
+  PlayTouchMap: { gameId: string };
+  PlayAvoidanceArcade: { gameId: string };
+  PlayNeedsDecoder: { gameId: string };
+  PlayEscapismRoom: { gameId: string };
+  PlayBlameFlip: { gameId: string };
+  PlayMicroBetrayalGolf: { gameId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -145,6 +176,21 @@ export default function OnboardingNavigator() {
           <Stack.Screen name="PlayTrustBank" component={TrustBankScreen} />
           <Stack.Screen name="PlayTheIceberg" component={TheIcebergScreen} />
           <Stack.Screen name="PlaySecrecyAudit" component={SecrecyAuditScreen} />
+          <Stack.Screen name="PlayLieDetector" component={LieDetectorScreen} />
+          <Stack.Screen name="PlayTransparencyToss" component={TransparencyTossScreen} />
+          <Stack.Screen name="PlayBoundaryBingo" component={BoundaryBingoScreen} />
+          <Stack.Screen name="PlayVibeSync" component={VibeSyncScreen} />
+          <Stack.Screen name="PlayRewriteMemory" component={RewriteMemoryScreen} />
+          <Stack.Screen name="PlayGuiltShameSort" component={GuiltShameSortScreen} />
+          <Stack.Screen name="PlayFlashbackFrenzy" component={FlashbackFrenzyScreen} />
+          <Stack.Screen name="PlayDenialDetector" component={DenialDetectorScreen} />
+          <Stack.Screen name="PlayVulnerabilityVolley" component={VulnerabilityVolleyScreen} />
+          <Stack.Screen name="PlayTouchMap" component={TouchMapScreen} />
+          <Stack.Screen name="PlayAvoidanceArcade" component={AvoidanceArcadeScreen} />
+          <Stack.Screen name="PlayNeedsDecoder" component={NeedsDecoderScreen} />
+          <Stack.Screen name="PlayEscapismRoom" component={EscapismRoomScreen} />
+          <Stack.Screen name="PlayBlameFlip" component={BlameFlipScreen} />
+          <Stack.Screen name="PlayMicroBetrayalGolf" component={MicroBetrayalGolfScreen} />
           </Stack.Navigator>
           <SOSButton onPress={() => navigate('SOSBooths')} />
           <FeedbackFab />
@@ -163,6 +209,22 @@ function Splash({ navigation }: any) {
     </Suspense>
   );
 }
+
+function LieDetectorScreen(props: any) { return <Suspense fallback={<Loader />}><LieDetectorLazy {...props} /></Suspense>; }
+function TransparencyTossScreen(props: any) { return <Suspense fallback={<Loader />}><TransparencyTossLazy {...props} /></Suspense>; }
+function BoundaryBingoScreen(props: any) { return <Suspense fallback={<Loader />}><BoundaryBingoLazy {...props} /></Suspense>; }
+function VibeSyncScreen(props: any) { return <Suspense fallback={<Loader />}><VibeSyncLazy {...props} /></Suspense>; }
+function RewriteMemoryScreen(props: any) { return <Suspense fallback={<Loader />}><RewriteMemoryLazy {...props} /></Suspense>; }
+function GuiltShameSortScreen(props: any) { return <Suspense fallback={<Loader />}><GuiltShameSortLazy {...props} /></Suspense>; }
+function FlashbackFrenzyScreen(props: any) { return <Suspense fallback={<Loader />}><FlashbackFrenzyLazy {...props} /></Suspense>; }
+function DenialDetectorScreen(props: any) { return <Suspense fallback={<Loader />}><DenialDetectorLazy {...props} /></Suspense>; }
+function VulnerabilityVolleyScreen(props: any) { return <Suspense fallback={<Loader />}><VulnerabilityVolleyLazy {...props} /></Suspense>; }
+function TouchMapScreen(props: any) { return <Suspense fallback={<Loader />}><TouchMapLazy {...props} /></Suspense>; }
+function AvoidanceArcadeScreen(props: any) { return <Suspense fallback={<Loader />}><AvoidanceArcadeLazy {...props} /></Suspense>; }
+function NeedsDecoderScreen(props: any) { return <Suspense fallback={<Loader />}><NeedsDecoderLazy {...props} /></Suspense>; }
+function EscapismRoomScreen(props: any) { return <Suspense fallback={<Loader />}><EscapismRoomLazy {...props} /></Suspense>; }
+function BlameFlipScreen(props: any) { return <Suspense fallback={<Loader />}><BlameFlipLazy {...props} /></Suspense>; }
+function MicroBetrayalGolfScreen(props: any) { return <Suspense fallback={<Loader />}><MicroBetrayalGolfLazy {...props} /></Suspense>; }
 
 function Origin({ navigation }: any) {
   return (

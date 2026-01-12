@@ -39,6 +39,7 @@ type AppState = {
   setSOSSessionId: (id?: string) => void;
   previewRole: 'free' | 'premium' | 'beta' | 'blocked' | null;
   setPreviewRole: (r: 'free' | 'premium' | 'beta' | 'blocked' | null) => void;
+  user_id?: string;
 };
 
 export const useAppStore = create<AppState>()(persist((set) => ({
@@ -79,4 +80,5 @@ export const useAppStore = create<AppState>()(persist((set) => ({
   setSOSSessionId: (id) => set({ sosSessionId: id }),
   previewRole: null,
   setPreviewRole: (r) => set({ previewRole: r }),
+  user_id: 'preview', // Default mock user_id
 }), { name: 'app_state' }));
