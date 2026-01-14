@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin: Prompt Engineering Console - Love Actually</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Work+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", "editor-bg": "#121217", "syntax-turquoise": "#2dd4bf", "syntax-pink": "#f472b6"}, fontFamily: {display: "Work Sans", mono: ["JetBrains Mono", "monospace"]}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .cosmic-gradient {
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0a0a0c 100%);
+        }
+        .nebula-glow {
+            box-shadow: 0 0 20px rgba(244, 140, 37, 0.15);
+        }
+        .code-glow {
+            text-shadow: 0 0 8px rgba(45, 212, 191, 0.3);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121217;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #393028;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white transition-colors duration-300">
+<div class="relative flex h-screen w-full flex-col overflow-hidden cosmic-gradient">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-white/10 bg-background-dark/50 backdrop-blur-md px-6 py-3 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<h1 class="text-lg font-bold leading-none tracking-tight">Love Actually...</h1>
+<span class="text-[10px] uppercase tracking-widest text-primary/80">Admin Console</span>
+</div>
+</div>
+<div class="h-6 w-px bg-white/10"></div>
+<div class="flex items-center gap-2 text-sm">
+<a class="text-white/60 hover:text-white transition-colors" href="#">Admin</a>
+<span class="text-white/20">/</span>
+<a class="text-white/60 hover:text-white transition-colors" href="#">Marcie AI</a>
+<span class="text-white/20">/</span>
+<span class="text-white">Prompt Console</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-6 text-sm font-medium">
+<a class="text-white/60 hover:text-white transition-colors" href="#">Dashboard</a>
+<a class="text-primary underline decoration-2 underline-offset-8" href="#">Editor</a>
+<a class="text-white/60 hover:text-white transition-colors" href="#">Analytics</a>
+<a class="text-white/60 hover:text-white transition-colors" href="#">Logs</a>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all border border-white/10">
+                        Draft Mode
+                    </button>
+<div class="size-9 rounded-full bg-cover bg-center ring-2 ring-primary/20" data-alt="User avatar for the admin portal" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB5x3AWt09mTWBo3caBj74FDkWiEYnrCQLL12tN58ui65dAaYnzmtGANsyGUpO465y3viT6FIKvJZ8RvDqm7LZGXrclmsEShfJJYUEFGqMKCOMaVGoner6ijQDQJhpSX_wkR1evs2fdzkgtFLDVbxVkaoUjqAfIiR8JnJrfpAE9yG0sZOqZzurmwnedKzRoY_HQH1UfaAOhRXB9ia1s53VLR6hpG3ECJjqIcCE2s6fXllWcFoOypBPXwrB32KV8axWSBpHQSdJ2dCJM");'></div>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Sidebar: Prompt Templates -->
+<aside class="w-72 flex flex-col border-r border-white/10 bg-background-dark/40 backdrop-blur-sm">
+<div class="p-4 flex flex-col gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-lg">search</span>
+<input class="w-full bg-white/5 border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-primary focus:border-primary text-white placeholder:text-white/30" placeholder="Search templates..." type="text"/>
+</div>
+<div class="flex flex-col gap-1 overflow-y-auto">
+<div class="text-[10px] uppercase tracking-widest text-white/40 px-3 py-2">Core Personas</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 group transition-all" href="#">
+<span class="material-symbols-outlined text-white/40 group-hover:text-primary text-xl transition-colors">auto_awesome</span>
+<span class="text-sm font-medium text-white/80">Marcie Core v2</span>
+</a>
+<div class="text-[10px] uppercase tracking-widest text-white/40 px-3 py-2 mt-4">Module Logic</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 border border-primary/20 group" href="#">
+<span class="material-symbols-outlined text-primary text-xl">favorite</span>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-white">Empathy Engine</span>
+<span class="text-[10px] text-primary/60">v1.3.1 Active</span>
+</div>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 group transition-all" href="#">
+<span class="material-symbols-outlined text-white/40 group-hover:text-primary text-xl transition-colors">balance</span>
+<span class="text-sm font-medium text-white/80">Conflict Resolution</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 group transition-all" href="#">
+<span class="material-symbols-outlined text-white/40 group-hover:text-primary text-xl transition-colors">bolt</span>
+<span class="text-sm font-medium text-white/80">Flirtation Matrix</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/5 group transition-all" href="#">
+<span class="material-symbols-outlined text-white/40 group-hover:text-primary text-xl transition-colors">rocket_launch</span>
+<span class="text-sm font-medium text-white/80">Onboarding Flow</span>
+</a>
+</div>
+</div>
+<div class="mt-auto p-4 border-t border-white/10">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-background-dark font-bold py-2.5 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-xl">add_circle</span>
+<span>New Template</span>
+</button>
+</div>
+</aside>
+<!-- Main Area: Code Editor -->
+<section class="flex-1 flex flex-col bg-editor-bg overflow-hidden">
+<!-- Editor Tabs -->
+<div class="flex items-center bg-background-dark/40 px-4 border-b border-white/5">
+<div class="flex h-12">
+<button class="flex items-center gap-2 px-6 border-t-2 border-primary bg-editor-bg text-sm font-medium text-white">
+<span class="text-syntax-turquoise font-mono text-xs">TS</span>
+                            empathy_engine.ts
+                        </button>
+<button class="flex items-center gap-2 px-6 border-t-2 border-transparent hover:bg-white/5 text-sm font-medium text-white/40">
+<span class="text-syntax-pink font-mono text-xs">JS</span>
+                            core_logic.json
+                        </button>
+</div>
+<div class="ml-auto flex items-center gap-4 text-white/40">
+<span class="text-xs font-mono">Model: GPT-4o</span>
+<div class="h-4 w-px bg-white/10"></div>
+<span class="text-xs font-mono">Temp: 0.7</span>
+</div>
+</div>
+<!-- Actual Editor Surface -->
+<div class="flex-1 flex font-mono text-sm leading-relaxed overflow-hidden">
+<!-- Line Numbers -->
+<div class="w-12 bg-background-dark/30 py-4 text-right pr-3 text-white/20 select-none border-r border-white/5">
+                        1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16
+                    </div>
+<!-- Code Content -->
+<div class="flex-1 p-4 overflow-y-auto whitespace-pre">
+<span class="text-syntax-pink">import</span> { <span class="text-syntax-turquoise">MarcieAI</span> } <span class="text-syntax-pink">from</span> <span class="text-primary">'@love-actually/core'</span>;
+
+<span class="text-white/40">// System Prompt for Cosmic Empathy Module</span>
+<span class="text-syntax-pink">export const</span> <span class="text-syntax-turquoise">empathyTemplate</span> = <span class="text-syntax-pink">async</span> (context) <span class="text-syntax-pink">=&gt;</span> {
+  <span class="text-syntax-pink">const</span> <span class="text-white">prompt</span> = <span class="text-primary">`
+    Act as Marcie, a celestial guide for couples. 
+    Your persona is luminous, non-judgmental, and deeply intuitive.
+    
+    Current Relationship Pulse: <span class="text-syntax-turquoise">${context.pulseScore}</span>
+    Detected Conflict: <span class="text-syntax-turquoise">${context.lastConflict}</span>
+    
+    Response Guidelines:
+    1. Use astronomical metaphors for emotional states.
+    2. Maintain a "warm nebula" tone—soft but expansive.
+    3. If pulse is below <span class="text-primary">40</span>, trigger 'Aurora Reconnection' sequence.
+  `</span>;
+
+  <span class="text-syntax-pink">return await</span> <span class="text-syntax-turquoise">MarcieAI</span>.<span class="text-white">generate</span>(prompt);
+};</div>
+</div>
+<!-- Editor Action Bar -->
+<div class="p-4 bg-background-dark/60 border-t border-white/10 flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-[10px] uppercase text-white/40">
+<span>Temperature</span>
+<span>0.7</span>
+</div>
+<input class="w-40 accent-primary h-1 bg-white/10 rounded-lg appearance-none cursor-pointer" type="range"/>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-[10px] uppercase text-white/40">
+<span>Max Tokens</span>
+<span>2048</span>
+</div>
+<input class="w-40 accent-primary h-1 bg-white/10 rounded-lg appearance-none cursor-pointer" type="range"/>
+</div>
+</div>
+<button class="flex items-center gap-3 px-8 py-3 rounded-xl font-bold text-background-dark bg-gradient-to-r from-yellow-400 to-primary hover:scale-[1.02] active:scale-[0.98] transition-all nebula-glow">
+<span class="material-symbols-outlined">play_arrow</span>
+<span>Test Prompt</span>
+</button>
+</div>
+</section>
+<!-- Right Panel: AI Output Preview -->
+<aside class="w-96 flex flex-col border-l border-white/10 bg-background-dark/40 backdrop-blur-sm overflow-hidden">
+<div class="p-4 border-b border-white/10 flex items-center justify-between">
+<h3 class="text-sm font-bold uppercase tracking-widest text-white/60">Preview Console</h3>
+<span class="flex items-center gap-2 text-[10px] text-green-400">
+<span class="size-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                        Live Simulator
+                    </span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-6">
+<!-- User Mock Input -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-[10px] text-white/40">
+<span class="material-symbols-outlined text-xs">person</span>
+                            MOCK USER MESSAGE
+                        </div>
+<div class="bg-white/5 p-3 rounded-lg text-sm text-white/80 border border-white/5">
+                            "We had a huge fight about the dishes today. I feel like my nebula is drifting away from his star..."
+                        </div>
+</div>
+<!-- AI Simulation Log -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2 text-[10px] text-primary">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+                            MARCIE AI RESPONSE (SIMULATED)
+                        </div>
+<div class="bg-primary/5 p-4 rounded-xl text-sm leading-relaxed border border-primary/20 nebula-glow">
+<p class="text-white/90 italic">
+                                "I hear the turbulence in your orbit, starlight. When domestic dust clouds obscure the view, it's easy to forget the gravity that keeps you both together. Let's redirect our telescopes toward that shared center..."
+                            </p>
+</div>
+</div>
+<!-- Performance Stats -->
+<div class="grid grid-cols-2 gap-3 pt-4">
+<div class="bg-white/5 p-3 rounded-lg border border-white/5">
+<div class="text-[10px] text-white/40 uppercase">Latency</div>
+<div class="text-lg font-mono text-syntax-turquoise">1.2s</div>
+</div>
+<div class="bg-white/5 p-3 rounded-lg border border-white/5">
+<div class="text-[10px] text-white/40 uppercase">Tokens</div>
+<div class="text-lg font-mono text-syntax-pink">142</div>
+</div>
+</div>
+<!-- Status History -->
+<div class="space-y-2 pt-4">
+<div class="flex items-center gap-3 text-xs text-white/30 font-mono">
+<span class="text-green-500">[14:22:01]</span>
+<span>Success: Prompt Compiled</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-white/30 font-mono">
+<span class="text-primary">[14:22:05]</span>
+<span>Warning: High Temperature Setting</span>
+</div>
+<div class="flex items-center gap-3 text-xs text-white/30 font-mono">
+<span class="text-green-500">[14:23:12]</span>
+<span>Success: Simulation Completed</span>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-white/10 bg-black/20">
+<button class="w-full flex items-center justify-center gap-2 text-white/60 hover:text-white text-xs font-medium py-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Export Logs (.json)
+                    </button>
+</div>
+</aside>
+</main>
+<!-- Footer / Status Bar -->
+<footer class="h-8 bg-primary/10 border-t border-primary/20 px-6 flex items-center justify-between text-[10px] uppercase tracking-widest text-primary font-bold">
+<div class="flex items-center gap-6">
+<span class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-primary animate-pulse"></span>
+                    System: Luminous_Core_Active
+                </span>
+<span>Branch: main/production</span>
+</div>
+<div class="flex items-center gap-4">
+<span>UTF-8</span>
+<span>TypeScript</span>
+<span>Marcie AI v4.2.0</span>
+</div>
+</footer>
+</div>
+</body></html>

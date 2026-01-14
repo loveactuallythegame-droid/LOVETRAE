@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, TextInput, Pressable } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, StyleSheet, TextInput, Pressable, ActivityIndicator } from 'react-native';
 import { GlassCard, Text, SquishyButton } from '../../components/ui';
 import { MarcieHost } from '../../components/ai-host';
 import { speakMarcie } from '../../lib/voice-engine';
-import { analyzeFight } from '../../lib/ai-engine';
+import { analyzeFight, generateQuestions } from '../../lib/ai-engine';
 import { getProfile, supabase } from '../../lib/supabase';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { setJSON, getJSON } from '../../lib/cache';
@@ -12,6 +12,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function PartnerTranslator({ navigation }: any) {
   const [desc, setDesc] = useState('');
   const [focused, setFocused] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [qs, setQs] = useState<string[]>([]);
   const [qIndex, setQIndex] = useState(0);
   const [answers, setAnswers] = useState<boolean[]>([]);
   const [result, setResult] = useState<{ translation: string; plan: string[] } | null>(null);
@@ -19,28 +21,21 @@ export default function PartnerTranslator({ navigation }: any) {
   const flip = useSharedValue(0);
   const style = useAnimatedStyle(() => ({ transform: [{ rotateY: `${flip.value * 180}deg` }] }));
   const [showQs, setShowQs] = useState(false);
-  const qs = useMemo(() => {
-    const base = [
-      'Is this a recurring behavior?',
-      'Did they acknowledge your feeling?',
-      'Did you state a clear need?'
-    ];
-    const t = desc.toLowerCase();
-    const extra: string[] = [];
-    if (t.includes('clean') || t.includes('chores')) extra.push('Was there a clear expectation set beforehand?');
-    if (t.includes('text') || t.includes('message')) extra.push('Did you communicate timing expectations explicitly?');
-    if (t.includes('money') || t.includes('spent')) extra.push('Did you agree on boundaries for this?');
-    return [...base.slice(0, 3 - Math.min(2, extra.length)), ...extra.slice(0, 2)];
-  }, [desc]);
 
   useEffect(() => { getJSON('translator_report_done', false).then(setReportDone); }, []);
 
-  function startInvestigation() {
-    if (desc.trim().length < 20) {
-      speakMarcie('Give me something to work with. At least a sentence or two.');
+  async function startInvestigation() {
+    if (desc.trim().length < 10) {
+      speakMarcie('Give me a bit more context. Describe what happened.');
       return;
     }
-    speakMarcie('Time to decode some relationship hieroglyphics, I see.');
+    setLoading(true);
+    speakMarcie('Investigating... hold tight.');
+
+    // AI Generate Questions
+    const generatedQs = await generateQuestions(desc);
+    setQs(generatedQs);
+    setLoading(false);
     setShowQs(true);
     setQIndex(0);
     setAnswers([]);
@@ -54,16 +49,31 @@ export default function PartnerTranslator({ navigation }: any) {
   }
 
   async function translate(list: boolean[]) {
+    setLoading(true);
     const { data } = await supabase.auth.getSession();
     const user = data.session?.user;
     const prof = user ? await getProfile(user.id) : null;
     const origin = prof?.data?.origin_story || '';
     const red = prof?.data?.first_red_flag || '';
-    const a = JSON.stringify({ behavior: desc, q: list });
-    const verdict = await analyzeFight({ origin_story: origin, first_red_flag: red, partner_a_input: a, partner_b_input: '{}', personality: 'balanced', sarcasm_level: 2 });
+
+    // Construct a rich input for the AI
+    const qAndA = qs.map((q, i) => `Q: ${q} A: ${list[i] ? 'Yes' : 'No'}`).join('\n');
+    const aInput = `Situation: ${desc}\nContext:\n${qAndA}`;
+
+    const verdict = await analyzeFight({
+      origin_story: origin,
+      first_red_flag: red,
+      partner_a_input: aInput,
+      partner_b_input: '{}',
+      personality: 'balanced',
+      sarcasm_level: 2
+    });
+
     const translation = verdict.callout.join(' ');
     const plan = verdict.repairs_a;
+
     setResult({ translation, plan });
+    setLoading(false);
     speakMarcie(translation);
     await setJSON('translator_last_input', { desc, questions: qs, answers: list });
     await setJSON('translator_last_result', { translation, plan });
@@ -83,49 +93,78 @@ export default function PartnerTranslator({ navigation }: any) {
         <Text variant="keyword">🌐</Text>
       </View>
       <GlassCard>
-        <Text variant="body">Time to decode some relationship hieroglyphics, I see.</Text>
-        <TextInput
-          placeholder="My girlfriend is mad because she was cleaning and I didn't lift my feet..."
-          style={[styles.input, focused ? styles.inputFocus : undefined]}
-          value={desc}
-          onChangeText={(t) => setDesc(t.slice(0, 500))}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          accessibilityLabel="Describe behavior"
-          multiline
-        />
-        <View style={styles.counterRow}>
-          <SquishyButton onPress={() => setDesc('')} style={styles.clear}><Text variant="header">Clear</Text></SquishyButton>
-          <Text variant="keyword">{desc.length}/500</Text>
-        </View>
         {!result && !showQs && (
+          <Text variant="body">Describe the conflict. I'll translate their nonsense into logic.</Text>
+        )}
+
+        {!showQs && !result && (
+          <TextInput
+            placeholder="My partner said they're 'fine' but slammed the door..."
+            style={[styles.input, focused ? styles.inputFocus : undefined]}
+            value={desc}
+            onChangeText={(t) => setDesc(t.slice(0, 500))}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            accessibilityLabel="Describe behavior"
+            multiline
+          />
+        )}
+
+        {!showQs && !result && (
+          <View style={styles.counterRow}>
+            <SquishyButton onPress={() => setDesc('')} style={styles.clear}><Text variant="header">Clear</Text></SquishyButton>
+            <Text variant="keyword">{desc.length}/500</Text>
+          </View>
+        )}
+
+        {loading && (
+          <View style={{ padding: 20, alignItems: 'center' }}>
+            <ActivityIndicator size="large" color="#FA1F63" />
+            <Text variant="body" style={{ marginTop: 10 }}>Analyzing conversational ballistics...</Text>
+          </View>
+        )}
+
+        {!result && !showQs && !loading && (
           <LinearGradient colors={['#FA1F63', '#BE1980']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.primaryBtn}>
             <SquishyButton onPress={startInvestigation} style={{ backgroundColor: 'transparent' }}><Text variant="header">Start Investigation</Text></SquishyButton>
           </LinearGradient>
         )}
-        {!result && showQs && (
+
+        {!result && showQs && !loading && qs.length > 0 && (
           <View style={styles.cardsRow}>
-            <Pressable style={[styles.card, answers[qIndex] !== undefined ? styles.answered : undefined]}>
-              <Text variant="body">{qs[qIndex]}</Text>
+            <Text variant="body" style={{ marginBottom: 12, textAlign: 'center' }}>CLARIFYING QUESTION {qIndex + 1}/{qs.length}</Text>
+            <View style={styles.card}>
+              <Text variant="body" style={{ fontSize: 18, textAlign: 'center' }}>{qs[qIndex]}</Text>
               <View style={styles.actions}>
-                <SquishyButton onPress={() => next(true)} style={styles.btn}><Text variant="header">Yes</Text></SquishyButton>
-                <SquishyButton onPress={() => next(false)} style={[styles.btn, { backgroundColor: '#E11637' }]}><Text variant="header">No</Text></SquishyButton>
+                <SquishyButton onPress={() => next(true)} style={styles.btn}><Text variant="header">YES</Text></SquishyButton>
+                <SquishyButton onPress={() => next(false)} style={[styles.btn, { backgroundColor: '#E11637' }]}><Text variant="header">NO</Text></SquishyButton>
               </View>
-            </Pressable>
+            </View>
           </View>
         )}
+
         {result && (
           <Animated.View style={[styles.translation, style]}>
             <LinearGradient colors={['rgba(51, 222, 165, 0.18)', 'rgba(190, 24, 128, 0.18)']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.translationGrad}>
-              <Text variant="header">Translation</Text>
-              <Text variant="sass" style={{ textAlign: 'center' }}>{result.translation}</Text>
-              <Text variant="header" style={{ marginTop: 12 }}>Action Plan</Text>
-              {result.plan.map((p, i) => (<Text key={i} variant="body">• {p}</Text>))}
-              <View style={{ flexDirection: 'row', gap: 12, marginTop: 12 }}>
-                <SquishyButton onPress={markReported} style={styles.btn}><Text variant="header">Report back</Text></SquishyButton>
-                <SquishyButton onPress={() => navigation.goBack()} style={styles.btn}><Text variant="header">Done</Text></SquishyButton>
+              <Text variant="header" style={{ marginBottom: 8, color: '#33DEA5' }}>OFFICIAL TRANSLATION</Text>
+              <Text variant="sass" style={{ textAlign: 'center', fontSize: 20, lineHeight: 28 }}>"{result.translation}"</Text>
+
+              <Text variant="header" style={{ marginTop: 20, marginBottom: 8 }}>RECOMMENDED ACTION PLAN</Text>
+              {result.plan.map((p, i) => (
+                <View key={i} style={{ flexDirection: 'row', marginBottom: 6 }}>
+                  <Text variant="keyword" style={{ marginRight: 8 }}>{i + 1}.</Text>
+                  <Text variant="body" style={{ flex: 1 }}>{p}</Text>
+                </View>
+              ))}
+
+              <View style={{ flexDirection: 'row', gap: 12, marginTop: 24, justifyContent: 'center' }}>
+                <SquishyButton onPress={markReported} style={[styles.btn, { opacity: reportDone ? 0.5 : 1 }]} disabled={reportDone}>
+                  <Text variant="header">{reportDone ? 'Reported' : 'Report Success'}</Text>
+                </SquishyButton>
+                <SquishyButton onPress={() => { setShowQs(false); setResult(null); setDesc(''); }} style={[styles.btn, { backgroundColor: '#5C1459' }]}>
+                  <Text variant="header">New Case</Text>
+                </SquishyButton>
               </View>
-              <Text variant="keyword" style={{ marginTop: 8 }}>{reportDone ? 'Reported' : 'Not reported'}</Text>
             </LinearGradient>
           </Animated.View>
         )}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SOS History - Love Actually The Game</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", charcoal: "#1a1a1a", "nebula-purple": "#2d1b4e", "nebula-blue": "#1e3a5f", resolved: "#ff9500", repair: "#ff2d55"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-turquoise {
+            box-shadow: 0 0 15px rgba(19, 236, 236, 0.3);
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at top right, #1a2a2a, #102222),
+                        radial-gradient(circle at bottom left, #1e3a5f, transparent 50%),
+                        radial-gradient(circle at 70% 20%, #2d1b4e, transparent 40%);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="flex h-screen overflow-hidden nebula-bg">
+<!-- SideNavBar -->
+<aside class="w-64 flex-shrink-0 border-r border-white/10 bg-black/20 backdrop-blur-md">
+<div class="flex h-full flex-col justify-between p-6">
+<div class="flex flex-col gap-8">
+<!-- Brand -->
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary text-3xl">favorite</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-tight uppercase tracking-widest">Love Actually</h1>
+<p class="text-primary text-xs font-medium uppercase tracking-tighter">The Game</p>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-white/70">dashboard</span>
+<p class="text-sm font-medium">Dashboard</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 border border-primary/20 text-primary">
+<span class="material-symbols-outlined">history</span>
+<p class="text-sm font-bold">SOS History</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-white/70">sports_esports</span>
+<p class="text-sm font-medium">Games</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-white/70">person</span>
+<p class="text-sm font-medium">Profile</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors mt-4">
+<span class="material-symbols-outlined text-white/70">settings</span>
+<p class="text-sm font-medium">Settings</p>
+</div>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-white/70">help</span>
+<p class="text-sm font-medium">Support</p>
+</div>
+<div class="flex items-center gap-3 p-2 bg-white/5 rounded-xl">
+<div class="size-10 rounded-full bg-cover bg-center border border-primary/30" data-alt="User profile showing a couple" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDcm3SObEis8CWGE_t9mrbO7WT_0ydMZMepwggdrcyL6MUs07FgoWUstUE-w-OdAwWUMSm9Wfnd4QNROkAN23o914246yhmRujJyoQDqHOsK1iIxApBRdkXCOe7PbSrHI1yNqOgxmwd0T80qe5WAlk9fFV-Nm4OMMKklutOhSX_NXmUEYCq8Md2G3ICuUpK2EoE-scG6sjMAbPlHPBRIQQ92Bt3ImC0q1zkfUjkiutkcfXP2m1Ow1O903tkGyYtSTk1MDPB_KYENlKP')"></div>
+<div class="flex flex-col">
+<p class="text-xs font-bold">Alex &amp; Sam</p>
+<p class="text-[10px] text-white/50">Level 24 Partners</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Container -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<div class="max-w-4xl w-full mx-auto py-10 px-8">
+<!-- PageHeading -->
+<div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+<div class="flex flex-col gap-2">
+<h2 class="text-white text-5xl font-black leading-tight tracking-tight uppercase">SOS History</h2>
+<p class="text-primary/70 text-lg font-light">Reflecting on your journey together through cosmic challenges.</p>
+</div>
+<button class="flex items-center gap-2 px-6 h-12 bg-primary text-background-dark font-bold rounded-xl hover:shadow-[0_0_20px_rgba(19,236,236,0.5)] transition-all">
+<span class="material-symbols-outlined text-xl">ios_share</span>
+<span>Export Archive</span>
+</button>
+</div>
+<!-- Search & Filters -->
+<div class="bg-black/30 backdrop-blur-xl border border-white/5 rounded-2xl p-4 mb-10 flex flex-col md:flex-row gap-4 items-center">
+<!-- SearchBar -->
+<div class="flex-1 w-full">
+<label class="relative flex items-center w-full">
+<span class="material-symbols-outlined absolute left-4 text-primary">search</span>
+<input class="w-full h-14 pl-12 pr-4 bg-background-dark/80 border border-white/10 rounded-xl text-white placeholder:text-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary glow-turquoise transition-all font-display" placeholder="Search past conflicts by keyword..." type="text"/>
+</label>
+</div>
+<!-- Chips (Filters) -->
+<div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar max-w-full">
+<button class="flex items-center gap-2 h-10 px-4 rounded-full bg-primary text-background-dark font-bold text-sm whitespace-nowrap">
+                            All Categories
+                        </button>
+<button class="flex items-center gap-2 h-10 px-4 rounded-full bg-white/5 border border-white/10 text-white/70 hover:border-primary/50 text-sm transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-xs">chat_bubble</span> Communication
+                        </button>
+<button class="flex items-center gap-2 h-10 px-4 rounded-full bg-white/5 border border-white/10 text-white/70 hover:border-primary/50 text-sm transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-xs">favorite</span> Intimacy
+                        </button>
+<button class="flex items-center gap-2 h-10 px-4 rounded-full bg-white/5 border border-white/10 text-white/70 hover:border-primary/50 text-sm transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-xs">home</span> Household
+                        </button>
+</div>
+</div>
+<!-- Timeline -->
+<div class="relative">
+<!-- Vertical Line -->
+<div class="absolute left-[20px] top-4 bottom-4 w-0.5 bg-gradient-to-b from-primary/50 via-primary/10 to-transparent"></div>
+<!-- Timeline Entries -->
+<div class="space-y-12">
+<!-- Entry 1 -->
+<div class="relative pl-14 group">
+<!-- Timeline Dot -->
+<div class="absolute left-0 top-6 size-10 flex items-center justify-center">
+<div class="size-4 rounded-full bg-resolved shadow-[0_0_12px_rgba(255,149,0,0.8)] z-10 transition-transform group-hover:scale-125"></div>
+</div>
+<!-- Card Content -->
+<div class="bg-charcoal/80 border border-white/10 rounded-2xl p-6 backdrop-blur-sm transition-all hover:border-white/20 hover:translate-x-1">
+<div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<span class="text-resolved text-xs font-bold uppercase tracking-widest">Resolved</span>
+<span class="text-white/30 text-xs">• Oct 24th, 2023</span>
+</div>
+<h3 class="text-white text-2xl font-bold tracking-tight">The Dish Dilemma</h3>
+</div>
+<span class="px-3 py-1 bg-white/5 rounded-md text-[10px] font-bold text-white/50 uppercase">Household</span>
+</div>
+<p class="text-white/70 leading-relaxed mb-6">
+                                    A misunderstanding about chore distribution led to a heated exchange after dinner. We used the "Mirror Technique" to de-escalate.
+                                </p>
+<div class="flex items-center justify-between pt-4 border-t border-white/5">
+<div class="flex -space-x-2">
+<div class="size-8 rounded-full border-2 border-charcoal bg-cover bg-center" data-alt="User avatar 1" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCP00HMX-CFBI6J8CHqP7-PrLCQrwsG_YFK_a0nijiG_7jGCT4pMEc688odKW2Rb6nCZTfXrGg30gC1ELshPTKFC7woS30hTbK4w5Py1DSlN1h2lYeH16rASMTHJcI40fVjKw9XLtOzouefYEFIy_Wk2Qow8XdyQqt1m6uHleEdyjNCNbqVX3iP7wjofh-vTT3gvUe_SjXSrVLjGmPzvOUl-eLtwwO196cIG1psJKuyo8a2jxOGd6XsTiUfYDjEia_gxTCCrYcMq4_a')"></div>
+<div class="size-8 rounded-full border-2 border-charcoal bg-cover bg-center" data-alt="User avatar 2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCrzgcX7TLDu2F5Sg9HiTjoZmT_PRAamqqlF8cGtnUD2_M2XftOIU6OhKf1uvB7vqIXF4fX7kJI33T1Wvy4Rtf_8OnMSZTrJHSH_mCBmwGa0K-vWNdLSBKIdTKJMQROR9qQ-D1DTFUNWJ8XRrtqbIoCHvnYuhdDFaYqfLoIPSGT1kSAx3eDOllf3EHb2S-VugRRQO57EnLLNtBMwbEpvofcpUArJOS-WmJcwwBPDeo5cXsnEuUmXp1CN11oUgDoQWYj3RtAu3trwBHe')"></div>
+</div>
+<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+                                        Full Transcript <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Entry 2 -->
+<div class="relative pl-14 group">
+<!-- Timeline Dot -->
+<div class="absolute left-0 top-6 size-10 flex items-center justify-center">
+<div class="size-4 rounded-full bg-repair shadow-[0_0_12px_rgba(255,45,85,0.8)] z-10 transition-transform group-hover:scale-125"></div>
+</div>
+<!-- Card Content -->
+<div class="bg-charcoal/80 border border-white/10 rounded-2xl p-6 backdrop-blur-sm transition-all hover:border-white/20 hover:translate-x-1">
+<div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<span class="text-repair text-xs font-bold uppercase tracking-widest">Repair In Progress</span>
+<span class="text-white/30 text-xs">• Oct 28th, 2023</span>
+</div>
+<h3 class="text-white text-2xl font-bold tracking-tight">Quality Time Tension</h3>
+</div>
+<span class="px-3 py-1 bg-white/5 rounded-md text-[10px] font-bold text-white/50 uppercase">Intimacy</span>
+</div>
+<p class="text-white/70 leading-relaxed mb-6">
+                                    Feeling disconnected due to busy work schedules. We've initiated the "Digital Detox" protocol for our next date night.
+                                </p>
+<div class="flex items-center justify-between pt-4 border-t border-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-repair text-sm">sync</span>
+<span class="text-xs text-white/40">Step 2 of 4 complete</span>
+</div>
+<button class="px-4 py-2 bg-primary/20 text-primary text-sm font-bold rounded-lg border border-primary/30 hover:bg-primary/30 transition-colors">
+                                        Resume Repair
+                                    </button>
+</div>
+</div>
+</div>
+<!-- Entry 3 -->
+<div class="relative pl-14 group">
+<!-- Timeline Dot -->
+<div class="absolute left-0 top-6 size-10 flex items-center justify-center">
+<div class="size-4 rounded-full bg-resolved shadow-[0_0_12px_rgba(255,149,0,0.8)] z-10 transition-transform group-hover:scale-125"></div>
+</div>
+<!-- Card Content -->
+<div class="bg-charcoal/80 border border-white/10 rounded-2xl p-6 backdrop-blur-sm transition-all hover:border-white/20 hover:translate-x-1">
+<div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<span class="text-resolved text-xs font-bold uppercase tracking-widest">Resolved</span>
+<span class="text-white/30 text-xs">• Nov 2nd, 2023</span>
+</div>
+<h3 class="text-white text-2xl font-bold tracking-tight">Holiday Travel Stress</h3>
+</div>
+<span class="px-3 py-1 bg-white/5 rounded-md text-[10px] font-bold text-white/50 uppercase">Finances</span>
+</div>
+<p class="text-white/70 leading-relaxed mb-6">
+                                    Budgetary concerns regarding Christmas flights. Negotiated a compromise between travel dates and costs using the "Win-Win Calculator."
+                                </p>
+<div class="flex items-center justify-between pt-4 border-t border-white/5">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-white/40 text-xs">
+<span class="material-symbols-outlined text-sm">forum</span> 12 messages
+                                        </div>
+<div class="flex items-center gap-1 text-white/40 text-xs">
+<span class="material-symbols-outlined text-sm">timer</span> 15m duration
+                                        </div>
+</div>
+<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+                                        View Summary <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More -->
+<div class="mt-16 flex justify-center">
+<button class="px-8 py-3 bg-white/5 border border-white/10 rounded-xl text-white/50 font-bold hover:bg-white/10 hover:text-white transition-all uppercase tracking-widest text-xs">
+                        Decrypt Older Archives
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

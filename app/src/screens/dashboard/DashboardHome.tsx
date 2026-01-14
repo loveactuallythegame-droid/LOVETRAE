@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
-import { TrustThermometer, Text, GlassCard, SquishyButton } from '../../components/ui';
+import { TrustThermometer, Text, GlassCard, SquishyButton, RadialGradientBackground } from '../../components/ui';
 import { COLORS } from '../../constants/colors';
 import DailyChallengeCard from '../../components/games/DailyChallengeCard';
 import ConfettiBurst from '../../components/effects/ConfettiBurst';
@@ -9,6 +9,7 @@ import { useAppStore } from '../../state/store';
 import SOSButton from '../../components/sos/SOSButton';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat, Easing } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
 import { useAccess } from '../../lib/gating';
 
@@ -76,10 +77,11 @@ export default function DashboardHome({ navigation }: any) {
 
   return (
     <View style={styles.root}>
+      <RadialGradientBackground />
       <View style={styles.header}>
         <View>
           <Text variant="header">Welcome back</Text>
-          {plan !== 'free' && <Text variant="keyword" style={{fontSize: 12}}>Plan: {plan.toUpperCase()}</Text>}
+          {plan !== 'free' && <Text variant="keyword" style={{ fontSize: 12 }}>Plan: {plan.toUpperCase()}</Text>}
         </View>
         <SquishyButton onPress={() => navigation.navigate('Settings')} style={styles.settingsBtn}><Text variant="header">Settings</Text></SquishyButton>
       </View>
@@ -109,8 +111,11 @@ export default function DashboardHome({ navigation }: any) {
         </GlassCard>
       </View>
 
-      <GlassCard>
-        <Text variant="header">Relationship Leaderboard</Text>
+      <GlassCard onPress={() => navigation.navigate('Leaderboard')}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text variant="header">Relationship Leaderboard</Text>
+          <Ionicons name="chevron-forward" size={16} color="rgba(255,255,255,0.5)" />
+        </View>
         <View style={{ marginTop: 8, gap: 6 }}>
           <View style={styles.lbRow}>
             <View style={styles.crown} />

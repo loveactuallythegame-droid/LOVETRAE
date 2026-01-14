@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin: User Management List - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: radial-gradient(circle at top right, #1a3a3a, #102222 70%);
+        }
+        .nebula-glow {
+            box-shadow: 0 0 20px rgba(19, 236, 236, 0.15);
+        }
+        .search-glow:focus-within {
+            box-shadow: 0 0 15px rgba(19, 236, 236, 0.4);
+        }
+        .glass-panel {
+            background: rgba(40, 57, 57, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(157, 185, 185, 0.1);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            transition: opacity 0.2s;
+        }
+        .btn-gradient:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex-shrink-0 flex flex-col glass-panel border-r border-white/5">
+<div class="p-6 flex flex-col h-full justify-between">
+<div class="space-y-8">
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary text-3xl">auto_awesome</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight tracking-tight">Love Actually</h1>
+<p class="text-primary text-xs font-medium uppercase tracking-widest">Admin Portal</p>
+</div>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-white/60">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary border border-primary/20" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-medium">User Management</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-white/60">emergency_home</span>
+<span class="font-medium">SOS Alerts</span>
+<span class="ml-auto bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">12</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-white/60">joystick</span>
+<span class="font-medium">Game Content</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-white/60">analytics</span>
+<span class="font-medium">Analytics</span>
+</a>
+</nav>
+</div>
+<div class="space-y-4">
+<div class="p-4 rounded-xl bg-white/5 border border-white/10">
+<p class="text-xs text-white/40 mb-2">System Status</p>
+<div class="flex items-center gap-2">
+<div class="size-2 bg-primary rounded-full animate-pulse"></div>
+<span class="text-xs font-medium">Cosmic Servers Online</span>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-white/60">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="h-20 flex items-center justify-between px-8 border-b border-white/5 glass-panel">
+<div class="flex items-center gap-6 flex-1 max-w-2xl">
+<div class="search-glow relative flex-1">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary/60">search</span>
+<input class="w-full bg-[#283939]/50 border-white/10 border rounded-xl py-2.5 pl-12 pr-4 text-white placeholder:text-white/30 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Search User ID, Username, or Couple ID..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-[#283939] rounded-xl text-sm font-medium hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                            Filters
+                        </button>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm">auto_graph</span>
+<span class="text-xs font-bold text-primary">Live Data</span>
+</div>
+<button class="relative text-white/60 hover:text-white transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<div class="absolute -top-1 -right-1 size-2 bg-red-500 rounded-full border-2 border-[#102222]"></div>
+</button>
+<div class="flex items-center gap-3 pl-6 border-l border-white/10">
+<div class="text-right">
+<p class="text-sm font-bold leading-none">Admin Astra</p>
+<p class="text-[10px] text-white/40 uppercase tracking-tighter">Chief Moderator</p>
+</div>
+<div class="size-10 rounded-full border-2 border-primary/30 p-0.5">
+<img alt="Admin user avatar" class="rounded-full bg-slate-800" data-alt="Avatar of the administrator user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3Up3aQyDbqrHKmY_NTuGbirs_B6yH_MHp6kNaVj-2tI3TO-qfqnne7LSVbcgCSAMPPFEZ81hCGe75tFgdc7thX0HRnh9eot4vEH2Qrm7psCP9lFaCvtEGH5UbeaGzUqe-jpDrUf1-WYuOIQVSnz84HvyFWxvDJ-UpwqA2JwKG1huTHztFe4y4O1Wg0Hso-1shxpxxKXga8TIe4yURm_fSUvBtk7d9o5OgTDMYS9F3waH1wgQIXPFTxxoqAaKmPOd_SZoPjz_9o9zy"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Table Content Section -->
+<div class="flex-1 overflow-auto p-8 space-y-6">
+<!-- Stats Overview -->
+<div class="grid grid-cols-4 gap-4">
+<div class="glass-panel p-5 rounded-xl border-l-4 border-l-primary nebula-glow">
+<p class="text-white/40 text-xs font-bold uppercase tracking-widest mb-1">Total Users</p>
+<div class="flex items-end gap-2">
+<h3 class="text-2xl font-bold">24,592</h3>
+<span class="text-primary text-xs font-medium mb-1">+4.2%</span>
+</div>
+</div>
+<div class="glass-panel p-5 rounded-xl border-l-4 border-l-teal-400">
+<p class="text-white/40 text-xs font-bold uppercase tracking-widest mb-1">Active Now</p>
+<div class="flex items-end gap-2">
+<h3 class="text-2xl font-bold">1,842</h3>
+<span class="text-teal-400 text-xs font-medium mb-1">Live</span>
+</div>
+</div>
+<div class="glass-panel p-5 rounded-xl border-l-4 border-l-purple-500">
+<p class="text-white/40 text-xs font-bold uppercase tracking-widest mb-1">Premium Tier</p>
+<div class="flex items-end gap-2">
+<h3 class="text-2xl font-bold">8,210</h3>
+<span class="text-purple-400 text-xs font-medium mb-1">33%</span>
+</div>
+</div>
+<div class="glass-panel p-5 rounded-xl border-l-4 border-l-red-500">
+<p class="text-white/40 text-xs font-bold uppercase tracking-widest mb-1">Pending SOS</p>
+<div class="flex items-end gap-2">
+<h3 class="text-2xl font-bold">12</h3>
+<span class="text-red-400 text-xs font-medium mb-1">Urgent</span>
+</div>
+</div>
+</div>
+<!-- Main Data Table Container -->
+<div class="glass-panel rounded-xl overflow-hidden flex flex-col">
+<div class="p-6 flex items-center justify-between border-b border-white/5">
+<div class="flex gap-4">
+<button class="px-4 py-1.5 rounded-full bg-primary text-[#102222] text-sm font-bold">All Users</button>
+<button class="px-4 py-1.5 rounded-full bg-white/5 text-white/60 text-sm font-medium hover:text-white">New Registrations</button>
+<button class="px-4 py-1.5 rounded-full bg-white/5 text-white/60 text-sm font-medium hover:text-white">Flagged Accounts</button>
+</div>
+<div class="flex items-center gap-2 text-sm text-white/40">
+<span>Showing 1-10 of 24,592 users</span>
+</div>
+</div>
+<table class="w-full text-left">
+<thead>
+<tr class="bg-white/5 text-[10px] uppercase tracking-[0.2em] font-bold text-white/40">
+<th class="px-6 py-4">User ID / Username</th>
+<th class="px-6 py-4">Current Status</th>
+<th class="px-6 py-4">Subscription Tier</th>
+<th class="px-6 py-4">Last SOS Alert</th>
+<th class="px-6 py-4">Journey Stage</th>
+<th class="px-6 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<!-- User Row 1 -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-lg bg-primary/20 flex items-center justify-center font-bold text-primary text-xs">LA</div>
+<div>
+<p class="font-bold text-sm tracking-tight">#LA-9821-XP</p>
+<p class="text-xs text-white/40">@stardust_lover</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary shadow-[0_0_8px_#13ecec]"></div>
+<span class="text-xs font-medium">Active Now</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                                        ETERNAL COSMOS
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<p class="text-xs text-white/60">2h ago</p>
+</td>
+<td class="px-6 py-4">
+<div class="w-32 h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4 rounded-full"></div>
+</div>
+<p class="text-[10px] text-white/40 mt-1">Milestone: Lunar Harmony</p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="btn-gradient px-4 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg">VIEW DETAIL</button>
+</td>
+</tr>
+<!-- User Row 2 -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-lg bg-teal-400/20 flex items-center justify-center font-bold text-teal-400 text-xs">NJ</div>
+<div>
+<p class="font-bold text-sm tracking-tight">#LA-4412-ZY</p>
+<p class="text-xs text-white/40">@nebula_jumper</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-yellow-400 shadow-[0_0_8px_#fbbf24]"></div>
+<span class="text-xs font-medium text-yellow-400/80">Idle</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                                        STAR-CROSSED
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<p class="text-xs text-red-400 font-bold">14m ago (URGENT)</p>
+</td>
+<td class="px-6 py-4">
+<div class="w-32 h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-teal-400 w-1/4 rounded-full"></div>
+</div>
+<p class="text-[10px] text-white/40 mt-1">Milestone: First Ascent</p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="btn-gradient px-4 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg">VIEW DETAIL</button>
+</td>
+</tr>
+<!-- User Row 3 -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-lg bg-primary/20 flex items-center justify-center font-bold text-primary text-xs">CQ</div>
+<div>
+<p class="font-bold text-sm tracking-tight">#LA-1029-QM</p>
+<p class="text-xs text-white/40">@cosmic_queen</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary shadow-[0_0_8px_#13ecec]"></div>
+<span class="text-xs font-medium">Active Now</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white/5 text-white/40 border border-white/10">
+                                        TRIAL PATHWAY
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<p class="text-xs text-white/40">Never</p>
+</td>
+<td class="px-6 py-4">
+<div class="w-32 h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/2 rounded-full"></div>
+</div>
+<p class="text-[10px] text-white/40 mt-1">Milestone: Nebula Bridge</p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="btn-gradient px-4 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg">VIEW DETAIL</button>
+</td>
+</tr>
+<!-- User Row 4 -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-lg bg-pink-500/20 flex items-center justify-center font-bold text-pink-500 text-xs">SL</div>
+<div>
+<p class="font-bold text-sm tracking-tight">#LA-2256-PV</p>
+<p class="text-xs text-white/40">@solar_luna</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary shadow-[0_0_8px_#13ecec]"></div>
+<span class="text-xs font-medium">Active Now</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                                        ETERNAL COSMOS
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<p class="text-xs text-white/60">5d ago</p>
+</td>
+<td class="px-6 py-4">
+<div class="w-32 h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[90%] rounded-full"></div>
+</div>
+<p class="text-[10px] text-white/40 mt-1">Milestone: Galactic Union</p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="btn-gradient px-4 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg">VIEW DETAIL</button>
+</td>
+</tr>
+<!-- User Row 5 -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-lg bg-blue-500/20 flex items-center justify-center font-bold text-blue-500 text-xs">VZ</div>
+<div>
+<p class="font-bold text-sm tracking-tight">#LA-0043-KX</p>
+<p class="text-xs text-white/40">@void_zen</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-slate-600 shadow-[0_0_8px_rgba(71,85,105,0.5)]"></div>
+<span class="text-xs font-medium text-white/30">Offline</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                                        STAR-CROSSED
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<p class="text-xs text-white/60">1h ago</p>
+</td>
+<td class="px-6 py-4">
+<div class="w-32 h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3 rounded-full"></div>
+</div>
+<p class="text-[10px] text-white/40 mt-1">Milestone: Constellation Map</p>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="btn-gradient px-4 py-1.5 rounded-lg text-xs font-bold text-white shadow-lg">VIEW DETAIL</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 flex items-center justify-between bg-white/5 border-t border-white/5">
+<div class="flex items-center gap-1">
+<button class="size-8 flex items-center justify-center rounded hover:bg-white/10 text-white/40">
+<span class="material-symbols-outlined text-lg">first_page</span>
+</button>
+<button class="size-8 flex items-center justify-center rounded hover:bg-white/10 text-white/40">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="size-8 flex items-center justify-center rounded bg-primary text-[#102222] font-bold text-xs">1</button>
+<button class="size-8 flex items-center justify-center rounded hover:bg-white/10 text-white/60 text-xs">2</button>
+<button class="size-8 flex items-center justify-center rounded hover:bg-white/10 text-white/60 text-xs">3</button>
+<span class="px-2 text-white/30">...</span>
+<button class="size-8 flex items-center justify-center rounded hover:bg-white/10 text-white/60 text-xs">246</button>
+<button class="size-8 flex items-center justify-center rounded hover:bg-white/10 text-white/60">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+<button class="size-8 flex items-center justify-center rounded hover:bg-white/10 text-white/60">
+<span class="material-symbols-outlined text-lg">last_page</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-white/40">Jump to Page</span>
+<input class="w-12 h-8 bg-white/5 border border-white/10 rounded text-center text-xs text-white focus:border-primary focus:ring-0" type="text" value="1"/>
+<button class="h-8 px-3 bg-white/10 hover:bg-white/20 rounded text-xs font-bold transition-colors">GO</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

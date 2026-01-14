@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bedroom Bingo Card - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", "surface-dark": "#22101a", "accent-purple": "#8b5cf6"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(238, 43, 157, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.15) 0%, transparent 40%);
+        }
+        .bingo-tile-active {
+            border: 2px solid #ee2b9d;
+            box-shadow: 0 0 15px rgba(238, 43, 157, 0.4);
+        }
+        .progress-gradient {
+            background: linear-gradient(90deg, #ee2b9d 0%, #8b5cf6 100%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen nebula-bg selection:bg-primary/30">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Navigation -->
+<header class="flex items-center justify-between border-b border-solid border-slate-200 dark:border-white/10 px-6 md:px-20 py-4 bg-white/5 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-extrabold leading-tight tracking-tight uppercase">Love Actually</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 md:gap-8">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity" href="#">Dashboard</a>
+<a class="text-sm font-semibold text-primary underline decoration-2 underline-offset-8" href="#">Games</a>
+<a class="text-sm font-semibold opacity-70 hover:opacity-100 transition-opacity" href="#">Our Journey</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-full size-10 bg-white/10 hover:bg-white/20 transition-colors text-white">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-full size-10 bg-white/10 hover:bg-white/20 transition-colors text-white">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 flex justify-center py-8">
+<div class="max-w-[1000px] w-full px-4 md:px-10 flex flex-col gap-6">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 text-sm font-medium">
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">Games</a>
+<span class="text-slate-400">/</span>
+<span class="text-primary font-bold">Bedroom Bingo</span>
+</div>
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+<div class="flex flex-col gap-2">
+<h1 class="text-4xl md:text-5xl font-black tracking-tighter">Bedroom Bingo</h1>
+<p class="text-slate-500 dark:text-slate-400 text-lg">Ignite your connection through 25 shared cosmic experiences.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-full h-12 px-6 bg-white/5 dark:bg-surface-dark border border-white/10 font-bold hover:bg-white/10 transition-all">
+                                Rules
+                            </button>
+<button class="flex items-center justify-center rounded-full h-12 px-6 bg-primary text-white font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+<span class="material-symbols-outlined mr-2">ios_share</span> Share Board
+                            </button>
+</div>
+</div>
+<!-- Bingo Grid (5x5) -->
+<div class="grid grid-cols-5 gap-3 md:gap-4 p-6 bg-white/5 dark:bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 shadow-2xl">
+<!-- Tiles (Selection of 25) -->
+<!-- Row 1 -->
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">spa</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Massage</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">forum</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Deep Talk</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">co2</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">New Scents</span>
+</div>
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">music_note</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Music Sync</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">auto_awesome</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Stargaze</span>
+</div>
+<!-- Row 2 -->
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">flare</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Candlelight</span>
+</div>
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">nightlight</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Slow Dance</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">record_voice_over</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Whisper</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">flight</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Feather</span>
+</div>
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">bathtub</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Bath Time</span>
+</div>
+<!-- Row 3 -->
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">menu_book</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Read Aloud</span>
+</div>
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">bed</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Cuddle</span>
+</div>
+<!-- FREE SPACE CENTER -->
+<div class="aspect-square bg-gradient-to-br from-primary to-accent-purple rounded-lg flex flex-col items-center justify-center p-2 text-center shadow-lg shadow-primary/40 ring-4 ring-white/20">
+<span class="material-symbols-outlined text-white text-4xl mb-1">favorite</span>
+<span class="text-[10px] md:text-xs font-black uppercase tracking-widest text-white">Free Love</span>
+</div>
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">visibility</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Eye Contact</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">pan_tool</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Holding</span>
+</div>
+<!-- Row 4 -->
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">edit_note</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Love Letter</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">restaurant</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Dinner Date</span>
+</div>
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">help_center</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Truth/Dare</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">directions_walk</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Night Walk</span>
+</div>
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">cloud</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Dreams</span>
+</div>
+<!-- Row 5 -->
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">queue_music</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Playlist</span>
+</div>
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">lightbulb</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Soft Light</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">oil_barrel</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Oils</span>
+</div>
+<div class="aspect-square bingo-tile-active bg-primary/20 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-primary/30 transition-all border-2 border-primary group">
+<span class="material-symbols-outlined text-primary text-3xl mb-1 group-hover:scale-110 transition-transform">air</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider text-white">Breathing</span>
+</div>
+<div class="aspect-square bg-white/5 rounded-lg flex flex-col items-center justify-center p-2 text-center cursor-pointer hover:bg-white/10 transition-all border-2 border-transparent">
+<span class="material-symbols-outlined text-slate-400 text-3xl mb-1">family_restroom</span>
+<span class="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60">Warm Hug</span>
+</div>
+</div>
+<!-- Progress Bar Section -->
+<div class="p-6 md:p-8 bg-white/5 dark:bg-surface-dark/40 backdrop-blur-xl border border-white/10 rounded-xl mt-4">
+<div class="flex items-center justify-between mb-4">
+<div class="flex flex-col">
+<h3 class="text-xl font-bold">Current Progress</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm">You're making beautiful memories together</p>
+</div>
+<div class="text-right">
+<span class="text-3xl font-black text-primary">12 / 25</span>
+<p class="text-[10px] uppercase font-bold tracking-widest opacity-60">Completed</p>
+</div>
+</div>
+<div class="w-full bg-slate-200 dark:bg-white/10 h-4 rounded-full overflow-hidden">
+<div class="h-full progress-gradient rounded-full shadow-[0_0_15px_rgba(238,43,157,0.5)]" style="width: 48%;"></div>
+</div>
+<div class="flex justify-between mt-3">
+<p class="text-sm font-semibold opacity-80">48% Exploration</p>
+<p class="text-sm font-semibold text-primary">13 more to hit Bingo!</p>
+</div>
+</div>
+<!-- Additional Details / CTA -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
+<div class="p-6 rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent">
+<div class="flex items-center gap-4 mb-3">
+<div class="p-2 bg-primary/20 rounded-lg text-primary">
+<span class="material-symbols-outlined">auto_graph</span>
+</div>
+<h4 class="font-bold">Weekly Insight</h4>
+</div>
+<p class="text-sm opacity-70">"You’ve completed 4 sensory-based activities this week. Physical touch is currently your strongest connecting point."</p>
+</div>
+<div class="p-6 rounded-xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent">
+<div class="flex items-center gap-4 mb-3">
+<div class="p-2 bg-accent-purple/20 rounded-lg text-accent-purple">
+<span class="material-symbols-outlined">emoji_events</span>
+</div>
+<h4 class="font-bold">Next Unlock</h4>
+</div>
+<p class="text-sm opacity-70">Complete 3 more in a row to unlock the "Cosmic Intimacy" guided meditation pack.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Floating Action for Quick Access (Variant Element) -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="size-14 rounded-full bg-primary text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all group">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform">chat_bubble</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

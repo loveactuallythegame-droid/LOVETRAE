@@ -1,0 +1,14 @@
+Starting project at C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app
+ÔÇ║ [@sentry/react-native/expo] Missing config for organization, project. Environment variables will be used as a fallback during the build. https://docs.sentry.io/platforms/react-native/manual-setup/
+TypeError: Cannot read properties of undefined (reading 'merchantIdentifier')
+TypeError: Cannot read properties of undefined (reading 'merchantIdentifier')
+    at withStripeIos (C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app\node_modules\@stripe\stripe-react-native\lib\commonjs\plugin\withStripe.js:1:911)
+    at withStripe (C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app\node_modules\@stripe\stripe-react-native\lib\commonjs\plugin\withStripe.js:1:709)
+    at plugin (C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app\node_modules\@expo\config-plugins\build\plugins\withRunOnce.js:49:25)
+    at withRunOnce (C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app\node_modules\@expo\config-plugins\build\plugins\withRunOnce.js:37:10)
+    at C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app\node_modules\@expo\config-plugins\build\plugins\withRunOnce.js:48:12
+    at withStaticPlugin (C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app\node_modules\@expo\config-plugins\build\plugins\withStaticPlugin.js:146:12)
+    at C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app\node_modules\@expo\config-plugins\build\plugins\withPlugins.js:30:84
+    at Array.reduce (<anonymous>)
+    at withPlugins (C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app\node_modules\@expo\config-plugins\build\plugins\withPlugins.js:30:18)
+    at withConfigPlugins (C:\Users\tabva\Desktop\Astroglyde\LOVETRAE\app\node_modules\@expo\config\build\plugins\withConfigPlugins.js:35:47)

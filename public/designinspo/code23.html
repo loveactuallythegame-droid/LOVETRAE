@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Date Night Roulette Wheel - Love Actually</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", "charcoal-panel": "#221019"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .cosmic-gradient {
+            background: radial-gradient(circle at center, #392830 0%, #181114 100%);
+        }
+        .nebula-glow {
+            box-shadow: 0 0 40px rgba(238, 43, 140, 0.2);
+        }
+        .wheel-segment-text {
+            text-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden cosmic-gradient">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Love Actually...</h2>
+</div>
+<nav class="flex flex-1 justify-center gap-8">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Home</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Game Rules</a>
+<a class="text-white text-sm font-medium border-b-2 border-primary pb-1" href="#">Date Roulette</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Shop</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-full h-10 px-5 bg-primary text-white text-sm font-bold hover:opacity-90 transition-all">
+<span>Profile</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/30" data-alt="User profile avatar showing a smiling person" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAGfsTSIAxhIfXnMsVNIdLEK7Xv10UEIHcMWv--F5vixWSy-Srr-A2-dBDVY7X7I10O9PnbEhEjqv4Om8VNnZ3Hn-1VsdtJSx4nA32bZr1hG8rohlR8s66Dh2632aDT_q87vTV7Rtf8XFfyF1XXs9Q_t0J5HOeL-UjBL2Ho2wAVeWe-XdKzuzapfjm_qcV5kjTajBWG5kquTfg4Mj_tIfu4oszOaW2ESkhzVFPrANRU6wVtRQoKdvFaMYAYd-2tuOG29Zsb1u7_5fu6");'></div>
+</div>
+</header>
+<main class="flex flex-1 px-10 py-8 gap-8 max-w-[1400px] mx-auto w-full">
+<!-- Left Sidebar -->
+<aside class="hidden xl:flex w-72 flex-col gap-6">
+<div class="bg-charcoal-panel/50 backdrop-blur-lg rounded-xl p-6 border border-white/5 flex flex-col gap-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">auto_awesome</span>
+<div>
+<h3 class="font-bold text-lg">Cosmic Edition</h3>
+<p class="text-xs text-white/50 uppercase tracking-widest">Premium Access</p>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-4 py-3 rounded-full bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white/70">dashboard</span>
+<p class="text-sm font-medium">Dashboard</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full bg-primary/20 text-primary border border-primary/30 cursor-pointer">
+<span class="material-symbols-outlined">motion_photos_on</span>
+<p class="text-sm font-bold">Roulette</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white/70">favorite</span>
+<p class="text-sm font-medium">Couples Quiz</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white/70">insights</span>
+<p class="text-sm font-medium">Our Progress</p>
+</div>
+</div>
+<div class="mt-4 p-4 rounded-xl bg-gradient-to-br from-primary/10 to-transparent border border-white/5">
+<p class="text-xs text-white/60 mb-2">LAST SPIN RESULT</p>
+<p class="font-bold text-primary italic">"Stargazing at the park"</p>
+<p class="text-[10px] text-white/40 mt-1">2 days ago</p>
+</div>
+</div>
+<button class="mt-auto flex items-center justify-center gap-2 w-full h-12 rounded-full border border-white/10 text-white/60 hover:text-white hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="text-sm font-bold">Sign Out</span>
+</button>
+</aside>
+<!-- Main Roulette Content -->
+<div class="flex flex-1 flex-col items-center">
+<div class="text-center mb-8">
+<h1 class="text-4xl lg:text-5xl font-bold tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-primary/50">Date Night Roulette</h1>
+<p class="text-white/60 text-lg max-w-xl mx-auto">Leave your evening to destiny. Spin to discover your next adventure in the stars.</p>
+</div>
+<!-- Roulette Wheel Component -->
+<div class="relative flex flex-col items-center justify-center py-10 w-full max-w-[600px]">
+<!-- Top Pointer -->
+<div class="absolute top-0 z-20 flex flex-col items-center">
+<div class="w-8 h-10 bg-white rounded-b-full shadow-[0_0_20px_rgba(255,255,255,0.8)] relative -mb-2"></div>
+<div class="w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[20px] border-t-white drop-shadow-xl"></div>
+</div>
+<!-- The Wheel -->
+<div class="relative w-[450px] h-[450px] md:w-[500px] md:h-[500px] rounded-full border-[12px] border-charcoal-panel shadow-[0_0_60px_rgba(0,0,0,0.5)] overflow-hidden flex items-center justify-center nebula-glow">
+<!-- SVG Wheel segments -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Orange: Cooking Class -->
+<path d="M 50 50 L 100 50 A 50 50 0 0 1 75 93.3 Z" fill="#f97316"></path>
+<!-- Turquoise: Stargazing -->
+<path d="M 50 50 L 75 93.3 A 50 50 0 0 1 25 93.3 Z" fill="#06b6d4"></path>
+<!-- Teal: Wine Tasting -->
+<path d="M 50 50 L 25 93.3 A 50 50 0 0 1 0 50 Z" fill="#14b8a6"></path>
+<!-- Purple: Retro Arcade -->
+<path d="M 50 50 L 0 50 A 50 50 0 0 1 25 6.7 Z" fill="#8b5cf6"></path>
+<!-- Yellow: Sunset Hike -->
+<path d="M 50 50 L 25 6.7 A 50 50 0 0 1 75 6.7 Z" fill="#eab308"></path>
+<!-- Pink: Spa Night -->
+<path d="M 50 50 L 75 6.7 A 50 50 0 0 1 100 50 Z" fill="#ee2b8c"></path>
+</svg>
+<!-- Labels Overlay (Static positions for visual representation) -->
+<div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+<!-- Segment labels rotated to fit segments -->
+<!-- Labels would typically be calculated or part of SVG text, simplified here for layout -->
+<div class="absolute text-background-dark font-bold text-sm text-center transform translate-x-[110px] translate-y-[60px] rotate-[150deg]">Cooking<br/>Class</div>
+<div class="absolute text-background-dark font-bold text-sm text-center transform translate-y-[130px] rotate-[180deg]">Stargazing</div>
+<div class="absolute text-background-dark font-bold text-sm text-center transform -translate-x-[110px] translate-y-[60px] rotate-[210deg]">Wine<br/>Tasting</div>
+<div class="absolute text-background-dark font-bold text-sm text-center transform -translate-x-[110px] -translate-y-[60px] rotate-[330deg]">Retro<br/>Arcade</div>
+<div class="absolute text-background-dark font-bold text-sm text-center transform -translate-y-[130px]">Sunset<br/>Hike</div>
+<div class="absolute text-background-dark font-bold text-sm text-center transform translate-x-[110px] -translate-y-[60px] rotate-[30deg]">Spa<br/>Night</div>
+</div>
+<!-- Center Hub -->
+<div class="absolute w-20 h-20 rounded-full bg-background-dark border-4 border-white/20 shadow-2xl z-10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">favorite</span>
+</div>
+</div>
+<!-- Spin Button -->
+<div class="mt-12 relative">
+<div class="absolute inset-0 bg-primary blur-2xl opacity-40"></div>
+<button class="relative flex min-w-[180px] h-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-[#a855f7] text-white text-xl font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_10px_30px_rgba(238,43,140,0.4)]">
+                            SPIN
+                        </button>
+</div>
+</div>
+<!-- Suggestions Grid -->
+<div class="mt-16 w-full">
+<div class="flex items-center justify-between px-4 mb-6">
+<h3 class="text-xl font-bold">In the rotation</h3>
+<button class="text-sm text-primary font-bold flex items-center gap-1">
+                            Customize List <span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4">
+<div class="bg-cover bg-center flex flex-col gap-3 items-center rounded-2xl justify-center aspect-square border border-white/5 hover:border-primary/50 transition-all cursor-pointer group" data-alt="Night sky filled with stars and a telescope" style='background-image: linear-gradient(0deg, rgba(20, 20, 20, 0.7) 0%, rgba(20, 20, 20, 0.2) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuA6Wdtkee3vSldtZVao0GPy7aVfEOOFfJNgmTMOzFHZ4prSClassfCvHldiiUPQG_aPVwYu1dxAChp_MrkLyIvAbBpyb1SvSUCshjFhAR1gvVSta5a8qTNWcEawvjVnk31ACsI92Yzf8qicDmYqu9bGyCmb-pdMB15nshEPnJFLHeTuqUwHvq0nI0zAvZcx70XmTrR44hXC8DUN5Jj16QD3XnmhyvIWyfmSiMl-n7PYLwYeTobd1nmlW7X1poCDmEdDRX0vOM9JsPZm");'>
+<p class="text-white text-sm font-bold leading-tight w-[80%] text-center line-clamp-2 group-hover:text-primary">Stargazing</p>
+<span class="material-symbols-outlined text-xs text-white/40">visibility</span>
+</div>
+<div class="bg-cover bg-center flex flex-col gap-3 items-center rounded-2xl justify-center aspect-square border border-white/5 hover:border-primary/50 transition-all cursor-pointer group" data-alt="Couple cooking together in a modern kitchen" style='background-image: linear-gradient(0deg, rgba(20, 20, 20, 0.7) 0%, rgba(20, 20, 20, 0.2) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBXXuzocF9KmEV1O8mwMMDzOxLNueBnTqv62VccX30AYfEgkaZ1D7yA0Ql9s_fyWkNm-aBI7lxDdMsiv4k13o-4eovs56vcOURkKzVb7ULDwAW_nHQo92mgC1hEwlSTrw3Qpx8HghjoLO0KpGJdkU0qE2P2MohyBijmLGVS9whzsmahOc1zZsdHdZn2imwQV0im5EZzgWcUlMQF5cuwsU68j1cJ1rxprtKGHL9JBSjNBA0gPEmx4qcdz4AMbdvKIbjC_HhMOeXHafAN");'>
+<p class="text-white text-sm font-bold leading-tight w-[80%] text-center line-clamp-2 group-hover:text-primary">Cooking Class</p>
+<span class="material-symbols-outlined text-xs text-white/40">restaurant</span>
+</div>
+<div class="bg-cover bg-center flex flex-col gap-3 items-center rounded-2xl justify-center aspect-square border border-white/5 hover:border-primary/50 transition-all cursor-pointer group" data-alt="Wine glasses and a bottle of wine on a table" style='background-image: linear-gradient(0deg, rgba(20, 20, 20, 0.7) 0%, rgba(20, 20, 20, 0.2) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBvv3hZ0aWR4Ari2_qv5TN0ULadpzygp3p1ejUkdchTbDiGAJ2lxwr-EqP6517-4UIc5I5gTbS3L2T4U1B3jbWurjDbT2sf7iiRvOsH4iqUHwkHD24y8fqbGWIglXYWhTAROR8YOAWwXrAHFrUjqx10wBYJgfTRK1oU4lLTD2MLFuSKqTWfJcp63K516X8PAF-DtxO6IqrhsaoyWThWc0ONapJBopN0cx2bnMuBUdNiOKmegk7bX8SXAMaXU7cBgqee_TiGzC0I-GDI");'>
+<p class="text-white text-sm font-bold leading-tight w-[80%] text-center line-clamp-2 group-hover:text-primary">Wine Tasting</p>
+<span class="material-symbols-outlined text-xs text-white/40">wine_bar</span>
+</div>
+<div class="bg-cover bg-center flex flex-col gap-3 items-center rounded-2xl justify-center aspect-square border border-white/5 hover:border-primary/50 transition-all cursor-pointer group" data-alt="Neon lit retro arcade with game machines" style='background-image: linear-gradient(0deg, rgba(20, 20, 20, 0.7) 0%, rgba(20, 20, 20, 0.2) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAJUdtbofTqxCJJfFKBWOWAYAmGkNdO9Tt65R269zMw0QvUOOazmsrBOyt6KuEVha1tHwNCgXmBPpubsLPbvYleHPzc2_usdTFmC2WumHK7pMPfAC2FqpCa-BcdOescPuxxkPTLYBYJ7WgsZx_gpJjk5p3iurq0oV3pCBJQYNR8i-iT1FKhk7h4vemMBEdBFMokLKXRDhtcNi5iGuKEjHuBOBarnDbDwiCnF9WzpAj-Fm2My_-XsQhv8sGCpEXZOHpXik7v1wtXPBLX");'>
+<p class="text-white text-sm font-bold leading-tight w-[80%] text-center line-clamp-2 group-hover:text-primary">Retro Arcade</p>
+<span class="material-symbols-outlined text-xs text-white/40">sports_esports</span>
+</div>
+<div class="bg-cover bg-center flex flex-col gap-3 items-center rounded-2xl justify-center aspect-square border border-white/5 hover:border-primary/50 transition-all cursor-pointer group" data-alt="Silhouettes of a couple hiking at sunset" style='background-image: linear-gradient(0deg, rgba(20, 20, 20, 0.7) 0%, rgba(20, 20, 20, 0.2) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAAjwQX0xAmBqCFfh_2DujBIMyGSwpQQfgGYd2uizsR94gSXexpqDOE5VUnZqMHN_T2THDFD510t-Vmkttp5YHwo5BO8F2UEKc1XYNUZ5xaAwH5zA381J2ly0i0OeEFzfaWw9hQT8yYKCLKz_X2Bj0gYCBqC80gq9jmF01-kWhjON9Vj00HDBrbU-SNCyby2wE0YMVtQGUMjOTGMTWbFrhg2be6wyXilDp8yrMz6UYMT8neJUMgtaSnpEHj4rvOkJBiiIdTpRfsJoUp");'>
+<p class="text-white text-sm font-bold leading-tight w-[80%] text-center line-clamp-2 group-hover:text-primary">Sunset Hike</p>
+<span class="material-symbols-outlined text-xs text-white/40">hiking</span>
+</div>
+<div class="bg-cover bg-center flex flex-col gap-3 items-center rounded-2xl justify-center aspect-square border border-white/5 hover:border-primary/50 transition-all cursor-pointer group" data-alt="Relaxing spa setting with candles and stones" style='background-image: linear-gradient(0deg, rgba(20, 20, 20, 0.7) 0%, rgba(20, 20, 20, 0.2) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBPqLr4R-fiG3xFypLK1-fBHr6u9QYH_das_Pk5ircjje-Gkq_L4BY8VegH__PM5NeJ-ifossPTEWANccVRAjHc6sQTyR0tsseGOgTABIszSI6ImwGJDWgHYeXeKi_7pUycEA1_QzFBVI3h98ubWNZ-QCuFHWwdcJGJuVk5Vyo0ZnYD6AfAAQIzi717ZXZt6bVnhVkOLk4F41Melks6LeER7TE6ioaIMi97lYC-T0a7b_D8x62DwXj7d7Y-_Tt3e1rCOx8nIB8kurIX");'>
+<p class="text-white text-sm font-bold leading-tight w-[80%] text-center line-clamp-2 group-hover:text-primary">Spa Night</p>
+<span class="material-symbols-outlined text-xs text-white/40">spa</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right History Panel -->
+<aside class="hidden lg:flex w-72 flex-col gap-6">
+<div class="bg-charcoal-panel/50 backdrop-blur-lg rounded-xl p-6 border border-white/5 h-full">
+<h3 class="font-bold text-lg mb-4">Date History</h3>
+<div class="flex flex-col gap-4">
+<div class="flex gap-3 border-b border-white/5 pb-4">
+<div class="size-10 rounded-lg bg-orange-500/20 flex items-center justify-center text-orange-500 shrink-0">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<div class="flex flex-col">
+<p class="text-sm font-bold">Italian Dinner</p>
+<p class="text-[10px] text-white/40 uppercase">Feb 14, 2024</p>
+</div>
+</div>
+<div class="flex gap-3 border-b border-white/5 pb-4">
+<div class="size-10 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-500 shrink-0">
+<span class="material-symbols-outlined">movie</span>
+</div>
+<div class="flex flex-col">
+<p class="text-sm font-bold">Drive-in Cinema</p>
+<p class="text-[10px] text-white/40 uppercase">Jan 28, 2024</p>
+</div>
+</div>
+<div class="flex gap-3 border-b border-white/5 pb-4 opacity-50">
+<div class="size-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-500 shrink-0">
+<span class="material-symbols-outlined">palette</span>
+</div>
+<div class="flex flex-col">
+<p class="text-sm font-bold">Paint &amp; Sip</p>
+<p class="text-[10px] text-white/40 uppercase">Jan 12, 2024</p>
+</div>
+</div>
+</div>
+<div class="mt-10 p-4 rounded-xl bg-white/5 border border-white/10">
+<p class="text-xs text-center text-white/60 mb-3">Next Milestone</p>
+<div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[70%]"></div>
+</div>
+<p class="text-[10px] text-center mt-2 text-white/40">3 more dates for "Stellar Couple" badge</p>
+</div>
+</div>
+</aside>
+</main>
+<!-- Floating Action Notification (Simulated Result) -->
+<div class="fixed bottom-10 right-10 z-50 animate-bounce cursor-pointer group">
+<div class="bg-primary/90 text-white p-4 rounded-xl shadow-2xl backdrop-blur-md border border-white/20 flex items-center gap-4">
+<span class="material-symbols-outlined text-3xl">celebration</span>
+<div>
+<p class="text-xs font-bold uppercase tracking-wider opacity-80">Need help planning?</p>
+<p class="text-sm font-medium">Get exclusive discounts for local venues</p>
+</div>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</div>
+</div>
+</div>
+</body></html>

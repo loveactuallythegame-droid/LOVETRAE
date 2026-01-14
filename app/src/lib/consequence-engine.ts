@@ -45,3 +45,50 @@ export async function enforceSkipPenalty(hours = 1) {
   await Notifications.requestPermissionsAsync();
   await Notifications.scheduleNotificationAsync({ content: { title: 'Dr. Marcie', body: 'Skipping sets a short cooldown.' }, trigger: { seconds: 5 } as any });
 }
+
+// --- EXTENDED LOGIC ---
+
+export type PenaltyType = 'wallpaper_swap' | 'notification_spam' | 'hub_lockout' | 'public_shame';
+
+interface Penalty {
+  type: PenaltyType;
+  active: boolean;
+  expiresAt: number;
+  description: string;
+}
+
+const PENALTY_DEFS: Record<PenaltyType, Omit<Penalty, 'active' | 'expiresAt'>> = {
+  wallpaper_swap: { type: 'wallpaper_swap', description: 'Your wallpaper is now a photo of your partner looking disappointed.' },
+  notification_spam: { type: 'notification_spam', description: 'Receiving hourly reminders to "Do Better".' },
+  hub_lockout: { type: 'hub_lockout', description: 'Access to Romance Hub denied until tasks completed.' },
+  public_shame: { type: 'public_shame', description: 'Your avatar wears a "Timeout" hat on the leaderboard.' }
+};
+
+export async function getActivePenalties(): Promise<Penalty[]> {
+  const raw = await AsyncStorage.getItem('active_penalties');
+  const current: Penalty[] = raw ? JSON.parse(raw) : [];
+  const now = Date.now();
+  // Filter expired
+  const active = current.filter(p => p.expiresAt > now);
+  if (active.length !== current.length) {
+    await AsyncStorage.setItem('active_penalties', JSON.stringify(active));
+  }
+  return active;
+}
+
+export async function triggerPenalty(type: PenaltyType, durationHours: number) {
+  const active = await getActivePenalties();
+  const existing = active.find(p => p.type === type);
+  if (existing) {
+    existing.expiresAt = Date.now() + durationHours * 3600000; // Extend
+  } else {
+    active.push({ ...PENALTY_DEFS[type], active: true, expiresAt: Date.now() + durationHours * 3600000 } as Penalty);
+  }
+  await AsyncStorage.setItem('active_penalties', JSON.stringify(active));
+}
+
+export async function clearPenalty(type: PenaltyType) {
+  const active = await getActivePenalties();
+  const filtered = active.filter(p => p.type !== type);
+  await AsyncStorage.setItem('active_penalties', JSON.stringify(filtered));
+}
