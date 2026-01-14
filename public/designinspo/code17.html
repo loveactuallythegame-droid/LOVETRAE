@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Love Actually... The Game - Love Languages</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", charcoal: "#1c0d15", "teal-accent": "#00f2fe", "turquoise-accent": "#4facfe", "gift-yellow": "#fbbf24", "quality-purple": "#a855f7", "touch-orange": "#f97316"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style type="text/tailwindcss">
+        :root {
+            --primary-glow: rgba(238, 43, 140, 0.4);
+            --teal-glow: rgba(0, 242, 254, 0.4);
+            --yellow-glow: rgba(251, 191, 36, 0.4);
+            --purple-glow: rgba(168, 85, 247, 0.4);
+            --orange-glow: rgba(249, 115, 22, 0.4);
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #2a1120 0%, #120810 100%);
+        }
+        .nebula-glow {
+            box-shadow: 0 0 40px rgba(238, 43, 140, 0.1);
+        }
+        .teal-gradient-bar {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .glass-panel {
+            background: rgba(28, 13, 21, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .language-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .language-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .language-card.selected {
+            border-color: rgba(238, 43, 140, 0.5);
+            background: rgba(238, 43, 140, 0.05);
+        }
+        .glow-pink { text-shadow: 0 0 15px var(--primary-glow); }
+        .glow-teal { text-shadow: 0 0 15px var(--teal-glow); }
+        .glow-yellow { text-shadow: 0 0 15px var(--yellow-glow); }
+        .glow-purple { text-shadow: 0 0 15px var(--purple-glow); }
+        .glow-orange { text-shadow: 0 0 15px var(--orange-glow); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-white overflow-x-hidden">
+<div class="fixed inset-0 pointer-events-none overflow-hidden">
+<div class="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-turquoise-accent/10 rounded-full blur-[120px]"></div>
+</div>
+<div class="relative flex flex-col min-h-screen">
+<header class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Love Actually...</h2>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex gap-8 text-sm font-medium opacity-80">
+<a class="hover:text-primary transition-colors" href="#">How to Play</a>
+<a class="hover:text-primary transition-colors" href="#">Our Story</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+</nav>
+<div class="h-10 w-10 rounded-full border-2 border-primary/30 p-0.5 overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxutitInuaMCgQx7yh-hb04NJhu_2f3J1p6Sb0yOFuWBDPG99MHkHk-gb1MchIW3x5_DCBVndJvTD8zM-PjUt_J_pFEah-eKu28Lte15xv8W2JefRv4DpC26lYSIb_OLiV70A9UjcCpYx2LIk6ac3wjaQ34qMuqS8vObVTgHUIl0hrnfy45oSuzfx1hJNE2ev-9QkJGsOc34MYvx0Q0lUBf6tL0Cv5xsVtNXpe8AKhj6EPpiyJf8kKQI5TgGPgTxgBHTudEfu2RVIy"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-8">
+<div class="max-w-6xl w-full">
+<div class="text-center mb-10">
+<h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-3">Speak Your Heart</h1>
+<p class="text-[#c992ad] text-lg">Select your <span class="text-white font-semibold">top two</span> love languages to help your partner understand you better.</p>
+</div>
+<div class="mb-12 w-full max-w-2xl mx-auto">
+<div class="flex justify-between items-end mb-3">
+<span class="text-sm font-medium text-teal-accent">Step 4: Your Love Language</span>
+<span class="text-xs font-bold opacity-60">4/5</span>
+</div>
+<div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full teal-gradient-bar rounded-full" style="width: 80%"></div>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
+<button class="language-card group p-8 rounded-2xl flex flex-col items-center text-center gap-6 relative overflow-hidden">
+<div class="p-4 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-primary text-4xl glow-pink">forum</span>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-2">Words</h3>
+<p class="text-xs text-white/50 leading-relaxed">Verbal expressions of love, appreciation, and encouragement.</p>
+</div>
+<div class="absolute top-2 right-2 opacity-0 group-[.selected]:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+</div>
+</button>
+<button class="language-card group p-8 rounded-2xl flex flex-col items-center text-center gap-6 relative overflow-hidden">
+<div class="p-4 rounded-full bg-teal-accent/10 group-hover:bg-teal-accent/20 transition-colors">
+<span class="material-symbols-outlined text-teal-accent text-4xl glow-teal">volunteer_activism</span>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-2">Service</h3>
+<p class="text-xs text-white/50 leading-relaxed">Doing helpful things that ease the burden of your partner's responsibilities.</p>
+</div>
+</button>
+<button class="language-card group p-8 rounded-2xl flex flex-col items-center text-center gap-6 relative overflow-hidden">
+<div class="p-4 rounded-full bg-gift-yellow/10 group-hover:bg-gift-yellow/20 transition-colors">
+<span class="material-symbols-outlined text-gift-yellow text-4xl glow-yellow">featured_seasonal_and_gifts</span>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-2">Gifts</h3>
+<p class="text-xs text-white/50 leading-relaxed">Thoughtful tokens of affection that show you were being thought of.</p>
+</div>
+</button>
+<button class="language-card group p-8 rounded-2xl flex flex-col items-center text-center gap-6 relative overflow-hidden">
+<div class="p-4 rounded-full bg-quality-purple/10 group-hover:bg-quality-purple/20 transition-colors">
+<span class="material-symbols-outlined text-quality-purple text-4xl glow-purple">schedule</span>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-2">Quality Time</h3>
+<p class="text-xs text-white/50 leading-relaxed">Giving someone your undivided attention and focused presence.</p>
+</div>
+</button>
+<button class="language-card group p-8 rounded-2xl flex flex-col items-center text-center gap-6 relative overflow-hidden">
+<div class="p-4 rounded-full bg-touch-orange/10 group-hover:bg-touch-orange/20 transition-colors">
+<span class="material-symbols-outlined text-touch-orange text-4xl glow-orange">back_hand</span>
+</div>
+<div>
+<h3 class="text-lg font-bold mb-2">Touch</h3>
+<p class="text-xs text-white/50 leading-relaxed">Physical closeness and contact that provides emotional security.</p>
+</div>
+</button>
+</div>
+<div class="flex flex-col items-center gap-6">
+<button class="bg-primary text-white font-bold px-12 py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue to Final Step
+                </button>
+<button class="text-sm font-medium opacity-60 hover:opacity-100 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">help</span>
+                    Not sure? Take the quiz
+                </button>
+</div>
+</div>
+</main>
+<footer class="py-8 mt-auto">
+<div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-center gap-6 opacity-60">
+<div class="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/5">
+<span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+<p class="text-xs text-[#c992ad]">Selecting two helps create a balanced profile for the game mechanics</p>
+</div>
+</div>
+</footer>
+<div class="fixed top-1/2 left-10 opacity-20 animate-pulse hidden xl:block">
+<span class="material-symbols-outlined text-primary text-4xl">star</span>
+</div>
+<div class="fixed bottom-20 right-20 opacity-20 animate-pulse hidden xl:block">
+<span class="material-symbols-outlined text-turquoise-accent text-5xl">auto_awesome</span>
+</div>
+</div>
+</body></html>

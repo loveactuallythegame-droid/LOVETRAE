@@ -1,0 +1,15 @@
+env: load .env
+env: export EXPO_PUBLIC_SUPABASE_URL EXPO_PUBLIC_SUPABASE_ANON_KEY EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY EXPO_PUBLIC_ELEVENLABS_API_KEY EXPO_PUBLIC_ELEVENLABS_VOICE_ID EXPO_PUBLIC_OPENAI_API_KEY EXPO_PUBLIC_AI_MODEL EXPO_PUBLIC_GIPHY_API_KEY EXPO_PUBLIC_MAPBOX_API_KEK EXPO_PUBLIC_BETA_ACCESS_CODES EXPO_PUBLIC_BETA_EMAILS
+Running 17 checks on your project...
+16/17 checks passed. 1 checks failed. Possible issues detected:
+Use the --verbose flag to see more details about passed checks.
+
+Ô£û Check that required peer dependencies are installed
+Missing peer dependency: react-native-gesture-handler
+Required by: @gorhom/bottom-sheet
+Missing peer dependency: react-native-worklets
+Required by: react-native-reanimated
+Advice:
+Install missing required peer dependencies with "npx expo install react-native-gesture-handler react-native-worklets"
+Your app may crash outside of Expo Go without these dependencies. Native module peer dependencies must be installed directly.
+

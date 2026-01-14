@@ -36,7 +36,7 @@ export default function MirrorMode({ route, navigation }: any) {
           <Text variant="body" style={{ color: '#888' }}>[Camera Feed Mock]</Text>
           {recording && <View style={styles.recDot} />}
         </View>
-        <SquishyButton onPress={toggleRecord} style={[styles.btn, recording && styles.recBtn]}>
+        <SquishyButton onPress={toggleRecord} style={[styles.btn, recording ? styles.recBtn : {}]}>
           <Text variant="header">{recording ? "Stop" : "Record"}</Text>
         </SquishyButton>
 

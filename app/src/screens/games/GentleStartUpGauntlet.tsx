@@ -21,7 +21,7 @@ export default function GentleStartUpGauntlet({ route, navigation }: any) {
   const sessionId = useRef<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(async ({ data }: any) => {
       const user = data.session?.user;
       if (user) {
         const couple = await supabase.from('profiles').select('couple_code').eq('user_id', user.id).single();

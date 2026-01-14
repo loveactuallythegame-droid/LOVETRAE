@@ -21,24 +21,24 @@ export default function WindowsAndWalls({ route, navigation }: any) {
   const { gameId } = route.params || { gameId: 'windows-walls' };
   const [index, setIndex] = useState(0);
   const [decisions, setDecisions] = useState<{ choice: 'window' | 'wall'; correct: boolean }[]>([]);
-  const sessionId = useRef<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const coupleId = useRef<string | null>(null);
   const partnerDecisions = useRef<any[]>([]);
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(async ({ data }: any) => {
       const user = data.session?.user;
       const couple_id = (await supabase.from('profiles').select('couple_code').eq('user_id', user?.id || '').single()).data?.couple_code;
       if (user && couple_id) {
         coupleId.current = couple_id;
         const session = await createGameSession(gameId, user.id, couple_id);
-        sessionId.current = session.id;
+        setSessionId(session.id);
         supabase
           .channel('windows_walls_sync')
           .on('postgres_changes', { event: '*', schema: 'public', table: 'game_sessions', filter: `couple_id=eq.${couple_id}` }, (payload) => {
             const row: any = payload.new;
-            if (row && row.game_id === gameId && row.id !== sessionId.current) {
-              try { const st = JSON.parse(row.state || '{}'); if (st.decisions) partnerDecisions.current = st.decisions; } catch {}
+            if (row && row.game_id === gameId && row.id !== session.id) {
+              try { const st = JSON.parse(row.state || '{}'); if (st.decisions) partnerDecisions.current = st.decisions; } catch { }
             }
           })
           .subscribe();
@@ -61,20 +61,20 @@ export default function WindowsAndWalls({ route, navigation }: any) {
           // Or we can say "correct" if it matches partner? Let's use the predefined category for "healthy boundary" vs "unhealthy secrecy" logic
           // Actually, "Window" (Transparency) vs "Wall" (Privacy).
           // Let's assume the user is sorting them.
-          const correct = (choice === item.category); 
-          
+          const correct = (choice === item.category);
+
           setDecisions((d) => [...d, { choice, correct }]);
           HapticFeedbackSystem.selection();
-          
+
           if (item.text.includes('phone') && choice === 'window') {
-             // Marcie's specific line for phone/transparency
-             speakMarcie("You think checking your partner's phone is a 'window'? Honey, that's a wrecking ball.");
+            // Marcie's specific line for phone/transparency
+            speakMarcie("You think checking your partner's phone is a 'window'? Honey, that's a wrecking ball.");
           }
 
           x.value = withTiming(0); rotate.value = withTiming(0);
           const next = Math.min(BEHAVIORS.length - 1, index + 1);
           setIndex(next);
-          if (sessionId.current) updateGameSession(sessionId.current, { state: JSON.stringify({ decisions: [...decisions, { choice, correct }] }) });
+          if (sessionId) updateGameSession(sessionId, { state: JSON.stringify({ decisions: [...decisions, { choice, correct }] }) });
         } else {
           x.value = withTiming(0); rotate.value = withTiming(0);
         }
@@ -83,7 +83,7 @@ export default function WindowsAndWalls({ route, navigation }: any) {
   }, [index, decisions]);
 
   const alignment = Math.min(100, Math.round((decisions.length && partnerDecisions.current.length) ? (decisions.filter((d, i) => partnerDecisions.current[i]?.choice === d.choice).length / Math.min(decisions.length, partnerDecisions.current.length)) * 100 : 0));
-  
+
   const baseState = useMemo(() => ({
     id: gameId,
     title: 'Windows & Walls',
@@ -99,7 +99,7 @@ export default function WindowsAndWalls({ route, navigation }: any) {
   function onComplete(res: { score: number; xpEarned: number }) {
     const boundaryBonus = Math.min(30, decisions.filter(d => d.correct).length * 5);
     const xp = Math.min(100, 70 + boundaryBonus);
-    if (sessionId.current) updateGameSession(sessionId.current, { finished_at: new Date().toISOString(), score: res.score, state: JSON.stringify({ decisions, alignment, xp }) });
+    if (sessionId) updateGameSession(sessionId, { finished_at: new Date().toISOString(), score: res.score, state: JSON.stringify({ decisions, alignment, xp }) });
     navigation.goBack();
   }
 
@@ -111,14 +111,14 @@ export default function WindowsAndWalls({ route, navigation }: any) {
           <Text variant="header">{BEHAVIORS[index]?.text}</Text>
         </Animated.View>
         <View style={styles.legend}>
-            <Text variant="keyword" style={{color: '#33DEA5'}}>← Window</Text>
-            <Text variant="keyword" style={{color: '#E11637'}}>Wall →</Text>
+          <Text variant="keyword" style={{ color: '#33DEA5' }}>← Window</Text>
+          <Text variant="keyword" style={{ color: '#E11637' }}>Wall →</Text>
         </View>
       </GlassCard>
     </View>
   );
 
-  return <GameContainer state={baseState} inputs={["slider"]} inputArea={inputArea} onComplete={onComplete} />;
+  return <GameContainer state={baseState} inputs={["slider"]} inputArea={inputArea} onComplete={onComplete} sessionId={sessionId} />;
 }
 
 const styles = StyleSheet.create({

@@ -17,7 +17,7 @@ export default function StressTest({ route, navigation }: any) {
   const [partnerSpill, setPartnerSpill] = useState<number | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(async ({ data }: any) => {
       const user = data.session?.user;
       userId.current = user?.id || null;
       const couple_id = (await supabase.from('profiles').select('couple_code').eq('user_id', user?.id || '').single()).data?.couple_code;

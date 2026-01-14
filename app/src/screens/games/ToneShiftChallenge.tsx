@@ -41,7 +41,7 @@ export default function ToneShiftChallenge({ route, navigation }: any) {
             <Text style={{ fontSize: 40 }}>🎙️</Text>
             {isRecording && <View style={styles.wave} />}
         </View>
-        <SquishyButton onPress={toggleRec} style={[styles.btn, isRecording && styles.stop]}>
+        <SquishyButton onPress={toggleRec} style={[styles.btn, isRecording ? styles.stop : {}]}>
           <Text variant="header">{isRecording ? "Stop & Analyze" : "Record"}</Text>
         </SquishyButton>
       </GlassCard>

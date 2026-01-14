@@ -77,11 +77,11 @@ async function tryAnthropic(apiKey: string, input: AnalysisInput): Promise<Verdi
       'x-api-key': apiKey,
       'anthropic-version': '2023-06-01'
     },
-    body: JSON.stringify({ 
-      model: 'claude-3-haiku-20240307', 
-      max_tokens: 1000, 
-      system: SYSTEM_PROMPT, 
-      messages: [{ role: 'user', content: JSON.stringify(input) }] 
+    body: JSON.stringify({
+      model: 'claude-3-haiku-20240307',
+      max_tokens: 1000,
+      system: SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: JSON.stringify(input) }]
     }),
   });
 
@@ -123,4 +123,36 @@ export async function analyzeFight(input: AnalysisInput): Promise<Verdict> {
     ...FALLBACK_VERDICT,
     callout: FALLBACK_VERDICT.callout.map(c => `${calloutBase} ${c}`),
   };
+}
+
+const QUESTION_PROMPT = `You are an expert relationship investigator. 
+Given a user's description of a conflict or behavior, generate 3 specific "Yes/No" clarifying questions to understand the context, intent, or hidden triggers.
+Output JSON strictly with key: questions (array of 3 strings).`;
+
+export async function generateQuestions(description: string): Promise<string[]> {
+  const openaiKey = ENV.OPENAI_API_KEY;
+  if (openaiKey) {
+    try {
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${openaiKey}` },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'system', content: QUESTION_PROMPT }, { role: 'user', content: description }],
+          response_format: { type: 'json_object' }
+        })
+      });
+      const json = await res.json();
+      const parsed = JSON.parse(json.choices?.[0]?.message?.content || '{}');
+      if (parsed.questions && Array.isArray(parsed.questions)) return parsed.questions.slice(0, 3);
+    } catch (e) { console.warn('AI Q-Gen failed', e); }
+  }
+
+  // Fallback keyword logic
+  const base = ['Is this a recurring pattern?', 'Did you explicitly state your expectation?', 'Are you feeling unappreciated?'];
+  const t = description.toLowerCase();
+  if (t.includes('money') || t.includes('cost')) base[0] = 'Was a budget agreed upon beforehand?';
+  if (t.includes('text') || t.includes('phone')) base[1] = 'Do you have different digital communication styles?';
+  if (t.includes('clean') || t.includes('chore')) base[2] = 'Is the standard of cleanliness shared?';
+  return base;
 }

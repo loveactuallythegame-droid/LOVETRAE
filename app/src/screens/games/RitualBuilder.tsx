@@ -43,7 +43,7 @@ export default function RitualBuilder({ route, navigation }: any) {
             <SquishyButton
               key={ing}
               onPress={() => toggle(ing)}
-              style={[styles.item, selected.includes(ing) && styles.active]}
+              style={[styles.item, selected.includes(ing) ? styles.active : {}]}
             >
               <Text variant="body" style={{ color: selected.includes(ing) ? '#000' : '#fff' }}>{ing}</Text>
             </SquishyButton>

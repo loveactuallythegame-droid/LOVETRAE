@@ -1,0 +1,477 @@
+﻿SCREENS AND CHECKLIST
+## **COMPLETE SCREEN LIST FOR "LOVE, ACTUALLY… THE GAME"**
+### **AUTH & ONBOARDING FLOW**
+1. Splash Screen (animated logo + tagline)
+2. Welcome Screen (disclaimer checkbox)
+3. Login/Sign Up Screen (email, Apple, Google)
+4. Couple Linking Screen (generate/enter code)
+5. Onboarding Step 1: Meet Cute
+6. Onboarding Step 2: First Red Flag
+7. Onboarding Step 3: Current Vibe Slider
+8. Onboarding Step 4: Love Languages
+9. Onboarding Step 5: Attachment Style
+10. Relationship Diagnosis Card Screen
+
+
+### **MAIN APP FLOW**
+11. Home Dashboard
+12. Trust Thermometer Detail Screen
+13. Leaderboard Detail Screen
+14. Daily Duel Card Detail
+15. Category Selection Screen
+16. Game Library Grid View
+17. Game Category Detail (7 categories)
+
+
+### **GAME SCREENS (30+ Games)**
+18. Game Lobby Screen (pre-game instructions)
+19. Game Play Screen (dynamic per game type)
+20. Game Results Screen (score + Marcie feedback)
+21. Post-Game Survey (optional)
+
+
+### **SOS FIGHT SOLVER FLOW**
+22. SOS Confirmation Screen
+23. Soundproof Booth (venting screen)
+24. Structured Reflection Screen (Mad-Libs)
+25. Holding Room (waiting/cool-down)
+26. Verdict & Roast Screen
+27. Repair Attempt Selection
+28. Repair Execution Screen (timer)
+29. Post-Repair Questionnaire
+30. SOS Results Summary
+
+
+### **PARTNER TRANSLATOR FLOW**
+31. Translator Input Screen
+32. Interrogation Screen (3 Yes/No questions)
+33. Translation Reveal Screen
+34. Action Plan Screen
+35. Follow-up Check-in Screen
+
+
+### **PROFILE & SETTINGS**
+36. User Profile Screen
+37. Partner Profile Screen (comparison view)
+38. Settings Screen
+   - Account Settings
+   - Notification Preferences
+   - Privacy Controls
+   - Accessibility Settings
+   - Subscription Management
+   - Personality Level Selection
+39. Achievement/Badges Screen
+40. Game History Screen
+41. SOS History Screen
+
+
+### **ROMANCE HUB SPECIFIC**
+42. Date Night Roulette Wheel
+43. Date Details & Planning Screen
+44. Bedroom Bingo Card
+45. Touch Map Configuration
+46. Intimacy Level Settings
+
+
+### **ADMIN PORTAL (Web)**
+47. Admin Login Screen
+48. Dashboard Overview
+49. Game CMS List View
+50. Game Editor Screen
+51. Prompt Engineering Console
+52. User Management List
+53. User Detail View
+54. Fight Moderation Queue
+55. Analytics Dashboard
+56. Push Notification Composer
+57. Subscription Management
+58. Settings & Configuration
+
+
+### **SUPPORT & LEGAL**
+59. Help & FAQ Screen
+60. Contact Support Screen
+61. Crisis Resources Screen
+62. Privacy Policy Screen
+63. Terms of Service Screen
+64. Subscription Terms Screen
+
+
+### **ERROR & SPECIAL STATES**
+65. Loading Screen (with Marcie animation)
+66. Offline Mode Screen
+67. Error Screen (with recovery options)
+68. Maintenance Mode Screen
+69. Update Required Screen
+70. Rate App Prompt Screen
+
+
+**Total: 70+ unique screens*
+## **COMPLETE DEPLOYMENT CHECKLIST**
+
+
+### **ENGINEERING CHECKLIST**
+
+
+**AUTH & DATABASE**
+- [ ] Supabase project configured
+- [ ] User authentication working (email, Apple, Google)
+- [ ] Couple linking logic implemented
+- [ ] Database schema deployed (users, couples, games, fights, leaderboard, subscriptions)
+- [ ] Indexes created for performance
+- [ ] Backup system configured
+
+
+**FRONTEND CORE**
+- [ ] React Native app builds successfully (iOS & Android)
+- [ ] Navigation stack working (React Navigation)
+- [ ] All 70+ screens implemented
+- [ ] Dark mode working across all screens
+- [ ] Responsive design tested on iPhone SE to iPad Pro
+- [ ] Orientation locked to portrait (except specific games)
+
+
+**ANIMATIONS & HAPTICS**
+- [ ] Marcie idle animations working (3-5 second loop)
+- [ ] Contextual reactions trigger correctly
+- [ ] Button press animations (squish effect)
+- [ ] Liquid fill animations for meters
+- [ ] Haptic feedback for all interactions
+- [ ] Confetti/celebration animations
+- [ ] Page transition animations
+- [ ] Reduce motion accessibility option working
+
+
+**GAME IMPLEMENTATION (All 30+ Games)**
+- [ ] **Game Show Modes:**
+  - [ ] Couple's Jeopardy
+  - [ ] Relationship Millionaire
+  - [ ] Family Feud Couples Edition
+  - [ ] Newlywed Game
+  - [ ] Wheel of Intimacy
+  - [ ] 🎯 Bid Radar
+  - [ ] 🧠 Love Map Speedrun
+
+
+- [ ] **Emotional Connection:**
+  - [ ] Truth or Trust
+  - [ ] Gratitude Cloud
+  - [ ] Eye Contact Challenge
+  - [ ] Memory Lane Map
+  - [ ] The Vibe Check
+  - [ ] 🪞 Mirror Mode
+  - [ ] 🎵 Soundtrack Sync
+  - [ ] 📸 Micro-Moment Museum
+
+
+- [ ] **Conflict Resolution:**
+  - [ ] The Slap of Truth
+  - [ ] Apology Auction
+  - [ ] Defensiveness Detox
+  - [ ] Who's Right?
+  - [ ] Stress Test
+  - [ ] 💬 Gentle Start-Up Gauntlet
+  - [ ] 🛡️ Antidote Arena
+  - [ ] 🎲 Conflict Dice
+  - [ ] 📞 Text Tone Translator
+  - [ ] 🏆 Repair Relay
+
+
+- [ ] **Creative Chaos:**
+  - [ ] Role-Swap Roast
+  - [ ] Draw Your Feelings
+  - [ ] GIF Battle
+  - [ ] Karaoke Confessional
+  - [ ] The Ransom Note
+  - [ ] 🎭 Tone Shift Challenge
+  - [ ] 🎨 Shared Meaning Mural
+  - [ ] 🧩 Ritual Builder
+
+
+- [ ] **Romance Hub:**
+  - [ ] Date Night Roulette
+  - [ ] Bedroom Bingo
+  - [ ] The 6-Second Kiss
+  - [ ] Foreplay Slider
+  - [ ] Touch Map
+  - [ ] 💌 Appreciation Auction
+  - [ ] 🎲 Ritual Roulette
+  - [ ] 🎭 Role Swap
+
+
+- [ ] **Healing Hospital:**
+  - [ ] Windows & Walls
+  - [ ] Trigger Triage
+  - [ ] Trust Bank
+  - [ ] The Iceberg
+  - [ ] Secrecy Audit
+  - [ ] 🧪 Stress Synergy Lab
+  - [ ] 🧘 Flooding Forecast
+  - [ ] 🧠 Dream Decoder
+
+
+**SOS FIGHT SOLVER**
+- [ ] Floating SOS button always accessible
+- [ ] Soundproof booth asynchronous venting
+- [ ] Structured reflection (Mad-Libs) working
+- [ ] Holding room cool-down games
+- [ ] AI verdict generation (GPT-4o/Claude integration)
+- [ ] Repair attempt selection and execution
+- [ ] Post-repair questionnaire
+- [ ] Crisis detection and resource linking
+
+
+**PARTNER TRANSLATOR**
+- [ ] Input parsing working
+- [ ] Question generation algorithm
+- [ ] Translation generation
+- [ ] Action plan suggestions
+- [ ] Follow-up system
+
+
+**SCORING & LEADERBOARD**
+- [ ] Trust Thermometer calculations
+- [ ] Romance Points tracking
+- [ ] Connection Points tracking
+- [ ] Vulnerability Points (VP) system
+- [ ] Weekly leaderboard calculations
+- [ ] Streak tracking and bonuses
+- [ ] Seasonal rewards system
+- [ ] Achievement/badge unlocking
+
+
+**CONSEQUENCE ENGINE**
+- [ ] Penalty triggers monitoring
+- [ ] Wallpaper swap functionality
+- [ ] Needy notifications system
+- [ ] Public accountability (opt-in)
+- [ ] Romance Hub lockout
+- [ ] Penalty clearing mechanisms
+
+
+**MONETIZATION**
+- [ ] Stripe integration working
+- [ ] Free tier restrictions implemented
+- [ ] Premium tier unlocking correctly
+- [ ] Subscription management screen
+- [ ] Trial period handling
+- [ ] Receipt validation
+- [ ] Ad integration (for free tier)
+- [ ] In-app purchases for cosmetics
+
+
+**ADMIN PORTAL**
+- [ ] Admin authentication
+- [ ] Game CMS (create/edit/delete)
+- [ ] Prompt engineering console
+- [ ] User management
+- [ ] Fight moderation
+- [ ] Analytics dashboard
+- [ ] Push notification system
+- [ ] Subscription management
+
+
+**INTEGRATIONS**
+- [ ] ElevenLabs API for Marcie voice
+- [ ] GPT-4o/Claude API for AI analysis
+- [ ] Giphy API for GIF Battle
+- [ ] Camera access for Eye Contact Challenge, Mirror Mode
+- [ ] Microphone access for voice games
+- [ ] Photo library access for Memory Lane, Micro-Moment Museum
+- [ ] Push notifications (Firebase Cloud Messaging)
+- [ ] Deep linking for date night suggestions
+
+
+**PERFORMANCE & SECURITY**
+- [ ] App loads in <2 seconds on 4G
+- [ ] Animations run at 60fps
+- [ ] Memory leaks tested and fixed
+- [ ] Battery usage optimized
+- [ ] Data encrypted in transit and at rest
+- [ ] API rate limiting implemented
+- [ ] Input sanitization for all user data
+- [ ] JWT token refresh working
+- [ ] Offline mode for core features
+
+
+### **DESIGN & UX CHECKLIST**
+
+
+**VISUAL DESIGN**
+- [ ] All screens use correct color palette
+- [ ] Typography consistent across app
+- [ ] Marcie overlay positioned correctly on all screens
+- [ ] Gradients don't band on any device
+- [ ] Icons consistent and clear
+- [ ] Loading states designed for all actions
+- [ ] Error states designed with recovery options
+
+
+**ANIMATION QUALITY**
+- [ ] Marcie animations smooth and non-blocking
+- [ ] All micro-interactions have feedback
+- [ ] Celebration animations feel rewarding
+- [ ] Page transitions feel natural
+- [ ] No animation jank or dropped frames
+
+
+**ACCESSIBILITY**
+- [ ] Screen reader support (VoiceOver/TalkBack)
+- [ ] High contrast mode available
+- [ ] Text size adjustable
+- [ ] Reduce motion option working
+- [ ] Color blind mode available
+- [ ] All interactive elements >44px
+- [ ] Focus states visible for keyboard navigation
+- [ ] Alt text for all images
+
+
+**COPY & CONTENT**
+- [ ] All Marcie dialogue reviewed for tone
+- [ ] Game instructions clear and concise
+- [ ] Error messages helpful
+- [ ] Legal disclaimers present and clear
+- [ ] Crisis resources copy appropriate
+- [ ] No spelling/grammar errors
+- [ ] Cultural sensitivity review completed
+
+
+**USER FLOWS**
+- [ ] Onboarding completes in <5 minutes
+- [ ] First game playable within 2 minutes of app open
+- [ ] SOS flow understandable in crisis state
+- [ ] Settings easy to find and use
+- [ ] Premium upgrade path clear and non-intrusive
+- [ ] Help accessible from every screen
+
+
+### **TESTING CHECKLIST**
+
+
+**FUNCTIONAL TESTING**
+- [ ] All 30+ games playable end-to-end
+- [ ] SOS fight solver works with real couple data
+- [ ] Partner translator produces helpful outputs
+- [ ] Scoring system calculates correctly
+- [ ] Leaderboard updates in real-time
+- [ ] Consequence engine triggers appropriately
+- [ ] Subscription upgrades/downgrades work
+- [ ] Admin portal all functions working
+
+
+**COMPATIBILITY TESTING**
+- [ ] iOS 15+ (iPhone SE, 12, 13, 14, 15, iPad)
+- [ ] Android 10+ (Samsung, Google Pixel, OnePlus)
+- [ ] Tablet layouts correct
+- [ ] Different screen sizes and aspect ratios
+- [ ] Dark/light mode switching
+- [ ] Different language settings
+- [ ] Different time zones
+
+
+**PERFORMANCE TESTING**
+- [ ] App cold start <2 seconds
+- [ ] Game load times <3 seconds
+- [ ] Memory usage stable during long sessions
+- [ ] Battery drain acceptable (<5% per 30 minutes)
+- [ ] Network recovery after offline
+- [ ] API response times <1 second
+
+
+**SECURITY TESTING**
+- [ ] No sensitive data in logs
+- [ ] Authentication tokens secure
+- [ ] Payment information never stored locally
+- [ ] User data encrypted
+- [ ] API endpoints protected
+- [ ] No SQL injection vulnerabilities
+- [ ] No XSS vulnerabilities
+
+
+**USER ACCEPTANCE TESTING**
+- [ ] 50+ beta testers completed full onboarding
+- [ ] Average rating from testers >4/5
+- [ ] Critical bugs reported and fixed
+- [ ] Feature requests documented for roadmap
+- [ ] Accessibility testing with disabled users
+- [ ] Cultural testing with diverse user groups
+
+
+### **LAUNCH PREPARATION**
+
+
+**APP STORE**
+- [ ] App Store Connect configured
+- [ ] Google Play Console configured
+- [ ] Screenshots for all device sizes
+- [ ] App preview video created
+- [ ] Description optimized with keywords
+- [ ] Privacy policy URL set
+- [ ] Support contact set
+- [ ] Age rating appropriate (17+)
+- [ ] Content ratings completed
+
+
+**BACKEND & INFRASTRUCTURE**
+- [ ] Production database deployed
+- [ ] API servers scaled for launch traffic
+- [ ] CDN configured for assets
+- [ ] Monitoring set up (Sentry, Datadog, LogRocket)
+- [ ] Backup system tested
+- [ ] Disaster recovery plan documented
+- [ ] Team access controls set
+
+
+**MARKETING & SUPPORT**
+- [ ] Landing page live (love-actually-game.com)
+- [ ] Press kit ready
+- [ ] Social media accounts created
+- [ ] Support email configured (support@love-actually-game.com)
+- [ ] FAQ documentation written
+- [ ] Crisis response plan documented
+- [ ] App store review strategy planned
+- [ ] Launch announcement drafted
+
+
+**LEGAL & COMPLIANCE**
+- [ ] Privacy policy reviewed by lawyer
+- [ ] Terms of service reviewed
+- [ ] Subscription terms clear
+- [ ] Medical disclaimer prominent
+- [ ] Crisis resources verified and current
+- [ ] Data processing agreements signed (GDPR)
+- [ ] Age verification system for sensitive content
+- [ ] Content moderation policy documented
+
+
+### **POST-LAUNCH MONITORING**
+
+
+**DAY 1 CHECKLIST**
+- [ ] Monitor error rates (target: <0.1%)
+- [ ] Monitor server load
+- [ ] Watch app store reviews
+- [ ] Respond to support emails within 24 hours
+- [ ] Track initial download numbers
+- [ ] Monitor conversion rates
+- [ ] Check critical user flows
+
+
+**WEEK 1 CHECKLIST**
+- [ ] Daily active user count tracking
+- [ ] Engagement metrics analysis
+- [ ] Bug triage and prioritization
+- [ ] User feedback collection
+- [ ] App store rating monitoring
+- [ ] Revenue tracking
+- [ ] Marketing campaign adjustment
+
+
+**MONTH 1 CHECKLIST**
+- [ ] Retention analysis (Day 1, 7, 30)
+- [ ] Feature usage analysis
+- [ ] Conversion funnel optimization
+- [ ] Churn analysis and win-back campaigns
+- [ ] Roadmap adjustment based on data
+- [ ] First feature update planned
+- [ ] Team retrospective on launch

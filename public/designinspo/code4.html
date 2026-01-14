@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin: Analytics Dashboard - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", "nebula-purple": "#2d1b4e", "nebula-blue": "#1a2a4a"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: radial-gradient(circle at top right, #1a2a4a, #0a1414),
+                        radial-gradient(circle at bottom left, #2d1b4e, #0a1414);
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-border-primary {
+            border: 1px solid rgba(19, 236, 236, 0.4);
+            box-shadow: 0 0 15px rgba(19, 236, 236, 0.1);
+        }
+        .pie-slice {
+            clip-path: polygon(50% 50%, 100% 0, 100% 100%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 glass-panel border-r border-white/10 hidden lg:flex flex-col">
+<div class="p-6">
+<div class="flex items-center gap-3 text-primary mb-10">
+<span class="material-symbols-outlined text-3xl">auto_awesome</span>
+<h1 class="font-bold text-xl tracking-tight">Love Actually</h1>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary border border-primary/20" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium text-sm">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-medium text-sm">Engagement</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-medium text-sm">User Management</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-medium text-sm">Revenue</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium text-sm">Settings</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6">
+<div class="glass-panel rounded-xl p-4 flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border border-white/20" data-alt="Admin user avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD5L19iEECaGZKHZ3IINuFIwD2_o3eG-VohbGOnmzRB4SSPDJciU8avUkpZR2STYCqBX1BPKyGNZ8u2s4lkttxoqbrxSIE-bmneqyiM8jKHHq27cYRRH0xpMZjqacQVNMpbFqFNeScJLYcskidQhdD9haDeo7AzsuOibAC6S8P-bYzKQDbVIQZ4-JCwX1QNPb3GDsPiV463fj-RTza3oQnovktDIvvC6SbJ9PqhWT9Tko62HPH3vJxMk5XU2VkIr_PE338bq5IIPzP6');"></div>
+<div>
+<p class="text-xs font-bold">Alex Chen</p>
+<p class="text-[10px] text-white/50 uppercase tracking-widest">Lead Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Top Nav Bar -->
+<header class="flex items-center justify-between px-8 py-4 glass-panel border-b border-white/10 sticky top-0 z-10">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative max-w-md w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/40 text-xl">search</span>
+<input class="w-full bg-white/5 border border-white/10 rounded-xl py-2 pl-10 pr-4 text-sm focus:border-primary/50 focus:ring-0 transition-all outline-none" placeholder="Search analytics, users, or logs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors text-white/70 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full border-2 border-background-dark"></span>
+</button>
+<button class="flex items-center gap-2 bg-primary text-background-dark px-4 py-2 rounded-xl font-bold text-sm hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-lg">download</span>
+                        Export Report
+                    </button>
+</div>
+</header>
+<div class="p-8 space-y-8">
+<!-- Page Heading -->
+<div class="flex flex-col gap-1">
+<h2 class="text-3xl font-bold tracking-tight">Analytics Dashboard</h2>
+<p class="text-white/50 text-sm">Real-time performance overview of the cosmic nebula ecosystem</p>
+</div>
+<!-- Stats / KPI Hero Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="glass-panel glow-border-primary rounded-xl p-6 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="text-white/60 font-medium text-sm uppercase tracking-wider">Daily Active Users</span>
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold">12,482</span>
+<span class="text-primary text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span> +12.4%
+                            </span>
+</div>
+<div class="h-10 flex items-end gap-1 opacity-50">
+<!-- Visual placeholder for sparkline -->
+<div class="w-full h-4 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-6 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-8 bg-primary/40 rounded-t-sm"></div>
+<div class="w-full h-5 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-10 bg-primary/60 rounded-t-sm"></div>
+<div class="w-full h-7 bg-primary/20 rounded-t-sm"></div>
+</div>
+</div>
+<div class="glass-panel glow-border-primary rounded-xl p-6 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<span class="text-white/60 font-medium text-sm uppercase tracking-wider">Retention (D30)</span>
+<span class="material-symbols-outlined text-primary">vitals</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold">42.5%</span>
+<span class="text-primary text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span> +2.1%
+                            </span>
+</div>
+<div class="h-10 flex items-end gap-1 opacity-50">
+<div class="w-full h-6 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-8 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-7 bg-primary/40 rounded-t-sm"></div>
+<div class="w-full h-9 bg-primary/20 rounded-t-sm"></div>
+<div class="w-full h-6 bg-primary/60 rounded-t-sm"></div>
+<div class="w-full h-8 bg-primary/20 rounded-t-sm"></div>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-6 flex flex-col gap-4 border-white/5">
+<div class="flex justify-between items-start">
+<span class="text-white/60 font-medium text-sm uppercase tracking-wider">Total Sessions</span>
+<span class="material-symbols-outlined text-white/30">bolt</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold">84,930</span>
+<span class="text-red-400 text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-sm">trending_down</span> -0.5%
+                            </span>
+</div>
+<div class="h-10 flex items-end gap-1 opacity-20">
+<div class="w-full h-10 bg-white/20 rounded-t-sm"></div>
+<div class="w-full h-8 bg-white/20 rounded-t-sm"></div>
+<div class="w-full h-9 bg-white/40 rounded-t-sm"></div>
+<div class="w-full h-7 bg-white/20 rounded-t-sm"></div>
+<div class="w-full h-8 bg-white/60 rounded-t-sm"></div>
+<div class="w-full h-6 bg-white/20 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+<!-- Main Visual Area -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<!-- Chart Section -->
+<div class="glass-panel rounded-2xl p-8 flex flex-col h-[480px]">
+<div class="flex justify-between items-center mb-8">
+<h3 class="text-xl font-bold">Game Category Popularity</h3>
+<select class="bg-white/5 border border-white/10 rounded-lg text-xs py-1 px-3 outline-none focus:ring-1 focus:ring-primary">
+<option>Last 30 Days</option>
+<option>Last 7 Days</option>
+</select>
+</div>
+<div class="flex-1 flex items-center justify-around gap-10">
+<!-- Simulated Pie Chart with CSS Shapes and Overlays -->
+<div class="relative size-64 flex items-center justify-center">
+<!-- Inner hole for donut style -->
+<div class="absolute inset-0 rounded-full border-[32px] border-primary/20 scale-100"></div>
+<div class="absolute inset-0 rounded-full border-[32px] border-[#a855f7]/40 rotate-45 scale-100"></div>
+<div class="absolute inset-0 rounded-full border-[32px] border-[#ec4899]/40 rotate-90 scale-100"></div>
+<div class="absolute inset-0 rounded-full border-[32px] border-[#3b82f6]/40 rotate-[180deg] scale-100"></div>
+<div class="absolute inset-0 rounded-full border-[32px] border-[#fbbf24]/40 rotate-[240deg] scale-100"></div>
+<div class="absolute inset-0 rounded-full border-[32px] border-[#ef4444]/40 rotate-[310deg] scale-100"></div>
+<div class="z-10 text-center">
+<p class="text-white/50 text-xs uppercase tracking-widest font-bold">Total Plays</p>
+<p class="text-2xl font-bold">2.4M</p>
+</div>
+</div>
+<div class="space-y-3 flex-1 max-w-[200px]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary"></div>
+<span class="text-sm font-medium">Intimacy</span>
+</div>
+<span class="text-xs font-bold">35%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-purple-500"></div>
+<span class="text-sm font-medium">Communication</span>
+</div>
+<span class="text-xs font-bold">22%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-pink-500"></div>
+<span class="text-sm font-medium">Fun &amp; Games</span>
+</div>
+<span class="text-xs font-bold">18%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-blue-500"></div>
+<span class="text-sm font-medium">Future Planning</span>
+</div>
+<span class="text-xs font-bold">12%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-yellow-500"></div>
+<span class="text-sm font-medium">Conflict Res.</span>
+</div>
+<span class="text-xs font-bold">8%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-red-500"></div>
+<span class="text-sm font-medium">Deep Diving</span>
+</div>
+<span class="text-xs font-bold">5%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Top Performing Content -->
+<div class="glass-panel rounded-2xl p-8 flex flex-col h-[480px]">
+<div class="flex justify-between items-center mb-8">
+<h3 class="text-xl font-bold">Top Content Modules</h3>
+<button class="text-primary text-xs font-bold uppercase tracking-widest hover:underline">View All</button>
+</div>
+<div class="space-y-4 overflow-y-auto pr-2">
+<div class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-all">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-cover bg-center" data-alt="Intimacy game module thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDv7BrNA82rC3Qi_M2IFpFr6KymG-MuGgQvww2Iaa_gy3gmYyuIofJ63IIUGVVv3wdufwXkP5VZaGc-I-twCxwpcFZ-hQMVUIaVOd_TW94GHx3Ib1AsOpl2LqMQQ5Ak8BSWC_DcAtf5Zb_M77lY8LwzG5pa5IFahepQKWx5l-Y1Zabc97rKt83_y7bMEnvwPG6M10CwrfjdWl_uxwm6KvM9D9HjWTqgsB8plzGBUrYpeESWrG7ITnGVf9asDMf4lr_uv-Si3AaCboFB');"></div>
+<div>
+<p class="font-bold text-sm">Star-Crossed Whispers</p>
+<p class="text-xs text-white/40">Category: Intimacy</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm text-primary">89.2k</p>
+<p class="text-[10px] text-white/40">Plays this week</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-all">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-cover bg-center" data-alt="Communication module thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCC9qeCLi-KFdu_JxiYjgdeg1mRL0NDiqY56OSAjAQOdSTzrT-YvCO5GJgOm3wbE_WusQIhGsn5sAJqVTaVlS9ArGo3tGmrIi7taTSK3-xMcVXQPFRy9jLYcJ9o_IK2MTN_9xAi40pr9a0k8iPANAd-18tI2QJepB1A9Lz9G2XfeyN0bJpCgT9jYyAOjM4bMWe3_IgahAew3l0l5Fh9cG4szIUTfqcsnl7j_1GI-Dlk5wLJxLS7X22IdAOzfftn8Lt-1cPAvRbj0uHm');"></div>
+<div>
+<p class="font-bold text-sm">Lunar Feedback Loops</p>
+<p class="text-xs text-white/40">Category: Communication</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm text-primary">64.5k</p>
+<p class="text-[10px] text-white/40">Plays this week</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-all">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-cover bg-center" data-alt="Fun game module thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDDm9CqBB0F9krGvpmmOv1av70gXcWeIJiBA1W4C2m899OhclxLuNhB-ho-SpqRFQYW1X-p9Zb75Q3hpIW1BKRvRvRxawRQaLBPGWZ1WLMYbMfCHxfQ7TgUfaMzmyUsBK_sUYZjCX9Fc10j1NQD_k0n_LYNno-E9JUh1GyF14AXiLBis1qYnkRdBNox86LC57T-U1vkVyhgjb_0AdJ0OXxtD9cSMJm3c-zYCBMFLVh-JfJ_ErU7b-ahJVH_fNfVewEZpkG7QurufI3X');"></div>
+<div>
+<p class="font-bold text-sm">Nebula Hide &amp; Seek</p>
+<p class="text-xs text-white/40">Category: Fun &amp; Games</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm text-primary">42.1k</p>
+<p class="text-[10px] text-white/40">Plays this week</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-all">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-cover bg-center" data-alt="Conflict resolution module thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAkbpWUdmtpUYk4wDBlLK0OPyOEeMv3Zi0jAR4p-pFFKgfrXg_le2a1oHtkr9eeeyw5gZUeEHZJBlDrCiM_0BrzTufBZzuwvLhXadoNZnbr8W419Orm2pGA777oPs0I7N0eo4pFCWgn1H2B81Yogzdb_mJiQqn25-Bpq9qdJFthwsfgtHl9ykBuREVLgMLChBn23HOq4cY7MnBQ_MvOOrX8KMgPKH8KL0Rtixwhq-AQjg_snuq9vYEr-YS0YqKo61m_Hf7l0meuU7oP');"></div>
+<div>
+<p class="font-bold text-sm">Comet Calm Protocol</p>
+<p class="text-xs text-white/40">Category: Conflict Res.</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold text-sm text-primary">31.8k</p>
+<p class="text-[10px] text-white/40">Plays this week</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Latest User Feedback -->
+<div class="glass-panel rounded-2xl p-8">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-bold">Latest Feedback Signals</h3>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-green-500/20 text-green-400 text-[10px] font-bold rounded-full border border-green-500/30 uppercase tracking-widest">Sentiment: Positive (88%)</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="p-4 rounded-xl bg-white/5 border border-white/10 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2">
+<span class="material-symbols-outlined text-primary/40 text-sm">format_quote</span>
+</div>
+<p class="text-sm text-white/70 italic mb-4">"The Star-Crossed module really helped us talk through things we've been avoiding. The UI is gorgeous."</p>
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-gradient-to-tr from-primary to-purple-500"></div>
+<div>
+<p class="text-xs font-bold">User #8291</p>
+<div class="flex text-[8px] text-yellow-400">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-white/5 border border-white/10 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2">
+<span class="material-symbols-outlined text-primary/40 text-sm">format_quote</span>
+</div>
+<p class="text-sm text-white/70 italic mb-4">"Wish there were more levels in the Fun &amp; Games category. We finished them all in two nights!"</p>
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-gradient-to-tr from-pink-500 to-orange-400"></div>
+<div>
+<p class="text-xs font-bold">User #4402</p>
+<div class="flex text-[8px] text-yellow-400">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-white/5 border border-white/10 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2">
+<span class="material-symbols-outlined text-primary/40 text-sm">format_quote</span>
+</div>
+<p class="text-sm text-white/70 italic mb-4">"The cosmic aesthetic is so soothing. Best therapy app we've tried. Looking forward to new comet events."</p>
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-400"></div>
+<div>
+<p class="text-xs font-bold">User #1198</p>
+<div class="flex text-[8px] text-yellow-400">
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+<span class="material-symbols-outlined text-[10px]">star</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Meta -->
+<footer class="mt-auto p-8 text-center text-white/20 text-[10px] uppercase tracking-widest">
+                © 2024 Love Actually Admin Portal // System Version 2.0.4-NEBULA
+            </footer>
+</main>
+</div>
+</body></html>

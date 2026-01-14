@@ -1,7 +1,7 @@
-export type GameCategory = 'emotional' | 'conflict' | 'creative' | 'romance' | 'healing';
+export type GameCategory = 'emotional' | 'conflict' | 'creative' | 'romance' | 'healing' | 'arcade';
 export type GameDifficulty = 'easy' | 'medium' | 'hard';
 export type GamePhase = 'setup' | 'active' | 'results';
-export type InputType = 'text' | 'voice' | 'camera' | 'slider';
+export type InputType = 'text' | 'voice' | 'camera' | 'slider' | 'custom';
 
 export interface GameState {
   id: string;

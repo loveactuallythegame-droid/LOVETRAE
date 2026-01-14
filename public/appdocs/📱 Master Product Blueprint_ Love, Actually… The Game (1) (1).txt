@@ -1,0 +1,385 @@
+﻿📱 Master Product Blueprint: Love, Actually… The Game
+App Tagline: "How About We DON’T Break Up?"
+Core Concept: A mobile-first, gamified couples therapy app hosted by a sarcastic AI (Dr. Marcie Liss) that turns relationship repair into a competitive, witty, and deeply healing game.
+
+
+1. Brand & Design System (Disney-Level Polish)
+Visual Identity: High-fidelity, vibrant, "Glam Noir" meets "Candy Crush." It must feel like a game, not a clinic.
+🎨 Color Palette
+* Primary Accent (Romance Pink): #FA1F63 (Buttons, gradients, emotional highlights).
+* Primary Purple (Deep Royal): #5C1459 (Headers, Branding, Dr. Marcie’s outfit).
+* Secondary Violet: #BE1980 (Gradients, secondary interactions).
+* Mint Green (Success/Safe): #33DEA5 (Success states, "Green flags").
+* Gold/Yellow (Warning/Highlight): #E4E831 (Warnings, star ratings, electric energy).
+* Backgrounds: Dark Mode default using deep radial gradients (e.g., #120016 to #5C1459)2.
+🔤 Typography
+* Headers/Titles: Barbie Dream Regular (Playful, bold).
+* Body Text: Cheese Regular (Readable but stylized) or Nunito Sans for long text4.
+* Game Instructions: Holiday Christmas Regular.
+* Dr. Marcie’s Sass: Sweet Pink Regular (Script style for commentary).
+* Important Keywords: Wonderful Sometimes Regular.
+✨ Dr. Marcie Liss (Visual Logic)
+* Character: Image in brandboard
+* Placement Rule: Dr. Marcie is never confined to a box. She is an overlay character who walks over text, leans against input fields, and interacts with the UI elements directly (e.g., holding the timer, pointing at the "Submit" button).
+* Animation: High-quality idle animations (checking her nails, rolling eyes, tapping her clipboard) while the user is thinking.
+________________
+
+
+2. Technical Architecture & Admin Control
+Tech Stack
+* Frontend: React Native (Mobile) or React (Web App) with Tailwind CSS6.
+* Backend: Node.js + Express7.
+* Database: Supabase (for Auth, Profiles, Game History)8.
+* AI Engine: Multi-LLM Orchestration (GPT-4o / Claude) for analyzing fights and generating sarcasm9.
+* Voice: ElevenLabs API for Marcie’s voice synthesis10.
+* Payments: Stripe Integration11.
+🛠️ The "Puppet Master" Admin Screen (New Feature)
+* Access: Web-based portal for the Super Admin (You).
+* Capabilities:
+* Game CMS: Create/Edit/Delete challenges. Fields: Game Title, Mechanic Type (Slider, text, video), Category, XP Reward, Marcie's Intro Script.
+* User Management: View active couples, ban abusive users, reset stuck states.
+* Prompt Engineering: Tweak Dr. Marcie’s system prompts (adjust sarcasm levels, update repair scripts) without redeploying the app.
+* Analytics: Live view of "Fights Solved," "Daily Active Couples," and "Churn Rate."
+* Push Notifications: Manually trigger global events (e.g., "Valentine's Day Emergency Drill").
+________________
+
+
+3. 🧙‍♀️ Dr. Marcie Liss: The AI Host
+Visual Behavior (The "Overlay" Mechanic):
+* No Boxes: Dr. Marcie is never confined to a square profile picture. She is a full-body or half-body character overlay who "walks" over text and leans against UI elements3.
+* Interaction: She interacts physically with the screen (e.g., tapping her watch if you are slow, pointing at the "Submit" button).
+* Personality: Sarcastic, brutally honest, stylish (1950s noir meets modern glam).
+The 4 Personality Levels (Sarcasm Engine)
+Configurable in Settings or adaptive based on resilience. 444444444
+1. The 4 Personality Levels (Sarcasm Engine): (User toggles in Settings)
+* Level 1: Truth Wizard: Deep, poetic, searing truth. (Sample: "You’re not broken, but you are bleeding on the carpet. Stop searching for closure in open wounds and start stitching.")
+* Level 2: Tough Love Rookie: Blunt, warm, straight-talking. (Sample: "Honey, if ignoring red flags was an Olympic sport, you’d have the gold medal by now. Fix it.")
+* Level 3: Reality Check Specialist: Clinical, analytical, detached sarcasm. (Sample: "Your attachment style is showing. Loudly. Fascinating how you mistake 'avoidance' for 'independence'.")
+* Level 4: The Marcie Max (The \"All of the Above\" Energy)   A dynamic synthesis of Levels 1-3. Marcie shifts between Blunt, Clinical, and Searing Truth  depending on the emotional intensity and distortion detected by the AI. This is the most complex, high-risk, high-reward mode.
+
+
+4. Core App Flow & Screens
+A. Onboarding & Linking
+1. Splash Screen: Animated logo with the tagline. Gradient background #FA1F63 to #12001612.
+2. Disclaimer: Mandatory "This is entertainment, not medical advice" check13.
+3. Origin Story Input 🚀 Onboarding: "Tell Auntie Marcie the Tea"
+Mechanic: Interactive Chat / Form24242424.
+Goal: Gather data for the AI while establishing Marcie's personality.
+* The Vibe: Instead of a boring form, it feels like a gossip session over cocktails.
+* Step 1: Marcie appears (Overlay). "Okay, spill. How did this... gestures at you two... happen?"
+* Step 2 (The Meet Cute): User inputs text or voice.
+* Prompt: "We met at..."
+* Marcie Reaction: "A dating app? How vintage." or "At work? HR must love you."
+* Step 3 (The Disaster): "When was the first time you thought 'Uh oh'?"
+* Step 4 (The Current State): "On a scale of 'Notebook' to 'Gone Girl', where are we today?" (Slider mechanic).
+* Result: Marcie generates a "Relationship Diagnosis" card that summarizes their dynamic (e.g., "The Chaotic Soulmates") using the data provided25.AI Analysis: Marcie generates a sarcastic summary of their relationship history.
+4. Couple Linking: One partner sends a code (LA-7Q9X-LOVE)15; the other enters it to sync profiles.
+B. The Dashboard (Home)
+* Visual: Dark mode with glowing "Trust Meter" , “Vulnerability meter”, “Romance meter” and “Connection meter” (Liquid fill animation)16.
+* Leaderboard: Track your and your partners' earned points to see who is currently in the lead.
+* Floating SOS Button: A permanent, red gradient button (#E11637) located in the bottom right corner of every screen. Label: "INFINITE SIGN WITH HEART"17.
+* Daily Challenge Card: The main CTA for the day (e.g., "Three Compliments, One Lie")18.+ game/s of the day.
+* Dr. Marcie Overlay: She stands on the bottom nav bar, offering a daily "roast" via speech bubble19.
+* Categories: Cute little cards with the categories of games.
+C. 🆘 The SOS Fight Solver (Floating Button)
+Visual: A pulsing, gradient-red button (#E11637) with the "infinite sign with a heart".
+Behavior: It creates a "Z-Index" overlay, sitting on top of every screen in the app. It is always accessible26262626.
+The Flow:
+1. Emergency Press: User taps the button. Screen dims. Marcie appears: "Put down the weapons. To the booths. Now.
+2. The Booths: The screen directs users to separate "Soundproof Booths" on their own devices27272727.
+3. Venting: Users text freely, it is their space.However, at the end they must before submitting fill the following staments:
+* "I feel [Emotion Dropdown]..."
+* "When my partner [Specific Action]..."
+* "Because I tell myself the story that [Interpretation]."
+* "What I actually need is [Need]."28.
+4. The Hold (Crucial Step):
+* If Partner A finishes first, they enter a Waiting Room a "Cool Down" mini-game. The AI generates NO resolution yet.
+* Once Partner B submits, the "airlock" opens.
+5. Context Injection: The AI reads the current inputs AND pulls from the History Log (past fights, "Origin Story" context, personality types Distortion Check: It identifies valid feelings vs. distortions
+6. The Verdict & Roast (The Output):
+* What You Did Right: Marcie validates one specific thing each person did (e.g., "Alex, good job using 'I feel' statements.").
+* The Call-Out: Marcie roasts the bad behavior (e.g., "Jordan, you went straight to stonewalling. We don't do statues here.").
+7. The Verdict/Repair:Then suggests 3 repair attempts for each partner the users choose and Marcie gives them a time limit to do it. After the time limit is over she gives a 5 yes, no, maybe questionnaire to each partner about the selected repair attempt and gives them points depending on the answers.
+D.🗣️ The "Partner Translator"
+Purpose: To de-escalate confusion before it becomes a fight using Marcie’s intelligence and sass.
+1. The Input: User types/speaks: "My girlfriend is mad because she was cleaning and I didn't lift my feet."
+2. The Interrogation (Max 3 Qs): Dr. Marcie asks up to 3 rapid-fire Yes/No questions to get context (based on couple history).
+* Marcie: "Has she asked you to help with cleaning this week?" (Yes/No)
+* Marcie: "Were you on your phone while she was sweeping?" (Yes/No)
+3. The Translation: Marcie processes the answers + history (e.g., Love Language data) and "translates" the partner's behavior.
+* Translation: "Your girlfriend isn't mad about your feet. She is mad because she feels unappreciated and overlooked while she manages the household chaos."
+4. The Sass:
+* Commentary: "You're not a piece of furniture, darling. Move your legs and maybe—gasps—grab a broom?"
+5. The Action Plan:
+* Directive: "Go find her. Don't ask 'what can I do?' Just take one chore off her list right now. Report back."
+E.  🎮 The Game Library (Expanded)
+All games are competitive yet collaborative. Marcie hosts and grades everything.
+1. 🎲 Game Show Modes (Event Logic)
+1. Couple’s Jeopardy: 7
+* Mechanic: Grid + Quiz.
+* Gameplay: 5x5 board. Marcie reads clues ("Your mother-in-law's favorite complaint"). Fastest finger wins.
+2. Who Wants to Be a Relationship Millionaire?: 8
+* Mechanic: Progressive Multiple Choice.
+* Gameplay: 15 questions escalating from "Shoe size" to "Trauma." Lifeline: "Phone a Friend" (Call the in-laws).
+3. Family Feud (Couples Edition): 9
+* Mechanic: Synonym Matching.
+* Gameplay: "Survey says..." Marcie asks: "Most annoying husband habit." Users guess top answers to flip the board.
+4. The Newlywed Game (Sync Check): 10
+* Mechanic: Hidden Answer -> Reveal.
+* Gameplay: "Who is the better driver?" Both type secretly. Screens flip simultaneously. Match = Points. Mismatch = Roast.
+5. Wheel of Intimacy: 11
+* Mechanic: Wheel Spin + Hangman.
+* Gameplay: Spin for points. Solve the intimate phrase _ _ V _ Y _ U by buying vowels.
+2. Emotional Connection (SEEN Focus)
+1. Truth or Trust: 12
+* Mechanic: Audio Response.
+* Gameplay: Marcie asks deep Q. User records voice note. AI analyzes for emotional keywords vs. one-word answers.
+2. Gratitude Cloud: 13
+* Mechanic: Rapid Typing / Word Cloud.
+* Gameplay: 60s timer. Type positive adjectives. Winner is who types the most unique words.
+3. Eye Contact Challenge: 14
+* Mechanic: Face Detection (Camera).
+* Gameplay: Stare at each other. AI tracks eyes. First to look away or laugh loses points.
+4. Memory Lane Map: 15151515
+* Mechanic: Pin on Image.
+* Gameplay: Map appears. "Where was your first kiss?" Both drop pins. Closer distance = higher score.
+5. The Vibe Check: 16
+* Mechanic: Slider.
+* Gameplay: Partner A sets slider (Energy level). Partner B guesses via their own slider. Closer guess = "Attunement Points."
+3. Conflict Resolution (Gottman)
+1. The Slap of Truth: 17171717
+* Mechanic: Tinder-style Swipe.
+* Gameplay: Scenarios ("Checking phone"). Swipe Green/Red flag. Mismatch triggers "Debate Round."
+2. Apology Auction: 18181818
+* Mechanic: Slider (0-100).
+* Gameplay: Rate apology statements. Marcie grades your standards (e.g., "0/10. Trash apology.").
+3. Defensiveness Detox: 19191919
+* Mechanic: AI Text Rewrite.
+* Gameplay: Type a complaint. AI blocks "You always..." statements. Rewrite until it passes Marcie's filter.
+4. Who’s Right?: 20202020
+* Mechanic: Text Highlighting.
+* Gameplay: Read a fight transcript. Highlight the "Contempt." Accuracy graded against Gottman key.
+5. Stress Test: 21212121
+* Mechanic: Rapid Likert Scale.
+* Gameplay: Rate external stressors (Money, Work). Visualizes "Stress Spillover" into the relationship.
+4. Creative Chaos (Playful)
+1. Role-Swap Roast: 22222222
+* Mechanic: AR Face Filters.
+* Gameplay: Record video arguing as your partner using a helium voice filter. Best impression wins.
+2. Draw Your Feelings: 23
+* Mechanic: Skribbl.io / Canvas.
+* Gameplay: Draw abstract concepts ("Trust"). Partner guesses line-by-line.
+3. GIF Battle: 24242424
+* Mechanic: Giphy Search.
+* Gameplay: Prompt: "My face when you leave wet towels." Submit GIFs. Marcie picks the pettiest winner.
+4. Karaoke Confessional: 25252525
+* Mechanic: Audio + Lyrics.
+* Gameplay: Lyrics rewritten to be about your issues. You must sing them.
+5. The Ransom Note: 26
+* Mechanic: Drag-and-Drop Words.
+* Gameplay: Assemble a "threat" from word bank which is actually a date invite ("GIVE ME... PIZZA... OR... I... CRY").
+5. Romance Hub (Spicy/Sweet)
+1. Date Night Roulette: 27
+* Mechanic: Wheel Spin.
+* Gameplay: Spin with filters (Budget, Energy). Lands on a specific date plan.
+2. Bedroom Bingo: 28
+* Mechanic: 5x5 Grid.
+* Gameplay: Check off intimate acts over the week to get Bingo.
+3. The 6-Second Kiss: 29
+* Mechanic: Multi-touch Hold.
+* Gameplay: Both hold thumbs on screen simultaneously to fill a bar (6 seconds).
+4. Foreplay Slider: 30303030
+* Mechanic: Live Slider.
+* Gameplay: Partner A adjusts arousal slider (0-100). Partner B acts to move it up in real-time.
+5. Touch Map: 31
+* Mechanic: Heatmap.
+* Gameplay: Body outline. Tap Green (Yes), Yellow (Maybe), Red (No).
+6. Healing Hospital (Deep Repair)
+1. Windows & Walls: 32
+* Mechanic: Drag-and-Drop.
+* Gameplay: Sort behaviors into "Transparency" (Window) or "Privacy" (Wall).
+2. Trigger Triage: 33
+* Mechanic: Pain Scale.
+* Gameplay: Betrayed partner sets pain level. App serves Wayward partner a specific de-escalation script.
+3. Trust Bank: 34
+* Mechanic: Ledger Log.
+* Gameplay: Log "Deposits" (kind acts) and "Withdrawals" (broken promises).
+4. The Iceberg: 35
+* Mechanic: Nested Dropdown.
+* Gameplay: Select "Anger." Drill down to find the underlying "Fear of Abandonment."
+5. Secrecy Audit: 36
+* Mechanic: Rapid True/False.
+* Gameplay: "Do they know your passcode?" Speed encourages honesty
+F. ⚖️ The Consequence Engine
+Goal: To gamify accountability without being genuinely mean. The "Penalties" are social/digital annoyances73737373.
+Mechanics:
+* The Trigger: If a couple misses a "Daily Duel" or ignores a "Repair Attempt" for > 24 hours.
+* Penalty 1 (The Wallpaper Swap): App uses Widget/Shortcut permissions to change the user's home screen wallpaper to a goofy/unflattering (but PG) photo of Dr. Marcie judging them.
+* Penalty 2 (The App Block): The app sends relentless push notifications that mimic a needy partner ("Are you ignoring me? Wow.") until they open the app.
+* Penalty 3 (The Public Roast): (Opt-in only) The app generates a "Certificate of Negligence" and prompts the user to share it on Instagram to unlock the app again.
+* Penalty 4 (The Lockout): Access to the "Romance Hub" (the fun stuff) is greyed out until the "Work" (therapy module) is done.
+6. Gamification & Monetization
+1. Scoring System:
+Leaderboard: Takes all of the following into consideration and makes an average to tell which partner is winning.
+* Leaderboard: Presents the average score derived from all contributing factors to determine the current leading partner based on the following:
+* Trust Thermometer: The central health bar of the relationship. Goes up with games, down with "stalled" fights33.
+* Romance Points: Measures the cumulative impact of intentional positive acts, particularly those from the "Romance Hub" (e.g., Date Night Roulette, The 6-Second Kiss). It primarily tracks the sweet and spicy success rate.
+* Connection meter: Tracks the frequency and depth of non-conflict interactions (e.g., playing a game, sharing a compliment). It also takes repair points into consideration.
+* Vulnerability Points (VP): Currency earned by being honest in a gentle way without cruelty, or attack.
+* Consequence Engine: If users skip tasks, Marcie triggers "real world" penalties (e.g., forces a phone wallpaper change)34.
+2. Subscription Model (Stripe)
+* Freemium: Daily Challenge + Basic Assessment
+* Premium ($20/mo): Unlimited Fight Solver, Full Game Library, Custom Marcie Personality, "Healing Hospital" access.
+________________
+
+
+7. 🗺️ Sitemap & List of Features
+Sitemap
+1. Splash & Auth: Splash → Welcome → Login/Sign Up → Couple Linking29.
+2. Onboarding: Origin Story Input → Emotional X-Ray Quiz30.
+3. App Core:
+* Home Dashboard (Status, Daily Duel CTA)31.
+* The Game Library (Categories A, B, C, D + Game Shows)32.
+* Romance Hub (Date Roulette, Bedroom Bingo)33.
+* Healing Hospital (SOS History, Deep Repair)34.
+* Partner Translator (New Feature - Fab button or Tool).
+4. User Data: Profile → Partner Dashboard (Comparison) → Settings35.
+5. Admin: Web-based CMS for content and user management.
+Feature List
+* Couple Linking System: Syncs profiles via code/QR36.
+* Consequence Engine: Real-world penalties (wallpaper swap) for skipping tasks37.
+* Live Scoring: Trust Thermometer, Vulnerability Points, Streaks38.
+* Dr. Marcie AI: Sarcastic host, varying levels (1-3), voice synthesis39.
+* SOS Fight Solver: Asynchronous, history-aware conflict resolution40.
+* Partner Translator: Input -> Query -> Translation -> Advice loop.
+* Payment: Stripe (Freemium/Premium)41.
+* Admin Panel: CMS for games, prompts, and users.
+________________
+
+
+5. 📱 Core Screens & UI Elements 42
+1. Home Dashboard
+* Purpose: The daily hub. Dark mode, neon accents.
+* UI Elements:
+* Dr. Marcie Overlay: Standing on the navbar, speech bubble with daily roast.
+* Trust Thermometer: Liquid fill animation (#FA1F63 to #33DEA5) showing relationship health43.
+* Daily Duel Card: Glowing card with "Play Now" CTA.
+* Floating SOS: Bottom right, red gradient, Z-index top.
+2.Challenge Screen (The Game Runner) 44
+* Purpose: The active gameplay container.
+* UI Elements:
+* Header: Game Title + Timer (Countdown).
+* Marcie: Animated avatar reacting to input (e.g., yawning if you type too slow).
+* Input Area: Dynamic based on game (Mic, Text, Slider, Canvas).
+* Feedback: Instant "Confetti" or "Buzzer" animation upon submit.
+3.The Fight Solver (Booths) 45
+* Purpose: Conflict resolution.
+* UI Elements:
+* Split View: Soft frosted glass effect separating "My Side" vs "Their Side."
+* Input Fields: Structured "Mad Libs" style prompts.
+* Status: "Waiting for Partner..." pulsing loader.
+4. Results & Roast
+* Purpose: Post-game feedback.
+* UI Elements:
+* Scoreboard: Animated numbers counting up.
+* Marcie’s Verdict: A stylized quote block with her specific roast/compliment.
+* Action Buttons: "Rematch" or "Back to Home."
+5. Partner Translator
+* Purpose: Decode behavior.
+* UI Elements:
+* Chat Interface: User types the "Action."
+* Investigation: 3 pop-up Yes/No cards from Marcie.
+* The Reveal: A glowing "Translation Card" that flips to reveal the truth + advice.
+________________
+
+
+6. ✅ Launch Checklist (Engineering + UX) 46
+Engineering & Backend
+* [ ] Auth: Supabase Auth set up with "Couple Linking" logic (table joining two user_ids).
+* [ ] Real-Time: Firebase/Websockets enabled for Game Show modes (sub-second latency).
+* [ ] AI: Orchestrator set to wait for both SOS inputs before sending to LLM.
+* [ ] Translator: Logic flow (Input -> 3 Qs -> Final Prompt) tested and latency minimized.
+* [ ] Admin: CMS allows adding a new "Jeopardy" question without app store update.
+UX & Disney Polish 47
+* [ ] Animations: Buttons "squish" on tap. Trust Meter has liquid physics.
+* [ ] Marcie: Ensure overlay image uses transparent PNG/WebP and does not block input fields.
+* [ ] Sound: ElevenLabs voice syncs with text display (typewriter effect).
+* [ ] Dark Mode: Verify gradients (#5C1459 to #120016) don't band on mobile screens.
+* [ ] Haptics: Success = light tap. Penalty/Wrong Answer = heavy vibration.
+8. Pre-Launch Checklist (Admin Verification)
+________________
+
+
+9. ✅ Launch Checklist (Engineering + UX)
+Engineering
+* [ ] Auth: Supabase Auth with "Couple Linking" (joining user_ids).
+* [ ] Real-Time: Firebase/WebSockets for Game Show sub-second latency.
+* [ ] AI Logic: Ensure SOS Solver waits for both inputs before API call.
+* [ ] Partner Translator: Logic flow (Input -> 3 Qs -> Prompt -> Output) tested.
+* [ ] Admin CMS: Verify adding a new "Jeopardy" question updates the app instantly.
+* [ ] Stripe: Test Freemium vs. Premium gating.
+UX & Polish
+* [ ] Marcie Overlay: Ensure transparent PNGs/WebM animations don't block input fields on any device size.
+* [ ] Haptics: "Squish" feel on buttons; heavy vibration for penalties.
+* [ ] Sound: ElevenLabs voice syncs with text typewriter effect.
+* [ ] Dark Mode: Verify radial gradients (#5C1459 to #120016) don't band.
+* [ ] Accessibility: Ensure high contrast text options in Settings.
+
+
+
+
+
+
+
+I just added to the animations folder which include the next videos with transparent background to be placed in overlay I suggest where they might go but always overlay so it looks like the dr. is walking in images, words, etc marcie-listening.webm
+“Mmm. I see you thinking. Don’t over-edit the truth — it’s messy, but it’s yours.”
+→ Placement: Input screens (e.g., journaling or reflection prompts), while user is typing.
+marcie-impatient.webm
+“One word? Bold. Let’s unpack that… or pretend it’s deep. Your call.”
+→ Placement: After very short text input (e.g., one-word answers in surveys or check-ins).
+marcie-shocked.webm
+“Wow. You wrote that before coffee? Either you’re brilliant… or you’ve been bottling up since 2017.”
+→ Placement: After unusually long or vulnerable free-text responses.
+marcie-jeopardy-intro.webm
+“Welcome to ‘Jeopardy: But Make It Therapy.’ The rules are simple: Answer questions. Avoid emotional landmines. Win… self-awareness?”
+→ Placement: Game launch screen for Jeopardy-style quiz module.
+marcie-correct.webm
+“Yes. That one. You knew it — and you still almost talked yourself out of it. Celebrate anyway.”
+→ Placement: On correct answers in any gamified activity (quizzes, reflection games).
+marcie-wrong.webm
+“Oof. Close. But ‘I’m fine’ is never the right answer — unless you’re describing your Wi-Fi.”
+→ Placement: On incorrect or avoidant answers (e.g., selecting “I’m fine” as emotion).
+marcie-laugh.webm
+“HA! You actually said it out loud? Honey, frame that. That’s your new boundary.”
+→ Placement: Big win moments (e.g., completing Romance Bingo, expressing a hard truth).
+marcie-detective.webm
+“Time to decode what you really meant. Spoiler: It’s never ‘I’m just tired.’”
+→ Placement: On click of Translator feature button (pre-processing phase).
+marcie-idle.webm
+“I’ll wait. Take your time. I’ve got snacks, silence, and zero judgment. (Okay — minimal judgment.)”
+→ Placement: Default idle state on dashboard or static menus.
+marcie-thinking.webm
+“Processing… [pause] Hmm. Your subconscious just sent me a strongly worded email. We’ll get to it.”
+→ Placement: During AI processing (e.g., Translator, SOS—while waiting for output).
+marcie-waiting.webm
+“While we wait: Breathe in. Breathe out. Breathe in — oh, good. You’re still here.”
+→ Placement: Generic loading screens (e.g., slow network, API latency).
+marcie-shrug.webm
+“The universe said ‘not today.’ Refresh. Or scream into a pillow. Both work.”
+→ Placement: On error/API failure (e.g., network timeout, backend crash).
+marcie-sos-intro.webm
+“SOS activated. Let’s fix this before you send the text you’ll screenshot to your therapist tomorrow.”
+→ Placement: On Fight Solver activation (SOS button pressed).
+marcie-roast-delivery.webm (v1)
+“Ah. There it is — the truth, wrapped in glitter and a side-eye. Want the gentle version… or the real one?”
+→ Placement: Results screen load (e.g., after Translator or Personality Roast).
+marcie-roast-delivery.webm (v2)
+“Your inner critic wrote a novel. I edited it down to haiku. Ready?”
+→ Placement: Alternate results screen (same context—adds variety on repeated use).
+marcie-warning.webm
+“Uh-oh. You just sorted ‘my needs’ into the ‘later’ bin. Again. Let’s talk about that.”
+→ Placement: In Windows & Walls game — when user places vulnerable item in “Avoid” or “Later” pile.
+marcie-healing-intro.webm
+“Time to reorganize your emotional storage unit. Warning: Some boxes are heavier than they look.”
+→ Placement: Launch of Windows & Walls activity.
+logos: the main logo is mainlogoone.png and should be the most used however the others are variations in case they are needed fonts: there you have all the fonts that should be used in the app as the main font we are going to use main:holiday.ttf, all caps: moccha.ttf anything marcie says: sweet.ttf, cursive: smile.ttf, thin:wonderful.ttf, anything important and big: barbie.ttf and in marcieimages you have images of marcieliss in case they are needed anywhere. remember they always have to be overlaid. 2. thats good for me! however the most important part is that it feels like a game because IT IS A GAME.

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Repair Attempt Selection | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "repair-orange": "#f97316", "repair-teal": "#14b8a6", "repair-yellow": "#eab308", "repair-pink": "#ec4899", "repair-purple": "#8b5cf6", "charcoal-panel": "#1a1618", "background-dark": "#230f19", "background-light": "#f8f5f7"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style type="text/tailwindcss">
+        :root {
+            --nebula-glow: radial-gradient(circle at 20% 30%, rgba(238, 43, 140, 0.15) 0%, transparent 40%),
+                           radial-gradient(circle at 80% 70%, rgba(20, 184, 166, 0.15) 0%, transparent 40%),
+                           radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 60%);
+        }
+        .nebula-bg {
+            background: var(--nebula-glow);
+        }
+        .glass-panel {
+            background: rgba(26, 22, 24, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .choice-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .choice-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .gradient-button {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ee2b8c 100%);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+        .gradient-button:hover {
+            box-shadow: 0 6px 25px rgba(238, 43, 140, 0.5);
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-white min-h-screen selection:bg-primary/30">
+<div class="fixed inset-0 nebula-bg pointer-events-none"></div>
+<div class="relative flex min-h-screen w-full flex-col">
+<header class="flex items-center justify-between px-8 lg:px-20 py-6">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Love Actually</h1>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-white/40 text-xs tracking-widest uppercase">Level 4: The De-escalation Zone</span>
+<div class="h-2 w-32 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-8">
+<div class="max-w-[1100px] w-full">
+<div class="text-center mb-12">
+<h2 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/60">Choose Your Peace Offering</h2>
+<p class="text-white/50 text-lg max-w-2xl mx-auto">
+                        Tension detected in the cosmic field. Select a repair attempt to realign your orbits and restore harmony to the connection.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+<label class="relative cursor-pointer group">
+<input checked="" class="peer sr-only" name="repair-choice" type="radio"/>
+<div class="choice-card glass-panel h-full rounded-2xl p-8 flex flex-col items-center text-center peer-checked:ring-2 peer-checked:ring-repair-orange peer-checked:bg-white/5">
+<div class="size-16 rounded-full bg-repair-orange/10 flex items-center justify-center mb-6 text-repair-orange group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<h3 class="text-xl font-bold mb-3">6-Second Hug</h3>
+<p class="text-sm text-white/60 leading-relaxed mb-6">Release oxytocin and ground each other through physical presence.</p>
+<div class="mt-auto pt-4 border-t border-white/5 w-full flex justify-center">
+<span class="text-[10px] uppercase tracking-widest text-repair-orange font-bold">Physical Connection</span>
+</div>
+</div>
+</label>
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="repair-choice" type="radio"/>
+<div class="choice-card glass-panel h-full rounded-2xl p-8 flex flex-col items-center text-center peer-checked:ring-2 peer-checked:ring-repair-teal peer-checked:bg-white/5">
+<div class="size-16 rounded-full bg-repair-teal/10 flex items-center justify-center mb-6 text-repair-teal group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Direct Apology</h3>
+<p class="text-sm text-white/60 leading-relaxed mb-6">Take ownership of your part in the friction with zero justifications.</p>
+<div class="mt-auto pt-4 border-t border-white/5 w-full flex justify-center">
+<span class="text-[10px] uppercase tracking-widest text-repair-teal font-bold">Vulnerability</span>
+</div>
+</div>
+</label>
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="repair-choice" type="radio"/>
+<div class="choice-card glass-panel h-full rounded-2xl p-8 flex flex-col items-center text-center peer-checked:ring-2 peer-checked:ring-repair-yellow peer-checked:bg-white/5">
+<div class="size-16 rounded-full bg-repair-yellow/10 flex items-center justify-center mb-6 text-repair-yellow group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">hearing</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Active Listening</h3>
+<p class="text-sm text-white/60 leading-relaxed mb-6">Hold space for their perspective without planning your response.</p>
+<div class="mt-auto pt-4 border-t border-white/5 w-full flex justify-center">
+<span class="text-[10px] uppercase tracking-widest text-repair-yellow font-bold">Empathy</span>
+</div>
+</div>
+</label>
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="repair-choice" type="radio"/>
+<div class="choice-card glass-panel h-full rounded-2xl p-8 flex flex-col items-center text-center peer-checked:ring-2 peer-checked:ring-repair-pink peer-checked:bg-white/5">
+<div class="size-16 rounded-full bg-repair-pink/10 flex items-center justify-center mb-6 text-repair-pink group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">sentiment_very_satisfied</span>
+</div>
+<h3 class="text-xl font-bold mb-3">Silly Humor</h3>
+<p class="text-sm text-white/60 leading-relaxed mb-6">Crack the tension with an inside joke or a lighthearted observation.</p>
+<div class="mt-auto pt-4 border-t border-white/5 w-full flex justify-center">
+<span class="text-[10px] uppercase tracking-widest text-repair-pink font-bold">Playfulness</span>
+</div>
+</div>
+</label>
+</div>
+<div class="flex flex-col items-center gap-6">
+<button class="gradient-button px-16 py-5 rounded-full text-lg font-bold tracking-wide flex items-center gap-3 transition-all">
+<span>CHOOSE THIS PATH</span>
+<span class="material-symbols-outlined">auto_awesome</span>
+</button>
+<button class="text-white/30 hover:text-white/60 text-sm font-medium transition-colors uppercase tracking-[0.2em]">
+                        View Other Strategies
+                    </button>
+</div>
+</div>
+</main>
+<footer class="p-8 text-center text-white/20 text-xs">
+<p>© 2024 LOVE ACTUALLY... THE GAME. ALL SYSTEMS OPERATIONAL.</p>
+</footer>
+</div>
+</body></html>

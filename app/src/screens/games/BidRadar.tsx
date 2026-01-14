@@ -12,7 +12,7 @@ export default function BidRadar({ route, navigation }: any) {
   const sessionId = useRef<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(async ({ data }: any) => {
       const user = data.session?.user;
       if (user) {
         const couple = await supabase.from('profiles').select('couple_code').eq('user_id', user.id).single();
@@ -64,13 +64,13 @@ export default function BidRadar({ route, navigation }: any) {
         <View style={styles.toggleRow}>
             <SquishyButton
                 onPress={() => setIsReceived(false)}
-                style={[styles.toggleBtn, !isReceived && styles.activeBtn]}
+                style={[styles.toggleBtn, !isReceived ? styles.activeBtn : {}]}
             >
                 <Text variant="body" style={{color: !isReceived ? '#120016' : '#fff'}}>I Made It</Text>
             </SquishyButton>
             <SquishyButton
                 onPress={() => setIsReceived(true)}
-                style={[styles.toggleBtn, isReceived && styles.activeBtn]}
+                style={[styles.toggleBtn, isReceived ? styles.activeBtn : {}]}
             >
                 <Text variant="body" style={{color: isReceived ? '#120016' : '#fff'}}>I Received It</Text>
             </SquishyButton>

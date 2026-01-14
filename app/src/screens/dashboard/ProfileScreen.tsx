@@ -15,7 +15,7 @@ export default function ProfileScreen() {
   const [badges, setBadges] = useState<string[]>(['Starter', 'First Repair']);
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(async ({ data }: any) => {
       const user = data.session?.user?.id || '';
       const prof = await getProfile(user);
       setSarcasm(prof.data?.sarcasm_level || 1);

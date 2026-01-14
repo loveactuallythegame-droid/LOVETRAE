@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 import { Text, GlassCard, SquishyButton } from '../../ui';
@@ -9,6 +9,7 @@ import DrMarcieCommentary from './DrMarcieCommentary';
 import { selection, warning, success } from './HapticFeedbackSystem';
 import { speakMarcie } from '../../../lib/voice-engine';
 import { enforceSkipPenalty } from '../../../lib/consequence-engine';
+import { updateGameSession, subscribeGameSession } from '../../../lib/supabase';
 
 type Props = {
   state: GameState;
@@ -16,36 +17,60 @@ type Props = {
   onComplete: (result: GameResult) => void;
   onSkip?: () => void;
   inputArea?: ReactNode;
+  sessionId?: string; // Sync ID
 };
 
-export default function GameContainer({ state, inputs, onComplete, onSkip, inputArea }: Props) {
+export default function GameContainer({ state, inputs, onComplete, onSkip, inputArea, sessionId }: Props) {
   const [phase, setPhase] = useState<GameContext['phase']>('setup');
   const [remaining, setRemaining] = useState(state.totalTime);
   const [value, setValue] = useState<any>('');
   const float = useSharedValue(0);
+
   useEffect(() => { float.value = withRepeat(withTiming(1, { duration: 3000, easing: Easing.inOut(Easing.ease) }), -1, true); }, []);
   useEffect(() => { const t = setInterval(() => setRemaining((r) => Math.max(0, r - 1)), 1000); return () => clearInterval(t); }, [state.totalTime]);
+
+  // Real-time Sync
+  useEffect(() => {
+    if (!sessionId) return;
+    const sub = subscribeGameSession(sessionId, (payload) => {
+      if (payload.eventType === 'UPDATE' && payload.new.state) {
+        try {
+          const remote = JSON.parse(payload.new.state);
+          // Basic sync: if remote phase advanced, sync it
+          // This logic depends on what we store in 'state'. 
+          // For now, assume remote overrides local if 'timestamp' is newer? 
+          // Or just listen for 'finished' status.
+        } catch (e) { }
+      }
+    });
+    return () => { sub.unsubscribe(); };
+  }, [sessionId]);
+
   const mm = Math.floor(remaining / 60).toString().padStart(2, '0');
   const ss = Math.floor(remaining % 60).toString().padStart(2, '0');
   const style = useAnimatedStyle(() => ({ transform: [{ translateY: (float.value - 0.5) * 8 }] }));
   const score = useMemo(() => computeScore(state), [state]);
   const xp = useMemo(() => computeXp(state, score), [state, score]);
+
   function start() {
     setPhase('active');
     selection();
     speakMarcie('Begin');
   }
+
   function finish() {
     const result: GameResult = { score, xpEarned: xp, details: { value } };
     success();
     onComplete(result);
     setPhase('results');
   }
+
   async function skip() {
     warning();
     await enforceSkipPenalty(1);
     onSkip && onSkip();
   }
+
   return (
     <View style={styles.root}>
       <GlassCard>

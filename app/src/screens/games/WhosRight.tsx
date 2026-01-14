@@ -16,17 +16,18 @@ const TRANSCRIPT: Segment[] = [
 ];
 
 export default function WhosRight({ route, navigation }: any) {
+  /* ... */
   const { gameId } = route.params || { gameId: 'whos-right' };
   const [selected, setSelected] = useState<Record<number, Segment['label']>>({});
-  const sessionId = useRef<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(async ({ data }: any) => {
       const user = data.session?.user;
       const couple_id = (await supabase.from('profiles').select('couple_code').eq('user_id', user?.id || '').single()).data?.couple_code;
       if (user && couple_id) {
         const session = await createGameSession(gameId, user.id, couple_id);
-        sessionId.current = session.id;
+        setSessionId(session.id);
       }
     });
   }, [gameId]);
@@ -54,7 +55,7 @@ export default function WhosRight({ route, navigation }: any) {
             <Text variant="body">{seg.text}</Text>
             <View style={{ flexDirection: 'row', gap: 8 }}>
               {(['criticism', 'contempt', 'defensiveness', 'stonewalling'] as Segment['label'][]).map((l) => (
-                <Pressable key={l} onPress={() => toggle(i, l)} style={[styles.badge, selected[i] === l && styles.badgeOn]}>
+                <Pressable key={l} onPress={() => toggle(i, l)} style={[styles.badge, selected[i] === l ? styles.badgeOn : {}]}>
                   <Text variant="keyword">{l}</Text>
                 </Pressable>
               ))}
@@ -81,11 +82,11 @@ export default function WhosRight({ route, navigation }: any) {
 
   async function onComplete(res: { score: number; xpEarned: number }) {
     const xp = Math.min(110, 70 + Math.round(accuracy * 0.4));
-    if (sessionId.current) await updateGameSession(sessionId.current, { finished_at: new Date().toISOString(), score: res.score, state: JSON.stringify({ selected, accuracy, xp }) });
+    if (sessionId) await updateGameSession(sessionId, { finished_at: new Date().toISOString(), score: res.score, state: JSON.stringify({ selected, accuracy, xp }) });
     navigation.goBack();
   }
 
-  return <GameContainer state={baseState} inputs={["text"]} inputArea={inputArea} onComplete={onComplete} />;
+  return <GameContainer state={baseState} inputs={["text"]} inputArea={inputArea} onComplete={onComplete} sessionId={sessionId} />;
 }
 
 const styles = StyleSheet.create({

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Game Library - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Work+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", "accent-yellow": "#FFC107", "panel-bg": "#2A1A31"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .nebula-bg {background: radial-gradient(circle at 50% 50%, #2A1A31 0%, #1E1022 100%);
+        }
+        .search-glow:focus-within {box-shadow: 0 0 15px rgba(209, 101, 217, 0.4);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {background: #1E1022;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {background: #D165D9;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative flex h-screen w-full flex-col overflow-hidden nebula-bg">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 bg-background-dark/80 backdrop-blur-md z-20">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-white text-xl font-bold leading-tight tracking-tight">Love Actually... <span class="text-primary/80 font-light italic">The Game</span></h1>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="flex items-center gap-9">
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Library</a>
+<a class="text-white/60 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Progress</a>
+<a class="text-white/60 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Settings</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-white transition-all border border-white/10">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<div class="h-10 w-[1px] bg-white/10 mx-1"></div>
+<div class="flex items-center gap-3 pl-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20" data-alt="User avatar profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAq4Q3GDQeIjZDl_WiUX9yC7cwob8jrbu92CtsgTvS0VATpMw3gqPF2H_PgEwGm1iFYLX_1jwBHKW8_j7Ve4dgqjDSs3raSsh3YJ93GAaeKBdsJc10x4SF-n6OsqFdXkghEcAuZB-6IKsCZdWKSiEAFKyErTHXGcTUriEc8qarHIbJb63I3FIWDE6wwBrt33f4yMPVxygpLm1JpTZgAuAIDy7eIVt1uxu1wffmwN-AUdzJ-TegxoglBeDazC9sdaJVxE5ArPbFboN4m");'></div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="max-w-[1200px] mx-auto px-6 py-8">
+<div class="flex flex-col gap-6 mb-8">
+<div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+<div class="w-full max-w-xl">
+<label class="flex flex-col min-w-40 h-14 w-full group">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full bg-panel-bg border border-white/5 transition-all search-glow">
+<div class="text-primary flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-white/30 px-4 text-lg font-normal leading-normal" placeholder="Find a mini-game to play together..."/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span class="text-sm font-medium">Sort By: Recent</span>
+</button>
+</div>
+</div>
+<div class="border-b border-white/5">
+<div class="flex gap-8 overflow-x-auto no-scrollbar">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-white pb-3 pt-2" href="#">
+<p class="text-sm font-bold tracking-wide">All Experiences</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-white/40 hover:text-white/70 pb-3 pt-2 transition-all" href="#">
+<p class="text-sm font-bold tracking-wide">Communication</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-white/40 hover:text-white/70 pb-3 pt-2 transition-all" href="#">
+<p class="text-sm font-bold tracking-wide">Intimacy</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-white/40 hover:text-white/70 pb-3 pt-2 transition-all" href="#">
+<p class="text-sm font-bold tracking-wide">Future Goals</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-white/40 hover:text-white/70 pb-3 pt-2 transition-all" href="#">
+<p class="text-sm font-bold tracking-wide">Daily Fun</p>
+</a>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<div class="group relative bg-panel-bg rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-[4/3] relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Abstract glowing purple and blue nebula" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWIpTHvb05jkwBvDxLVC32Q-AfzgqzPLS2wjwxJ86AJ-098JAoe8owi90_hmkH39qpdXIWYtYzLTE1_xaK5Wk_JVvrE37V-WggccbdwBL1jCMF5Hrq696sJ4XGKtdeR78O_HaSFX4T9sX8OuhSbEEpXvSWd7cVSqbcAqPaJ3tfloepDNAJ4rAeiJU7HOC4E8YLmMfhjZEbemNYE7Gqzs_7X2Wx3uv2WHUnX3pU8Xk9AEf4jqD4dG2ih0leRzHov1rMMlVCc-yVnC90");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/40 backdrop-blur-md border border-accent-yellow/30">
+<div class="size-2 rounded-full bg-accent-yellow shadow-[0_0_8px_#FFC107]"></div>
+<span class="text-[10px] font-bold text-accent-yellow uppercase tracking-wider">New</span>
+</div>
+</div>
+<div class="p-4">
+<h3 class="text-white font-bold text-lg mb-1 group-hover:text-primary transition-colors">Soul Sync</h3>
+<p class="text-white/50 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 15 mins • Communication
+                            </p>
+</div>
+</div>
+<div class="group relative bg-panel-bg rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-[4/3] relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Deep space cosmic star cluster" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBpd_b1gTPxoDK-tDQKVifQtuIZUHspSoyckTrGw0RUG_v3gQbjhzNITRKH0l68PB3g8quKu2utRM0EJF4J2X2tf_K5dtBM82ys7A184UURoytubqr_hfS6p3xj0bzXIxNmTkPVejJ7WbKtWh8Z-9-RoRkg-eVXBNfqNDGHDajGW9DrFK9ymv_sh_oTVFJfKHT2ks6O1tovbM-u3nThk6RDyvSUcxyjbwbcdwih49-u-iu7Cn5npuVrQhFmPv8i999yCQ9cuo8ed3a4");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/40 backdrop-blur-md border border-primary/30">
+<div class="size-2 rounded-full bg-primary shadow-[0_0_8px_#D165D9]"></div>
+<span class="text-[10px] font-bold text-primary uppercase tracking-wider">Completed</span>
+</div>
+</div>
+<div class="p-4">
+<h3 class="text-white font-bold text-lg mb-1 group-hover:text-primary transition-colors">Cosmic Connection</h3>
+<p class="text-white/50 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 10 mins • Intimacy
+                            </p>
+</div>
+</div>
+<div class="group relative bg-panel-bg rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-[4/3] relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Abstract turquoise ocean of stars" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB3z8bew-VvClVTDBL3ISYmzaMwyf3Jwz2C7y2NkUUSGwgiVasaryfFh_JEmaUnhgps9YLlnj5H7v8gkF5-8upWQc35K8Y2rTjmUrLnKeLuMb6-tLiqzNFt8-U4IdsQE6BmgwRxIr800buTe5lKww89pzYytj1bRKVUtPYqpgtvfEyq0yiGeA0vfFbc0k-Vzy24u2zbuTiNbjdqZnB4Uj345_gH02v2TZlpYMwoD5GKQ7iMJe6PL0obBLTv3VS2dJyc0-IVx35bIDXZ");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+</div>
+<div class="p-4">
+<h3 class="text-white font-bold text-lg mb-1 group-hover:text-primary transition-colors">Deep Dive</h3>
+<p class="text-white/50 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 25 mins • Future Goals
+                            </p>
+</div>
+</div>
+<div class="group relative bg-panel-bg rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-[4/3] relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Warm golden galactic center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD8m89dc6KszMvEOMF1EFGuxixzOdDNR4H7zm8ubHNVJevIAogZVKznhmPI7hUClZcsK8tlnBO9M5Uxen8aEiAFMvnO2A0Lou9zh5Oqsu1cTH6ksfXkUPAqYg4bJG5xpMMlb11VbdftmQvTAQ8j9gcBV1M5BTIjlowycWgcKfu5UmQIVAUU-en8d-GWWPPJk6gaePXkmKN-XmxreaGVWe6aj3XQDb5L-xkzDYSUUFLm7lvYDs2Lz4PvjoBuJrpAZap6zSV1eSMtv1wR");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/40 backdrop-blur-md border border-accent-yellow/30">
+<div class="size-2 rounded-full bg-accent-yellow shadow-[0_0_8px_#FFC107]"></div>
+<span class="text-[10px] font-bold text-accent-yellow uppercase tracking-wider">New</span>
+</div>
+</div>
+<div class="p-4">
+<h3 class="text-white font-bold text-lg mb-1 group-hover:text-primary transition-colors">Stellar Stories</h3>
+<p class="text-white/50 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 12 mins • Fun
+                            </p>
+</div>
+</div>
+<div class="group relative bg-panel-bg rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-[4/3] relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Vibrant magenta cosmic dust" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDTlAtWUjbjlUEH7ADnRw-bFpMSQ66Mm3YA97uTbp1eKyF7c2OtFHSwlAy1s6Oj065dWeQS1Y4db5f5zgAcn1rNu76rh9HpO3GrImU0FeYEbPNNMInLS6WlrLaOrnh_91x2iif54XnNO0-QUos82dTn9kxgy0UTJkYYEha3uJiv135tsyGxd_n_8pUMwKC9ysbdgRzB7GDTnjAtrfXD4zFsnoISyeB-qlU77zjfEQjBM2pqLA8iKtMeET4J9FLK1bQ4-1LniDvAZ0Eg");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+</div>
+<div class="p-4">
+<h3 class="text-white font-bold text-lg mb-1 group-hover:text-primary transition-colors">Heart Orbit</h3>
+<p class="text-white/50 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 20 mins • Intimacy
+                            </p>
+</div>
+</div>
+<div class="group relative bg-panel-bg rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-[4/3] relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Ethereal blue space void" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAXpttJjuFBLLqo_Pfmnmc9MVS_YN4KhUl9Cho8KJCmW9-z9-wvB1jo_oG5MUVvIxn1D9PW0BxNg8CuD4yU1XjW6A_D9m_guYfkBqtU_y6ljwQbOjbR4AobczmM4GN3rYItJ3iTRb_DoJPRiGE51vJCI9zMHrW0mrGfsvuC4_p5gzHXSxuNgDl6g17cnonRva1DsZF_mrACkWKpQaM6I_ArZUWDB8ZRU-P9fOKE8b8fsopIn2kF7UdhMQ3Q6MvL0EiwQ8i5kHeINuXW");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+<div class="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/40 backdrop-blur-md border border-primary/30">
+<div class="size-2 rounded-full bg-primary shadow-[0_0_8px_#D165D9]"></div>
+<span class="text-[10px] font-bold text-primary uppercase tracking-wider">Completed</span>
+</div>
+</div>
+<div class="p-4">
+<h3 class="text-white font-bold text-lg mb-1 group-hover:text-primary transition-colors">Nebula Night</h3>
+<p class="text-white/50 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 30 mins • Connection
+                            </p>
+</div>
+</div>
+<div class="group relative bg-panel-bg rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-[4/3] relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Lunar surface glowing in dark" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCsfb3AOx-Q32fmjcwEWaKruwfXjynU9S1AOGgqfD0FLJLfzJzpEtbLknMWVSUTolU3006XwUXBAnzeQ3_OZ0UQopbSRr2tv1MOlFvIIeOX9tYuRlwYdeO6Nq_r7xZSKtVMZZ5I0FmtrEu3r3Pzwphuo6_TcLYX7yBdfRgCDThX3j0FVXu9DukD7jg5ViiUQBoUG0-CNPMTDUGLFMhGspXs-FAjV5mnhinYsL7Poxjc8ih5B0dqxQ0UvZjWp53D6134tiSg6C9jdw0i");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+</div>
+<div class="p-4">
+<h3 class="text-white font-bold text-lg mb-1 group-hover:text-primary transition-colors">Lunar Love</h3>
+<p class="text-white/50 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 15 mins • Fun
+                            </p>
+</div>
+</div>
+<div class="group relative bg-panel-bg rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all hover:-translate-y-1 cursor-pointer">
+<div class="aspect-[4/3] relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Streaking comet in night sky" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBipxslhtSddLxJLJeqwzZSM9vnh74FnB8gWqUFlhHFY_cxmELdLubf5fAoiJBf_8LoGdAIBYY8xxYzMPVHj_-zP3R0nzGQqimx4ZgfijnGTLiApuFo3eDt6cu-outSJ_kieTEEpiGM-7Ontusfh7jGVxc1bWeRpi9LumUO8IZT3ijJKOc9ewd2dswxDUJKBQ190dr_dpoWa1LSEU5DkPjwIcULPK6Ude7e2DqboeTgl2Hzo1EH0tsSVUkBFSnUN5avq-p7udnvGkj_");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+</div>
+<div class="p-4">
+<h3 class="text-white font-bold text-lg mb-1 group-hover:text-primary transition-colors">Comet Chat</h3>
+<p class="text-white/50 text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 8 mins • Communication
+                            </p>
+</div>
+</div>
+</div>
+<div class="mt-12 flex justify-center">
+<button class="px-8 py-3 rounded-full bg-primary/10 border border-primary/30 text-primary font-bold hover:bg-primary/20 transition-all">
+                        Discover More Experiences
+                    </button>
+</div>
+<div class="mt-16 bg-white/5 rounded-2xl border border-white/5 p-6">
+<h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history</span>
+                        Recent Activity
+                    </h2>
+<div class="space-y-1">
+<div class="flex items-center gap-4 bg-panel-bg/50 px-4 py-3 rounded-lg border border-transparent hover:border-white/10 transition-colors">
+<div class="text-primary flex items-center justify-center rounded-lg bg-primary/10 shrink-0 size-10">
+<span class="material-symbols-outlined">stars</span>
+</div>
+<div class="flex-1">
+<p class="text-white text-sm font-medium">New Challenge: "Stellar Stories" Available</p>
+<p class="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-0.5">Unlocked 2h ago</p>
+</div>
+<div class="shrink-0">
+<div class="size-2 rounded-full bg-accent-yellow shadow-[0_0_8px_#FFC107]"></div>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-transparent px-4 py-3 rounded-lg border border-transparent hover:border-white/5 transition-colors">
+<div class="text-white/40 flex items-center justify-center rounded-lg bg-white/5 shrink-0 size-10">
+<span class="material-symbols-outlined">task_alt</span>
+</div>
+<div class="flex-1">
+<p class="text-white/70 text-sm font-medium">Completed "Nebula Night" with Sarah</p>
+<p class="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-0.5">Yesterday</p>
+</div>
+<div class="shrink-0">
+<div class="size-2 rounded-full bg-primary/20"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="h-12 bg-background-dark/90 border-t border-white/5 px-10 flex items-center justify-between z-20">
+<div class="flex gap-4 text-[10px] font-bold text-white/40 uppercase tracking-widest">
+<span>Total Progress: 64%</span>
+<span class="text-primary/40">•</span>
+<span>8 Games Unlocked</span>
+</div>
+<div class="flex gap-4 items-center">
+<span class="text-[10px] text-white/40 uppercase tracking-widest">Connected with: Sarah</span>
+<div class="size-2 rounded-full bg-primary animate-pulse"></div>
+</div>
+</footer>
+</div>
+</body></html>

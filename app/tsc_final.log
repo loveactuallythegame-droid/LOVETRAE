@@ -1,0 +1,107 @@
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(1,28): error TS2307: Cannot find module '@testing-library/react-hooks' or its corresponding type declarations.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(3,30): error TS2307: Cannot find module '../../../lib/gating' or its corresponding type declarations.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(7,1): error TS2708: Cannot use namespace 'jest' as a value.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(8,17): error TS2708: Cannot use namespace 'jest' as a value.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(10,1): error TS2708: Cannot use namespace 'jest' as a value.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(11,12): error TS2708: Cannot use namespace 'jest' as a value.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(16,5): error TS2708: Cannot use namespace 'jest' as a value.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(20,27): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(21,35): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(25,35): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(26,51): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(30,35): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(34,27): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(35,35): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(40,35): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(41,51): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(45,27): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(46,35): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(51,54): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(55,27): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(56,35): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/features/beta/hooks/__tests__/useBetaAccess.test.ts(61,54): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/lib/__tests__/ai-engine.test.ts(4,1): error TS2708: Cannot use namespace 'jest' as a value.
+src/lib/__tests__/ai-engine.test.ts(11,16): error TS2708: Cannot use namespace 'jest' as a value.
+src/lib/__tests__/ai-engine.test.ts(24,5): error TS2708: Cannot use namespace 'jest' as a value.
+src/lib/__tests__/ai-engine.test.ts(29,27): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/lib/__tests__/ai-engine.test.ts(35,26): error TS2339: Property 'toHaveBeenCalledWith' does not exist on type 'Assertion'.
+src/lib/__tests__/ai-engine.test.ts(35,54): error TS2339: Property 'stringContaining' does not exist on type 'ExpectStatic'.
+src/lib/__tests__/ai-engine.test.ts(35,93): error TS2339: Property 'any' does not exist on type 'ExpectStatic'.
+src/lib/__tests__/ai-engine.test.ts(36,20): error TS2551: Property 'toEqual' does not exist on type 'Assertion'. Did you mean 'equal'?
+src/lib/__tests__/ai-engine.test.ts(41,27): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/lib/__tests__/ai-engine.test.ts(43,27): error TS2694: Namespace 'global.jest' has no exported member 'Mock'.
+src/lib/__tests__/ai-engine.test.ts(49,26): error TS2339: Property 'toHaveBeenCalledTimes' does not exist on type 'Assertion'.
+src/lib/__tests__/ai-engine.test.ts(50,20): error TS2551: Property 'toEqual' does not exist on type 'Assertion'. Did you mean 'equal'?
+src/screens/auth/OriginStoryScreen.tsx(45,48): error TS7006: Parameter '_event' implicitly has an 'any' type.
+src/screens/auth/OriginStoryScreen.tsx(45,56): error TS7006: Parameter 'session' implicitly has an 'any' type.
+src/screens/auth/OriginStoryScreen.tsx(60,29): error TS7031: Binding element 'data' implicitly has an 'any' type.
+src/screens/auth/OriginStoryScreen.tsx(148,55): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: ViewProps): View', gave the following error.
+    Type '{ width: string | undefined; }' is not assignable to type 'ViewStyle | Falsy | RegisteredStyle<ViewStyle> | RecursiveArray<ViewStyle | Falsy | RegisteredStyle<ViewStyle>> | readonly (ViewStyle | ... 1 more ... | RegisteredStyle<...>)[]'.
+      Types of property 'width' are incompatible.
+        Type 'string | undefined' is not assignable to type 'DimensionValue | undefined'.
+          Type 'string' is not assignable to type 'DimensionValue | undefined'.
+  Overload 2 of 2, '(props: ViewProps, context: any): View', gave the following error.
+    Type '{ width: string | undefined; }' is not assignable to type 'ViewStyle | Falsy | RegisteredStyle<ViewStyle> | RecursiveArray<ViewStyle | Falsy | RegisteredStyle<ViewStyle>> | readonly (ViewStyle | ... 1 more ... | RegisteredStyle<...>)[]'.
+      Types of property 'width' are incompatible.
+        Type 'string | undefined' is not assignable to type 'DimensionValue | undefined'.
+          Type 'string' is not assignable to type 'DimensionValue | undefined'.
+src/screens/dashboard/DashboardHome.tsx(114,18): error TS2322: Type '{ children: Element[]; onPress: () => any; }' is not assignable to type 'IntrinsicAttributes & GlassCardProps'.
+  Property 'onPress' does not exist on type 'IntrinsicAttributes & GlassCardProps'.
+src/screens/games/__tests__/BidRadar.test.tsx(7,1): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(10,19): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(12,11): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(13,15): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(14,13): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(15,19): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(18,15): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(19,17): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(20,19): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(23,15): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(24,13): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(25,19): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(26,21): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(32,22): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(33,22): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(36,1): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(37,16): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(40,1): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(48,14): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(54,11): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/BidRadar.test.tsx(69,36): error TS2339: Property 'toBeTruthy' does not exist on type 'Assertion'.
+src/screens/games/__tests__/BidRadar.test.tsx(70,66): error TS2339: Property 'toBeTruthy' does not exist on type 'Assertion'.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(7,1): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(10,19): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(12,11): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(13,15): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(14,13): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(15,19): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(18,15): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(19,17): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(20,19): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(25,22): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(26,22): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(29,1): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(30,16): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(33,1): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(36,14): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(37,14): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(42,11): error TS2708: Cannot use namespace 'jest' as a value.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(63,25): error TS2339: Property 'toHaveBeenCalledWith' does not exist on type 'Assertion'.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(63,53): error TS2339: Property 'stringContaining' does not exist on type 'ExpectStatic'.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(68,25): error TS2339: Property 'toHaveBeenCalledWith' does not exist on type 'Assertion'.
+src/screens/games/__tests__/GentleStartUpGauntlet.test.tsx(68,53): error TS2339: Property 'stringContaining' does not exist on type 'ExpectStatic'.
+src/screens/games/MemoryLaneMap.tsx(27,131): error TS7006: Parameter 'payload' implicitly has an 'any' type.
+src/screens/games/RoleSwapRoast.tsx(27,131): error TS7006: Parameter 'payload' implicitly has an 'any' type.
+src/screens/games/SlapOfTruth.tsx(35,131): error TS7006: Parameter 'payload' implicitly has an 'any' type.
+src/screens/games/StressTest.tsx(29,131): error TS7006: Parameter 'payload' implicitly has an 'any' type.
+src/screens/games/WindowsAndWalls.tsx(38,131): error TS7006: Parameter 'payload' implicitly has an 'any' type.
+src/state/__tests__/store.test.ts(20,43): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/state/__tests__/store.test.ts(28,47): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/state/__tests__/store.test.ts(33,47): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/state/__tests__/store.test.ts(41,43): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/state/__tests__/store.test.ts(42,41): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/state/__tests__/store.test.ts(50,48): error TS2339: Property 'toBe' does not exist on type 'Assertion'.
+src/state/Provider.tsx(17,46): error TS7031: Binding element 'data' implicitly has an 'any' type.
+vite.config.ts(1,30): error TS2307: Cannot find module 'vite' or its corresponding type declarations.
+vite.config.ts(13,22): error TS7006: Parameter 'id' implicitly has an 'any' type.

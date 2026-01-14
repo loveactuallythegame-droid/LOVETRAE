@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Verdict | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "accent-yellow": "#fbbf24", "accent-turquoise": "#2dd4bf", "accent-orange": "#fb923c", "accent-teal": "#14b8a6", "accent-purple": "#8b5cf6", "deep-charcoal": "#121212", "panel-bg": "#1a1a1a", "background-light": "#f8f5f7", "background-dark": "#230f19"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .nebula-vibrant {
+                background: 
+                    radial-gradient(circle at 10% 20%, rgba(238, 43, 140, 0.2) 0%, transparent 40%),
+                    radial-gradient(circle at 90% 80%, rgba(45, 212, 191, 0.15) 0%, transparent 40%),
+                    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 60%);
+                background-color: #080808;
+            }
+            .roast-glow {
+                text-shadow: 0 0 15px rgba(238, 43, 140, 0.8), 0 0 30px rgba(238, 43, 140, 0.4);
+            }
+            .panel-glass {
+                background: rgba(26, 26, 26, 0.8);
+                backdrop-filter: blur(16px);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            .glow-border-pink {
+                box-shadow: 0 0 20px rgba(238, 43, 140, 0.3);
+            }
+            .glow-border-turquoise {
+                box-shadow: 0 0 20px rgba(45, 212, 191, 0.3);
+            }
+        }
+    </style>
+</head>
+<body class="bg-deep-charcoal font-display text-white min-h-screen selection:bg-primary/30 nebula-vibrant">
+<div class="relative flex min-h-screen w-full flex-col">
+<header class="flex items-center justify-between px-10 py-6 border-b border-white/5">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Love Actually...</h2>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-white/40 text-sm uppercase tracking-widest font-semibold">Conflict ID: #2409-X</span>
+<div class="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center border border-white/10">
+<span class="material-symbols-outlined text-xl">psychology</span>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center max-w-7xl mx-auto w-full px-6 py-12">
+<div class="text-center mb-16 relative">
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-32 bg-accent-turquoise/20 blur-3xl rounded-full"></div>
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-teal/10 border border-accent-teal/30 text-accent-teal text-xs font-bold tracking-widest uppercase mb-4">
+<span class="animate-pulse">●</span> Marcie AI Analysis
+                </div>
+<h1 class="text-5xl md:text-6xl font-bold tracking-tighter mb-4">The <span class="text-primary italic">"Tough Love"</span> Verdict</h1>
+<p class="text-white/50 text-xl max-w-2xl mx-auto">I've crunched the feelings. Here's why you're both making things harder than they need to be.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full items-stretch mb-12">
+<div class="panel-glass rounded-3xl p-8 border-l-4 border-l-accent-turquoise glow-border-turquoise flex flex-col">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-2xl bg-accent-turquoise/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-turquoise">person</span>
+</div>
+<div>
+<h3 class="font-bold text-lg leading-none">Alex's Lens</h3>
+<p class="text-accent-turquoise/60 text-xs font-bold uppercase tracking-widest mt-1">Defensive Shield</p>
+</div>
+</div>
+<div class="space-y-4 flex-1">
+<p class="text-white/80 leading-relaxed italic">"I feel like I'm constantly being audited for every small mistake, which makes me want to withdraw entirely to avoid more criticism."</p>
+<div class="pt-4 border-t border-white/5">
+<span class="text-[10px] uppercase text-white/40 tracking-widest">Primary Emotion</span>
+<div class="flex gap-2 mt-2">
+<span class="bg-white/5 px-3 py-1 rounded text-xs">Suffocated</span>
+<span class="bg-white/5 px-3 py-1 rounded text-xs">Undervalued</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-3xl p-8 text-deep-charcoal relative overflow-hidden flex flex-col justify-center transform lg:scale-105 z-10 shadow-2xl shadow-primary/20">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-8xl">balance</span>
+</div>
+<h3 class="font-black text-xs uppercase tracking-[0.3em] mb-6 text-primary">The Reality</h3>
+<div class="space-y-6">
+<p class="text-2xl font-bold leading-tight">You're both arguing about the <span class="underline decoration-accent-orange decoration-4">dishes</span> because neither of you feels <span class="underline decoration-accent-turquoise decoration-4">seen</span>.</p>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3 text-sm font-medium">
+<span class="material-symbols-outlined text-accent-teal">check_circle</span>
+<span>Overlap: Fear of abandonment</span>
+</div>
+<div class="flex items-center gap-3 text-sm font-medium">
+<span class="material-symbols-outlined text-accent-teal">check_circle</span>
+<span>Core Issue: Respect vs. Autonomy</span>
+</div>
+</div>
+</div>
+</div>
+<div class="panel-glass rounded-3xl p-8 border-r-4 border-r-accent-purple glow-border-pink flex flex-col">
+<div class="flex items-center gap-4 mb-6 justify-end text-right">
+<div>
+<h3 class="font-bold text-lg leading-none">Jordan's Lens</h3>
+<p class="text-accent-purple/60 text-xs font-bold uppercase tracking-widest mt-1">The Need for Order</p>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-accent-purple/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-purple">person_4</span>
+</div>
+</div>
+<div class="space-y-4 flex-1 text-right">
+<p class="text-white/80 leading-relaxed italic">"If I don't point things out, they just don't get done. It feels like I'm a manager, not a partner in this relationship."</p>
+<div class="pt-4 border-t border-white/5">
+<span class="text-[10px] uppercase text-white/40 tracking-widest">Primary Emotion</span>
+<div class="flex gap-2 mt-2 justify-end">
+<span class="bg-white/5 px-3 py-1 rounded text-xs">Isolated</span>
+<span class="bg-white/5 px-3 py-1 rounded text-xs">Overburdened</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full panel-glass rounded-3xl p-10 relative border border-primary/30">
+<div class="absolute -top-5 left-10 bg-primary px-4 py-1 rounded text-xs font-bold tracking-widest uppercase">Marcie's Roast</div>
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="size-24 shrink-0 rounded-full bg-gradient-to-tr from-primary to-accent-orange flex items-center justify-center p-1">
+<div class="w-full h-full rounded-full bg-deep-charcoal flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-5xl text-primary animate-pulse" style="font-variation-settings: 'FILL' 1">auto_awesome</span>
+</div>
+</div>
+<div class="flex-1">
+<p class="text-2xl md:text-3xl font-bold roast-glow text-primary leading-tight">
+                            "Alex, your 'withdrawal' isn't peace, it's a strategic ghosting. And Jordan, your 'reminders' are just corporate emails with more attitude. You're both acting like roommates who met on a bad Craigslist ad."
+                        </p>
+</div>
+<div class="shrink-0">
+<div class="bg-white/5 p-4 rounded-2xl border border-white/10 text-center">
+<p class="text-xs uppercase text-white/40 mb-1">Sting Meter</p>
+<span class="text-3xl font-black text-accent-yellow">9.8/10</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-16 flex flex-col md:flex-row gap-6 items-center">
+<button class="bg-primary hover:bg-primary/90 text-white font-bold py-5 px-10 rounded-2xl transition-all hover:scale-105 shadow-xl shadow-primary/20 flex items-center gap-3 group">
+<span>START HEALING EXERCISE</span>
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">favorite</span>
+</button>
+<button class="bg-white/5 hover:bg-white/10 text-white font-bold py-5 px-10 rounded-2xl transition-all border border-white/10 flex items-center gap-3">
+<span class="material-symbols-outlined">refresh</span>
+<span>RE-EXAMINE PERSPECTIVES</span>
+</button>
+</div>
+</main>
+<footer class="py-10 text-center">
+<p class="text-[10px] tracking-[0.5em] text-white/20 uppercase">Love Actually... The Game | Phase 4: Resolution</p>
+</footer>
+</div>
+</body></html>

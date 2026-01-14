@@ -36,7 +36,7 @@ export default function SharedMeaningMural({ route, navigation }: any) {
             <SquishyButton
               key={s}
               onPress={() => toggle(s)}
-              style={[styles.item, selected.includes(s) && styles.active]}
+              style={[styles.item, selected.includes(s) ? styles.active : {}]}
             >
               <Text variant="body" style={{ color: selected.includes(s) ? '#000' : '#fff' }}>{s}</Text>
             </SquishyButton>
