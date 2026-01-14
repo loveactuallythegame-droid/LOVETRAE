@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Translator Interrogation - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(19, 236, 236, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 107, 107, 0.1) 0%, transparent 40%),
+                        #102222;
+        }
+        .glow-teal {
+            box-shadow: 0 0 15px rgba(19, 236, 236, 0.4);
+        }
+        .glow-pink {
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.4);
+        }
+        .progress-gradient {
+            background: linear-gradient(90deg, #fbbf24 0%, #f97316 100%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-white nebula-bg">
+<div class="layout-container flex flex-col min-h-screen">
+<!-- TopNavBar Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 md:px-20 py-4 bg-background-dark/50 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight font-display">Love Actually...</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Home</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Rules</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Stats</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex size-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-white transition-all">
+<span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 text-white transition-all">
+<span class="material-symbols-outlined" style="font-size: 20px;">person</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-12">
+<!-- Progress Section -->
+<div class="w-full max-w-[600px] mb-12">
+<div class="flex flex-col gap-3 p-4">
+<div class="flex gap-6 justify-between items-end">
+<p class="text-white/60 text-xs uppercase tracking-[0.2em] font-bold">Interrogation Status</p>
+<p class="text-white text-lg font-bold font-display">Question 1 <span class="text-white/30">/ 3</span></p>
+</div>
+<div class="h-3 rounded-full bg-white/5 overflow-hidden">
+<div class="h-full rounded-full progress-gradient transition-all duration-500" style="width: 33.33%;"></div>
+</div>
+</div>
+</div>
+<!-- Headline Section -->
+<div class="text-center mb-8">
+<h1 class="text-white tracking-tight text-3xl md:text-5xl font-bold leading-tight px-4 font-display">Interrogating the Translation...</h1>
+<p class="text-white/50 mt-4 text-lg">Analyze the emotional resonance of their latest message.</p>
+</div>
+<!-- Central Interrogation Card -->
+<div class="w-full max-w-2xl px-4 mb-8">
+<div class="bg-[#1c2727]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-8 md:p-12 text-center">
+<!-- Line Art Illustration -->
+<div class="mb-10 flex justify-center">
+<div class="relative w-full h-32 flex items-center justify-center">
+<!-- Abstract Wave Pattern -->
+<svg class="w-full max-w-xs h-24 text-primary opacity-60" fill="none" viewbox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 20 L20 20 L30 10 L40 30 L50 20 L150 20 L160 10 L170 30 L180 20 L200 20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<circle cx="35" cy="20" r="15" stroke="currentColor" stroke-dasharray="4 4" stroke-width="0.5"></circle>
+<circle cx="165" cy="20" r="15" stroke="currentColor" stroke-dasharray="4 4" stroke-width="0.5"></circle>
+</svg>
+</div>
+</div>
+<h3 class="text-white text-2xl md:text-3xl font-bold mb-4 font-display tracking-tight">Was their tone flat?</h3>
+<p class="text-white/60 text-base md:text-lg mb-12 max-w-md mx-auto">Analyze the frequency and pitch variance. Did it lack the usual emotional spikes?</p>
+<!-- ButtonGroup -->
+<div class="flex flex-col sm:flex-row gap-6 justify-center max-w-md mx-auto">
+<button class="group relative flex-1 flex h-16 items-center justify-center overflow-hidden rounded-2xl bg-primary text-background-dark text-lg font-bold tracking-widest transition-all hover:scale-105 glow-teal">
+<span class="relative z-10 flex items-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+                                YES
+                            </span>
+</button>
+<button class="group relative flex-1 flex h-16 items-center justify-center overflow-hidden rounded-2xl bg-[#283939] border border-[#ff6b6b]/30 text-white text-lg font-bold tracking-widest transition-all hover:bg-[#ff6b6b]/20 hover:border-[#ff6b6b] hover:scale-105 hover:glow-pink">
+<span class="relative z-10 flex items-center gap-2">
+<span class="material-symbols-outlined">cancel</span>
+                                NO
+                            </span>
+</button>
+</div>
+</div>
+</div>
+<!-- Context Footer -->
+<div class="flex items-center gap-2 text-white/40 text-sm italic">
+<span class="material-symbols-outlined text-sm">info</span>
+                Analysis active: Processing linguistic patterns from last 5 minutes.
+            </div>
+</main>
+<!-- Sidebar / Bottom Info Cards (Simplified for sequence context) -->
+<div class="px-6 md:px-20 pb-12">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+<div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
+<div class="size-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">visibility</span>
+</div>
+<div>
+<p class="text-xs text-white/50 font-bold uppercase tracking-wider">Eye Contact</p>
+<p class="text-sm text-white">Pending Next</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm opacity-50">
+<div class="size-12 rounded-lg bg-white/10 flex items-center justify-center text-white/50">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="text-xs text-white/50 font-bold uppercase tracking-wider">Response Delay</p>
+<p class="text-sm text-white">Queued</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm opacity-50">
+<div class="size-12 rounded-lg bg-white/10 flex items-center justify-center text-white/50">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div>
+<p class="text-xs text-white/50 font-bold uppercase tracking-wider">Final Verdict</p>
+<p class="text-sm text-white">Calculating...</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Background Decorative Element (Nebula Image Placeholder) -->
+<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-30" data-alt="A luminous cosmic nebula with deep charcoal and cyan clouds" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBiiNpiS6vAqgcTGHpWzhiMKHhkiNKnn7u-z05cOf_ePI7pIDH1hj0m7dVhpeHmilumci9j5h6F7m1hF42TJyWBnDuLaxxrU1gAmmCQ5jqQPlfjZYqV624yOLPpQxasBr3HO_V-pbL9_HXu5AZPBjbPA3K5LogY7v98kSFRuIfuI4NpgYpVXOXaskeuWtfKO-HNEeuDFK4I4qq7kqbLoFAHLu2wByiNY7s75jXpzXYH_JEIDxS4UaEKF7-tbrHW3FiTQRIL6rGG-RBA'); background-size: cover;">
+</div>
+</div>
+</body></html>

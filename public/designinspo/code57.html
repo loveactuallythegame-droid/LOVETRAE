@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SOS Holding Room | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-pink": "#ee2b8c",
+                        "primary-purple": "#6d28d9",
+                        "accent-yellow": "#fbbf24",
+                        "accent-turquoise": "#2dd4bf",
+                        "accent-orange": "#fb923c",
+                        "accent-teal": "#0d9488",
+                        "charcoal": "#121212",
+                        "panel": "#1a1a1a",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        :root {
+            --nebula-glow: radial-gradient(circle at 50% 50%, rgba(109, 40, 217, 0.15) 0%, transparent 70%);
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 10% 20%, rgba(238, 43, 140, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(45, 212, 191, 0.1) 0%, transparent 40%),
+                        var(--nebula-glow);
+            background-color: #080808;
+        }
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .timer-ring {
+            filter: drop-shadow(0 0 15px rgba(238, 43, 140, 0.4));
+        }
+        .breathing-circle {
+            animation: pulse-slow 8s ease-in-out infinite;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.5); opacity: 0.2; }
+        }
+        .timer-pulse {
+            animation: ring-pulse 4s ease-in-out infinite;
+        }
+        @keyframes ring-pulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+    </style>
+</head>
+<body class="bg-charcoal font-display text-white min-h-screen selection:bg-primary-pink/30 overflow-hidden">
+<div class="fixed inset-0 nebula-bg pointer-events-none z-0">
+<div class="breathing-circle absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-primary-purple/20 blur-[100px]"></div>
+<div class="breathing-circle absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-accent-teal/10 blur-[120px]" style="animation-delay: -4s;"></div>
+</div>
+<div class="relative z-10 flex flex-col min-h-screen">
+<header class="flex items-center justify-between px-10 py-6 border-b border-white/5">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary-pink">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Love Actually</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium uppercase tracking-wider text-white/60">
+<span class="w-2 h-2 rounded-full bg-accent-orange"></span>
+                    SOS Reflection Phase
+                </div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 max-w-5xl mx-auto w-full">
+<div class="text-center mb-16 space-y-4">
+<h1 class="text-5xl font-bold tracking-tight text-white">Quiet Your Cosmos</h1>
+<p class="text-white/50 text-xl max-w-xl mx-auto leading-relaxed">
+                    Take a few deep breaths. Your partner is currently finalizing their reflection. This space is yours to find balance.
+                </p>
+</div>
+<div class="relative flex items-center justify-center mb-16">
+<div class="absolute inset-0 rounded-full bg-primary-pink/5 blur-3xl timer-pulse"></div>
+<div class="relative w-80 h-80 flex items-center justify-center timer-pulse">
+<svg class="w-full h-full transform -rotate-90 timer-ring" viewBox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="46" stroke="rgba(255,255,255,0.05)" stroke-width="4"></circle>
+<defs>
+<linearGradient id="timerGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#6d28d9"></stop>
+<stop offset="100%" stop-color="#ee2b8c"></stop>
+</linearGradient>
+</defs>
+<circle cx="50" cy="50" fill="transparent" r="46" stroke="url(#timerGradient)" stroke-dasharray="289" stroke-dashoffset="80" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="text-7xl font-bold tracking-tighter mb-1">04:20</span>
+<span class="text-xs font-bold tracking-[0.3em] uppercase text-white/40">Cool-down</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+<div class="glass-panel p-8 rounded-3xl group cursor-pointer hover:border-accent-turquoise/30 transition-all">
+<div class="size-12 rounded-2xl bg-accent-turquoise/10 flex items-center justify-center text-accent-turquoise mb-6">
+<span class="material-symbols-outlined text-3xl">air</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Box Breathing</h3>
+<p class="text-white/40 text-sm leading-relaxed">Focus on the square flow of your breath to stabilize your heart rate.</p>
+</div>
+<div class="glass-panel p-8 rounded-3xl border-primary-pink/30 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<div class="bg-primary-pink text-[10px] font-bold px-2 py-1 rounded tracking-widest uppercase">Active</div>
+</div>
+<div class="size-12 rounded-2xl bg-primary-pink/10 flex items-center justify-center text-primary-pink mb-6">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">spa</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Mindful Pulsing</h3>
+<p class="text-white/40 text-sm leading-relaxed">Match your heart rhythm to the cosmic pulse in the center of the screen.</p>
+</div>
+<div class="glass-panel p-8 rounded-3xl group cursor-pointer hover:border-accent-yellow/30 transition-all">
+<div class="size-12 rounded-2xl bg-accent-yellow/10 flex items-center justify-center text-accent-yellow mb-6">
+<span class="material-symbols-outlined text-3xl">self_improvement</span>
+</div>
+<h3 class="text-xl font-bold mb-2">Guided Zen</h3>
+<p class="text-white/40 text-sm leading-relaxed">Listen to soft celestial frequencies to ease your emotional state.</p>
+</div>
+</div>
+</main>
+<footer class="p-10 flex flex-col items-center gap-6">
+<div class="flex items-center gap-8 text-sm font-medium text-white/30 tracking-widest uppercase">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-turquoise"></span>
+                    You're Ready
+                </div>
+<div class="flex items-center gap-2 opacity-50">
+<span class="w-1.5 h-1.5 rounded-full bg-white/20"></span>
+                    Partner Reflecting
+                </div>
+</div>
+<button class="flex items-center gap-3 text-white/40 hover:text-white transition-colors text-sm">
+<span class="material-symbols-outlined text-lg">flag</span>
+<span>Signal Readiness Early</span>
+</button>
+</footer>
+<div class="fixed bottom-10 left-10">
+<div class="glass-panel px-4 py-2 rounded-full border border-white/10 text-[10px] font-bold tracking-[0.2em] text-white/50 uppercase">
+                Step 25 / 40
+            </div>
+</div>
+</div>
+
+</body></html>

@@ -9,44 +9,44 @@ const useMock = !SUPABASE_URL || !SUPABASE_ANON_KEY;
 
 export const supabase: any = useMock
   ? {
-      from: (_table: string) => {
-        const q: any = {
-          select: (_q?: string) => q,
-          insert: (_row: any) => ({ select: (_s?: string) => ({ data: _row, error: null }), single: () => ({ data: _row, error: null }) }),
-          update: (_patch: any) => ({
-            eq: (_col: string, _val: any) => ({ select: (_s?: string) => ({ data: { ..._patch }, error: null }), single: () => ({ data: { ..._patch }, error: null }) }),
-            is: (_col: string, _val: any) => ({ select: (_s?: string) => ({ data: { ..._patch }, error: null }) }),
-          }),
-          eq: (_col: string, _val: any) => q,
-          not: (_col: string, _op: string, _val: any) => q,
-          limit: (_n: number) => ({ data: [], error: null }),
-          single: () => ({ data: null, error: null }),
-          upsert: (_p: any, _opts?: any) => ({ data: _p, error: null }),
-        };
-        return q;
-      },
-      channel: (_name: string) => {
-        const ch: any = {
-          on: (_event: string, _spec: any, _cb: Function) => ch,
-          subscribe: () => ch,
-        };
-        return ch;
-      },
-      removeChannel: (_ch: any) => {},
-      auth: {
-        getSession: async () => ({ data: { session: { user: { id: 'preview', email: 'preview@local' } } } }),
-        signOut: async () => ({ error: null }),
-        signInWithPassword: async (_opts: any) => ({ data: { user: { id: 'preview' } }, error: null }),
-        signUp: async (_opts: any) => ({ data: { user: { id: 'preview' } }, error: null }),
-        signInWithOAuth: async (_opts: any) => ({ data: { provider: 'google' }, error: null }),
-      },
-    }
+    from: (_table: string) => {
+      const q: any = {
+        select: (_q?: string) => q,
+        insert: (_row: any) => ({ select: (_s?: string) => ({ data: _row, error: null }), single: () => ({ data: _row, error: null }) }),
+        update: (_patch: any) => ({
+          eq: (_col: string, _val: any) => ({ select: (_s?: string) => ({ data: { ..._patch }, error: null }), single: () => ({ data: { ..._patch }, error: null }) }),
+          is: (_col: string, _val: any) => ({ select: (_s?: string) => ({ data: { ..._patch }, error: null }) }),
+        }),
+        eq: (_col: string, _val: any) => q,
+        not: (_col: string, _op: string, _val: any) => q,
+        limit: (_n: number) => ({ data: [], error: null }),
+        single: () => ({ data: null, error: null }),
+        upsert: (_p: any, _opts?: any) => ({ data: _p, error: null }),
+      };
+      return q;
+    },
+    channel: (_name: string) => {
+      const ch: any = {
+        on: (_event: string, _spec: any, _cb: Function) => ch,
+        subscribe: () => ch,
+      };
+      return ch;
+    },
+    removeChannel: (_ch: any) => { },
+    auth: {
+      getSession: async () => ({ data: { session: { user: { id: 'preview', email: 'preview@local' } } } }),
+      signOut: async () => ({ error: null }),
+      signInWithPassword: async (_opts: any) => ({ data: { user: { id: 'preview' } }, error: null }),
+      signUp: async (_opts: any) => ({ data: { user: { id: 'preview' } }, error: null }),
+      signInWithOAuth: async (_opts: any) => ({ data: { provider: 'google' }, error: null }),
+    },
+  }
   : createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-      },
-    });
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+    },
+  });
 
 export type Profile = {
   user_id: string;
@@ -94,7 +94,7 @@ export function subscribeFight(id: string, cb: (payload: any) => void) {
 export interface Game {
   id: string;
   name: string;
-  category: 'emotional' | 'conflict' | 'creative' | 'romance';
+  category: 'emotional' | 'conflict' | 'creative' | 'romance' | 'arcade';
   difficulty: 'Easy' | 'Medium' | 'Hard';
   xp: number;
   description: string;
@@ -123,10 +123,10 @@ export async function listGames(): Promise<Game[]> {
     difficulty: (typeof g.difficulty === 'string'
       ? g.difficulty
       : g.difficulty >= 3
-      ? 'Hard'
-      : g.difficulty === 2
-      ? 'Medium'
-      : 'Easy') as Game['difficulty'],
+        ? 'Hard'
+        : g.difficulty === 2
+          ? 'Medium'
+          : 'Easy') as Game['difficulty'],
     xp: g.xp_reward ?? g.xp ?? 100,
     description: g.description ?? '',
     mechanics: g.mechanics ?? '',
@@ -135,6 +135,19 @@ export async function listGames(): Promise<Game[]> {
 }
 
 export async function createGameSession(game_id: string, user_id: string, couple_id: string) {
+  // Global Multiplayer Fix: Check for existing active session first
+  const { data: existing } = await supabase
+    .from('game_sessions')
+    .select('*')
+    .eq('game_id', game_id)
+    .eq('couple_id', couple_id)
+    .is('finished_at', null)
+    .maybeSingle();
+
+  if (existing) {
+    return existing as GameSession;
+  }
+
   const started_at = new Date().toISOString();
   const { data, error } = await supabase
     .from('game_sessions')
@@ -162,7 +175,7 @@ export async function upsertProfile(profile: Partial<Profile>) {
   const res = await supabase.from('profiles').upsert(profile, { onConflict: 'user_id' });
   try {
     if ((profile as any).user_id) await AsyncStorage.setItem(`profile_${(profile as any).user_id}`, JSON.stringify(profile));
-  } catch {}
+  } catch { }
   return res;
 }
 

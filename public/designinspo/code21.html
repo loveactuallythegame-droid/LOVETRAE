@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daily Duel Card Detail - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", charcoal: "#1a0d14"}, fontFamily: {display: "Work Sans", sans: ["Noto Sans", "sans-serif"]}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(238, 43, 140, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(0, 206, 209, 0.1) 0%, transparent 40%);
+        }
+        .glow-button {
+            box-shadow: 0 0 20px rgba(238, 43, 140, 0.4);
+        }
+        .card-gradient-border {
+            background: linear-gradient(135deg, #FFD700, #FF8C00);
+            padding: 3px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen text-white">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden nebula-bg">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-white/10 px-10 py-4 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<svg class="size-8" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Love Actually...</h2>
+</div>
+<div class="flex items-center gap-10">
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-sm font-medium hover:text-primary transition-colors text-primary" href="#">Daily Duel</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Decks</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">History</a>
+</nav>
+<div class="h-10 w-10 rounded-full border-2 border-primary/50 overflow-hidden">
+<div class="h-full w-full bg-cover bg-center" data-alt="User profile avatar circle" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCpDJ90Tmh9gBELWtxl_ywP6P_IUdrxYCah1ZcYCs4ZbjTgZd06O-0r1b4P0YRjvqWdi6MW0sYmsqSdstrRZPUWAa2zUGPbXgOy1vCRoQ35D1oXr889mSNXmDyMaY9-4hH51qrhOoUnI-JuLyM0BX4Zkh6WHxKFelavsMtwLViDyDIhVwnIYkJE2h9EvBWBIhHQbH0b_65hKsWNeOK35nvUE5VuD3NKgRcxjo-kBnH8O2z5v86WG5KkX-jPxTvuLJ4N-nyEndarx0bf')"></div>
+</div>
+</div>
+</header>
+<main class="flex flex-1 items-start justify-center px-4 py-12 md:px-20 lg:px-40">
+<!-- Sidebar (Desktop) -->
+<aside class="hidden xl:flex flex-col w-64 mr-12 sticky top-28">
+<div class="bg-charcoal/50 border border-white/5 p-6 rounded-xl flex flex-col gap-6 backdrop-blur-sm">
+<div class="flex flex-col gap-1">
+<h3 class="text-white/60 text-xs font-bold uppercase tracking-widest">Active Status</h3>
+<div class="flex items-center gap-2 mt-2">
+<span class="size-3 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-sm">In Duel Variant 2/10</span>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3 px-4 py-3 rounded-full bg-primary text-white">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+<span class="text-sm font-medium">Today's Duel</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full text-white/70 hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined text-[20px]">trending_up</span>
+<span class="text-sm font-medium">My Streaks</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full text-white/70 hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+<span class="text-sm font-medium">Messages</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full text-white/70 hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined text-[20px]">emoji_events</span>
+<span class="text-sm font-medium">Leaderboard</span>
+</div>
+</div>
+<div class="pt-4 border-t border-white/10">
+<p class="text-[10px] text-white/40 leading-relaxed uppercase tracking-tighter">Current Level</p>
+<p class="text-lg font-bold text-primary">Cosmic Soulmates</p>
+</div>
+</div>
+</aside>
+<!-- Main Duel Detail Content -->
+<div class="flex-1 flex flex-col items-center max-w-2xl">
+<!-- Headline -->
+<div class="text-center mb-10">
+<h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-2">Daily Duel #24</h1>
+<p class="text-white/50 text-lg">Connect deeply in the silence of space.</p>
+</div>
+<!-- The Dual-Accent Gradient Card -->
+<div class="card-gradient-border rounded-xl w-full group transition-transform duration-500 hover:scale-[1.02]">
+<div class="bg-charcoal rounded-[calc(1rem-3px)] overflow-hidden flex flex-col items-center p-8 md:p-12 relative">
+<!-- Top Accent Chips -->
+<div class="flex justify-between w-full mb-8">
+<span class="bg-primary/20 text-primary border border-primary/30 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Active Challenge</span>
+<span class="bg-white/5 text-white/60 px-3 py-1 rounded-full text-xs font-medium">Rare Duel</span>
+</div>
+<!-- Central Visual Element (Timer & Image) -->
+<div class="relative flex items-center justify-center mb-10">
+<!-- Circular Countdown Ring -->
+<div class="absolute inset-0 -m-4">
+<svg class="w-full h-full transform -rotate-90">
+<circle cx="50%" cy="50%" fill="transparent" r="48%" stroke="rgba(255,255,255,0.05)" stroke-width="6"></circle>
+<circle cx="50%" cy="50%" fill="transparent" r="48%" stroke="#00ced1" stroke-dasharray="250" stroke-dashoffset="60" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+</div>
+<div class="size-48 md:size-64 rounded-full border-4 border-white/10 overflow-hidden z-10">
+<div class="h-full w-full bg-cover bg-center" data-alt="Abstract intimate silhouettes looking at each other in cosmic space" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDSfKX-brK_8-JiZjdzb5YMhTV2Ke8hPXPx9KtZWKSSLhcEZx6T_VO_NhDB7xv0-Z1BULxhbyW-Gf9OiY5WYcMhj6FdreELLQ2EklGq0YyVgTtufcDJaOY3-x7Bf9-dJ9GtfMJmXiLI3VutnlQnxqR_vmgZw_8k3Bw5RqNEgWBys80M9CemW5O1VmMN_3f-IUNWbfNiZze6ZfPh-KS_PLN-dVQHHtDfWbHdbX6dFrGPu1GY0UhTfaxUBZrwvUrI5PRcgIL2v4sKNxwo')"></div>
+</div>
+</div>
+<!-- Card Content -->
+<div class="text-center flex flex-col items-center gap-4">
+<h2 class="text-3xl md:text-4xl font-bold tracking-tight">The Eye Contact Challenge</h2>
+<p class="text-white/70 text-lg leading-relaxed max-w-md">
+                                Stare into your partner's eyes for 3 minutes without speaking. Connect on a cosmic level and feel the universe pulse between you.
+                            </p>
+<!-- Detailed Timer -->
+<div class="flex gap-3 py-6">
+<div class="flex flex-col items-center bg-white/5 rounded-xl p-3 min-w-[70px]">
+<span class="text-2xl font-bold text-white">04</span>
+<span class="text-[10px] text-white/40 uppercase font-bold tracking-widest">Hours</span>
+</div>
+<div class="text-2xl font-bold text-white/30 pt-2">:</div>
+<div class="flex flex-col items-center bg-white/5 rounded-xl p-3 min-w-[70px]">
+<span class="text-2xl font-bold text-white">22</span>
+<span class="text-[10px] text-white/40 uppercase font-bold tracking-widest">Minutes</span>
+</div>
+<div class="text-2xl font-bold text-white/30 pt-2">:</div>
+<div class="flex flex-col items-center bg-white/5 rounded-xl p-3 min-w-[70px]">
+<span class="text-2xl font-bold text-[#00ced1]">15</span>
+<span class="text-[10px] text-white/40 uppercase font-bold tracking-widest">Seconds</span>
+</div>
+</div>
+<p class="text-[#00ced1] text-sm font-medium mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+                                12,400 couples dueling today
+                            </p>
+<!-- Primary Action Button -->
+<button class="glow-button w-full max-w-sm py-4 rounded-full bg-gradient-to-r from-[#ee2b8c] to-[#8A2BE2] text-white font-bold text-lg hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+<span>Accept Challenge</span>
+<span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Stats -->
+<div class="grid grid-cols-3 gap-8 mt-12 w-full max-w-md">
+<div class="text-center">
+<p class="text-white/40 text-xs font-bold uppercase tracking-wider mb-1">Difficulty</p>
+<div class="flex justify-center gap-1">
+<span class="size-2 rounded-full bg-primary"></span>
+<span class="size-2 rounded-full bg-primary"></span>
+<span class="size-2 rounded-full bg-white/20"></span>
+</div>
+</div>
+<div class="text-center">
+<p class="text-white/40 text-xs font-bold uppercase tracking-wider mb-1">XP Reward</p>
+<p class="text-sm font-bold text-yellow-400">+500 XP</p>
+</div>
+<div class="text-center">
+<p class="text-white/40 text-xs font-bold uppercase tracking-wider mb-1">Time Limit</p>
+<p class="text-sm font-bold">3:00</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating UI Decorations -->
+<div class="fixed bottom-10 right-10 flex flex-col gap-4">
+<button class="bg-charcoal/80 border border-white/10 backdrop-blur-md p-3 rounded-full hover:bg-primary transition-all group">
+<span class="material-symbols-outlined text-white">share</span>
+</button>
+<button class="bg-charcoal/80 border border-white/10 backdrop-blur-md p-3 rounded-full hover:bg-primary transition-all group">
+<span class="material-symbols-outlined text-white">help_outline</span>
+</button>
+</div>
+</div>
+</body></html>

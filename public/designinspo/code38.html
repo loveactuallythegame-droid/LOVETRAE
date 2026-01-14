@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Repair Execution - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-dark": "#230f19", charcoal: "#1a1317", gold: "#FFD700", turquoise: "#40E0D0", "teal-accent": "#008080", "orange-accent": "#FF8C00", "purple-accent": "#9d4edd", "background-light": "#f8f5f7"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                font-family: "Space Grotesk", sans-serif;
+            }
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 50% 50%, rgba(64, 224, 208, 0.1) 0%, transparent 70%),
+                        radial-gradient(circle at 10% 10%, rgba(238, 43, 140, 0.1) 0%, transparent 40%),
+                        linear-gradient(180deg, #0a0508 0%, #160d14 100%);
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(26, 19, 23, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .timer-ring {
+            background: conic-gradient(from 0deg, #40E0D0 0%, #008080 75%, transparent 100%);
+            mask: radial-gradient(transparent 65%, black 66%);
+            -webkit-mask: radial-gradient(transparent 65%, black 66%);
+        }
+        .glow-turquoise {
+            box-shadow: 0 0 40px rgba(64, 224, 208, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-white min-h-screen font-display nebula-bg overflow-hidden">
+<div class="flex flex-col h-screen">
+<header class="flex items-center justify-between px-10 py-6 border-b border-white/5">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 text-white/40 hover:text-white transition-colors group">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+<span class="text-xs font-bold uppercase tracking-widest">Abort Repair</span>
+</button>
+</div>
+<div class="flex flex-col items-center">
+<h1 class="text-white text-sm font-bold tracking-[0.2em] uppercase">Phase 04: Emotional Re-entry</h1>
+<div class="flex gap-1 mt-1">
+<div class="h-1 w-8 bg-turquoise rounded-full"></div>
+<div class="h-1 w-8 bg-turquoise rounded-full"></div>
+<div class="h-1 w-8 bg-turquoise rounded-full"></div>
+<div class="h-1 w-8 bg-white/20 rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="text-[10px] text-white/40 uppercase font-bold tracking-wider">Connected Stability</p>
+<p class="text-turquoise font-bold">98.4%</p>
+</div>
+<div class="size-10 rounded-full border border-white/10 p-0.5">
+<img alt="User profile" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnoUP4-DHAeALDA2SH4Ox8swoGpmRkDHaw5fiQOslrsB54ZC8w-DUntDZFlrhoWm-Q0jyzH1nHMOHKM2ykj-0CKYfLGyHLCSM-fBbdSfykPZsrMzAoyitMi8c2fv_N_wETX-BvXSxHkwg5Bm3xPE-YKXEmY53W-LyS8mSj4IqRE1RDgjI4Q-8czd3Jh89EPL5iUz9xOK8Hy_0qDTPmIUcGFrLpEUTeG67geF-qyK2frqodVqXTPgbawmaLmsG_FkBU_1AwJ4cwnDLD"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center relative px-6">
+<div class="absolute top-12 text-center max-w-md">
+<h2 class="text-3xl font-bold mb-3">Reflective Listening</h2>
+<p class="text-white/60 text-lg leading-relaxed">
+                    Take turns repeating what you heard your partner say before responding with your own thoughts.
+                </p>
+</div>
+<div class="relative flex items-center justify-center">
+<div class="absolute size-[480px] rounded-full bg-turquoise/5 animate-pulse"></div>
+<div class="relative size-[400px] flex items-center justify-center">
+<div class="absolute inset-0 timer-ring rounded-full opacity-80"></div>
+<div class="absolute inset-0 rounded-full border-4 border-white/5"></div>
+<div class="z-10 text-center">
+<span class="text-7xl font-bold tracking-tighter block mb-2">04:42</span>
+<div class="flex flex-col items-center gap-4">
+<span class="text-turquoise text-xs font-bold uppercase tracking-[0.3em] flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-turquoise opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-turquoise"></span>
+</span>
+                                Connection in progress...
+                            </span>
+</div>
+</div>
+</div>
+<div class="absolute -top-10 -right-20 glass-panel p-4 rounded-xl border-turquoise/20 glow-turquoise max-w-[200px]">
+<span class="material-symbols-outlined text-turquoise mb-2">auto_awesome</span>
+<p class="text-[10px] uppercase font-bold tracking-wider text-white/40 mb-1">Active Prompt</p>
+<p class="text-xs font-medium italic">"I hear you saying that you felt lonely when I stayed late..."</p>
+</div>
+<div class="absolute -bottom-10 -left-20 glass-panel p-4 rounded-xl border-purple-accent/20 max-w-[200px]">
+<span class="material-symbols-outlined text-purple-accent mb-2">favorite</span>
+<p class="text-[10px] uppercase font-bold tracking-wider text-white/40 mb-1">Heart Rate Sync</p>
+<p class="text-xs font-medium">Synchronized at 72 BPM</p>
+</div>
+</div>
+<div class="absolute bottom-12 flex gap-8">
+<div class="flex items-center gap-3 glass-panel px-6 py-4 rounded-full border-white/10">
+<span class="material-symbols-outlined text-turquoise">mic</span>
+<div class="flex flex-col">
+<span class="text-[10px] text-white/40 uppercase font-black tracking-widest">Speaker</span>
+<span class="text-sm font-bold">Alex</span>
+</div>
+</div>
+<div class="flex items-center gap-3 glass-panel px-6 py-4 rounded-full border-white/10 opacity-50">
+<span class="material-symbols-outlined text-white/40">volume_up</span>
+<div class="flex flex-col">
+<span class="text-[10px] text-white/40 uppercase font-black tracking-widest">Listener</span>
+<span class="text-sm font-bold">Sam</span>
+</div>
+</div>
+</div>
+</main>
+<footer class="p-10 flex justify-between items-center">
+<div class="flex gap-4">
+<button class="size-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">pause</span>
+</button>
+<button class="size-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="glass-panel px-6 py-3 rounded-xl flex items-center gap-3">
+<span class="text-orange-accent font-bold">+150 HP</span>
+<span class="text-white/40 text-sm">Accumulated so far</span>
+</div>
+<button class="bg-primary hover:bg-primary/80 text-white px-8 py-3 rounded-xl font-bold tracking-wide transition-all shadow-lg shadow-primary/20">
+                    Next Step
+                </button>
+</div>
+</footer>
+</div>
+</body></html>

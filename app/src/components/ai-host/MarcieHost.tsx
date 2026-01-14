@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-import { View, StyleSheet, useWindowDimensions } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { View, StyleSheet, useWindowDimensions, Animated, Platform, Easing } from 'react-native';
 import { useAppStore } from '../../state/store';
-import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 import LottieView from 'lottie-react-native';
 import FrameSequence from './FrameSequence';
 import { AVATAR_FRAMES } from '../../constants/assetManifest';
@@ -38,48 +37,53 @@ export default function MarcieHost({
 }: MarcieHostProps) {
   const { width, height } = useWindowDimensions();
   const defaultPos = { x: Math.max(0, width - size - 20), y: Math.max(0, height - size - 80) };
-  const tx = useSharedValue((position || defaultPos).x);
-  const ty = useSharedValue((position || defaultPos).y);
-  const bob = useSharedValue(0);
+
+  const tx = useRef(new Animated.Value((position || defaultPos).x)).current;
+  const ty = useRef(new Animated.Value((position || defaultPos).y)).current;
+  const bob = useRef(new Animated.Value(0)).current;
   const reducedMotion = useAppStore((s) => s.reducedMotion);
 
   useEffect(() => {
-    if (float && !reducedMotion) bob.value = withRepeat(withTiming(1, { duration: 3000, easing: Easing.inOut(Easing.ease) }), -1, true);
+    if (float && !reducedMotion) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(bob, { toValue: 1, duration: 3000, easing: Easing.inOut(Easing.ease), useNativeDriver: Platform.OS !== 'web' }),
+          Animated.timing(bob, { toValue: 0, duration: 3000, easing: Easing.inOut(Easing.ease), useNativeDriver: Platform.OS !== 'web' })
+        ])
+      ).start();
+    } else {
+      bob.setValue(0);
+    }
   }, [float, reducedMotion]);
 
-  const px = position?.x;
-  const py = position?.y;
-  const cx = ctaTarget?.x;
-  const cy = ctaTarget?.y;
-  const ix = inputTarget?.x;
-  const iy = inputTarget?.y;
-
   useEffect(() => {
-    if (mode === 'point' && ctaTarget) {
-      tx.value = withTiming(ctaTarget.x - size * 0.3, { duration: 600 });
-      ty.value = withTiming(ctaTarget.y - size * 0.6, { duration: 600 });
-    } else if (mode === 'lean' && inputTarget) {
-      tx.value = withTiming(inputTarget.x - size * 0.2, { duration: 600 });
-      ty.value = withTiming(inputTarget.y - size * 0.5, { duration: 600 });
-    } else {
-      const p = position || defaultPos;
-      tx.value = withTiming(p.x, { duration: 600 });
-      ty.value = withTiming(p.y, { duration: 600 });
-    }
-  }, [mode, cx, cy, ix, iy, px, py, size, width, height]);
+    let targetX = (position || defaultPos).x;
+    let targetY = (position || defaultPos).y;
 
-  const style = useAnimatedStyle(() => ({
+    if (mode === 'point' && ctaTarget) {
+      targetX = ctaTarget.x - size * 0.3;
+      targetY = ctaTarget.y - size * 0.6;
+    } else if (mode === 'lean' && inputTarget) {
+      targetX = inputTarget.x - size * 0.2;
+      targetY = inputTarget.y - size * 0.5;
+    }
+
+    Animated.parallel([
+      Animated.timing(tx, { toValue: targetX, duration: 600, useNativeDriver: Platform.OS !== 'web' }),
+      Animated.timing(ty, { toValue: targetY, duration: 600, useNativeDriver: Platform.OS !== 'web' })
+    ]).start();
+  }, [mode, ctaTarget, inputTarget, position, size, width, height]);
+
+  const animatedStyle = {
     transform: [
-      { translateX: tx.value },
-      { translateY: ty.value + (float ? (bob.value - 0.5) * 10 : 0) },
+      { translateX: tx },
+      { translateY: Animated.add(ty, bob.interpolate({ inputRange: [0, 1], outputRange: [-5, 5] })) }, // Bob range -5 to 5
     ],
     zIndex,
-  }));
+  };
 
-  // Debounced resize handler could be added here if needed, but Reanimated handles values well.
-  
   return (
-    <Animated.View pointerEvents="none" style={[styles.root, style, { width: size, height: size }]}> 
+    <Animated.View pointerEvents="none" style={[styles.root, animatedStyle, { width: size, height: size }]}>
       {!!idleLottieSource && mode === 'idle' ? (
         <LottieView source={idleLottieSource} autoPlay loop style={{ width: size, height: size }} />
       ) : (

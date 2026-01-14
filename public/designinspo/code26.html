@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Game Editor - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", charcoal: "#1c2727", "deep-charcoal": "#111818", "accent-yellow": "#fbbf24", "accent-purple": "#a855f7"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .nebula-glow {
+            background: radial-gradient(circle at 50% 50%, rgba(19, 236, 236, 0.05) 0%, transparent 70%);
+        }
+        .glass-panel {
+            background: rgba(28, 39, 39, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 84, 84, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen flex flex-col overflow-x-hidden nebula-glow">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#283939] px-6 py-3 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Love Actually... <span class="text-primary/80 font-light">The Game</span></h2>
+</div>
+<label class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full">
+<div class="text-[#9db9b9] flex border-none bg-[#283939] items-center justify-center pl-4 rounded-l-xl border-r-0">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-[#283939] focus:border-none h-full placeholder:text-[#9db9b9] px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal" placeholder="Search prompts..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-[#9db9b9] hover:text-primary transition-colors text-sm font-medium" href="#">Dashboard</a>
+<a class="text-[#9db9b9] hover:text-primary transition-colors text-sm font-medium" href="#">Analytics</a>
+<a class="text-[#9db9b9] hover:text-primary transition-colors text-sm font-medium" href="#">Asset Library</a>
+<a class="text-white border-b-2 border-primary pb-1 text-sm font-medium" href="#">Editor</a>
+</nav>
+<div class="flex gap-2 border-l border-[#283939] pl-6">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-[#283939] hover:bg-primary/20 text-white transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-primary/50" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC-lB5JQn-xYlN5_Yzq75-zX-rzn7D-3t43UsFtAPYK_TbyIZIGoXr_GPuDlL6Tb8aSFJg3d2Vwqcn4h0O-TQyjevNYdjY22VT4wx5JXE-5cU1tjMCxJFtGxDAwhaWOcMcMemqR2E4Ic4Ktt-kJy-46LqBQwFGN5T5hw_26LodNe3_T_t8hTFApLzENtrXhKTN7XWdNNJZfx654ZOkOTpMSXOKoYsn_BleieBq1tcEB9cD__wymD2ZsX3XLkV9i7FRLErPjOUQ1nrSD");'></div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-72 flex-shrink-0 border-r border-[#283939] bg-deep-charcoal flex flex-col justify-between p-6">
+<div class="flex flex-col gap-8">
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold">Editor Settings</h1>
+<p class="text-primary text-xs font-medium tracking-widest uppercase mt-1">v10.0 Cosmic Nebula</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-white text-sm font-medium">General Info</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary">speed</span>
+<p class="text-white text-sm font-medium">Difficulty</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary">label</span>
+<p class="text-white text-sm font-medium">Categories</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-deep-charcoal shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined font-bold">settings_suggest</span>
+<p class="text-sm font-bold">Mechanics</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary">account_tree</span>
+<p class="text-white text-sm font-medium">Logic &amp; Flow</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary">palette</span>
+<p class="text-white text-sm font-medium">Theming</p>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-[#283939]">
+<button class="w-full flex items-center justify-center gap-2 rounded-xl h-12 bg-white/5 hover:bg-white/10 text-white text-sm font-bold transition-all border border-white/10">
+<span class="material-symbols-outlined">add_circle</span>
+<span>New Chapter</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-background-dark relative">
+<!-- Header Section -->
+<div class="flex flex-wrap justify-between items-end gap-4 p-8 border-b border-[#283939] bg-background-dark/40 backdrop-blur">
+<div class="flex min-w-72 flex-col gap-2">
+<h2 class="text-white text-4xl font-black leading-tight tracking-tight">Prompt Editor</h2>
+<div class="flex items-center gap-2">
+<span class="size-2 bg-primary rounded-full animate-pulse"></span>
+<p class="text-[#9db9b9] text-base font-medium">Editing: <span class="text-white">Deep Connection</span> • Chapter 4</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-6 h-12 rounded-xl bg-primary text-deep-charcoal font-bold hover:shadow-[0_0_20px_rgba(19,236,236,0.4)] transition-all">
+<span class="material-symbols-outlined text-[20px]">save</span>
+                        Save
+                    </button>
+<button class="flex items-center gap-2 px-6 h-12 rounded-xl bg-accent-yellow/10 border border-accent-yellow text-accent-yellow font-bold hover:bg-accent-yellow hover:text-deep-charcoal transition-all">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                        Preview
+                    </button>
+<button class="flex items-center gap-2 px-6 h-12 rounded-xl bg-accent-purple text-white font-bold hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all">
+<span class="material-symbols-outlined text-[20px]">publish</span>
+                        Publish
+                    </button>
+</div>
+</div>
+<div class="max-w-5xl mx-auto p-8 space-y-8">
+<!-- Composer Section -->
+<section class="space-y-4">
+<h3 class="text-white text-2xl font-bold px-1">Question/Prompt Configuration</h3>
+<div class="glass-panel rounded-2xl p-6">
+<div class="flex gap-6">
+<div class="flex flex-col gap-4 flex-1">
+<div class="space-y-2">
+<label class="text-[#9db9b9] text-sm font-medium ml-1">Main Prompt Text</label>
+<textarea class="form-input w-full min-h-[120px] rounded-xl text-white bg-deep-charcoal border-[#3b5454] focus:border-primary focus:ring-1 focus:ring-primary text-lg p-4 transition-all" placeholder="Enter your romantic or cosmic prompt here...">If you could travel to any nebula together, which one would you choose and what would you name the new star you discover?</textarea>
+</div>
+<div class="flex items-center justify-between bg-deep-charcoal/50 p-4 rounded-xl border border-[#3b5454]">
+<div class="flex gap-2">
+<button class="p-2 text-[#9db9b9] hover:text-primary transition-colors">
+<span class="material-symbols-outlined">image</span>
+</button>
+<button class="p-2 text-[#9db9b9] hover:text-primary transition-colors">
+<span class="material-symbols-outlined">music_note</span>
+</button>
+<button class="p-2 text-[#9db9b9] hover:text-primary transition-colors">
+<span class="material-symbols-outlined">link</span>
+</button>
+<button class="p-2 text-[#9db9b9] hover:text-primary transition-colors">
+<span class="material-symbols-outlined">timer</span>
+</button>
+</div>
+<button class="px-4 py-2 bg-primary/10 border border-primary/30 text-primary rounded-lg text-sm font-bold hover:bg-primary/20 transition-all">
+                                        + Add Nudge
+                                    </button>
+</div>
+</div>
+<div class="w-64 flex flex-col gap-4">
+<label class="text-[#9db9b9] text-sm font-medium ml-1">Prompt Visual</label>
+<div class="aspect-square bg-deep-charcoal border-2 border-dashed border-[#3b5454] rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary transition-all group overflow-hidden relative" data-alt="Cosmic nebula background preview">
+<img alt="Nebula backdrop" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTlUz9kJshspi-fJIw_kZWYXNapOCyAgIdJW7cVO1H6rHbi_2aLV51AzPATNG6mz_8N8hIPQ2sk0tSfVJE1daegruvRcmtDc3PL-ux8Z7pWiM6Wo7fpDtYfVs1hn92Fy5XAdQofgVQ_8ZDk7tspkam2NVJnoTD3U2hLdpo41bldqxXglZi25OkP4bKxsP3lP5fYUt3HewOu98W-NHuzEfclvjvtxWpX-tyKiRqvF_u8nSiZjZqP9K4RrjpYlprGqiZNWyH5oi_hMqX"/>
+<div class="relative z-10 flex flex-col items-center text-center p-4">
+<span class="material-symbols-outlined text-primary text-3xl mb-2">cloud_upload</span>
+<p class="text-xs text-[#9db9b9]">Change Backdrop</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Grid Details -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Logic Rules -->
+<section class="space-y-4">
+<h3 class="text-white text-xl font-bold px-1">Game Logic</h3>
+<div class="glass-panel rounded-2xl p-6 space-y-4">
+<div class="space-y-2">
+<label class="text-[#9db9b9] text-sm font-medium">Appearance Phase</label>
+<select class="w-full bg-deep-charcoal border-[#3b5454] rounded-xl text-white focus:border-primary">
+<option>Early Game (Icebreakers)</option>
+<option selected="">Mid Game (Deep Connection)</option>
+<option>Late Game (Intimacy)</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-[#9db9b9] text-sm font-medium">Difficulty Level</label>
+<div class="flex gap-2">
+<button class="flex-1 py-2 rounded-lg bg-deep-charcoal border border-[#3b5454] text-xs font-bold hover:border-primary transition-all">SOFT</button>
+<button class="flex-1 py-2 rounded-lg bg-primary/20 border border-primary text-primary text-xs font-bold">WARM</button>
+<button class="flex-1 py-2 rounded-lg bg-deep-charcoal border border-[#3b5454] text-xs font-bold hover:border-primary transition-all">INTENSE</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Collaborators -->
+<section class="space-y-4">
+<h3 class="text-white text-xl font-bold px-1">Collaboration</h3>
+<div class="glass-panel rounded-2xl p-6">
+<p class="text-[#9db9b9] text-sm mb-4">Current users editing this chapter:</p>
+<div class="flex -space-x-3 mb-6">
+<div class="size-10 rounded-full border-2 border-deep-charcoal bg-cover" data-alt="Collaborator avatar 1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBsJyabNuoOeYxLbdIL3h-_KUZoMpwPS-FXK1FvAablomljftlgtqG0Qp7PsrI3uu9D84bQxAF8QVyUmkBnUMyIEMzaAevSgXwTiH_ocr1FzYvC4xqJPS6RTMPQezPHkTW0bMVzGw55QsROS2cxopgrKG3_-zoMNhHwszWAr5rhdHO1LTck52aLXqTSfH-304vrQJIdNSYZLWY0mzzuiov1i0YBn-x4AAPKoPmvlKmitFZlGp4ePZxe-mhNIpksPZUw4MUJ1IEjlqEc");'></div>
+<div class="size-10 rounded-full border-2 border-deep-charcoal bg-cover" data-alt="Collaborator avatar 2" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBauPvOgtwgm-jaXg7WJWpmVgb0D72we5RwME82FMQUic_d1W-Fszbslp-EmRPKsTOfZ_X0S5XkksqZ2WTT2beyIMSQN021T_q62jXQtYDWa2QBNVH7P7Sa0aytgm2ajcD69_0YNqCYJL6cZIagiAYfplzs76KjA9ftAtCYGC8M9E5kx_YaZlnjcFgq5g-4Ya8i45R5In2DXxwuF2E23XZDb_Kcfmvov4UQX8TL6gvWYwouHJbtj9_bG3L_d8O6Rgfz4_g1AzubsA2c");'></div>
+<div class="size-10 rounded-full border-2 border-deep-charcoal bg-cover" data-alt="Collaborator avatar 3" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCGOB6pqkthmmr9v93IuyFz0w82n-AFLbCGaqm0_AQA0kHapIXki2MK_EwfFzl-YEoqsiYdL33gIWAs7AdVoaWTLTgQteR6u_WPUsHyxvGjfWy8EBjsFEHCUxBmupKBBlAFBqJRdPQuxQjR8StiFnpJvjx_BwO_RhjaHFZnG13Vrw-PtDhJN_O8pNoIllpn4vu4-FM6k5y_7dv_tzckrctwGYoFIsu9oTRdEfOHForxxveaZSqfqezYmWBwizBUzRVL0aghP6QTlxgJ");'></div>
+<div class="size-10 rounded-full border-2 border-deep-charcoal bg-[#283939] flex items-center justify-center text-[10px] font-bold">+2</div>
+</div>
+<button class="w-full py-2 bg-white/5 border border-white/10 rounded-xl text-sm font-bold hover:bg-white/10 transition-all">
+                                Manage Permissions
+                            </button>
+</div>
+</section>
+</div>
+</div>
+<!-- Preview Float Button -->
+<div class="fixed bottom-8 right-8">
+<button class="size-16 rounded-full bg-primary text-deep-charcoal shadow-[0_0_30px_rgba(19,236,236,0.5)] flex items-center justify-center hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl font-bold">play_arrow</span>
+</button>
+</div>
+</main>
+</div>
+</body></html>

@@ -21,7 +21,7 @@ export default function ApologyAuction({ route, navigation }: any) {
   const sessionId = useRef<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }) => {
+    supabase.auth.getSession().then(async ({ data }: any) => {
       const user = data.session?.user;
       const couple_id = (await supabase.from('profiles').select('couple_code').eq('user_id', user?.id || '').single()).data?.couple_code;
       if (user && couple_id) {

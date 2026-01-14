@@ -1,6 +1,5 @@
-import { ReactNode, useState } from 'react';
-import { Pressable, ViewStyle, Platform } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
+import { ReactNode, useState, useRef } from 'react';
+import { Pressable, ViewStyle, Platform, Animated } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { COLORS } from '../../constants/colors';
 
@@ -11,38 +10,79 @@ type SquishyButtonProps = {
   accessibilityLabel?: string;
 };
 
-export default function SquishyButton({ children, style, onPress, accessibilityLabel }: SquishyButtonProps) {
-  const scale = useSharedValue(1);
-  const shadow = useSharedValue(0.2);
+export default function SquishyButton({ children, style, onPress, accessibilityLabel, disabled }: SquishyButtonProps & { disabled?: boolean }) {
+  const scale = useRef(new Animated.Value(1)).current;
+  const shadow = useRef(new Animated.Value(0.2)).current;
   const [isFocused, setIsFocused] = useState(false);
-  const animated = useAnimatedStyle(() => ({ 
-    transform: [{ scale: scale.value }], 
-    shadowOpacity: shadow.value, 
-    shadowRadius: 6 
-  }));
 
+  // Focus styles for accessibility
   const focusStyle = isFocused ? {
     borderWidth: 2,
     borderColor: COLORS.focusOutline,
-    borderRadius: 8, // Ensure outline is visible and follows shape roughly
+    borderRadius: 8,
   } : {};
+
+  // Animated styles
+  const animatedStyle = {
+    transform: [{ scale }],
+    shadowOpacity: shadow,
+    shadowRadius: 6,
+    opacity: disabled ? 0.6 : 1, // Visual indication of disabled state
+  };
+
+  const handlePressIn = () => {
+    if (disabled) return;
+    Animated.parallel([
+      Animated.spring(scale, { toValue: 0.95, useNativeDriver: Platform.OS !== 'web' }),
+      Animated.timing(shadow, { toValue: 0.35, duration: 120, useNativeDriver: Platform.OS !== 'web' })
+    ]).start();
+  };
+
+  const handlePressOut = () => {
+    if (disabled) return;
+    Animated.parallel([
+      Animated.spring(scale, { toValue: 1, useNativeDriver: Platform.OS !== 'web' }),
+      Animated.timing(shadow, { toValue: 0.2, duration: 120, useNativeDriver: Platform.OS !== 'web' })
+    ]).start();
+  };
+
+  const handleHoverIn = () => {
+    if (disabled) return;
+    Animated.parallel([
+      Animated.timing(scale, { toValue: 1.05, duration: 150, useNativeDriver: Platform.OS !== 'web' }),
+      Animated.timing(shadow, { toValue: 0.4, duration: 150, useNativeDriver: Platform.OS !== 'web' })
+    ]).start();
+  };
+
+  const handleHoverOut = () => {
+    if (disabled) return;
+    Animated.parallel([
+      Animated.timing(scale, { toValue: 1, duration: 150, useNativeDriver: Platform.OS !== 'web' }),
+      Animated.timing(shadow, { toValue: 0.2, duration: 150, useNativeDriver: Platform.OS !== 'web' })
+    ]).start();
+  };
 
   return (
     <Pressable
       accessibilityRole="button"
       accessible
       accessibilityLabel={accessibilityLabel || (typeof children === 'string' ? children : 'Button')}
-      focusable
-      onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); onPress && onPress(); }}
-      onPressIn={() => { scale.value = withSpring(0.95); shadow.value = withTiming(0.35, { duration: 120 }); }}
-      onPressOut={() => { scale.value = withSpring(1); shadow.value = withTiming(0.2, { duration: 120 }); }}
-      onHoverIn={() => { scale.value = withTiming(1.05, { duration: 150 }); shadow.value = withTiming(0.4, { duration: 150 }); }}
-      onHoverOut={() => { scale.value = withTiming(1, { duration: 150 }); shadow.value = withTiming(0.2, { duration: 150 }); }}
-      onFocus={() => setIsFocused(true)}
+      accessibilityState={{ disabled }}
+      focusable={!disabled}
+      onPress={() => {
+        if (disabled) return;
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        onPress && onPress();
+      }}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onHoverIn={handleHoverIn}
+      onHoverOut={handleHoverOut}
+      onFocus={() => !disabled && setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       style={[{ minWidth: 44, minHeight: 44 }, Platform.OS === 'web' && isFocused ? { outlineColor: COLORS.focusOutline, outlineWidth: 2, outlineStyle: 'solid' } : {}]}
     >
-      <Animated.View style={[animated, style, focusStyle]}>{children}</Animated.View>
+      <Animated.View style={[animatedStyle, style, focusStyle]}>{children}</Animated.View>
     </Pressable>
   );
 }

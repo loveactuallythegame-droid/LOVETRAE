@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onboarding: Meet Cute | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", lila: "#c084fc", "violet-glow": "#7c3aed"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .cosmic-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(238, 43, 140, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 50%, rgba(192, 132, 252, 0.05) 0%, transparent 60%);
+        }
+        .glass-panel {
+            background: rgba(34, 16, 25, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(192, 132, 252, 0.2);
+        }
+        .glow-text {
+            text-shadow: 0 0 15px rgba(192, 132, 252, 0.5);
+        }
+        .floating-icon {
+            filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.6));
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<!-- Background Layer -->
+<div class="fixed inset-0 cosmic-bg -z-10 pointer-events-none"></div>
+<!-- Main Layout Container -->
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header / Navigation Component -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-white/10 px-6 lg:px-20 py-4">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary floating-icon">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Love Actually...</h2>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Our Journey</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Game Rules</a>
+</nav>
+<div class="h-10 w-10 rounded-full border-2 border-primary/50 overflow-hidden" data-alt="User profile avatar">
+<img alt="Avatar" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvVFF0_MDERzmdPjMlAh_FoczQvMA5UchlKy2lEC14Qb3Lcy97Wh8ttyPOJtf-fGT8Uvl_vzrX02UYFcOj-5UbS1g-gzb9FosxgGCvaLL4LGns-Bq7ZPsmVLiTXKI9LJ0XpJafWKF484WXlFNLbx6CbDRIl239FSzXRwq71MUj0AEuQCc-LMZZpIu7hQ4gYj-YxiwmkxHVfjBThU3nzdQxxA6YcoLofosJyqT0rZ62NnezfVnvpnGUGO5EjY_39mb6kkpLStpMYBfJ"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-12 relative">
+<!-- Decorative Floating Icons -->
+<div class="absolute top-20 left-[15%] text-lila/40 floating-icon">
+<span class="material-symbols-outlined text-4xl">favorite</span>
+</div>
+<div class="absolute bottom-40 left-[10%] text-violet-glow/30 floating-icon rotate-12">
+<span class="material-symbols-outlined text-5xl">auto_awesome</span>
+</div>
+<div class="absolute top-40 right-[12%] text-primary/30 floating-icon -rotate-12">
+<span class="material-symbols-outlined text-3xl">colors_spark</span>
+</div>
+<div class="absolute bottom-24 right-[18%] text-lila/40 floating-icon">
+<span class="material-symbols-outlined text-4xl">favorite</span>
+</div>
+<div class="max-w-3xl w-full flex flex-col gap-8 z-10">
+<!-- Progress Indicator Component -->
+<div class="flex flex-col gap-3 px-4">
+<div class="flex gap-6 justify-between items-end">
+<p class="text-white/60 text-xs font-semibold uppercase tracking-widest">The Journey Begins</p>
+<p class="text-primary text-sm font-bold leading-normal">1 of 5</p>
+</div>
+<div class="h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-violet-glow rounded-full" style="width: 20%;"></div>
+</div>
+</div>
+<!-- Headline Component -->
+<div class="text-center space-y-2">
+<h1 class="text-white tracking-tight text-4xl md:text-5xl font-bold glow-text">Step 1: Meet Cute</h1>
+<h2 class="text-lila text-lg md:text-xl font-medium tracking-tight opacity-90 px-4">
+                        Every great love story has a beginning. How did you two first meet?
+                    </h2>
+</div>
+<!-- Text Field Component (Story Input) -->
+<div class="flex flex-col gap-4 px-4 py-3">
+<label class="flex flex-col w-full">
+<div class="flex justify-between items-center pb-3">
+<p class="text-white/80 text-base font-medium">Our Story</p>
+<span class="text-white/40 text-xs">Take your time, let the memories flow...</span>
+</div>
+<textarea class="form-input glass-panel flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary/50 border-none min-h-[280px] placeholder:text-white/20 p-6 text-lg font-normal leading-relaxed transition-all shadow-2xl" placeholder="It was a rainy Tuesday at a coffee shop... or maybe a digital spark in the palm of your hands?"></textarea>
+</label>
+</div>
+<!-- Footer Navigation -->
+<div class="flex justify-end px-4 pt-4">
+<button class="group flex min-w-[160px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-14 px-8 bg-gradient-to-r from-primary to-violet-glow text-white text-lg font-bold tracking-wide hover:shadow-[0_0_25px_rgba(238,43,140,0.5)] transition-all active:scale-95">
+<span>Continue</span>
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Decorative Footer Element -->
+<footer class="p-8 flex justify-center opacity-20">
+<div class="flex items-center gap-2 text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span>Your story is encrypted and private between the two of you</span>
+</div>
+</footer>
+</div>
+<!-- Decorative Stars/Nebula Elements positioned absolutely -->
+<div class="fixed top-1/4 right-0 w-96 h-96 bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="fixed bottom-1/4 left-0 w-[500px] h-[500px] bg-violet-glow/10 blur-[150px] rounded-full pointer-events-none"></div>
+</body></html>

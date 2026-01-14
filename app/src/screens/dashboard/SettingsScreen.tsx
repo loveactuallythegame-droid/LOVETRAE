@@ -79,15 +79,15 @@ export default function SettingsScreen({ navigation }: any) {
           <Text variant="header">Design Preview Panel</Text>
           <View style={styles.row}>
             <View><Text variant="body">Theme</Text></View>
-            <View style={{flexDirection: 'row', gap: 8}}>
-              <SquishyButton style={[styles.btn, theme === 'dark' && {borderWidth: 1, borderColor: '#fff'}]} onPress={() => setTheme('dark')}><Text variant="body">Dark</Text></SquishyButton>
-              <SquishyButton style={[styles.btn, theme === 'light' && {borderWidth: 1, borderColor: '#fff'}]} onPress={() => setTheme('light')}><Text variant="body">Light</Text></SquishyButton>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <SquishyButton style={[styles.btn, theme === 'dark' ? { borderWidth: 1, borderColor: '#fff' } : {}]} onPress={() => setTheme('dark')}><Text variant="body">Dark</Text></SquishyButton>
+              <SquishyButton style={[styles.btn, theme === 'light' ? { borderWidth: 1, borderColor: '#fff' } : {}]} onPress={() => setTheme('light')}><Text variant="body">Light</Text></SquishyButton>
             </View>
           </View>
           <View style={styles.row}>
             <View><Text variant="body">Device Frame</Text></View>
-            <View style={{flexDirection: 'row', gap: 8}}>
-               {/* Simulating frame changes would require a top-level wrapper, keeping simple for now */}
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              {/* Simulating frame changes would require a top-level wrapper, keeping simple for now */}
               <Text variant="sass">Resize window to test</Text>
             </View>
           </View>
@@ -145,17 +145,17 @@ export default function SettingsScreen({ navigation }: any) {
         <Text variant="header">Beta Access</Text>
         <Text variant="body">Enter your beta code to unlock exclusive features.</Text>
         <View style={styles.row}>
-          <TextInput 
-            style={styles.input} 
-            placeholder="Enter Code" 
-            value={betaCode} 
-            onChangeText={setBetaCode} 
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Code"
+            value={betaCode}
+            onChangeText={setBetaCode}
             autoCapitalize="characters"
             placeholderTextColor="#666"
           />
           <SquishyButton style={styles.btn} onPress={validateBeta}><Text variant="header">Verify</Text></SquishyButton>
         </View>
-        {isBeta && <Text variant="keyword" style={{marginTop: 8}}>Beta Active ✓</Text>}
+        {isBeta && <Text variant="keyword" style={{ marginTop: 8 }}>Beta Active ✓</Text>}
       </GlassCard>
 
       <GlassCard>
@@ -202,11 +202,13 @@ export default function SettingsScreen({ navigation }: any) {
             if (!deletePassword || deletePassword.length < 6) { Alert.alert('Confirmation Required', 'Please enter your password to confirm.'); return; }
             Alert.alert('Confirm Deletion', 'This will permanently delete your account.', [
               { text: 'Cancel', style: 'cancel' },
-              { text: 'Delete', style: 'destructive', onPress: async () => {
-                await supabase.auth.signOut();
-                await AsyncStorage.clear();
-                navigate('Splash');
-              } }
+              {
+                text: 'Delete', style: 'destructive', onPress: async () => {
+                  await supabase.auth.signOut();
+                  await AsyncStorage.clear();
+                  navigate('Splash');
+                }
+              }
             ]);
           }}><Text variant="header">Delete</Text></SquishyButton>
         </View>

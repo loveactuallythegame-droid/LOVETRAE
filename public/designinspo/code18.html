@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Love Actually... The Game - Trust Thermometer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", charcoal: "#1c0d15", "teal-accent": "#00f2fe", "turquoise-accent": "#4facfe", "deep-purple": "#2a1120"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #2a1120 0%, #120810 100%);
+        }
+        .nebula-glow {
+            box-shadow: 0 0 60px rgba(238, 43, 140, 0.1);
+        }
+        .glass-panel {
+            background: rgba(28, 13, 21, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .thermometer-gradient {
+            background: linear-gradient(to top, #ee2b8c, #f093fb, #4facfe, #00f2fe);
+        }
+        .line-chart-svg {
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+    </style>
+</head>
+<body class="bg-background-dark min-h-screen text-white overflow-x-hidden">
+<div class="fixed inset-0 pointer-events-none overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-turquoise-accent/10 rounded-full blur-[120px]"></div>
+</div>
+<div class="relative flex flex-col min-h-screen">
+<header class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight">Love Actually...</h2>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex gap-8 text-sm font-medium opacity-80">
+<a class="hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="hover:text-primary transition-colors" href="#">Insights</a>
+<a class="hover:text-primary transition-colors" href="#">Quests</a>
+</nav>
+<div class="h-10 w-10 rounded-full border-2 border-primary/30 p-0.5 overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPq6iJGKU2LkUZZMIC0JPHcJ6s-UZ4kDaLGQOo3pmKidu5F_tVhWvd59kInkafIj9tYb9mw1DDNoiN7vFrNAFc51zZSZw1TTbg-l174KJmaIGBwGoj53HZ5iNyyDFT1WM_H0GGFxLol9-UROxyiS9gzjO_c34JfhHoeyTd0j_LE_DRUaxmNy0GC2qbLAk1PWHuAN-0dntEW7f3PS_5LHXt12JsU5e-lv1dKy98E4xHTKjEGkF4aIvWmP8tllCxYC08p6iSLIzGp1fj"/>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl mx-auto w-full px-8 py-4">
+<div class="mb-12">
+<h1 class="text-4xl font-bold tracking-tight mb-2">Trust Thermometer</h1>
+<p class="text-[#c992ad] text-lg">Visualizing the foundation of your connection.</p>
+</div>
+<div class="grid grid-cols-12 gap-8 items-start">
+<div class="col-span-12 lg:col-span-3 space-y-6">
+<div class="glass-panel p-6 rounded-2xl">
+<h3 class="text-sm font-semibold text-turquoise-accent uppercase tracking-widest mb-6">Historical Data</h3>
+<div class="space-y-8">
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs text-white/60">Partner A</span>
+<span class="text-xs font-bold text-turquoise-accent">82%</span>
+</div>
+<div class="h-24 w-full">
+<svg class="w-full h-full text-turquoise-accent line-chart-svg" viewbox="0 0 100 40">
+<path d="M0 35 Q 20 10, 40 25 T 100 5" fill="none" stroke="currentColor" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs text-white/60">Partner B</span>
+<span class="text-xs font-bold text-primary">78%</span>
+</div>
+<div class="h-24 w-full">
+<svg class="w-full h-full text-primary line-chart-svg" viewbox="0 0 100 40">
+<path d="M0 30 Q 30 35, 60 15 T 100 20" fill="none" stroke="currentColor" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-2xl">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<span class="text-sm font-medium">Growth Streak</span>
+</div>
+<p class="text-2xl font-bold">14 Days</p>
+<p class="text-xs text-white/40 mt-1">Consistency is key to deepening trust.</p>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-5 flex flex-col items-center justify-center py-10">
+<div class="relative w-48 h-[500px] flex items-end justify-center">
+<div class="absolute left-[-40px] h-full flex flex-col justify-between py-2 text-[10px] text-white/40 font-mono">
+<span>100</span>
+<span>80</span>
+<span>60</span>
+<span>40</span>
+<span>20</span>
+<span>0</span>
+</div>
+<div class="w-20 h-full rounded-full border-4 border-white/10 p-1.5 flex flex-col justify-end relative z-10 bg-black/20">
+<div class="w-full rounded-full thermometer-gradient relative" style="height: 80%">
+<div class="absolute top-0 left-0 w-full h-1 bg-white/40 blur-[2px]"></div>
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-white/20"></div>
+<div class="absolute bottom-40 left-1/4 w-1 h-1 rounded-full bg-white/20"></div>
+</div>
+</div>
+<div class="absolute -bottom-6 w-32 h-32 rounded-full bg-primary/20 blur-2xl -z-10"></div>
+<div class="absolute -bottom-4 w-16 h-16 rounded-full border-4 border-white/10 bg-charcoal z-20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">favorite</span>
+</div>
+<div class="absolute right-[-100px] top-1/4 glass-panel p-4 rounded-xl border-l-4 border-turquoise-accent">
+<p class="text-xs text-white/60 uppercase tracking-tighter">Current Level</p>
+<p class="text-4xl font-bold">80%</p>
+<div class="flex items-center gap-1 text-teal-accent text-xs mt-1">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+5% from last week</span>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-4">
+<div class="glass-panel p-8 rounded-3xl nebula-glow relative overflow-hidden h-full">
+<div class="relative z-10">
+<div class="inline-flex items-center gap-2 bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold mb-6">
+<span class="material-symbols-outlined text-sm">insights</span>
+                                ANALYTICS
+                            </div>
+<h2 class="text-2xl font-bold mb-6">Current Trends</h2>
+<div class="space-y-6">
+<div class="p-4 rounded-xl bg-white/5 border border-white/5">
+<h4 class="text-sm font-semibold mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-turquoise-accent text-sm">verified</span>
+                                        Stability Boost
+                                    </h4>
+<p class="text-sm text-white/70 leading-relaxed">
+                                        Your trust levels have shown exceptional stability over the last 48 hours. This suggests a strong baseline of communication and mutual safety.
+                                    </p>
+</div>
+<div class="p-4 rounded-xl bg-white/5 border border-white/5">
+<h4 class="text-sm font-semibold mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">sync</span>
+                                        Synchronization
+                                    </h4>
+<p class="text-sm text-white/70 leading-relaxed">
+                                        Partner B's sentiment is aligning more closely with Partner A. The gap in perception has narrowed by 12% this week.
+                                    </p>
+</div>
+<div class="pt-6 border-t border-white/10">
+<h4 class="text-xs text-white/40 uppercase tracking-widest mb-4">Recommended Quest</h4>
+<div class="flex items-start gap-4 p-4 rounded-2xl bg-gradient-to-br from-primary/10 to-transparent border border-primary/20">
+<span class="material-symbols-outlined text-primary">explore</span>
+<div>
+<p class="text-sm font-bold">The Deep Dive</p>
+<p class="text-xs text-white/60 mt-1">A vulnerability exercise to reach 85% trust.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined absolute -bottom-10 -right-10 text-[200px] text-white/5 pointer-events-none">
+                            monitoring
+                        </span>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-auto px-8 py-6 border-t border-white/5 bg-charcoal/50 backdrop-blur-md">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-4 text-xs text-white/50">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-teal-accent"></span> System Online</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> Syncing Data</span>
+</div>
+<div class="flex gap-6">
+<button class="text-xs hover:text-primary transition-colors">Export Report</button>
+<button class="text-xs hover:text-primary transition-colors">Privacy Policy</button>
+<button class="text-xs hover:text-primary transition-colors">Need Help?</button>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

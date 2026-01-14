@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Game Lobby - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", "charcoal-panel": "#1b192e", "violet-light": "#C78FFF", "pink-accent": "#FF7ED4", "gold-accent": "#FFC87C"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;background: radial-gradient(circle at center, #1b192e 0%, #0e0d1a 100%);
+        }
+        .cosmic-nebula {
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(209, 63, 255, 0.08) 0%, transparent 40%),radial-gradient(circle at 80% 70%, rgba(255, 126, 212, 0.08) 0%, transparent 40%);}
+        .glass-panel {background: rgba(27, 25, 46, 0.8);backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .violet-gradient {background: linear-gradient(135deg, #D13FFF 0%, #AC3AFF 100%);}
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-white selection:bg-primary/30">
+<div class="cosmic-nebula relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/5 px-10 py-4 glass-panel sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Love Actually... The Game</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="#">Home</a>
+<a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="#">My Progress</a>
+<a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="#">Library</a>
+<a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white/5 hover:bg-white/10 transition-all border border-white/10">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/50" data-alt="User avatar profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAc-jOJd-JK6-YdeKr4G-WVxQ-ZDJt8ijork0jAaLWaV8mpwIXWU7XVTSRMWFpcJWAaMiowyGSa4aWn4gogGr0dEl8ltdRh93IUiPFpxXYK8B_tZnLDXAHtllJSWR7Y5wA_x7Frl5Tx_NCPm-RHwgbh1If4HEte22isBQDZyDrNbxigL_HrPL7kqVQd5zOeZ9bR_dLjUg0JjWlMItUNRV0BE5KLIJ8yunHRQWl9qGlSlJVZsjOGQyRHCGLh4KD_MiFpU6H5htMh0Xev");'></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-12 max-w-5xl mx-auto w-full">
+<div class="text-center mb-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-4">
+                    Lobby Room 402
+                </div>
+<h1 class="text-white tracking-tight text-5xl font-bold leading-tight pb-2">Connection Phase</h1>
+<p class="text-white/60 text-lg max-w-xl mx-auto">Deepen your bond through guided vulnerability and active listening in the cosmos.</p>
+</div>
+<div class="w-full glass-panel rounded-xl overflow-hidden shadow-2xl flex flex-col md:flex-row border border-white/10">
+<div class="w-full md:w-5/12 bg-center bg-no-repeat bg-cover min-h-[300px]" data-alt="Ethereal cosmic nebula with soft glowing stars" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAOkk-pdu32Wyw__ers4vN2RU-1vNsBF73C0zQBKoACC3NdzzhYDbenuTBcJimCIjL5AbGG4U36Tp0JBLzfFyJjfQ3lU8itoqUAHxt3jSRt--ePO6io8LfPBVSSIhgnTCXjRf3lNC9-yTWWJWoIdP_uRZG8Hkfz71N--WELtHzeWpvlDWDQdxxPa-pa6ojujEE4rJPeZjykDskafUFTusUbY7aTKzHVimEnfLvOMmDPX9nFCyfs1uwqeOPpgOc3EZ0Nq_ItBUNm9OuJ");'>
+<div class="w-full h-full bg-gradient-to-r from-transparent to-charcoal-panel/80 flex flex-col justify-end p-8">
+<div class="flex items-center px-4 py-3 justify-start">
+<div class="overflow-visible w-[34px]">
+<div class="bg-center bg-no-repeat aspect-square bg-cover border-background-dark bg-charcoal-panel rounded-full flex items-center justify-center size-11 border-4 shadow-lg" data-alt="Player 1 avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA120lJLfTJnRotVV2OnOaa53LpXCYNXJVNqpg8pRPTcX1DyayDVQj4Prc2jwJkNGALsZ_w-MlgUqnCYoWj_DWK2NeeJIs_3S5HBNvQ2KInZleFojk7SoyYKsoU-G5hk0Y7iTOM61lzl0BkZtMprJ2hPhowj9qxiP1ekOET8ZaTsswyKrnbxin0gyFIVmN1CtQzlBRi5zSeXGkizrWRRh6gBaaMtGbh9KNv_XDCIHpVBQAgqP-oFjc4_QNWLwWarr3-pBBxcmef1Hvw");'></div>
+</div>
+<div class="overflow-visible w-11">
+<div class="bg-center bg-no-repeat aspect-square bg-cover border-background-dark bg-charcoal-panel rounded-full flex items-center justify-center size-11 border-4 shadow-lg" data-alt="Player 2 avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPNWn4O-MKscEw2AdNjPMdyLXeQG7NhYueCsrpSWUachB9wYParCsJLLblglc4ZViDf5RBzNUabWyv7V1MZEAxa0GW0VXGskEqvV-03r1Qfn5LDAb-s9_A5X43_3edw4R96urTSIpor3EBoqjCbeiiXZ0ze1JqoKj79RlviGSxCAtDFxLU5HO4fgUI_TIPQfaY_K3KYB5KqfFuWIWluO1ucl9zR4nUgBf_x4ItGqxhcwMcsmnfFjA8Rimq9cJFs5F6-7D0_4O9Rc6r");'></div>
+</div>
+<span class="ml-4 text-primary text-sm font-medium animate-pulse">● Both Players Connected</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-7/12 p-8 flex flex-col gap-6">
+<div class="space-y-6">
+<section>
+<h3 class="text-primary text-xl font-bold mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined">help_center</span> How to Play
+                            </h3>
+<ul class="space-y-3">
+<li class="flex gap-3 text-white/80 text-base leading-relaxed">
+<span class="text-primary font-bold">1.</span>
+<span>Listen to the cosmic prompt carefully as it appears on your screen.</span>
+</li>
+<li class="flex gap-3 text-white/80 text-base leading-relaxed">
+<span class="text-primary font-bold">2.</span>
+<span>Share honestly and vulnerably with your partner when it's your turn.</span>
+</li>
+<li class="flex gap-3 text-white/80 text-base leading-relaxed">
+<span class="text-primary font-bold">3.</span>
+<span>Earn heart points and unlock constellations for deep connections.</span>
+</li>
+</ul>
+</section>
+<div class="h-px bg-white/10 w-full"></div>
+<section>
+<h3 class="text-white text-lg font-bold mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined">gavel</span> Rules of Engagement
+                            </h3>
+<div class="grid grid-cols-1 gap-2">
+<div class="flex items-center gap-3 text-white/60 text-sm">
+<span class="material-symbols-outlined text-violet-light text-xs">radio_button_checked</span>
+<span>No interruptions allowed while the other is speaking.</span>
+</div>
+<div class="flex items-center gap-3 text-white/60 text-sm">
+<span class="material-symbols-outlined text-violet-light text-xs">radio_button_checked</span>
+<span>Create a safe, non-judgmental space for each other.</span>
+</div>
+<div class="flex items-center gap-3 text-white/60 text-sm">
+<span class="material-symbols-outlined text-violet-light text-xs">radio_button_checked</span>
+<span>Stay present and keep phones away.</span>
+</div>
+</div>
+</section>
+</div>
+<div class="flex flex-wrap gap-4 mt-4">
+<div class="flex-1 min-w-[140px] flex items-center gap-4 rounded-xl p-4 border border-white/10 bg-white/5">
+<div class="p-2 bg-pink-accent/20 rounded-lg">
+<span class="material-symbols-outlined text-pink-accent">schedule</span>
+</div>
+<div>
+<p class="text-white/40 text-xs font-medium uppercase tracking-wider leading-none mb-1">Duration</p>
+<p class="text-white text-lg font-bold leading-none">15-20 Mins</p>
+</div>
+</div>
+<div class="flex-1 min-w-[140px] flex items-center gap-4 rounded-xl p-4 border border-white/10 bg-white/5">
+<div class="p-2 bg-gold-accent/20 rounded-lg">
+<span class="material-symbols-outlined text-gold-accent">military_tech</span>
+</div>
+<div>
+<p class="text-white/40 text-xs font-medium uppercase tracking-wider leading-none mb-1">Rewards</p>
+<p class="text-white text-lg font-bold leading-none">500 XP</p>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-auto">
+<button class="w-full violet-gradient hover:opacity-90 active:scale-[0.98] transition-all text-background-dark text-lg font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(209,63,255,0.4)]">
+                            Launch Connection Session
+                            <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+</div>
+</div>
+<p class="mt-8 text-white/30 text-xs uppercase tracking-[0.2em] font-medium">Ready to transcend? Your journey begins now.</p>
+</main>
+</div>
+</body></html>

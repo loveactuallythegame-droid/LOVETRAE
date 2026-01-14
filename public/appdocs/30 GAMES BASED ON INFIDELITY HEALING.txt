@@ -1,0 +1,299 @@
+﻿30 GAMES BASED ON INFIDELITY HEALING 
+🔥 I. TRUST THERMOMETER
+(Ch. 4: Choosing Responsibility → Rebuilding Safety & Integrity)
+1. Lie Detector: Lite™
+* Type: Async voice response + AI prosody analysis
+* Mechanics: Partner records ≤10-sec answer to prompt (“What’s one thing you almost didn’t tell me this week?”).
+* Scoring (Marcie measures):
+   * ✅ Fluency (no pauses >1.2s): +10
+   * ✅ Vocal steadiness (low pitch variance): +10
+   * ✅ Zero filler words (“um,” “like”): +5 each avoided
+   * ❌ Silence >5s = “Avoidance Bonus” (−5)
+* Validation: On-device mic → Firebase ML (pitch, pause, word count)
+* Marcie: “Ooh—24/25. Only slipped on ‘uh’ once. I’ll allow it… this time.”
+2. Transparency Toss
+* Type: Real-time text relay
+* Mechanics: Shared board. Each “toss” = low-stakes truth (e.g., “I pretended to like your friend’s lasagna”). Partner must tap ✅ to verify.
+* Scoring:
+   * ✅ Verified truth = +10
+   * ✅ Includes self-impact (“…and I felt guilty”) = +5
+   * ❌ Unverified after 60s = timeout (−5)
+* Validation: Dual ✅ confirmation (Firebase Realtime DB)
+* Marcie: “You tossed ‘I scrolled TikTok while you talked’… and they confirmed? Bold. Respect.”
+3. Boundary Bingo
+* Type: Async shared grid
+* Mechanics: Auto-generated 4×4 grid (e.g., “Said no without guilt”). Mark only after mutual ✅.
+* Scoring:
+   * ✅ Verified square = +8
+   * ✅ Line = +20 | Full card = +100 + badge
+   * ❌ Disputed → “Evidence Upload” (screenshot of text/calendar showing boundary in action)
+* Validation: Dual ✅ + optional cropped/blurred screenshot upload
+* Marcie: “BINGO on ‘I asked for space and didn’t feel guilty’? Someone upgraded their firmware.”
+4. The Apology Olympics
+* Type: Speed rewrite + AI rubric
+* Mechanics: Rewrite “Sorry you felt that way” in <60s. Must avoid: but, if, you, however.
+* Scoring (AI rubric):
+   * ✅ Ownership (“I did X”) = +10
+   * ✅ Impact named (“…made you feel Y”) = +10
+   * ✅ Repair offered (“Next time, I’ll Z”) = +10
+   * ✅ No blame-shifting = +5
+* Validation: NLP regex + syntax parser (Firebase Cloud Function)
+* Marcie: “‘I shut down and it made you feel abandoned—I’ll pause next time’? 35/35. Gold and my respect.”
+5. Vibe Sync
+* Type: Synchronous slider
+* Mechanics: A sets emotional battery (0–100) → B guesses.
+* Scoring:
+   * ✅ Within 10% = +15
+   * ✅ Exact match = +25 + haptic pulse
+   * ✅ Both >70 & synced = +10
+* Validation: Real-time Firebase sync
+* Marcie: “You guessed 68… they’re at 69. Psychic or just that in love? (Don’t answer.)”
+________________
+
+
+💔 II. BETRAYAL AFTERMATH
+(Ch. 2: Tracing the Roots + Ch. 3: Facing the Fallout)
+6. Trigger Takedown (AR)
+* Type: Async AR interaction
+* Mechanics: Camera → point at object/song → “squash” trigger → select grounding (Breathe/Tap/Share).
+* Scoring:
+   * ✅ Trigger tagged = +5
+   * ✅ Grounding completed = +10
+   * ✅ Shared with partner = +5
+* Validation: ML Kit object/text recognition + timestamped log
+* Marcie: “You neutralized ‘that hotel logo’ with a glitter bomb. Still shaky? Tap ‘Breathe’—I’ll time you.”
+7. Rewrite the Memory
+* Type: Shared canvas + AI narrative scoring
+* Mechanics: One types fragment (“The night I found the texts…”); both edit with hope/absurdity.
+* Scoring (NLP):
+   * ✅ Agency (“I chose…”) = +8
+   * ✅ Nuance = +7
+   * ✅ Humor/beauty = +10
+   * ✅ Partner added ≥1 edit = +5
+* Validation: Diff compare + keyword detection (chose, saw, grew)
+* Marcie: “‘…and then a raccoon stole his phone’? 28/30. Poetic and feral.”
+8. Guilt vs. Shame Sort
+* Type: Rapid swipe (Tinder-style)
+* Mechanics: “I messed up” (✅ Guilt) vs. “I’m a failure” (❌ Shame). 60-sec round.
+* Scoring:
+   * ✅ Correct = +3
+   * ✅ 10+ streak = +10
+   * ❌ Mis-sort = 5-sec “Self-Compassion Timeout”
+* Validation: Input logging + streak counter
+* Marcie: “Swiped ‘I’m unlovable’ left? Wrong. Hard right to the trash.”
+9. Flashback Frenzy
+* Type: Async image association
+* Mechanics: A sees rainy window → types emotional word → B guesses why.
+* Scoring:
+   * ✅ B’s guess names memory/feeling = +10
+   * ✅ A uses emotion word = +5
+   * ✅ Match = +15
+* Validation: Text analysis + optional voice note upload
+* Marcie: “‘Rain’ = ‘that night you didn’t come home’… and they guessed exactly? Listening level: 100.”
+10. The Denial Detector
+* Type: Voice-to-text audit
+* Mechanics: Say “Everything’s fine.”
+* Scoring:
+   * ✅ <2x “fine” = +10
+   * ✅ Specific emotion = +15
+   * ❌ >3x “fine” = “Denial Champion” (−5)
+* Validation: On-device STT + word count
+* Marcie: “You said ‘fine’ 7 times. Congrats—you’ve unlocked Emotional Bottleneck. 🏆”
+________________
+
+
+💞 III. CONNECTION LAB
+(Ch. 1: Naming the Betrayal + Ch. 5: Forgiveness & Confidence)
+11. Six-Second Stare-Down
+* Type: Real-time camera sync
+* Mechanics: Front cams → AI detects mutual gaze → 6-sec timer.
+* Scoring:
+   * ✅ 6 sec eye contact = +25
+   * ✅ Sync blink (±0.5s) = +10
+* Validation: MediaPipe face mesh + gaze vectors → encrypted timestamp
+* Marcie: “2.3 seconds before laughing? Adorable. Try again—no smiling. (…liar.)”
+12. Gratitude Graffiti
+* Type: Shared mural
+* Mechanics: 60 sec to write/draw appreciation—only metaphors.
+* Scoring:
+   * ✅ Metaphor = +10
+   * ✅ Partner ❤️ = +10
+   * ✅ AI detects novelty = +5
+* Validation: Dual input + Firebase sync
+* Marcie: “‘You’re the guac to my toast’? 10/10. Snackable and profound.”
+13. Vulnerability Volley
+* Type: Timed text ping-pong
+* Mechanics: Marcie serves (“Share a fear you hide well”). A replies ≤15s → B validates ≤15s.
+* Scoring:
+   * ✅ A uses vulnerability word (afraid, worry) = +10
+   * ✅ B uses validation phrase (“That makes sense”) = +10
+   * ❌ B fixes (“Just don’t…”) = −5
+* Validation: NLP keyword match + sequence timing
+* Marcie: “You blocked with ‘lol same’? That’s not a volley—that’s a miss.”
+14. The Touch Map: Lite
+* Type: Abstract body outline (shapes only)
+* Mechanics: Tap zones (circle=head, triangle=chest) for Green/Yellow/Red.
+* Scoring:
+   * ✅ Mismatch resolved with note = +15
+   * ✅ Both green on ≥2 = +10
+* Validation: Dual input + optional voice note
+* Marcie: “They marked ‘triangle’ yellow… you green. Wanna unpack over sparkling water?”
+15. Memory Lane GPS
+* Type: Map pin + media proof
+* Mechanics: Drop pin → label (“Best fight-turned-hug”) → upload one photo both took that day.
+* Scoring:
+   * ✅ Pin = +5
+   * ✅ Photo = +10
+   * ✅ Partner confirms = +10
+* Validation: Geotag + EXIF timestamp match (±24h) + dual ✅
+* Marcie: “Pinned Trader Joe’s parking lot? Iconic. Love and frozen dumplings.”
+________________
+
+
+🧠 IV. PATTERN PATROL
+(Ch. 2: Tracing the Roots — Avoidance, Unmet Needs, Communication Breakdown)
+16. Avoidance Arcade
+* Type: Whac-A-Mole
+* Mechanics: Moles = avoidance phrases (“I’ll tell them later”). Whack with “Say It Now” hammer.
+* Scoring:
+   * ✅ Hit = +5
+   * ✅ 10 in 30s = +20
+   * ❌ Miss = Marcie narrates consequence
+* Validation: Tap timing + accuracy log
+* Marcie: “Missed ‘We should talk’? Congrats—now they think you’re leaving for a barista.”
+17. The Needs Decoder
+* Type: Emoji cipher
+* Mechanics: A sends 3 emojis (🌧️☕️🐶). B guesses unmet need (“I need quiet + caffeine + support”).
+* Scoring:
+   * ✅ Correct = +15
+   * ✅ Close (2/3) = +10
+* Validation: Predefined emoji→need map + partner confirmation
+* Marcie: “🌧️☕️🐶 = ‘Let me sulk in peace with snacks and the dog’? Genius. Hire this one.”
+18. Escapism Escape Room
+* Type: 60-sec puzzle
+* Mechanics: Solve riddle to escape “Netflix Binge Basement”. Clues = real-life escapes (scrolling when lonely).
+* Scoring:
+   * ✅ Escape <60s = +30
+   * ✅ Used journal insight = +10
+* Validation: Puzzle completion + optional journal tag
+* Marcie: “Escaped in 42s! …Wait, you used ‘work email’ as a clue? Touché.”
+19. The Blame Flip
+* Type: Drag-and-drop rewrite
+* Mechanics: Fix “You make me feel…” → drag “I feel…” to front.
+* Scoring:
+   * ✅ Correct rewrite = +10
+   * ✅ Speed bonus (<5s) = +5
+* Validation: Syntax validation (Firebase Function)
+* Marcie: “‘You never listen’ → ‘I feel unheard when…’—YES. Now say it without an eye roll.”
+20. Micro-Betrayal Mini-Golf
+* Type: Physics putt-putt
+* Mechanics: Ball = small breach (hid a text). Navigate assumption, silence → hole (repair).
+* Scoring:
+   * ✅ Fewest strokes = +25
+   * ✅ Used “repair” ramp = +10
+* Validation: Stroke count + path tracking
+* Marcie: “Sunk it in 2 strokes? Impressive. Now apply that to actual texting.”
+________________
+
+
+🌶️ V. PLAYFUL TENSION
+(Ch. 5: Rebuilding Intimacy — Non-Sexual Reconnection)
+21. The 6-Second Kiss Timer
+* Type: Dual thumb-hold
+* Mechanics: Both hold thumb → bar fills at combined pressure. Sustain 6s.
+* Scoring:
+   * ✅ 6s sustained = +25
+   * ✅ Pressure curve match = +10
+* Validation: Touch pressure API + sync
+* Marcie: “You peaked early. Again. Pace yourselves, loves.”
+22. Foreplay Forecast
+* Type: Live mood slider
+* Mechanics: A sets arousal bar (0–100). B performs non-sexual acts (compliment, neck rub) to raise it.
+* Scoring:
+   * ✅ +20 points in 5 mins = +30
+   * ✅ A names what helped = +10
+* Validation: Slider change + optional voice note
+* Marcie: “Hit 82 with eye contact + hair tuck? Someone’s been studying.”
+23. Ransom Note Romance
+* Type: Drag-and-drop cutout
+* Mechanics: Build threat: “GIVE ME… TACOS… OR… I… SERENADE YOU.”
+* Scoring:
+   * ✅ Absurdly sweet = +20 (Marcie judges)
+   * ✅ Partner laughs (self-reported ✅) = +10
+* Validation: Dual “Made Me Laugh” ✅
+* Marcie: “‘OR I WILL REORGANIZE YOUR SOCK DRAWER BY MOOD’? Chef’s kiss.”
+24. GIF the Feels
+* Type: Giphy integration
+* Mechanics: Prompt: “My face when you actually listen.” Submit best GIF.
+* Scoring:
+   * ✅ Marcie picks “Most Relatable” = +15
+   * ✅ “Most Extra” = +10
+* Validation: Giphy API + Marcie algorithm (novelty + relevance)
+* Marcie: “You chose Distracted Boyfriend but swapped him for ‘Me ignoring my boundaries’? I respect it.”
+25. Karaoke Confessional
+* Type: Auto-lyric rewrite + duet
+* Mechanics: Pick song → AI rewrites chorus (“Our love’s buffering…”) → record duet.
+* Scoring:
+   * ✅ Recorded = +20
+   * ✅ Used vulnerability word = +10
+* Validation: Audio upload + NLP on lyrics
+* Marcie: “Harmonized on ‘We don’t talk—we just scroll and sigh’? That’s not a song—that’s a diagnosis.”
+________________
+
+
+🌈 VI. FUTURE-FOCUSED
+(Ch. 5: Rebuilding for Tomorrow — Forgiveness, Confidence, Growth)
+26. Date Night Roulette
+* Type: Wheel spin + filters (💰 Energy 🌙)
+* Mechanics: Spin → “Picnic in car, 8 p.m., only songs from 2007.”
+* Scoring:
+   * ✅ Did it = +30
+   * ✅ Posted proof (no faces) = +10
+* Validation: Optional screenshot upload (auto-blurred)
+* Marcie: “You got ‘Blanket fort + pineapple pizza debate’? Destiny.”
+27. The Repair Report Card
+* Type: Weekly slider survey
+* Mechanics: Rate 5 areas (Listening, Space, Humor, Touch, Honesty).
+* Scoring:
+   * ✅ Improvement vs. last week = +5/area
+   * ✅ Honesty +10% = +15
+* Validation: Firebase trend analysis
+* Marcie: “Honesty up 20%? Wow. You actually said ‘I was wrong’ without vomiting. Growth!”
+28. Healing Bingo
+* Type: Weekly 5×5 grid
+* Mechanics: Squares: “Said ‘I need space’ without guilt.”
+* Scoring:
+   * ✅ Verified square = +8
+   * ✅ Bingo = +50 + real-world reward (e.g., partner does dishes)
+* Validation: Dual ✅ + optional screenshot
+* Marcie: “BINGO on ‘We disagreed—and stayed connected’? Stop. I need a moment.”
+29. The Iceberg Dive
+* Type: Nested dropdown
+* Mechanics: Surface (“I’m annoyed”) → drill down → “Fear of invisibility” → unlock “Core Need” badge.
+* Scoring:
+   * ✅ Reached core = +25
+   * ✅ Shared with partner = +10
+* Validation: Path completion + optional voice note
+* Marcie: “You got to ‘I need to feel chosen’? Honey… grab tissues. And chocolate.”
+30. The Commitment Countdown
+* Type: Shared 30-day streak
+* Mechanics: Daily micro-action (“Text one appreciation”).
+* Scoring:
+   * ✅ Daily = +5
+   * ✅ 7-day streak = +20
+   * ✅ 30-day = +200 + “Marcie tells a terrible pun”
+* Validation: Firebase streak counter
+* Marcie: “Day 12: You both said ‘thank you’ unprompted? Alert the New York Times.”
+________________
+
+
+🎁 Sass Safety Net™
+* 🚩 “I need a sec” = pause any game → Marcie: “Take all the time you need. I’ll be here—judging your snack choices.”
+* Resume anytime—no penalties.
+________________
+
+
+🛠️ Build-Ready Notes
+* Tech Stack: Firebase (Auth, Realtime DB, Cloud Functions, ML Kit), Glide (no-code frontend), MediaPipe (gaze detection), Giphy API
+* Screenshot Uploads: Auto-crop + blur faces/text (on-device)
+* Marcie Animations: Lottie → emerge from text, no loops, Glam Noir palette (deep plum, gold, smoke)

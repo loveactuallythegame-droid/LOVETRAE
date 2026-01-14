@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onboarding: Current Vibe | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee2b8c",
+                        "vibe-yellow": "#fbbf24",
+                        "vibe-turquoise": "#2dd4bf",
+                        "vibe-orange": "#fb923c",
+                        "vibe-teal": "#14b8a6",
+                        "vibe-purple": "#a855f7",
+                        "vibe-pink": "#ec4899",
+                        "background-dark": "#0d0d0d",
+                        "charcoal-panel": "#1a1a1a",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.2) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 50%, rgba(45, 212, 191, 0.05) 0%, transparent 50%);
+        }
+        .slider-track-gradient {
+            background: linear-gradient(90deg, #ec4899 0%, #a855f7 33%, #d946ef 66%, #7c3aed 100%);
+        }
+        .handle-gradient {
+            background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+        }
+        .btn-teal-gradient {
+            background: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%);
+        }
+        .handle-glow {
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.6), 0 0 40px rgba(168, 85, 247, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background-dark min-h-screen text-white transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col nebula-bg overflow-x-hidden">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-6 md:px-20 py-4 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="size-6 text-vibe-pink">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold tracking-tight">Love Actually...</h2>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">How it Works</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Privacy</a>
+</nav>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-xl h-10 px-5 bg-white/5 hover:bg-white/10 text-white text-sm font-bold transition-all border border-white/10">
+<span>Save &amp; Exit</span>
+</button>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-12 md:py-20 max-w-[1000px] mx-auto w-full">
+<div class="w-full max-w-xl flex flex-col gap-3 mb-12">
+<div class="flex justify-between items-end">
+<p class="text-vibe-pink text-sm font-bold uppercase tracking-widest">Onboarding</p>
+<p class="text-white/60 text-sm font-medium">Step 3 of 10</p>
+</div>
+<div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-vibe-pink rounded-full" style="width: 30%;"></div>
+</div>
+</div>
+<div class="bg-charcoal-panel/60 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 w-full shadow-2xl">
+<div class="text-center mb-12">
+<h1 class="text-white text-4xl md:text-5xl font-bold tracking-tight mb-6">What’s your current vibe?</h1>
+<p class="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed">
+                        How are things feeling between you two right now? This helps us tailor the game's intensity to your current mood.
+                    </p>
+</div>
+<div class="relative mb-16 flex items-center justify-center">
+<div class="absolute inset-0 bg-vibe-pink/10 blur-[80px] rounded-full"></div>
+<div class="relative z-10 flex flex-col items-center gap-4">
+<span class="material-symbols-outlined text-7xl text-vibe-pink drop-shadow-[0_0_15px_rgba(236,72,153,0.4)]">
+                            temp_preferences_custom
+                        </span>
+<span class="text-vibe-turquoise font-bold tracking-[0.2em] uppercase text-xs">Calibration Active</span>
+</div>
+</div>
+<div class="w-full max-w-2xl mx-auto px-4">
+<div class="relative flex flex-col gap-10">
+<div class="flex justify-between items-center px-2">
+<div class="flex flex-col items-start gap-1">
+<span class="text-vibe-turquoise text-[10px] font-bold uppercase tracking-[0.2em]">Atmosphere</span>
+<span class="text-white text-2xl font-bold">Icy</span>
+</div>
+<div class="flex flex-col items-end gap-1 text-right">
+<span class="text-vibe-orange text-[10px] font-bold uppercase tracking-[0.2em]">Intensity</span>
+<span class="text-white text-2xl font-bold">Flaming</span>
+</div>
+</div>
+<div class="relative h-12 w-full flex items-center">
+<div class="h-3 w-full rounded-full slider-track-gradient opacity-90 shadow-[0_0_30px_rgba(236,72,153,0.1)]"></div>
+<div class="absolute w-full flex justify-between px-2 pointer-events-none z-10">
+<div class="h-2.5 w-0.5 bg-vibe-turquoise rounded-full"></div>
+<div class="h-2.5 w-0.5 bg-vibe-yellow rounded-full"></div>
+<div class="h-2.5 w-0.5 bg-vibe-orange rounded-full"></div>
+<div class="h-2.5 w-0.5 bg-vibe-turquoise rounded-full"></div>
+<div class="h-2.5 w-0.5 bg-vibe-yellow rounded-full"></div>
+<div class="h-2.5 w-0.5 bg-vibe-orange rounded-full"></div>
+</div>
+<div class="absolute left-[65%] top-1/2 -translate-y-1/2 z-20">
+<div class="size-11 rounded-full handle-gradient handle-glow cursor-grab active:scale-95 transition-all flex items-center justify-center border-2 border-white/20">
+<div class="size-2 rounded-full bg-white shadow-sm"></div>
+</div>
+</div>
+</div>
+<p class="text-center text-white/40 text-sm font-medium">Drag the glow to set the mood</p>
+</div>
+</div>
+</div>
+<div class="mt-16 flex flex-col items-center gap-6">
+<button class="group relative flex min-w-[300px] items-center justify-center gap-3 overflow-hidden rounded-2xl h-16 px-8 btn-teal-gradient text-white text-lg font-bold transition-all hover:scale-[1.02] hover:brightness-110 active:scale-95 shadow-[0_0_40px_rgba(20,184,166,0.3)]">
+<span>Next Step</span>
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+<div class="flex items-center gap-4">
+<span class="h-px w-8 bg-white/10"></span>
+<p class="text-white/40 text-[10px] uppercase tracking-[0.3em] font-bold">Variant 7 of 10</p>
+<span class="h-px w-8 bg-white/10"></span>
+</div>
+</div>
+</main>
+<div class="fixed top-1/4 -left-20 size-[500px] bg-vibe-purple/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+<div class="fixed bottom-1/4 -right-20 size-[600px] bg-vibe-pink/10 blur-[150px] rounded-full pointer-events-none -z-10"></div>
+</div>
+
+</body></html>

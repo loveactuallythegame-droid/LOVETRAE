@@ -3,13 +3,14 @@ import { View, Image, StyleSheet, Modal, Platform, ActivityIndicator, Pressable 
 import { Video, ResizeMode } from 'expo-av';
 import { Asset } from 'expo-asset';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
-import { RadialGradientBackground, Text, SquishyButton } from '../../components/ui';
+import { RadialGradientBackground, Text, SquishyButton, GlassCard } from '../../components/ui';
 import { MarcieHost } from '../../components/ai-host';
 import Svg, { Defs, LinearGradient as SvgLinearGradient, Stop, Text as SvgText } from 'react-native-svg';
 import { LOGO_IMAGES, INTRO_VIDEO } from '../../constants/assetManifest';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 
 type SplashScreenProps = {
   onStart: () => void;
@@ -59,7 +60,7 @@ export default function SplashScreen({ onStart, onLogin }: SplashScreenProps) {
           p.catch(() => {
             setNeedsSoundUnlock(true);
             el.muted = true;
-            el.play().catch(() => {});
+            el.play().catch(() => { });
           });
         }
         el.onerror = () => {
@@ -78,174 +79,132 @@ export default function SplashScreen({ onStart, onLogin }: SplashScreenProps) {
     }
   }, [stage]);
 
+  // Force video finished for debugging if needed, but keeping logic
+  const [videoFinished, setVideoFinished] = useState(false);
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#120016' }}>
-      <RadialGradientBackground />
-      {stage === 'video' && (Platform.OS !== 'web' ? (
+    <View style={{ flex: 1, backgroundColor: '#121212' }}>
+      {/* EXACT BACKGROUND IMAGE FROM HTML REFERENCE */}
+      <Image
+        source={{ uri: "https://lh3.googleusercontent.com/aida-public/AB6AXuDLeJGWQBvAptpw89cPf9o0BiEUKC79ttx-85GJ0zm4NMekNNnOMpyKPv-sVAThtxJ7U2U9YJlpoxBJ2ITGY44CcnyLghPT6XEbY0du6asTTjYWG9bdx3UXdG86ODjuYjuJEn189tyY-mb7RBGFOfVRQu1FziJE7Vl3HdR5sKXTmDTkupl_eL1acvW9ywJ1HVDks6nErFv-oPAJkAfGYPmYO5Egd8kCE06-XwpqCeTUyuslZa6APrt1V78dG8ROaLXYihN7Zp6_zBrp" }}
+        style={StyleSheet.absoluteFillObject}
+        resizeMode="cover"
+      />
+      <View style={[StyleSheet.absoluteFillObject, { backgroundColor: 'rgba(45, 10, 49, 0.4)' }]} />
+
+      {/* Video Layer */}
+      {!videoFinished && (
         <View style={StyleSheet.absoluteFill}>
-          <Video
-            source={INTRO_VIDEO[0]}
-            style={StyleSheet.absoluteFill}
-            resizeMode={ResizeMode.COVER}
-            isLooping={false}
-            shouldPlay
-            isMuted={true}
-            onLoadStart={() => setVideoLoading(true)}
-            onLoad={() => setVideoLoading(false)}
-            onError={() => {
-              setVideoLoading(false);
-              setStageSafe('logo');
-            }}
-            onPlaybackStatusUpdate={async (s: any) => {
-              if (s?.didJustFinish) {
-                await AsyncStorage.setItem('introSeen', 'true');
-                setStageSafe('logo');
-              }
-            }}
-          />
-          <Pressable accessibilityRole="button" accessibilityLabel="Skip intro" onPress={async () => {
-            await AsyncStorage.setItem('introSeen', 'true');
-            setStageSafe('logo');
-          }} style={[styles.skipBtn, { zIndex: 1000 }]}>
-            <Text variant="header">Skip</Text>
-          </Pressable>
-          {videoLoading && (
-            <View style={styles.loadingWrap}>
-              <ActivityIndicator color="#FA1F63" />
-            </View>
-          )}
-        </View>
-      ) : (
-        <View style={StyleSheet.absoluteFill}>
-          <video
-            id="intro-video"
-            src={videoUri}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            muted
-            autoPlay
-            playsInline
-            loop={false}
-            onError={() => {
-              setStageSafe('logo');
-              setNeedsSoundUnlock(false);
-              setVideoLoading(false);
-            }}
-            onEnded={async () => {
-              await AsyncStorage.setItem('introSeen', 'true');
-              setStageSafe('logo');
-            }}
-          />
-          <Pressable accessibilityRole="button" accessibilityLabel="Skip intro" onPress={async () => {
-            await AsyncStorage.setItem('introSeen', 'true');
-            setStageSafe('logo');
-          }} style={[styles.skipBtn, { zIndex: 1000 }]}>
-            <Text variant="header">Skip</Text>
-          </Pressable>
-          {videoLoading && (
-            <View style={styles.loadingWrap}>
-              <ActivityIndicator color="#FA1F63" />
-            </View>
-          )}
-          {needsSoundUnlock && (
-            <View style={styles.soundUnlock} pointerEvents="auto">
-              <SquishyButton onPress={() => {
-                const el = document.getElementById('intro-video') as HTMLVideoElement | null;
-                if (el) { el.muted = false; el.play().catch(() => {}); }
-                setNeedsSoundUnlock(false);
-              }} style={styles.modalButton}>
-                <Text variant="header">Enable Sound</Text>
-              </SquishyButton>
-            </View>
-          )}
-        </View>
-      ))}
-      {stage !== 'video' && (
-        <View style={styles.overlay}>
-          <MarcieHost mode={'tap-watch'} size={160} float position={{ x: 24, y: 24 }} />
-          <Animated.View style={logoFloatStyle}>
-            <Image source={LOGO_IMAGES[0]} style={styles.logo} resizeMode="contain" accessibilityLabel="App Logo" alt="App Logo" />
-          </Animated.View>
-          <GradientHeading title1="Love, Actually... The Game" title2="How About We Don't Break Up?" />
-          <View style={styles.authButtons}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Start Your Relationship Rehab"
-              onPress={() => {
-                Haptics.selectionAsync();
-                onStart();
+          {Platform.OS === 'web' ? (
+            <video
+              src={videoUri}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', zIndex: 100 }}
+              autoPlay
+              muted={!needsSoundUnlock}
+              playsInline
+              onEnded={() => setVideoFinished(true)}
+            />
+          ) : (
+            <Video
+              source={INTRO_VIDEO[0]}
+              style={StyleSheet.absoluteFill}
+              resizeMode={ResizeMode.COVER}
+              shouldPlay
+              isLooping={false}
+              onPlaybackStatusUpdate={(s: any) => {
+                if (s?.didJustFinish) setVideoFinished(true);
               }}
-            >
-              <LinearGradient colors={["#FA1F63", "#BE1980"]} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.primaryBtn}>
-                <Text variant="header">Start Your Relationship Rehab</Text>
-              </LinearGradient>
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="I Already Have an Account"
-              onPress={() => {
-                Haptics.selectionAsync();
-                if (onLogin) onLogin(); else onStart();
-              }}
-              style={styles.secondaryBtn}
-            >
-              <Text variant="header">I Already Have an Account</Text>
-            </Pressable>
-          </View>
+            />
+          )}
         </View>
       )}
-    </View>
-  );
-}
 
-function GradientHeading({ title1, title2 }: { title1: string; title2: string }) {
-  return (
-    <View style={{ alignItems: 'center', gap: 6 }}>
-      <Svg width={320} height={40}>
-        <Defs>
-          <SvgLinearGradient id="g" x1="0" y1="0" x2="1" y2="0">
-            <Stop offset="0" stopColor="#FA1F63" />
-            <Stop offset="1" stopColor="#5C1459" />
-          </SvgLinearGradient>
-        </Defs>
-        <SvgText x={160} y={28} fontSize={22} fontFamily="BarbieDream-Regular" fill="url(#g)" textAnchor="middle">
-          {title1}
-        </SvgText>
-      </Svg>
-      <Svg width={360} height={40}>
-        <Defs>
-          <SvgLinearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
-            <Stop offset="0" stopColor="#FA1F63" />
-            <Stop offset="1" stopColor="#5C1459" />
-          </SvgLinearGradient>
-        </Defs>
-        <SvgText x={180} y={28} fontSize={20} fontFamily="Cheese-Regular" fill="url(#g2)" textAnchor="middle">
-          {title2}
-        </SvgText>
-      </Svg>
+      {/* Main Overlay Content - Always visible after video or during if transparent? 
+          User said "marcie-intro.webm s overlay without being in a loop just once and then they can acces"
+          So we probably show the logo layer AFTER video.
+      */}
+      {/* OVERLAY - ALWAYS RENDERED BUT HIDDEN BEHIND VIDEO IF PLAYING */}
+      <View style={[styles.overlay, { opacity: videoFinished ? 1 : 0 }]}>
+        {/* Top Icons */}
+        <View style={{ position: 'absolute', top: 32, left: 32, flexDirection: 'row', gap: 16 }}>
+          <Ionicons name="radio-outline" size={32} color="#40E0D0" />
+          <Ionicons name="heart" size={32} color="#ee2b8c" />
+        </View>
+        <View style={{ position: 'absolute', top: 32, right: 32, flexDirection: 'row', gap: 16 }}>
+          <Ionicons name="share-social" size={32} color="#ee2b8c" />
+          <Ionicons name="wifi" size={32} color="#40E0D0" />
+        </View>
+
+        {/* Center Content */}
+        <View style={styles.contentContainer}>
+          <Image source={LOGO_IMAGES[0]} style={{ width: 300, height: 300, marginBottom: 20 }} resizeMode="contain" />
+          <Text variant="header" style={styles.subTitle}>THE GAME</Text>
+
+          <GlassCard style={styles.glassPanel}>
+            <Text variant="header" style={{ fontSize: 20, letterSpacing: 2, textAlign: 'center', color: 'white' }}>
+              HOW ABOUT WE DON'T <Text variant="header" style={{ color: '#ee2b8c', fontWeight: '900' }}>BREAK</Text> UP?
+            </Text>
+          </GlassCard>
+
+          {/* Start Button */}
+          <Pressable onPress={() => { Haptics.selectionAsync(); onStart(); }} style={{ marginTop: 60 }}>
+            <Text variant="header" style={styles.pressStart}>PRESS TO START</Text>
+          </Pressable>
+        </View>
+
+        {/* Disclaimer / Authorization */}
+        <View style={{ position: 'absolute', bottom: 100, width: '100%', alignItems: 'center' }}>
+          <Text style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10, textAlign: 'center' }}>
+            By entering, you authorize audio analysis for relationship diagnostics.
+          </Text>
+        </View>
+
+        {/* Bottom Status Bar */}
+        <View style={{ position: 'absolute', bottom: 32, left: 32, flexDirection: 'row', alignItems: 'center', gap: 16, opacity: 0.6 }}>
+          <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#40E0D0' }} />
+          <Text variant="body" style={{ fontSize: 10, letterSpacing: 3, color: 'white' }}>SYSTEMS_ONLINE // V.2.0.1</Text>
+        </View>
+
+        {/* Marcie Host - FORCED VISIBLE */}
+        <MarcieHost mode={'idle'} size={180} float position={{ x: 0, y: 150 }} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   overlay: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(18,18,18,0.4)', // Slight dim
+  },
+  contentContainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 16,
+    zIndex: 60,
+    marginTop: -40,
   },
-  logo: { width: 300, height: 300 },
-  skipBtn: { position: 'absolute', top: 16, right: 16, paddingHorizontal: 12, paddingVertical: 8, backgroundColor: 'rgba(26,10,31,0.8)', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 12 },
-  loadingWrap: { position: 'absolute', top: '50%', left: 0, right: 0, alignItems: 'center' },
-  soundUnlock: { position: 'absolute', bottom: 32, left: 0, right: 0, alignItems: 'center' },
-  gradientText: {},
-  authButtons: { position: 'absolute', left: 0, right: 0, bottom: 24, alignItems: 'center', gap: 12 },
-  primaryBtn: { paddingHorizontal: 24, paddingVertical: 12, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(250, 31, 99, 0.2)', backgroundColor: 'transparent' },
-  secondaryBtn: { paddingHorizontal: 24, paddingVertical: 12, borderRadius: 20, backgroundColor: 'rgba(26,10,31,0.8)', borderWidth: 1, borderColor: 'rgba(250, 31, 99, 0.2)' },
-  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center' },
-  modalCard: { width: '85%', backgroundColor: '#1a0a1f', padding: 16, borderRadius: 16, borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)' },
-  modalButton: { alignSelf: 'center', paddingHorizontal: 16, paddingVertical: 8, backgroundColor: '#5C1459', borderRadius: 12 },
+  subTitle: {
+    fontSize: 24,
+    color: 'rgba(255,255,255,0.9)',
+    letterSpacing: 8,
+    marginTop: -20, // Pull it up closer to logo since text is gone
+    fontWeight: '300'
+  },
+  glassPanel: {
+    marginTop: 40,
+    paddingHorizontal: 40,
+    paddingVertical: 16,
+    borderRadius: 999, // Full pill shape
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(18, 18, 18, 0.6)',
+  },
+  pressStart: {
+    fontSize: 28,
+    color: '#FFD700', // Gold
+    letterSpacing: 6,
+    textShadowColor: '#FF8C00',
+    textShadowRadius: 15,
+  },
 });

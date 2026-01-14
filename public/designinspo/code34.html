@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Post-Repair Questionnaire - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", charcoal: "#1a1317", gold: "#FFD700", turquoise: "#40E0D0", "orange-accent": "#FF8C00", "purple-accent": "#9d4edd", "teal-accent": "#008080", "pink-accent": "#ff00ff"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style type="text/tailwindcss">
+        body {
+            font-family: "Space Grotesk", sans-serif;
+        }
+        .nebula-bg {
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(238, 43, 140, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(64, 224, 208, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(157, 78, 221, 0.05) 0%, transparent 60%),
+                #0a0508;
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(26, 19, 23, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .star-glow {
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #ee2b8c 0%, #9d4edd 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            box-shadow: 0 0 20px rgba(238, 43, 140, 0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-white min-h-screen font-display nebula-bg flex items-center justify-center p-6">
+<div class="layout-container flex h-full grow flex-col max-w-4xl w-full">
+<main class="flex-1 flex flex-col items-center justify-center">
+<div class="glass-panel w-full max-w-2xl rounded-3xl p-12 text-center relative overflow-hidden">
+<div class="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-24 -left-24 w-48 h-48 bg-turquoise/10 rounded-full blur-3xl"></div>
+<div class="mb-8">
+<div class="size-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-4xl text-turquoise">healing</span>
+</div>
+<span class="text-xs font-bold tracking-[0.3em] uppercase text-white/40 mb-3 block">Repair Session Complete</span>
+<h1 class="text-white text-4xl md:text-5xl font-bold tracking-tight mb-4">Do you feel better?</h1>
+<p class="text-white/60 text-lg max-w-md mx-auto">Take a moment to reflect on your progress together after this session.</p>
+</div>
+<div class="flex flex-col items-center gap-8 my-12">
+<div class="flex items-center gap-4">
+<button class="group">
+<span class="material-symbols-outlined text-5xl text-gold star-glow transition-transform group-hover:scale-110" style="font-variation-settings: 'FILL' 1">star</span>
+</button>
+<button class="group">
+<span class="material-symbols-outlined text-5xl text-gold star-glow transition-transform group-hover:scale-110" style="font-variation-settings: 'FILL' 1">star</span>
+</button>
+<button class="group">
+<span class="material-symbols-outlined text-5xl text-gold star-glow transition-transform group-hover:scale-110" style="font-variation-settings: 'FILL' 1">star</span>
+</button>
+<button class="group">
+<span class="material-symbols-outlined text-5xl text-gold star-glow transition-transform group-hover:scale-110" style="font-variation-settings: 'FILL' 1">star</span>
+</button>
+<button class="group">
+<span class="material-symbols-outlined text-5xl text-white/20 transition-all group-hover:text-gold/50" style="font-variation-settings: 'FILL' 0">star</span>
+</button>
+</div>
+<div class="flex gap-4 w-full max-w-xs">
+<div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-turquoise to-teal-accent w-[80%]"></div>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<button class="btn-gradient w-full py-5 rounded-2xl text-white font-bold text-lg tracking-wider uppercase shadow-lg">
+                        Finish Session
+                    </button>
+<button class="text-white/40 hover:text-white text-sm font-medium transition-colors uppercase tracking-widest">
+                        Add a private note
+                    </button>
+</div>
+</div>
+<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-2xl">
+<div class="glass-panel p-4 rounded-xl flex items-center gap-4 border-white/5">
+<div class="size-10 rounded-lg bg-orange-accent/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-orange-accent text-xl">favorite</span>
+</div>
+<div>
+<p class="text-[10px] text-white/40 font-bold uppercase tracking-widest">Connection</p>
+<p class="text-sm font-bold">+250 XP</p>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl flex items-center gap-4 border-white/5">
+<div class="size-10 rounded-lg bg-purple-accent/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-purple-accent text-xl">psychology</span>
+</div>
+<div>
+<p class="text-[10px] text-white/40 font-bold uppercase tracking-widest">Insight</p>
+<p class="text-sm font-bold">+120 XP</p>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl flex items-center gap-4 border-white/5">
+<div class="size-10 rounded-lg bg-pink-accent/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-pink-accent text-xl">auto_awesome</span>
+</div>
+<div>
+<p class="text-[10px] text-white/40 font-bold uppercase tracking-widest">Harmony</p>
+<p class="text-sm font-bold">Level Up!</p>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-auto py-8 text-center">
+<div class="flex items-center justify-center gap-3 text-white/20">
+<div class="size-5">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xs font-bold tracking-[0.4em] uppercase">Love Actually... The Game</h2>
+</div>
+</footer>
+</div>
+</body></html>

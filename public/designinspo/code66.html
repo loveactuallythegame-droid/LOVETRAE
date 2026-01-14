@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Translator Check-in | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", "charcoal-panel": "#1d1118", "teal-accent": "#00f5d4", "yellow-accent": "#fee440", "purple-accent": "#9b5de5"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: radial-gradient(circle at top left, #2a1120 0%, #11080d 50%),
+                        radial-gradient(circle at bottom right, #1a2a2d 0%, #11080d 50%);
+        }
+        .nebula-glow {
+            filter: blur(80px);
+            opacity: 0.15;
+        }
+        .emoji-btn-teal { box-shadow: 0 0 20px rgba(0, 245, 212, 0.3); }
+        .emoji-btn-yellow { box-shadow: 0 0 20px rgba(254, 228, 64, 0.3); }
+        .emoji-btn-pink { box-shadow: 0 0 20px rgba(237, 18, 124, 0.3); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-white overflow-x-hidden">
+<!-- Subtle Background Nebula Elements -->
+<div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary nebula-glow rounded-full"></div>
+<div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-teal-accent nebula-glow rounded-full"></div>
+<div class="relative flex flex-col min-h-screen">
+<!-- Header / Navigation -->
+<header class="flex items-center justify-between border-b border-white/10 px-10 py-4 bg-background-dark/50 backdrop-blur-md">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Love Actually... The Game</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Home</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Exercises</a>
+<a class="text-white text-sm font-medium border-b-2 border-primary pb-1" href="#">Progress</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Profile</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white/5 hover:bg-white/10 text-white transition-all">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white/5 hover:bg-white/10 text-white transition-all">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-12">
+<div class="w-full max-w-[800px] space-y-6">
+<!-- Breadcrumbs & Progress Indicator -->
+<div class="flex flex-col items-center gap-4">
+<div class="flex items-center gap-2 text-white/50 text-sm font-medium">
+<a class="hover:text-primary transition-colors" href="#">Translator</a>
+<span class="text-white/20">/</span>
+<span class="text-white">Check-in</span>
+</div>
+<div class="w-full max-w-md bg-white/5 p-4 rounded-xl border border-white/5">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs uppercase tracking-widest text-white/60">Session Progress</span>
+<span class="text-xs font-bold text-primary">82%</span>
+</div>
+<div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 82%;"></div>
+</div>
+<p class="text-[10px] text-white/40 mt-2 text-center uppercase tracking-tighter">Screen 35 of 42</p>
+</div>
+</div>
+<!-- Main Content Panel -->
+<div class="bg-charcoal-panel/80 backdrop-blur-xl border border-white/10 rounded-xl p-10 shadow-2xl relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-accent via-primary to-yellow-accent opacity-50"></div>
+<div class="text-center mb-10">
+<h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">How did the action plan go?</h1>
+<p class="text-white/60 text-lg">Take a moment to reflect on your progress since the last session.</p>
+</div>
+<!-- Emoji Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<!-- Option: Great (Teal) -->
+<button class="group relative flex flex-col items-center gap-4 p-6 rounded-xl border border-teal-accent/20 bg-teal-accent/5 hover:bg-teal-accent/10 transition-all duration-300 emoji-btn-teal">
+<div class="w-20 h-20 rounded-full bg-teal-accent/20 flex items-center justify-center text-teal-accent text-5xl transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined !text-5xl">sentiment_very_satisfied</span>
+</div>
+<h3 class="font-bold text-lg text-teal-accent">Great</h3>
+<p class="text-xs text-center text-white/40 leading-relaxed">Everything went better than expected.</p>
+</button>
+<!-- Option: Okay (Yellow) -->
+<button class="group relative flex flex-col items-center gap-4 p-6 rounded-xl border border-yellow-accent/20 bg-yellow-accent/5 hover:bg-yellow-accent/10 transition-all duration-300 emoji-btn-yellow">
+<div class="w-20 h-20 rounded-full bg-yellow-accent/20 flex items-center justify-center text-yellow-accent text-5xl transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined !text-5xl">sentiment_satisfied</span>
+</div>
+<h3 class="font-bold text-lg text-yellow-accent">Okay</h3>
+<p class="text-xs text-center text-white/40 leading-relaxed">Made some progress, but room for growth.</p>
+</button>
+<!-- Option: Struggled (Pink) -->
+<button class="group relative flex flex-col items-center gap-4 p-6 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-all duration-300 emoji-btn-pink">
+<div class="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-primary text-5xl transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined !text-5xl">sentiment_dissatisfied</span>
+</div>
+<h3 class="font-bold text-lg text-primary">Struggled</h3>
+<p class="text-xs text-center text-white/40 leading-relaxed">Faced significant obstacles this week.</p>
+</button>
+</div>
+<!-- Reflection Field -->
+<div class="space-y-3">
+<label class="text-sm font-semibold text-white/70 flex items-center gap-2" for="reflection">
+<span class="material-symbols-outlined text-primary text-sm">edit_note</span>
+                            Additional Reflection
+                        </label>
+<textarea class="w-full bg-black/40 border border-white/10 rounded-lg p-4 text-white placeholder:text-white/20 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none" id="reflection" placeholder="Add any notes or specific breakthroughs you'd like to discuss..." rows="4"></textarea>
+</div>
+<!-- Footer Action -->
+<div class="mt-10 flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-3 text-white/40 text-sm italic">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+                            Your answers are private and encrypted.
+                        </div>
+<button class="w-full md:w-auto px-10 py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
+                            Save &amp; Continue
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Bottom Helper -->
+<div class="flex justify-center gap-4 text-white/30 text-xs font-medium uppercase tracking-widest">
+<button class="hover:text-white transition-colors">Need Help?</button>
+<span>•</span>
+<button class="hover:text-white transition-colors">Skip for now</button>
+<span>•</span>
+<button class="hover:text-white transition-colors">Previous</button>
+</div>
+</div>
+</main>
+<footer class="py-6 px-10 text-center text-white/20 text-xs border-t border-white/5">
+            © 2024 Love Actually... The Game. A luminous space for connection.
+        </footer>
+</div>
+</body></html>

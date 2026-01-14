@@ -38,9 +38,9 @@ export default function BoundaryBingo({ navigation }: any) {
 
         <View style={styles.grid}>
           {BINGO_ITEMS.map((item, i) => (
-            <Pressable key={i} onPress={() => toggle(i)} style={[styles.cell, marked[i] && styles.markedCell]}>
+            <Pressable key={i} onPress={() => toggle(i)} style={[styles.cell, marked[i] ? styles.markedCell : {}]}>
               {marked[i] && <Text style={styles.check}>✅</Text>}
-              <Text style={[styles.cellText, marked[i] && styles.markedText]}>{item}</Text>
+              <Text style={[styles.cellText, marked[i] ? styles.markedText : {}]}>{item}</Text>
             </Pressable>
           ))}
         </View>
