@@ -57,6 +57,15 @@ export default function WindowsAndWalls({ route, navigation }: any) {
         const choice = g.dx > 60 ? 'wall' : g.dx < -60 ? 'window' : null;
         if (choice) {
           const item = BEHAVIORS[index];
+
+          // Scoring Logic:
+          // 1. If partner has played, "correct" means agreeing with partner (sync).
+          // 2. If partner hasn't played, "correct" means matching the general definition.
+          const partnerDecision = partnerDecisions.current[index];
+          const correct = partnerDecision
+            ? (choice === partnerDecision.choice)
+            : (choice === item.category);
+          
           // For this game, "correct" is subjective but we can check if it matches the general "healthy" categorization
           // Or we can say "correct" if it matches partner? Let's use the predefined category for "healthy boundary" vs "unhealthy secrecy" logic
           // Actually, "Window" (Transparency) vs "Wall" (Privacy).
@@ -67,6 +76,7 @@ export default function WindowsAndWalls({ route, navigation }: any) {
           HapticFeedbackSystem.selection();
 
           if (item.text.includes('phone') && choice === 'window') {
+            speakMarcie("Checking your partner's phone isn't a window, honey. It's a magnifying glass.");
             // Marcie's specific line for phone/transparency
             speakMarcie("You think checking your partner's phone is a 'window'? Honey, that's a wrecking ball.");
           }
