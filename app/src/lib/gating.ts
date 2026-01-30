@@ -1,7 +1,9 @@
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAppStore } from '../state/store';
 import SHA256 from 'crypto-js/sha256';
-import { supabase } from './supabase';
+import { firebaseAuth, firestore } from './firebaseClient';
+import { doc, updateDoc } from 'firebase/firestore';
 
 const STATIC_CODES = ['MARCIEBETA', 'LOVEBETA2025', 'TABSIMONBETA'];
 
@@ -21,10 +23,6 @@ export async function validateBetaCode(code: string, email?: string): Promise<bo
       return true;
     }
   }
-
-  // Check against Supabase if needed (optional, for dynamic codes)
-  // For now, we stick to the static/algo check as per requirements, 
-  // but we could query a 'beta_codes' table here.
   
   return false;
 }
@@ -35,13 +33,14 @@ export async function activateBeta(code: string, email?: string) {
     await AsyncStorage.setItem('beta_active', 'true');
     await AsyncStorage.setItem('beta_code', code);
     
-    // Update profile in Supabase if user is logged in
-    const { user } = (await supabase.auth.getSession()).data.session || {};
+    // Update profile in Firebase if user is logged in
+    const user = firebaseAuth.currentUser;
     if (user) {
-        await supabase.from('profiles').update({ 
+        const userDocRef = doc(firestore, 'users', user.uid);
+        await updateDoc(userDocRef, {
             is_beta: true, 
             beta_code: code 
-        }).eq('user_id', user.id);
+        });
     }
     
     return true;

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Amazing Race: Legacy Dash</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff0055", "background-light": "#f8f5f6", "background-dark": "#230f16", "charcoal-panel": "#120a08"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>.cosmic-bg {
+    background: radial-gradient(circle at top right, #3b1b12, transparent), radial-gradient(circle at bottom left, #1a0f0d, transparent), linear-gradient(135deg, #120a08 0%, #221410 100%);
+    background-attachment: fixed
+    }
+.nebula-overlay {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBNoKREjYxLOQINL4QPJfhXjYmtQ7K8mW9v2HNwPvXnM-fRRhmDJhmLiaV-IJG0jypFfLvINcSB3B8v05nZfwbv9XQYotSM0QlSsyKCTdQO7Bzerx9noIYz-GVeQyGky1jtSGKVwiBMwA_iOW3nfLiB4PBy9PABN0oY4EhYmnHKqR-D8jHV9G8n5nrLvtX29x9hkduQHs81qCFOdat9TXR5nsr3oGb0hmmruYWcAskeUHYP6XaUDHlDTzrYiUNF7LhfZNIcK6u7_OcT);
+    opacity: 0.3
+    }
+.six-color-gradient {
+    background: linear-gradient(90deg, #f45925 0%, #f4a225 20%, #f4da25 40%, #25f48e 60%, #25baf4 80%, #a225f4 100%)
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen cosmic-bg relative overflow-x-hidden">
+<div class="nebula-overlay absolute inset-0 pointer-events-none"></div>
+<div class="relative flex h-full min-h-screen w-full flex-col group/design-root">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-3 bg-charcoal-panel/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<span class="material-symbols-outlined text-3xl">sports_score</span>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Amazing Race: <span class="text-primary">Legacy Dash</span></h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Race Map</a>
+<a class="text-white/70 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Legacy Library</a>
+<a class="text-white/70 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Team Inbox</a>
+<a class="text-white/70 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Leaderboard</a>
+</div>
+<div class="flex gap-2">
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white/5 text-white hover:bg-white/10 transition-all border border-white/10">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white/5 text-white hover:bg-white/10 transition-all border border-white/10">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/50" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAz-Xw5famT4nLQMzPAoga83uz6Nse9wkb8HG6dOzGEjFYJClEbyY4OQzb6QN1Mpm4ehWnt4i0qWLbS_rPN7dzGvbF3naUYCH5cy9bdLiaysT_6qeu8fEAkmFkhRQzNVT-AiaH0Zio-8SHc1fachVtdduxSJvenY6LiF0VEmph7zbnqd_decv6ecPt65h7imIbSi6k7PZiUoU9c6PiNQnYyvS62_Bb8DHsDR3Ip-CzRN4vNjPG63XP9DXAB4Cv54cLJ5j7rJWMem2Bh");'></div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-8">
+<div class="layout-content-container flex flex-col max-w-[1200px] flex-1 px-10 gap-6">
+<!-- Team Progress Bar with Multi-color accent -->
+<div class="flex flex-col gap-3 p-6 bg-charcoal-panel/60 rounded-xl border border-white/10 backdrop-blur-sm">
+<div class="flex gap-6 justify-between items-end">
+<div>
+<h3 class="text-white text-lg font-bold leading-normal">Overall Team Progress</h3>
+<p class="text-white/50 text-xs font-normal uppercase tracking-widest">Phase 4: Family Forge</p>
+</div>
+<p class="text-white text-2xl font-black leading-normal italic">65%</p>
+</div>
+<div class="h-4 rounded-full bg-white/5 overflow-hidden ring-1 ring-white/10">
+<div class="h-full rounded-full six-color-gradient shadow-[0_0_15px_rgba(244,89,37,0.3)]" style="width: 65%;"></div>
+</div>
+<div class="flex justify-between items-center">
+<p class="text-primary/90 text-sm font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">flag</span>
+                                6/9 Milestones Completed
+                            </p>
+<p class="text-white/40 text-xs italic">Next: "Transparency Protocol"</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+<!-- Left Column: Race Path (Timeline) -->
+<div class="lg:col-span-1 flex flex-col gap-4">
+<div class="bg-charcoal-panel/60 p-6 rounded-xl border border-white/10 flex-1 overflow-y-auto max-h-[600px]">
+<h3 class="text-white text-base font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">route</span>
+                                    Legacy Milestones
+                                </h3>
+<div class="grid grid-cols-[40px_1fr] gap-x-2">
+<div class="flex flex-col items-center gap-1 pt-3">
+<span class="material-symbols-outlined text-primary text-2xl">check_circle</span>
+<div class="w-[2px] bg-primary h-12"></div>
+</div>
+<div class="flex flex-1 flex-col py-3">
+<p class="text-white text-base font-medium leading-normal">Foundation: De-escalation</p>
+<p class="text-primary/70 text-xs font-normal uppercase tracking-tighter">Completed - Day 4</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-primary text-2xl">play_circle</span>
+<div class="w-[2px] bg-white/20 h-16 grow border-l-2 border-dashed border-white/20"></div>
+</div>
+<div class="flex flex-1 flex-col py-3">
+<p class="text-white text-base font-bold leading-normal">Trust Rebuild: Transparency</p>
+<p class="text-white/50 text-sm font-normal">Active Milestone: "The Shared Calendar Challenge"</p>
+<button class="mt-2 text-xs bg-primary text-white font-bold py-1 px-3 rounded-full w-fit uppercase tracking-tighter">Resume Task</button>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-white/30 text-2xl">lock</span>
+<div class="w-[2px] bg-white/20 h-12 grow border-l-2 border-dashed border-white/20"></div>
+</div>
+<div class="flex flex-1 flex-col py-3">
+<p class="text-white/40 text-base font-medium leading-normal">Communication Hub: New Rules</p>
+<p class="text-white/20 text-xs font-normal">Unlocks at 75%</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-white/30 text-2xl">lock</span>
+</div>
+<div class="flex flex-1 flex-col py-3">
+<p class="text-white/40 text-base font-medium leading-normal">Future Vision: Legacy Planning</p>
+<p class="text-white/20 text-xs font-normal">Final Stretch</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Interactive Map -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Race Map Container -->
+<div class="relative bg-charcoal-panel/60 rounded-xl border border-white/10 overflow-hidden min-h-[450px] flex flex-col">
+<div class="absolute inset-0 opacity-40 bg-cover bg-center" data-alt="Cosmic nebula background with stardust" data-location="Nebula Galaxy" style='background-image: url("https://placeholder.pics/svg/300");'></div>
+<div class="relative flex-1 p-6 flex flex-col justify-between z-10">
+<div class="flex justify-between items-start">
+<label class="flex flex-col min-w-64 h-12 shadow-2xl">
+<div class="flex w-full flex-1 items-stretch rounded-full h-full bg-charcoal-panel/90 border border-white/20">
+<div class="text-white/50 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 bg-transparent border-none text-white focus:ring-0 placeholder:text-white/30 px-4 text-sm" placeholder="Find a milestone..."/>
+</div>
+</label>
+<div class="flex flex-col gap-2">
+<button class="flex size-10 items-center justify-center rounded-full bg-charcoal-panel/90 border border-white/20 text-white hover:text-primary transition-all shadow-xl">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+</div>
+<!-- Visual Path Element (SVG Overlay Concept) -->
+<div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+<svg class="w-full h-full opacity-60" fill="none" viewbox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+<path d="M50 250 C 150 250, 150 50, 300 150 S 450 250, 550 50" stroke="#f45925" stroke-dasharray="10 10" stroke-width="4"></path>
+<!-- Team Piece -->
+<circle class="animate-pulse" cx="230" cy="110" fill="#f45925" r="10"></circle>
+<circle cx="230" cy="110" r="18" stroke="#f45925" stroke-width="2"></circle>
+</svg>
+</div>
+<div class="flex justify-end gap-3 items-end">
+<div class="bg-charcoal-panel/90 p-3 rounded-xl border border-white/20 backdrop-blur-md max-w-[200px]">
+<p class="text-[10px] uppercase tracking-widest text-white/50 mb-1">Current Position</p>
+<p class="text-sm font-bold text-white">Zone: Rebuild Ridge</p>
+</div>
+<div class="flex flex-col gap-0.5">
+<button class="flex size-10 items-center justify-center rounded-t-xl bg-charcoal-panel border border-white/20 text-white hover:bg-white/10">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-b-xl bg-charcoal-panel border border-white/20 text-white hover:bg-white/10 border-t-0">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Moderator Overlay Section -->
+<div class="bg-charcoal-panel/60 p-4 rounded-xl border border-white/10 backdrop-blur-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 opacity-20">
+<span class="material-symbols-outlined text-6xl rotate-12">flag</span>
+</div>
+<div class="flex gap-6 items-center relative z-10">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-24 ring-4 ring-primary ring-offset-4 ring-offset-charcoal-panel shadow-[0_0_20px_rgba(244,89,37,0.4)]" data-alt="Dr. Marcie Liss Profile" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBCDs2BB5kDCrJQOYRhuQtk7csU4YNedRGbdgfEMttb7S7dmOZvN4gDUCzkP9I5qyt-zq4LpYy9JM1VMaGuZ82WfaNkFXFsbCLmtsai1uMthpDJXvz-XO_iZpdtN0StpRt3RlfHyJDWjsgJADThO9jd6hXgNV9geROJMLZYMpGHid0HETaZ25UpvahTa9v7t2If0aFk758ntt5sDYkrIyWi-ZVwno_fZoWiIGqguG31tsUO9JuiHd6HI6Bs564i9KCRQmFApDjVnQ_d");'></div>
+<div class="absolute -bottom-1 -right-1 bg-primary text-white p-1.5 rounded-full border-2 border-charcoal-panel">
+<span class="material-symbols-outlined text-sm font-bold">flag_check</span>
+</div>
+</div>
+<div class="flex flex-col">
+<p class="text-primary text-xs font-bold uppercase tracking-widest mb-1">Race Moderator</p>
+<h4 class="text-white text-xl font-bold leading-tight">Dr. Marcie Liss</h4>
+<p class="text-white/70 text-base font-normal leading-relaxed italic">"You're gaining speed on the Trust Rebuild! Keep pushing together. The next milestone will redefine how you share space."</p>
+</div>
+<div class="ml-auto">
+<button class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full font-bold shadow-lg transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">forum</span>
+                                            Ask Dr. Marcie
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / Active Task Detail -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 flex items-center justify-between gap-6 mb-10">
+<div class="flex items-center gap-4">
+<div class="bg-primary text-white p-3 rounded-full">
+<span class="material-symbols-outlined text-2xl">assignment</span>
+</div>
+<div>
+<h5 class="text-white font-bold">Collaborative Task: "The Radical Honesty Log"</h5>
+<p class="text-white/60 text-sm">Both partners must submit their weekly reflections to unlock the next leg of the race.</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 rounded-full border border-white/20 text-white hover:bg-white/5 font-medium transition-all">View Details</button>
+<button class="px-8 py-2 rounded-full bg-primary text-white font-bold hover:shadow-[0_0_15px_rgba(244,89,37,0.5)] transition-all">Submit Evidence</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

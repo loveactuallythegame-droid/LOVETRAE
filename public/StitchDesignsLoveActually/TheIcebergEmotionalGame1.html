@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Iceberg Emotional Game - Love Actually</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff006d", "accent-pink": "#ff2d75", "background-light": "#f8f5f7", "background-dark": "#230f18", "nebula-deep": "#191022"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .nebula-bg {
+            background: radial-gradient(circle at 50% 50%, #191022 0%, #0a0612 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .nebula-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(115, 17, 212, 0.15) 0%, rgba(255, 45, 117, 0.05) 50%, transparent 100%);
+            filter: blur(80px);
+            z-index: 0;
+        }
+        .iceberg-svg {
+            filter: drop-shadow(0 0 20px rgba(115, 17, 212, 0.3));
+        }
+        .glass-panel {
+            background: rgba(48, 40, 57, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen selection:bg-primary selection:text-white">
+<!-- Nebula Decorative Elements -->
+<div class="nebula-glow top-[-100px] left-[-100px]"></div>
+<div class="nebula-glow bottom-[-100px] right-[-100px]"></div>
+<div class="relative z-10 flex flex-col min-h-screen">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 bg-background-dark/80 backdrop-blur-md sticky top-0">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-accent-pink">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Love Actually...</h2>
+<p class="text-[10px] uppercase tracking-[0.2em] text-accent-pink font-bold">The Game Show</p>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">The Iceberg</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">My Progress</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Leaderboard</a>
+</nav>
+<div class="h-8 w-px bg-white/10"></div>
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary hover:bg-primary/80 text-white text-sm font-bold transition-all shadow-lg shadow-primary/20">
+<span class="truncate">Live Session</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAQwuEfB2jATeUxLr6kDJbwHRNNJMwqhwZXUs95UZfJLEY_0nlVIehDjUpSPKOjmTZL-zq8T09-iFSobj5VvXH4-tLWcd3DLBefrAyJJJr_5HyTTXRjr1-taGctTiooD7ZB-b0nHB97YaHtDBuo-U8MNzEbd7ocQkveGWAbeeez05PIs82zcV9S2BLZcsHdSDqgoEMap5JBkaZHcTjSYyj7PUKi4D0V5TS7llNxL2rnse4drGU7UfBsuvWis38g9Hjt3iryRTmf4biG");'></div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Sidebar: Dr. Marcie's Guidance -->
+<aside class="w-80 flex flex-col border-r border-white/10 bg-background-dark/40 p-6 gap-8">
+<div class="flex flex-col gap-4">
+<div class="flex gap-4 items-center">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl size-14 ring-2 ring-primary ring-offset-2 ring-offset-background-dark" data-alt="Dr. Marcie Liss profile portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAQqej8So4S1gsoURPPFxXZ2sQzDYACDP0g0FMOK3RbELh25F3jCbVf9v3Vc75ndJx_4JsLH7DIfFBbYLIS7trnWgKtt-nMTLLfEalDrXYKCklhwXFVzui_dCQPsD8D3Cv_u17zslZ-4ul-dbCN8QA6gyAg8DoJwAKijqatBMwYr6ddl-4GluYP9YOi4T6DEGEtNbLTFs5CshTCqnejxf9JWMco6aar3r09ceNg9GpH1q4LmhbfEfW_Aag6ko87z0MAQhQb5yuancO6");'></div>
+<div class="flex flex-col">
+<h3 class="text-white text-base font-bold">Dr. Marcie Liss</h3>
+<p class="text-accent-pink text-[11px] font-bold uppercase tracking-wider">Excavation Host</p>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl">
+<p class="text-sm italic text-white/90 leading-relaxed">"Anger is just the tip. To heal, we must swim down to the depths where the real needs live."</p>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<p class="text-[10px] font-bold text-white/40 uppercase tracking-widest px-3 mb-2">Excavation Tools</p>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/20 border border-primary/30 text-white group cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">explore</span>
+<p class="text-sm font-bold">Emotional Map</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-white/60 hover:text-white group cursor-pointer transition-all">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">psychology</span>
+<p class="text-sm font-medium">Core Needs Index</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-white/60 hover:text-white group cursor-pointer transition-all">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">history</span>
+<p class="text-sm font-medium">Session History</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 text-white/60 hover:text-white group cursor-pointer transition-all">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">settings</span>
+<p class="text-sm font-medium">Settings</p>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full flex items-center justify-center gap-2 rounded-xl h-12 px-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm font-bold transition-all">
+<span class="material-symbols-outlined text-accent-pink text-sm">lightbulb</span>
+<span>Get Pro-Tip</span>
+</button>
+</div>
+</aside>
+<!-- Main Game Area -->
+<section class="flex-1 flex flex-col relative overflow-y-auto">
+<!-- Page Heading -->
+<div class="p-8 pb-0">
+<div class="flex justify-between items-end">
+<div class="flex flex-col gap-2">
+<h1 class="text-white text-5xl font-black leading-none tracking-tighter">THE ICEBERG</h1>
+<p class="text-white/50 text-base max-w-lg">Dig deeper from surface reactions to hidden core needs.</p>
+</div>
+<div class="flex flex-col gap-3 min-w-[240px] glass-panel p-4 rounded-xl border-primary/20">
+<div class="flex justify-between items-center">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary">Depth Meter</span>
+<span class="text-sm font-bold text-white">40% Deep</span>
+</div>
+<div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-accent-pink" style="width: 40%;"></div>
+</div>
+<p class="text-[11px] text-white/40 italic">Current Zone: The Waterline</p>
+</div>
+</div>
+</div>
+<!-- Interactive Iceberg View -->
+<div class="flex-1 flex items-center justify-center p-8 relative">
+<!-- Navigation Controls Overlay -->
+<div class="absolute left-8 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-20">
+<div class="p-4 rounded-2xl glass-panel flex flex-col gap-6 items-center border-white/10">
+<button class="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+<div class="flex flex-col gap-2 h-40 w-1.5 bg-white/10 rounded-full relative">
+<div class="absolute top-0 w-full h-1/3 bg-primary rounded-full"></div>
+<div class="absolute top-1/3 -translate-y-1/2 left-1/2 -translate-x-1/2 size-4 bg-white rounded-full border-4 border-primary shadow-[0_0_15px_rgba(115,17,212,0.8)]"></div>
+</div>
+<button class="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+</div>
+<!-- The Iceberg Visual -->
+<div class="relative w-full max-w-4xl h-[600px] flex flex-col">
+<!-- Upper Zone (Surface) -->
+<div class="flex-1 flex flex-col items-center justify-center relative">
+<!-- Surface Iceberg Shape (Simplified SVG representation) -->
+<div class="absolute inset-0 flex justify-center items-end">
+<svg class="w-[500px] iceberg-svg opacity-80" viewbox="0 0 400 300">
+<path d="M200 20 L320 280 L80 280 Z" fill="#ffffff" fill-opacity="0.1" stroke="#ffffff" stroke-width="2"></path>
+<path d="M200 40 L280 280 L120 280 Z" fill="#ffffff" fill-opacity="0.2"></path>
+</svg>
+</div>
+<!-- Emotion Node -->
+<div class="relative z-10 glass-panel px-6 py-3 rounded-full border-white/20 shadow-xl flex items-center gap-3">
+<div class="size-3 rounded-full bg-accent-pink animate-pulse"></div>
+<span class="text-xl font-bold tracking-tight">ANGER</span>
+<span class="material-symbols-outlined text-white/30">keyboard_arrow_down</span>
+</div>
+</div>
+<!-- Waterline Line -->
+<div class="h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent opacity-50 relative">
+<div class="absolute left-1/2 -translate-x-1/2 -top-3 bg-background-dark px-4 text-[10px] font-bold text-primary tracking-[0.4em] uppercase">The Waterline</div>
+</div>
+<!-- Lower Zone (Deep) -->
+<div class="flex-1 bg-gradient-to-b from-primary/10 to-transparent rounded-b-3xl relative overflow-hidden">
+<div class="absolute inset-0 flex justify-center items-start">
+<svg class="w-[600px] iceberg-svg opacity-40" viewbox="0 0 400 400">
+<path d="M80 0 L320 0 L250 350 L150 350 Z" fill="#7311d4" fill-opacity="0.2" stroke="#7311d4" stroke-width="2"></path>
+<path d="M120 0 L280 0 L230 300 L170 300 Z" fill="#7311d4" fill-opacity="0.3"></path>
+</svg>
+</div>
+<div class="flex flex-col items-center pt-20 gap-8 relative z-10">
+<!-- Discovery Cards -->
+<div class="flex gap-4">
+<div class="glass-panel p-5 rounded-2xl border-primary/40 flex flex-col gap-2 w-48 hover:scale-105 transition-transform cursor-pointer">
+<div class="flex justify-between">
+<span class="text-[10px] font-bold text-primary uppercase">Zone 2</span>
+<span class="material-symbols-outlined text-sm text-primary">lock_open</span>
+</div>
+<p class="text-lg font-bold">FEAR</p>
+<p class="text-xs text-white/50">Of losing connection or feeling abandoned.</p>
+</div>
+<div class="glass-panel p-5 rounded-2xl border-white/5 flex flex-col gap-2 w-48 opacity-40 grayscale blur-[1px]">
+<div class="flex justify-between">
+<span class="text-[10px] font-bold text-white/40 uppercase">Zone 3</span>
+<span class="material-symbols-outlined text-sm text-white/40">lock</span>
+</div>
+<p class="text-lg font-bold">???</p>
+<p class="text-xs text-white/30">Continue excavating to reveal core needs.</p>
+</div>
+</div>
+<button class="mt-8 group flex items-center gap-4 bg-primary px-8 py-4 rounded-2xl font-black text-lg tracking-wider hover:bg-accent-pink transition-all shadow-2xl shadow-primary/40">
+                                    REVEAL CORE NEED
+                                    <span class="material-symbols-outlined group-hover:translate-y-1 transition-transform">keyboard_double_arrow_down</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Panel: Contextual Guidance -->
+<div class="absolute right-8 top-1/2 -translate-y-1/2 w-64 flex flex-col gap-4">
+<div class="glass-panel p-5 rounded-2xl border-white/10">
+<p class="text-[10px] font-bold text-accent-pink uppercase tracking-widest mb-3">Analysis</p>
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<p class="text-xs font-bold text-white/80">Surface Emotion</p>
+<p class="text-sm">Explosive Anger</p>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-xs font-bold text-white/80">Physical Feeling</p>
+<p class="text-sm italic">Tight chest, heat in face</p>
+</div>
+</div>
+</div>
+<div class="bg-primary/10 border border-primary/20 p-5 rounded-2xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+<p class="text-[10px] font-bold text-primary uppercase tracking-widest">Digging Tip</p>
+</div>
+<p class="text-xs text-white/70 leading-relaxed">Try to look past the person who triggered you. What part of YOU feels unsafe right now?</p>
+</div>
+</div>
+</div>
+<!-- Footer Quick Actions -->
+<div class="p-8 mt-auto flex justify-center gap-4">
+<div class="flex items-center gap-4 bg-background-dark/80 px-6 py-3 rounded-full border border-white/5 backdrop-blur-xl">
+<div class="flex -space-x-3">
+<div class="size-8 rounded-full border-2 border-background-dark bg-cover" data-alt="Player 1 avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCDOYWUMqWnzKZztCrmiNeIpnCLIr6g9FNNp9mIHQr6EzXYy1N5p_fW-pq2nLEEBLubiVWgFn_8-Y2TwllZciMt5K83Fva0aCnqHCKwOrxKWSuqqvZilCMhXB4V-OmmGe6SPEEU1Xt7CgS7d_UQzx53lZrO0Uxs_E51HYhbULxXTNV69WuMLrN62p9RyAf0dHLtkNcsGmiJnaHh2LVRe5Lna-ujbD06_ksHWFEW5jZO7enxMuL44lSBPngyKV2oxffyFd51d7PUxTqE')"></div>
+<div class="size-8 rounded-full border-2 border-background-dark bg-cover" data-alt="Player 2 avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDWdDewzLFspwLL5rd8t5bKoRQHjbHd6xZ18YpC5C-0XbzMD78pcaGTx8VcKB6SNuMjUTgMCxh9GEnZgWs-ZARH09V-hkIQOXj_zN35ebrCe0kcU9qui73reN2Cvl3RDzNYEvhQIG5XJrxSsQWFgC9uOST_p_Rmyk2WKo6ElvTm1IW3Q2OrfU0392--bbHnk9CUiTQ-fns9oJpW1plIUiN-Lbk3xORj8kTsiYJWVeXbfbFGwBNJTdXyenU4zySnY4bOamRBtlaSYS3j')"></div>
+</div>
+<p class="text-xs text-white/60">Playing with <span class="text-white font-bold">Alex</span></p>
+<div class="h-4 w-px bg-white/10"></div>
+<button class="text-xs font-bold text-primary hover:text-accent-pink transition-colors">SHARE FEELING</button>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

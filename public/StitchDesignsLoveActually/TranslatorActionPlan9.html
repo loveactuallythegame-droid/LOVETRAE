@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Newlywed Sync Check | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --primary: #fc0c84;
+            --background-dark: #120810;
+            --surface-dark: #1d0b16;
+            --accent-turquoise: #2dd4bf;
+            --accent-pink: #f472b6;
+        }
+        @layer base {
+            body { @apply font-display text-white; }
+        }
+        .nebula-bg {
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(252, 12, 132, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(45, 212, 191, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 60%),
+                #120810;
+        }
+        .card-glow-turquoise { box-shadow: 0 0 40px -10px rgba(45, 212, 191, 0.4); }
+        .card-glow-pink { box-shadow: 0 0 40px -10px rgba(244, 114, 182, 0.4); }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 20px 20px 0;
+            border-style: solid;
+            border-color: rgba(255, 255, 255, 0.9) transparent transparent;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#fc0c84",
+                        "background-dark": "#120810",
+                        "surface-dark": "#1d0b16",
+                        "accent-turquoise": "#2dd4bf",
+                        "accent-pink": "#f472b6"
+                    },
+                    fontFamily: { display: "Work Sans" }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-background-dark min-h-screen selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col nebula-bg overflow-hidden">
+<header class="flex items-center justify-between px-10 py-6 bg-surface-dark/40 backdrop-blur-md border-b border-white/5">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h1 class="text-2xl font-black uppercase tracking-tighter">Love Actually...</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-end">
+<span class="text-[10px] uppercase tracking-widest text-primary font-bold">Round 4 of 10</span>
+<span class="text-white font-black">THE NEWLYWED SYNC</span>
+</div>
+<div class="h-10 w-px bg-white/10"></div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 ring-2 ring-primary/40" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAmLH-Jndyo8h6OvzF0W9rv-F9VqAR4CwHMB0r58C6M0ukcJSZVv8D4F8VKkIXrt3yKoJXp77Dl6PMn8ju-0z_wxgLcDKXncTnmJ24-Km1IxpknuxaW37IuMEAKAIMB8kudhlbagX0-iwnHR0Gge9zmqSVab028hxd_vaE1dVmbxmNPdwNZOj7h5rc5w1WHGdzpD4xfPoV9sx49N9F4GNVW8OkaCtK4qAmuxEeBfhwHapzw8MaOMJwvGP2wMU2frdCHvew-hLI2Y_ZK');"></div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center p-8 relative">
+<div class="mb-12 text-center">
+<h2 class="text-white/60 uppercase tracking-[0.3em] text-sm font-bold mb-2">The Big Reveal</h2>
+<div class="bg-surface-dark/80 px-12 py-6 rounded-2xl border border-white/10 backdrop-blur-xl inline-block shadow-2xl">
+<h3 class="text-4xl font-black text-white italic">"Who is the better driver?"</h3>
+</div>
+</div>
+<div class="relative w-full max-w-6xl flex items-center justify-between gap-8">
+<div class="flex-1 perspective-1000 group">
+<div class="aspect-[3/4] rounded-[2rem] bg-surface-dark border-4 border-accent-turquoise/50 card-glow-turquoise flex flex-col items-center justify-center gap-8 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-accent-turquoise/10 to-transparent"></div>
+<span class="text-accent-turquoise/20 text-9xl font-black absolute -top-10 -left-10 select-none">A</span>
+<div class="relative z-10 flex flex-col items-center">
+<div class="size-32 rounded-full border-4 border-accent-turquoise/30 mb-6 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAAJA0w-6d6olkTsMYKG8VlcOuiZohvhxv-0kIltZ6E2RuIaOBCPCadOD7maCtRAUWzQ1s1UeoigCsx4y6Fw__gxH2mwM6oDUSFc3X2QbkPyuJ5I-gTurhLnGInmdt29TFjxFPRq-AOjefIZ3CntF6vHycq0xeoCLyAllLWJV_xJMEtZmAYxz9mbhI4BcqfJvpf8GX5cr_vsDEzj6pS3ctSWkqtF7P6SJgWCbZItKtwuzboCOPtHTyA3u9sV7QgqjhTJht2RqDAi-MK');"></div>
+<span class="text-6xl font-black text-accent-turquoise tracking-tighter">ME</span>
+<span class="text-white/40 uppercase tracking-widest text-sm mt-4 font-bold">Partner 1</span>
+</div>
+</div>
+</div>
+<div class="z-20 flex flex-col items-center gap-8 min-w-[320px]">
+<div class="relative bg-white text-black p-6 rounded-3xl speech-bubble shadow-2xl max-w-xs text-center">
+<p class="font-bold text-lg leading-snug">"Ouch! Someone's living in a fantasy world. Those parking tickets don't lie, Mark!"</p>
+</div>
+<div class="relative">
+<div class="size-48 rounded-full bg-gradient-to-b from-primary/40 to-transparent p-1 ring-4 ring-primary/20">
+<img alt="Dr. Marcie Liss" class="w-full h-full object-cover rounded-full bg-surface-dark" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk_aTW4MbpEPoKcJ7J9so5udKgmhztqFRhZlMjXwaxZBzYUy_CH85HG2QoeY7emOh1vfFmFpUaHFnfHrt2hJr4-XFvHLEo8zvyZFyO9OGdoxmiejXbj03jL_TGGQ0sOi7proHpxNQZ2sShaAYaracCiwyMl4XmuH9rlNHonxAU-zD3JStjlsROVzqY-E9fXfWvCF03hpWY_UW-E1EeejiVUtn3vv7HCgMS2WQEjPXGaKHdCiSOIhlzbUFxjCijfhvqgImA-KzTH4Im"/>
+</div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary px-4 py-1 rounded-full whitespace-nowrap">
+<span class="text-[10px] font-black uppercase tracking-widest text-white">The Roast Host</span>
+</div>
+</div>
+<div class="bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl p-6 w-full shadow-2xl">
+<div class="flex justify-between items-center mb-4">
+<span class="text-xs uppercase font-black text-white/40">Sync Score</span>
+<span class="text-xs font-black text-primary">MISMATCH</span>
+</div>
+<div class="flex gap-2 h-3">
+<div class="flex-1 bg-primary rounded-full"></div>
+<div class="flex-1 bg-primary rounded-full"></div>
+<div class="flex-1 bg-white/10 rounded-full"></div>
+<div class="flex-1 bg-white/10 rounded-full"></div>
+<div class="flex-1 bg-white/10 rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="flex-1 perspective-1000 group">
+<div class="aspect-[3/4] rounded-[2rem] bg-surface-dark border-4 border-accent-pink/50 card-glow-pink flex flex-col items-center justify-center gap-8 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-bl from-accent-pink/10 to-transparent"></div>
+<span class="text-accent-pink/20 text-9xl font-black absolute -top-10 -right-10 select-none">B</span>
+<div class="relative z-10 flex flex-col items-center">
+<div class="size-32 rounded-full border-4 border-accent-pink/30 mb-6 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBQ-1Te1BiX9bhVJ24w0-1dtVgVmdhrU0ek4P7BU_Vi72i4LSwFor63vGyvAYuYuCpUtx3o5lO7cxa53uSCroE-PbMW64L4gxD48V-L6RgrpP6Rh9b3gextPA2O_TQktRbBqI8RqdLyWmF9yUf_jRfXAD79kaqkX6GVhUZl0jj0nOGsTNyfOLfIeH80TxTqnrgbu_4ek6lPtz4ortyW0rG0rIyo_o6he3ieduWDBmRbX_d9Vu0sYMESrBxXhLvfYs5m4WFpwiAWw7vz');"></div>
+<span class="text-6xl font-black text-accent-pink tracking-tighter uppercase italic">Her</span>
+<span class="text-white/40 uppercase tracking-widest text-sm mt-4 font-bold">Partner 2</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-16 flex gap-6">
+<button class="px-10 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 font-black uppercase tracking-widest text-sm transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">history</span>
+                    Previous Question
+                </button>
+<button class="px-12 py-4 rounded-xl bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest text-sm shadow-xl shadow-primary/20 transition-all flex items-center gap-2">
+                    Next Question
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</main>
+<footer class="p-8 flex justify-between items-center bg-black/40 backdrop-blur-sm border-t border-white/5">
+<div class="flex gap-8">
+<div class="flex flex-col">
+<span class="text-[10px] text-white/40 uppercase font-black">Player 1 Score</span>
+<span class="text-xl font-black text-accent-turquoise">1,240</span>
+</div>
+<div class="flex flex-col border-l border-white/10 pl-8">
+<span class="text-[10px] text-white/40 uppercase font-black">Player 2 Score</span>
+<span class="text-xl font-black text-accent-pink">850</span>
+</div>
+</div>
+<p class="text-[10px] tracking-widest uppercase text-white/20">Love Actually... The Game © 2024 • Screen 34 Variant 4</p>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-white/40">settings</span>
+<span class="material-symbols-outlined text-white/40">volume_up</span>
+</div>
+</footer>
+<div class="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full blur-[2px] opacity-40"></div>
+<div class="absolute top-3/4 left-1/3 w-1 h-1 bg-primary rounded-full blur-[1px] opacity-60"></div>
+<div class="absolute top-1/3 right-1/4 w-3 h-3 bg-accent-turquoise rounded-full blur-[3px] opacity-30"></div>
+<div class="absolute bottom-1/4 right-1/3 w-2 h-2 bg-accent-pink rounded-full blur-[2px] opacity-40"></div>
+</div>
+</div>
+
+</body></html>

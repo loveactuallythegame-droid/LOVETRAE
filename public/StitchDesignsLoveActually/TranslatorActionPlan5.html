@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Eye Contact Challenge | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#fc0c84",
+                        "background-dark": "#0f050a",
+                        "surface-dark": "#1a0b14",
+                        "accent-turquoise": "#2dd4bf",
+                        "accent-purple": "#a855f7",
+                    },
+                    fontFamily: {
+                        display: "Work Sans"
+                    }
+                }
+            }
+        };
+    </script>
+<style type="text/tailwindcss">
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(252, 12, 132, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.1) 0%, transparent 40%),
+                        linear-gradient(to bottom, #0f050a, #1a0b14);
+        }
+        .camera-feed {
+            aspect-ratio: 4/3;
+            background: #111;
+            position: relative;
+            overflow: hidden;
+        }
+        .eye-tracker {
+            position: absolute;
+            border: 2px solid #2dd4bf;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            box-shadow: 0 0 15px #2dd4bf, inset 0 0 10px #2dd4bf;
+            pointer-events: none;
+        }
+        .timer-glow {
+            text-shadow: 0 0 20px rgba(252, 12, 132, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-white min-h-screen selection:bg-primary/30 overflow-hidden">
+<div class="relative flex min-h-screen w-full flex-col nebula-bg">
+<header class="flex items-center justify-between px-10 py-4 bg-black/40 backdrop-blur-md border-b border-white/5">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-black leading-tight tracking-tight uppercase">Love Actually...</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 flex items-center gap-2">
+<span class="size-2 rounded-full bg-red-500 animate-pulse"></span>
+<span class="text-xs font-bold tracking-widest text-primary uppercase">Live Challenge</span>
+</div>
+<div class="h-8 w-[1px] bg-white/10"></div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-medium text-white/60">Host: Dr. Marcie Liss</span>
+<div class="size-10 rounded-full border-2 border-primary bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCob77pfhl2-oAQIEqbgMK_1aZGGwbT519qtZDxh8ZMSl2RuJl_gLruHpX0TSXwgEPqSkExyKi9M2rtM7JyYxpsGw1CoeecatV2qBgC1i8ydw10J1bSjHfDUTV4cohhKi1gOk2BKTRwNOXAoHJ2Lp2WjYHqAoU5UtUiRrvAgNAZUrQT4Ni3GAONMoWRSo5Z9SZHDoX31U06cJgnA3UYrJKlePnPOCvfLybL9uA9MM4SfMwGtrCi-UbXzpCn6PFFkhn-sOcwHuO1PEN7')"></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center p-8 relative">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
+<div class="size-32 rounded-full bg-black/80 backdrop-blur-xl border-4 border-primary/50 flex items-center justify-center shadow-[0_0_50px_rgba(252,12,132,0.3)]">
+<span class="text-5xl font-black timer-glow tracking-tighter">60</span>
+</div>
+<p class="mt-4 text-[10px] uppercase tracking-[0.3em] font-bold text-primary">Hold The Gaze</p>
+</div>
+<div class="w-full max-w-7xl grid grid-cols-2 gap-4 relative z-10">
+<div class="relative group">
+<div class="camera-feed rounded-3xl border-2 border-white/10 ring-1 ring-white/5 shadow-2xl overflow-hidden">
+<img alt="Partner 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeAnH4i99EBr03VfWnxy4DfChtsU1_XJyzVuMgoLjyrQiAavdnAs0MGkpLyzwPZ2Lh39OzSsdDpQXozlAyi00ddx4iVnzfJ1tUUiUgqTL63-nkA5nOkJvuVn_B9olKkc2GOMp55jZFkAbp2mrDHeE2OokJzcmM7Nh7JS--9biFwI1I_K3fZSWKL9UVVvT-Q30cCqwt0kgHx-RkPRdbm0g8irjBxkaguFREbgEvCQaRgErQEtBn26vCvlN3qvVBMukFCwXD2P2Ignwa"/>
+<div class="eye-tracker" style="top: 38%; left: 42%;"></div>
+<div class="eye-tracker" style="top: 38%; left: 56%;"></div>
+<div class="absolute top-6 left-6 flex items-center gap-2 px-3 py-1 bg-black/60 backdrop-blur-md rounded-lg border border-white/10">
+<span class="text-[10px] font-black uppercase text-white/80">Player 1: Alex</span>
+</div>
+</div>
+</div>
+<div class="relative group">
+<div class="camera-feed rounded-3xl border-2 border-white/10 ring-1 ring-white/5 shadow-2xl overflow-hidden">
+<img alt="Partner 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCN_ZRn0c0TGnQpxcbeITwEv-GPdmsqgBgPJ4kUfTuJHqQKO8DJ77kPbRXXlkjDvteRqCGSTJR8GdvTHP4S0iKix9A5gn2p166dClMRizWOwDWESaDzjRfFJqus4W-laPF1FgLu83kIAgy3lYuCBXq1hE1_Uus_ziHhsY6JBshVjl8VUdHcb32Ec59oryKkvcHfxoGL7vSffEKxrH59VsUcU2-S92LvCkTHkUiZF_bflGw_nU5yFcL4Rp-2qIVEzu1BwK3tPHbaw3jb"/>
+<div class="eye-tracker" style="top: 40%; left: 43%;"></div>
+<div class="eye-tracker" style="top: 40%; left: 58%;"></div>
+<div class="absolute top-6 right-6 flex items-center gap-2 px-3 py-1 bg-black/60 backdrop-blur-md rounded-lg border border-white/10">
+<span class="text-[10px] font-black uppercase text-white/80 text-right">Player 2: Jamie</span>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-12 right-12 z-40 w-64">
+<div class="bg-surface-dark/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl ring-1 ring-primary/20">
+<div class="flex items-center gap-3 mb-3">
+<div class="size-3 rounded-full bg-accent-turquoise shadow-[0_0_8px_#2dd4bf]"></div>
+<span class="text-[10px] font-black uppercase tracking-widest text-accent-turquoise">Analysis Active</span>
+</div>
+<div class="aspect-video bg-black rounded-lg overflow-hidden border border-white/5 relative">
+<img alt="Dr. Marcie Liss" class="w-full h-full object-cover scale-150 grayscale brightness-75" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWDH8ZJm0EYsVP5Rn8Uj8hMG_ZWrH7oKzwYO2YdwJUs4CNNX3Sv2vdqX5Nj4EjvHza8nrS7xzxkgGC1zhfOCMEAmCm6LClD_Y0qMXQB5yBPdVGcz7-wEBPepeV9M4uyOH_7oITdiOr3_CIbbGJYy7lic1sjhCdoiuBhhqDzNr8SOXHiXnEKHmT1nacGwjA96SfYyd8Hj6z_snw2i790Hymu2uuynGMVhMUnwSoHC2o-bUb1iDFfE30mcuEE9V19fAE2VAD3QdgyFFS"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
+</div>
+<p class="mt-3 text-sm text-white/80 leading-snug">
+                        "Notice the micro-expressions. Keep your breathing steady, Alex and Jamie."
+                    </p>
+</div>
+</div>
+<div class="mt-12 flex items-center gap-6">
+<button class="flex items-center gap-3 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
+<span class="material-symbols-outlined text-white/60">volume_up</span>
+<span class="text-sm font-bold uppercase tracking-wider">Audio On</span>
+</button>
+<div class="px-8 py-3 rounded-full bg-primary/20 border border-primary/40 text-primary text-sm font-black uppercase tracking-[0.2em]">
+                    Challenge in Progress
+                </div>
+<button class="flex items-center gap-3 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all">
+<span class="material-symbols-outlined text-white/60">emergency</span>
+<span class="text-sm font-bold uppercase tracking-wider text-red-400">Abort</span>
+</button>
+</div>
+</main>
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 opacity-30">
+<div class="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-primary/10 blur-[150px] rounded-full"></div>
+<div class="absolute bottom-[10%] right-[15%] w-[600px] h-[600px] bg-accent-purple/10 blur-[180px] rounded-full"></div>
+</div>
+<footer class="py-6 text-center border-t border-white/5 bg-black/20">
+<p class="text-white/20 text-[10px] tracking-[0.5em] uppercase font-bold">Eye Contact Challenge • Dr. Marcie Liss • Screen Variant 8 of 10</p>
+</footer>
+</div>
+
+</body></html>

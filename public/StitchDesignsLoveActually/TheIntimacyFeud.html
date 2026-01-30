@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Intimacy Feud - Rebuilding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Work+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff0055", "background-light": "#f8f5f6", "background-dark": "#230f16", charcoal: "#271c21", "strike-orange": "#ff6b00"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .cosmic-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(236, 24, 130, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(63, 31, 105, 0.2) 0%, transparent 40%),
+                        #181114;
+            background-attachment: fixed;
+        }
+        .glow-pink {
+            box-shadow: 0 0 15px rgba(236, 24, 130, 0.4);
+        }
+        .glow-orange {
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 40px;
+            border-width: 20px 20px 0 0;
+            border-style: solid;
+            border-color: #271c21 transparent transparent transparent;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen cosmic-bg">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+</svg>
+</div>
+<div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">The Intimacy Feud</h2>
+<p class="text-primary text-[10px] uppercase font-bold tracking-[0.2em]">Phase 3: Rebuilding</p>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden lg:flex items-center gap-9">
+<a class="hover:text-primary transition-colors text-sm font-medium" href="#">How to Play</a>
+<a class="hover:text-primary transition-colors text-sm font-medium" href="#">Leaderboard</a>
+<a class="hover:text-primary transition-colors text-sm font-medium" href="#">Dr. Marcie's Tips</a>
+</nav>
+<div class="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+<div class="text-primary text-xs font-bold">Variant 3 of 8</div>
+<div class="h-4 w-px bg-white/20"></div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8" data-alt="User profile avatar circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCPbz9KNMXtZrcxiDIrR84AKrx6z2meaeSDL7WOnE-KJCYzz2DRzYHyKW2SgKaM0-WNRblwHXIF-HecsKRZ5nSXekYD4XdHxBi00yecYMQPaqd_3Q2BFoej78xRtLIQycms95OnlO6Jb8JoOn6NIheekO3aoTkDD2RpxtVmhoZv3uolifROX1Gr4dYVcIIStP-Sd-eAJ_9-xECUW15j-rb1wLP65jBAkow5jdp_-iIammvoz-D0xpU7hu2CROZAN5WzuwsR0QrIZgX");'></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center p-6 max-w-[1200px] mx-auto w-full gap-8">
+<!-- Headline Section -->
+<div class="text-center space-y-2">
+<span class="bg-primary/20 text-primary border border-primary/30 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Survey Says...</span>
+<h1 class="text-white tracking-tight text-4xl md:text-5xl font-bold leading-tight px-4 pt-4 max-w-3xl mx-auto">
+                    A secret desire your partner finally shared
+                </h1>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full items-end">
+<!-- Left: Dr. Marcie Liss -->
+<div class="lg:col-span-3 flex flex-col items-center lg:items-start gap-4 order-2 lg:order-1">
+<div class="relative w-full max-w-[240px]">
+<div class="speech-bubble absolute -top-24 left-0 bg-charcoal border border-white/10 p-5 rounded-xl shadow-2xl z-10 w-[260px]">
+<p class="text-sm italic leading-relaxed">"Honey, tell the truth... or the survey will! Communication is the first step to rebuilding."</p>
+</div>
+<img alt="Dr. Marcie Liss" class="rounded-xl grayscale hover:grayscale-0 transition-all duration-500 border-2 border-primary/20" data-alt="Dr Marcie Liss professional portrait pointing forward" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgLaZhyLPjrRb6eyfW7MrxD8wlm0Rb0MNG-kVn8e-8mKUlN-oWS_p-oWEQlQbBYm6LBUMk9ZEiy3igopkzL00d21NWAaFzxG4WueLW1rZ7NMBoq55G6AfEK_99yy3wjUlKzJdYqs2GCF7f99Wx2g47CPS2uSD8KVgltp5yH9qZlsD_MfcNxmke4hoWFd082bSqO2GrOrrLovimcPQZGZ-zLRoPF6Bma_QZfkKRfLaBUC3ay0zf0bkMB3IIEfqBhnMhpHW1T_KRX2fc"/>
+</div>
+<div class="text-center lg:text-left">
+<h3 class="font-bold text-lg">Dr. Marcie Liss</h3>
+<p class="text-white/60 text-sm italic">Relationship Expert &amp; Host</p>
+</div>
+</div>
+<!-- Center: Game Board -->
+<div class="lg:col-span-6 flex flex-col gap-6 order-1 lg:order-2">
+<div class="bg-charcoal/40 backdrop-blur-sm border border-white/10 p-8 rounded-lg shadow-2xl flex flex-col gap-4">
+<!-- Slot 1 -->
+<div class="flex items-center justify-between gap-4 rounded-xl border border-white/5 bg-charcoal p-5 group cursor-help hover:border-primary/50 transition-all">
+<div class="flex items-center gap-4">
+<span class="size-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">1</span>
+<h2 class="text-white/40 text-lg font-bold uppercase tracking-widest">[ Locked ]</h2>
+</div>
+<span class="material-symbols-outlined text-white/20">lock</span>
+</div>
+<!-- Slot 2 -->
+<div class="flex items-center justify-between gap-4 rounded-xl border border-white/5 bg-charcoal p-5 group cursor-help hover:border-primary/50 transition-all">
+<div class="flex items-center gap-4">
+<span class="size-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">2</span>
+<h2 class="text-white/40 text-lg font-bold uppercase tracking-widest">[ Locked ]</h2>
+</div>
+<span class="material-symbols-outlined text-white/20">lock</span>
+</div>
+<!-- Slot 3 -->
+<div class="flex items-center justify-between gap-4 rounded-xl border border-white/5 bg-charcoal p-5 group cursor-help hover:border-primary/50 transition-all">
+<div class="flex items-center gap-4">
+<span class="size-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">3</span>
+<h2 class="text-white/40 text-lg font-bold uppercase tracking-widest">[ Locked ]</h2>
+</div>
+<span class="material-symbols-outlined text-white/20">lock</span>
+</div>
+<!-- Slot 4 -->
+<div class="flex items-center justify-between gap-4 rounded-xl border border-white/5 bg-charcoal p-5 group cursor-help hover:border-primary/50 transition-all">
+<div class="flex items-center gap-4">
+<span class="size-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">4</span>
+<h2 class="text-white/40 text-lg font-bold uppercase tracking-widest">[ Locked ]</h2>
+</div>
+<span class="material-symbols-outlined text-white/20">lock</span>
+</div>
+<!-- Slot 5 -->
+<div class="flex items-center justify-between gap-4 rounded-xl border border-white/5 bg-charcoal p-5 group cursor-help hover:border-primary/50 transition-all">
+<div class="flex items-center gap-4">
+<span class="size-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">5</span>
+<h2 class="text-white/40 text-lg font-bold uppercase tracking-widest">[ Locked ]</h2>
+</div>
+<span class="material-symbols-outlined text-white/20">lock</span>
+</div>
+</div>
+<!-- Input Section -->
+<div class="w-full">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold uppercase tracking-widest text-white/60 ml-2">Type your guess</label>
+<div class="flex w-full items-stretch rounded-xl glow-pink overflow-hidden group">
+<input class="form-input flex w-full min-w-0 flex-1 resize-none bg-charcoal border-2 border-primary/30 border-r-0 rounded-l-xl text-white focus:outline-0 focus:ring-0 focus:border-primary h-16 px-6 text-lg placeholder:text-white/20 transition-all" placeholder="Enter a secret desire..." value=""/>
+<button class="bg-primary hover:bg-primary/90 text-white px-8 flex items-center justify-center border-2 border-primary transition-all">
+<span class="material-symbols-outlined text-3xl">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Strikes & Info -->
+<div class="lg:col-span-3 flex flex-col gap-8 order-3">
+<div class="bg-charcoal/40 backdrop-blur-sm border border-white/10 p-6 rounded-xl flex flex-col gap-6">
+<h4 class="text-xs font-bold uppercase tracking-[0.2em] text-center text-white/50">Current Strikes</h4>
+<div class="flex justify-center gap-4">
+<!-- Strike 1 Active -->
+<div class="flex flex-col items-center gap-2">
+<div class="rounded-full bg-strike-orange glow-orange p-3 border-2 border-white/20 transition-all duration-300">
+<span class="material-symbols-outlined text-white text-3xl font-bold">close</span>
+</div>
+<p class="text-strike-orange text-[10px] font-bold uppercase tracking-widest">Strike 1</p>
+</div>
+<!-- Strike 2 Empty -->
+<div class="flex flex-col items-center gap-2">
+<div class="rounded-full bg-charcoal p-3 border-2 border-white/5 transition-all duration-300">
+<span class="material-symbols-outlined text-white/10 text-3xl font-bold">close</span>
+</div>
+<p class="text-white/20 text-[10px] font-bold uppercase tracking-widest">Strike 2</p>
+</div>
+<!-- Strike 3 Empty -->
+<div class="flex flex-col items-center gap-2">
+<div class="rounded-full bg-charcoal p-3 border-2 border-white/5 transition-all duration-300">
+<span class="material-symbols-outlined text-white/10 text-3xl font-bold">close</span>
+</div>
+<p class="text-white/20 text-[10px] font-bold uppercase tracking-widest">Strike 3</p>
+</div>
+</div>
+</div>
+<div class="bg-primary/10 border border-primary/20 p-6 rounded-xl space-y-3">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">info</span>
+<span class="text-xs font-bold uppercase tracking-widest">Phase 3 Goals</span>
+</div>
+<p class="text-xs leading-relaxed text-white/70">
+                            Rebuild trust by identifying shared vulnerabilities. Each correct answer helps repair your "Intimacy Score."
+                        </p>
+<div class="pt-2">
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[35%]"></div>
+</div>
+<div class="flex justify-between mt-1">
+<span class="text-[10px] text-white/40 uppercase">Progress</span>
+<span class="text-[10px] text-primary font-bold">35%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="px-10 py-6 border-t border-white/5 backdrop-blur-sm text-center">
+<p class="text-white/30 text-xs font-medium tracking-wide">
+                © 2024 Love-Script Debacle Games. Hosted by Dr. Marcie Liss. Powered by IntimacyEngine.
+            </p>
+</footer>
+</div>
+</body></html>

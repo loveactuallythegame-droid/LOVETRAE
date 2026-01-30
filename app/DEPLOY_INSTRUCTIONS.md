@@ -27,12 +27,14 @@ Ensure the following environment variables are set in your Vercel Project Settin
 
 | Variable | Description |
 |----------|-------------|
-| `EXPO_PUBLIC_SUPABASE_URL` | Supabase URL |
-| `EXPO_PUBLIC_SUPABASE_ANON_KEY` | Supabase Anon Key |
 | `EXPO_PUBLIC_ELEVENLABS_API_KEY` | ElevenLabs API Key |
 | `EXPO_PUBLIC_ELEVENLABS_VOICE_ID_MARCIE` | Voice ID for Marcie |
 | `EXPO_PUBLIC_MAPBOX_API_KEY` | Mapbox Public Key |
 | `EXPO_PUBLIC_GIPHY_API_KEY` | Giphy API Key |
+
+**Firebase Configuration:**
+
+Your Firebase configuration object should be placed in `app/src/lib/firebaseClient.ts`. This file is not checked into version control, so you will need to create it in your Vercel environment.
 
 *Refer to `.env.example` for the template.*
 

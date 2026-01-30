@@ -1,116 +1,77 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
-import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
-import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
-import { speakMarcie } from '../../lib/voice-engine';
 
-export default function ConnectionConstructor({ route, navigation }: any) {
-    const { gameId } = route.params;
-    const [stage, setStage] = useState(1);
-    const sessionId = useRef<string | null>(null);
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Header } from '../../components/ui/Header';
 
-    useEffect(() => {
-        supabase.auth.getSession().then(async ({ data }: any) => {
-            const user = data.session?.user;
-            if (user) {
-                const couple = await supabase.from('profiles').select('couple_code').eq('user_id', user.id).single();
-                if (couple.data?.couple_code) {
-                    const session = await createGameSession(gameId, user.id, couple.data.couple_code);
-                    sessionId.current = session.id;
-                }
-            }
-        });
-        speakMarcie("Welcome to Connection Constructor. Love is infrastructure. Let's lay the first brick.");
-    }, [gameId]);
+const attachmentBlocks = [
+    { name: 'Consistency', type: 'Foundation Element', icon: 'view_in_ar' },
+    { name: 'Reassurance', type: 'Core Support', icon: 'shield_with_heart' },
+    { name: 'Validation', type: 'Connector', icon: 'check_circle' },
+    { name: 'Boundaries', type: 'Structural Safety', icon: 'grid_view' },
+];
 
-    function build() {
-        HapticFeedbackSystem.success();
-        if (stage === 1) {
-            speakMarcie("Identity Library built. Books are labeled 'Me, Beyond Us'.");
-            setStage(2);
-        } else if (stage === 2) {
-            speakMarcie("Predictable Park open. No grand gestures, just reliability with a heartbeat.");
-            setStage(3);
-        } else {
-            finish();
-        }
-    }
+const AttachmentBlock = ({ block }: { block: { name: string, type: string, icon: string } }) => (
+    <View style={styles.block}>
+        <Text style={styles.blockIcon}>{block.icon}</Text>
+        <View>
+            <Text style={styles.blockName}>{block.name}</Text>
+            <Text style={styles.blockType}>{block.type}</Text>
+        </View>
+    </View>
+);
 
-    async function finish() {
-        if (sessionId.current) {
-            await updateGameSession(sessionId.current, {
-                finished_at: new Date().toISOString(),
-                score: 300,
-                state: JSON.stringify({ xp: 300 })
-            });
-        }
-        Alert.alert("City Built", "Stability: 100%. Master Architects.", [
-            { text: "Collect XP", onPress: () => navigation.goBack() }
-        ]);
-    }
+const ConnectionConstructorScreen = () => {
+    const [safetyLevel, setSafetyLevel] = useState(68);
 
-    const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
-            <GlassCard>
-                <Text variant="header">Phase {stage}/3</Text>
-
-                {stage === 1 && (
-                    <View>
-                        <Text variant="body">Task: Build The Identity Library</Text>
-                        <Text variant="instructions">Name 3 interests outside the relationship.</Text>
-                        <SquishyButton onPress={build} style={styles.actionBtn}>
-                            <Text variant="body">Add: Painting, Running, Reading</Text>
-                        </SquishyButton>
+    return (
+        <SafeAreaView style={styles.container}>
+            <LinearGradient colors={['#230f16', '#4a212f']} style={styles.background} />
+            <Header title="Connection Constructor" />
+            <View style={styles.mainLayout}>
+                <View style={styles.toolbox}>
+                    <Text style={styles.toolboxTitle}>The Toolbox</Text>
+                    <ScrollView>
+                        {attachmentBlocks.map((block, index) => <AttachmentBlock key={index} block={block} />)}
+                    </ScrollView>
+                </View>
+                <View style={styles.blueprintArea}>
+                    <View style={styles.blueprintGrid} />
+                    <View style={styles.dropZone}>
+                        <Text style={styles.dropZoneText}>Drop Block Here</Text>
                     </View>
-                )}
-
-                {stage === 2 && (
-                    <View>
-                        <Text variant="body">Task: Lay Pavement for Intimacy Avenue</Text>
-                        <Text variant="instructions">Schedule 3 tiny connection points.</Text>
-                        <SquishyButton onPress={build} style={styles.actionBtn}>
-                            <Text variant="body">Add: Coffee Chat, Walk, Rose & Thorn</Text>
-                        </SquishyButton>
+                    <View style={styles.safetyBarContainer}>
+                        <Text style={styles.safetyBarTitle}>Relationship Safety Level</Text>
+                        <View style={styles.safetyBar}>
+                            <LinearGradient colors={['#ff005e', '#purple']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={{ width: `${safetyLevel}%`, height: '100%' }} />
+                        </View>
+                         <Text style={styles.safetyPercentage}>{safetyLevel}%</Text>
                     </View>
-                )}
-
-                {stage === 3 && (
-                    <View>
-                        <Text variant="body">Task: Blueprint The Repair Shop</Text>
-                        <Text variant="instructions">Define cool-down signals and return phrases.</Text>
-                        <SquishyButton onPress={build} style={styles.actionBtn}>
-                            <Text variant="body">Install: 'Anchor' Signal + Validation Wrench</Text>
-                        </SquishyButton>
-                    </View>
-                )}
-
-            </GlassCard>
-        </ScrollView>
+                </View>
+            </View>
+        </SafeAreaView>
     );
-
-    const baseState = useMemo(() => ({
-        id: gameId,
-        title: 'Connection Constructor',
-        description: 'Build Secure Harbor City',
-        category: 'arcade' as const,
-        difficulty: 'hard' as const,
-        xpReward: 300,
-        currentStep: stage,
-        totalTime: 400,
-        playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
-    }), [gameId, stage]);
-
-    return <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />;
-}
+};
 
 const styles = StyleSheet.create({
-    actionBtn: {
-        marginTop: 20,
-        backgroundColor: '#33DEA5',
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20
-    }
+    container: { flex: 1, backgroundColor: '#230f16' },
+    background: { ...StyleSheet.absoluteFillObject },
+    mainLayout: { flexDirection: 'row', flex: 1 },
+    toolbox: { width: 220, backgroundColor: 'rgba(35,15,22,0.6)', padding: 15 },
+    toolboxTitle: { fontFamily: 'BarbieDream-Regular', fontSize: 20, color: '#FFF', marginBottom: 15 },
+    block: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 12, marginBottom: 10 },
+    blockIcon: { fontSize: 24, color: '#ff005e', marginRight: 10 },
+    blockName: { color: '#FFF', fontWeight: 'bold', fontSize: 14 },
+    blockType: { color: 'rgba(255,255,255,0.4)', fontSize: 10, textTransform: 'uppercase' },
+    blueprintArea: { flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center' },
+    blueprintGrid: { ...StyleSheet.absoluteFillObject, opacity: 0.1 /* Visual effect only */ },
+    dropZone: { width: '80%', height: 300, borderWidth: 2, borderColor: 'rgba(255,0,94,0.2)', borderStyle: 'dashed', borderRadius: 24, justifyContent: 'center', alignItems: 'center' },
+    dropZoneText: { color: 'rgba(255,255,255,0.2)', fontFamily: 'SweetPink-Regular', textTransform: 'uppercase' },
+    safetyBarContainer: { position: 'absolute', bottom: 20, width: '90%', backgroundColor: 'rgba(0,0,0,0.5)', padding: 15, borderRadius: 16 },
+    safetyBarTitle: { fontFamily: 'BarbieDream-Regular', color: '#FFF', fontSize: 16, textTransform: 'uppercase' },
+    safetyBar: { height: 12, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 6, marginTop: 5, overflow: 'hidden' },
+    safetyPercentage: { position: 'absolute', right: 20, top: 15, color: '#FFF', fontSize: 20, fontWeight: 'bold' },
 });
+
+export default ConnectionConstructorScreen;

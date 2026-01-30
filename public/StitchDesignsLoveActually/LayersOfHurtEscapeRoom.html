@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Layers of Hurt Escape Room - Phoenix Protocol</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff005e", "background-light": "#f8f5f6", "background-dark": "#230f16", "panel-dark": "#23181b", "accent-dark": "#3a272d"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: "Space Grotesk", sans-serif;
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 50% 50%, #230f16 0%, #120a0c 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .nebula-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(248, 13, 91, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(248, 13, 91, 0.08) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        .pulse-pink {
+            box-shadow: 0 0 15px rgba(248, 13, 91, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen font-display nebula-bg">
+<div class="nebula-overlay"></div>
+<div class="relative flex h-full min-h-screen w-full flex-col z-10">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-accent-dark px-10 py-3 bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<span class="material-symbols-outlined text-3xl">deployed_code</span>
+</div>
+<div class="flex flex-col">
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight uppercase">Phoenix Protocol</h2>
+<p class="text-primary text-[10px] font-bold tracking-[0.3em] uppercase">Phase 3: Rebuilding</p>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<div class="flex items-center gap-9">
+<a class="text-white/70 hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">The Vault</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Archives</a>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-white text-sm font-medium leading-normal">Sync Status: Active</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold uppercase tracking-widest hover:bg-primary/80 transition-all">
+<span>Emergency Exit</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-accent-dark text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex flex-1 gap-6 p-6 max-w-[1400px] mx-auto w-full">
+<!-- Sidebar: Escape Master -->
+<aside class="w-80 flex flex-col gap-4">
+<div class="flex flex-col bg-panel-dark/60 backdrop-blur-xl border border-white/5 rounded-2xl p-6 h-full justify-between">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col items-center gap-4 py-4 border-b border-white/5">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-24 grayscale brightness-50 contrast-125 border-2 border-primary/30" data-alt="Shadowy silhouette of Dr. Marcie Liss" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCT4FNNkjS7LMF4rzYG6wekYqq3RhhpxAahA7cRUGHVFqvhENpwBMgXLDcyoP1_tRWpg3jh3VitoOR51y5xsIxhESiNLMtuvp_7EK6iKVAAmbGvj38xnY8MpsHLX2iFcC-OFKkZEWHecib9UPUgtGEkDv-HAXSlGP05nkim4hPpySTdSPLSIRVEO1AOQsAx6Y0JI6JFFKglYR6H-l8BDlL-l901RXb5qeMCICLqyWCBPxeHPaTdkKcPZQBf9az0hFh1hKB2hW4W737F");'>
+</div>
+<div class="absolute bottom-0 right-0 bg-primary size-4 rounded-full border-2 border-panel-dark"></div>
+</div>
+<div class="text-center">
+<h3 class="text-white text-xl font-bold">Dr. Marcie Liss</h3>
+<p class="text-primary/70 text-xs font-bold tracking-widest uppercase mt-1">Escape Master</p>
+</div>
+</div>
+<!-- Progress Layers -->
+<div class="flex flex-col gap-3">
+<p class="text-white/40 text-[10px] font-bold uppercase tracking-widest mb-1">Security Layers</p>
+<div class="flex items-center justify-between px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">lock_open</span>
+<p class="text-white text-sm font-medium uppercase tracking-wider">Embarrassment</p>
+</div>
+<span class="text-[10px] text-primary font-bold">OPEN</span>
+</div>
+<div class="flex items-center justify-between px-4 py-3 rounded-xl bg-primary/20 border border-primary/50 pulse-pink">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">lock</span>
+<p class="text-white text-sm font-medium uppercase tracking-wider">Betrayal</p>
+</div>
+<span class="text-[10px] text-primary font-bold animate-pulse">ACTIVE</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 opacity-40">
+<span class="material-symbols-outlined text-white text-xl">lock</span>
+<p class="text-white text-sm font-medium uppercase tracking-wider">Anger</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 opacity-40">
+<span class="material-symbols-outlined text-white text-xl">lock</span>
+<p class="text-white text-sm font-medium uppercase tracking-wider">Loneliness</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 opacity-40">
+<span class="material-symbols-outlined text-white text-xl">lock</span>
+<p class="text-white text-sm font-medium uppercase tracking-wider">Grief</p>
+</div>
+</div>
+</div>
+<button class="flex w-full cursor-pointer items-center justify-center rounded-xl h-12 bg-white/5 text-white/70 hover:bg-white/10 border border-white/10 transition-all gap-2">
+<span class="material-symbols-outlined text-sm">lightbulb</span>
+<span class="text-sm font-bold uppercase tracking-widest">Request Hint</span>
+</button>
+</div>
+</aside>
+<!-- Main Interface -->
+<div class="flex-1 flex flex-col gap-6">
+<!-- Header / Timer Area -->
+<div class="grid grid-cols-3 gap-6 items-center">
+<div class="col-span-2">
+<h1 class="text-white tracking-tight text-4xl font-bold uppercase">Layer 2: <span class="text-primary">The Betrayal Lock</span></h1>
+<p class="text-white/60 text-lg font-light mt-2 max-w-xl leading-relaxed">
+                            To move forward, you must name what was broken. Input the shared insight to breach the layer.
+                        </p>
+</div>
+<!-- Pulsing Timer -->
+<div class="flex gap-2 p-4 bg-primary/10 border border-primary/20 rounded-2xl pulse-pink">
+<div class="flex flex-1 flex-col items-center gap-1">
+<div class="flex h-12 w-full items-center justify-center rounded-lg bg-background-dark/80">
+<p class="text-primary text-2xl font-bold font-mono">00</p>
+</div>
+<p class="text-white/40 text-[9px] font-bold uppercase tracking-tighter">Hours</p>
+</div>
+<div class="flex flex-1 flex-col items-center gap-1">
+<div class="flex h-12 w-full items-center justify-center rounded-lg bg-background-dark/80">
+<p class="text-primary text-2xl font-bold font-mono animate-pulse">42</p>
+</div>
+<p class="text-white/40 text-[9px] font-bold uppercase tracking-tighter">Minutes</p>
+</div>
+<div class="flex flex-1 flex-col items-center gap-1">
+<div class="flex h-12 w-full items-center justify-center rounded-lg bg-background-dark/80 border border-primary/40">
+<p class="text-primary text-2xl font-bold font-mono">18</p>
+</div>
+<p class="text-white/40 text-[9px] font-bold uppercase tracking-tighter">Seconds</p>
+</div>
+</div>
+</div>
+<!-- Vault Interface Area -->
+<div class="flex-1 flex flex-col items-center justify-center bg-panel-dark/40 rounded-3xl border border-white/5 relative overflow-hidden p-12">
+<!-- Abstract Background Pattern for the Vault -->
+<div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
+<div class="size-[600px] border-[40px] border-primary rounded-full blur-3xl opacity-20"></div>
+<div class="absolute size-[400px] border-2 border-white/20 rounded-full"></div>
+<div class="absolute size-[500px] border border-white/10 rounded-full"></div>
+</div>
+<div class="z-10 w-full max-w-lg flex flex-col gap-8">
+<div class="flex flex-col items-center gap-4 text-center">
+<div class="size-20 bg-primary/20 rounded-full flex items-center justify-center border border-primary pulse-pink mb-4">
+<span class="material-symbols-outlined text-primary text-4xl font-bold">fingerprint</span>
+</div>
+<h2 class="text-2xl font-bold uppercase tracking-widest text-white">Insight Required</h2>
+<p class="text-white/50 text-sm">"The truth is rarely pure and never simple."</p>
+</div>
+<div class="flex flex-col gap-4">
+<div class="relative">
+<input class="w-full bg-background-dark/80 border-2 border-white/10 focus:border-primary rounded-xl px-6 py-5 text-white placeholder:text-white/20 uppercase tracking-[0.2em] font-bold text-center transition-all outline-none" placeholder="ENTER SHARED INSIGHT..." type="text"/>
+</div>
+<button class="w-full h-16 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl uppercase tracking-[0.3em] text-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-3 group">
+<span>Breach Layer</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">keyboard_double_arrow_right</span>
+</button>
+</div>
+<div class="flex justify-between items-center px-4">
+<div class="flex gap-1">
+<div class="size-1 bg-primary rounded-full"></div>
+<div class="size-1 bg-primary rounded-full"></div>
+<div class="size-1 bg-white/20 rounded-full"></div>
+<div class="size-1 bg-white/20 rounded-full"></div>
+<div class="size-1 bg-white/20 rounded-full"></div>
+</div>
+<p class="text-[10px] text-white/40 uppercase tracking-widest">Protocol 07/09</p>
+</div>
+</div>
+</div>
+<!-- Footer Stats -->
+<footer class="flex items-center justify-between px-6 py-4 bg-white/5 border border-white/5 rounded-2xl">
+<div class="flex gap-8">
+<div class="flex flex-col">
+<p class="text-white/40 text-[9px] font-bold uppercase tracking-widest">Sync Quality</p>
+<p class="text-white text-sm font-bold">98.4%</p>
+</div>
+<div class="flex flex-col border-l border-white/10 pl-8">
+<p class="text-white/40 text-[9px] font-bold uppercase tracking-widest">Digital Infidelity Marker</p>
+<p class="text-primary text-sm font-bold uppercase">Purging...</p>
+</div>
+<div class="flex flex-col border-l border-white/10 pl-8">
+<p class="text-white/40 text-[9px] font-bold uppercase tracking-widest">Session Variant</p>
+<p class="text-white text-sm font-bold">V.07 // DARK_MOD</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-white/30 text-[10px] uppercase font-bold">Connection: Encrypted</span>
+<div class="flex gap-1">
+<div class="h-4 w-1 bg-primary"></div>
+<div class="h-4 w-1 bg-primary"></div>
+<div class="h-4 w-1 bg-primary/40"></div>
+</div>
+</div>
+</footer>
+</div>
+</main>
+</div>
+</body></html>

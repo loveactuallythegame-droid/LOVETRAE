@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Touch Map Lite - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff034a", "background-light": "#f8f5f6", "background-dark": "#230f15", "mismatch-orange": "#ff8c00"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(127, 19, 236, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(236, 19, 158, 0.1) 0%, transparent 40%),
+                        #191022;
+        }
+        .glass-card {
+            background: rgba(54, 35, 72, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .geometric-body circle, .geometric-body path, .geometric-body polygon {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .mismatch-glow {
+            filter: drop-shadow(0 0 8px #ff8c00);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative min-h-screen w-full flex flex-col nebula-bg overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between border-b border-solid border-white/10 px-6 py-4 lg:px-20">
+<div class="flex items-center gap-3">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">storm</span>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Love Actually... <span class="text-primary">The Game</span></h2>
+</div>
+<div class="flex items-center gap-8">
+<div class="hidden md:flex items-center gap-2">
+<span class="text-white/60 text-sm font-medium uppercase tracking-widest">Round</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-bold border border-primary/30">4 of 10</span>
+</div>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-xl h-10 px-5 bg-primary hover:bg-primary/80 transition-all text-white text-sm font-bold">
+                Exit Game
+            </button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD8bnHQAxniyqzl5rW_xlyVzrrV-ZkwusCDnuDfMnejDABFj8mnRxB0JLroVW7ANu14ft5vtnzeJO8TXvM0YBS6yDBC6DHiHueaQ1XlksLb7fdvXASVdv2zeuRwdk7yCNgDIS9s4MeFgcg4uDrxc_NGypPcf1ahO2lrC8gcw9XNAOHXSO7ZHSNuMPgljvpueCwdL0j132ONEFh89q3ku1f342ieoqtfjspoon-8DSlYBoEpMH88s_nZRf3i6lfIrQhUbPnnrLe9JgF6");'></div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center py-8 px-4 max-w-7xl mx-auto w-full">
+<!-- Headline -->
+<div class="text-center mb-8">
+<h1 class="text-white text-3xl md:text-4xl font-bold mb-2">Touch Map Lite</h1>
+<p class="text-white/60 text-lg">Where is it okay to touch? Map your comfort zones.</p>
+</div>
+<!-- SegmentedButtons Controls -->
+<div class="w-full max-w-md mb-10">
+<div class="flex h-12 items-center justify-center rounded-xl bg-white/5 p-1 border border-white/10">
+<label class="flex cursor-pointer h-full grow items-center justify-center rounded-lg px-2 has-[:checked]:bg-green-500/20 has-[:checked]:text-green-400 text-white/40 text-sm font-bold transition-all">
+<span class="truncate flex items-center gap-2"><span class="size-2 rounded-full bg-green-500"></span>Safe</span>
+<input checked="" class="hidden" name="zone-type" type="radio" value="green"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center rounded-lg px-2 has-[:checked]:bg-yellow-500/20 has-[:checked]:text-yellow-400 text-white/40 text-sm font-bold transition-all">
+<span class="truncate flex items-center gap-2"><span class="size-2 rounded-full bg-yellow-500"></span>Caution</span>
+<input class="hidden" name="zone-type" type="radio" value="yellow"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center rounded-lg px-2 has-[:checked]:bg-red-500/20 has-[:checked]:text-red-400 text-white/40 text-sm font-bold transition-all">
+<span class="truncate flex items-center gap-2"><span class="size-2 rounded-full bg-red-500"></span>Off-limits</span>
+<input class="hidden" name="zone-type" type="radio" value="red"/>
+</label>
+</div>
+</div>
+<!-- Main Game Area: Body Maps -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full mb-12">
+<!-- Your Map -->
+<div class="glass-card rounded-2xl p-8 flex flex-col items-center relative group">
+<div class="absolute top-4 left-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+<span class="font-bold text-sm tracking-widest uppercase text-white/80">Your Map</span>
+</div>
+<div class="w-full max-w-[300px] py-10">
+<svg class="w-full h-auto geometric-body fill-white/10 stroke-white/20" viewbox="0 0 200 400">
+<!-- Abstract Body Head -->
+<circle class="fill-green-500/40 stroke-green-400" cx="100" cy="40" r="30"></circle>
+<!-- Torso -->
+<path class="fill-green-500/20 stroke-green-400" d="M70 80 L130 80 L140 220 L60 220 Z"></path>
+<!-- Shoulders/Arms -->
+<circle class="fill-yellow-500/40 stroke-yellow-400" cx="60" cy="90" r="15"></circle>
+<circle class="fill-yellow-500/40 stroke-yellow-400" cx="140" cy="90" r="15"></circle>
+<!-- Legs -->
+<path class="fill-red-500/40 stroke-red-400" d="M70 230 L95 230 L90 380 L60 380 Z"></path>
+<path class="fill-red-500/40 stroke-red-400" d="M105 230 L130 230 L140 380 L110 380 Z"></path>
+<!-- Hands -->
+<circle class="fill-green-500/40 stroke-green-400" cx="40" cy="180" r="12"></circle>
+<circle class="fill-green-500/40 stroke-green-400" cx="160" cy="180" r="12"></circle>
+</svg>
+</div>
+</div>
+<!-- Partner's Map / Comparison -->
+<div class="glass-card rounded-2xl p-8 flex flex-col items-center relative">
+<div class="absolute top-4 left-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-pink-400">favorite</span>
+<span class="font-bold text-sm tracking-widest uppercase text-white/80">Partner's Map</span>
+</div>
+<div class="w-full max-w-[300px] py-10">
+<svg class="w-full h-auto geometric-body fill-white/10 stroke-white/20" viewbox="0 0 200 400">
+<!-- Abstract Body Head -->
+<circle class="fill-green-500/40 stroke-green-400" cx="100" cy="40" r="30"></circle>
+<!-- Torso - MISMATCH -->
+<path class="fill-red-500/40 stroke-red-500 mismatch-glow" d="M70 80 L130 80 L140 220 L60 220 Z"></path>
+<!-- Shoulders/Arms -->
+<circle class="fill-green-500/40 stroke-green-400" cx="60" cy="90" r="15"></circle>
+<circle class="fill-green-500/40 stroke-green-400" cx="140" cy="90" r="15"></circle>
+<!-- Legs -->
+<path class="fill-red-500/40 stroke-red-400" d="M70 230 L95 230 L90 380 L60 380 Z"></path>
+<path class="fill-red-500/40 stroke-red-400" d="M105 230 L130 230 L140 380 L110 380 Z"></path>
+<!-- Hands - MISMATCH -->
+<circle class="fill-red-500/40 stroke-red-500 mismatch-glow" cx="40" cy="180" r="12"></circle>
+<circle class="fill-red-500/40 stroke-red-500 mismatch-glow" cx="160" cy="180" r="12"></circle>
+</svg>
+</div>
+<!-- Mismatch Alert Label -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none">
+<div class="bg-mismatch-orange text-white px-4 py-1.2 rounded-full text-[10px] font-black tracking-tighter uppercase shadow-lg shadow-mismatch-orange/40">Mismatch Detected</div>
+</div>
+</div>
+</div>
+<!-- Stats Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mb-16">
+<div class="glass-card flex flex-col gap-2 rounded-xl p-6 border border-white/5">
+<p class="text-white/60 text-sm font-medium uppercase tracking-wider">Sync Rate</p>
+<div class="flex items-end gap-3">
+<p class="text-white text-4xl font-bold leading-none">65%</p>
+<div class="h-2 w-full bg-white/10 rounded-full mb-1.5 overflow-hidden">
+<div class="h-full bg-primary w-[65%]"></div>
+</div>
+</div>
+</div>
+<div class="glass-card flex flex-col gap-2 rounded-xl p-6 border border-white/5">
+<p class="text-white/60 text-sm font-medium uppercase tracking-wider">Mismatches Found</p>
+<div class="flex items-center gap-3">
+<p class="text-mismatch-orange text-4xl font-bold leading-none">4</p>
+<span class="material-symbols-outlined text-mismatch-orange text-3xl">warning</span>
+</div>
+</div>
+</div>
+<!-- Dr. Marcie Overlay and Prompt -->
+<div class="fixed bottom-8 right-8 flex items-end gap-4 max-w-md animate-bounce-slow">
+<div class="flex flex-col gap-3">
+<div class="bg-white text-background-dark p-5 rounded-2xl rounded-br-none shadow-2xl relative">
+<p class="font-medium text-base">"Ooh, a mismatch in the torso and hands! How about we <span class="font-bold text-primary italic">unpack this over drinks?</span>"</p>
+<div class="mt-4 flex gap-2">
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-sm">local_bar</span> Chat Now
+                        </button>
+<button class="bg-background-dark/10 text-background-dark/60 border border-background-dark/20 px-4 py-2 rounded-lg text-sm font-bold hover:bg-background-dark/5">
+                            Save for Later
+                        </button>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<div class="relative">
+<div class="size-24 rounded-full border-4 border-primary overflow-hidden shadow-xl bg-primary/20">
+<img class="w-full h-full object-cover" data-alt="Stylized portrait of Dr. Marcie Liss" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7PZiGd55jWB0Y5o0Zccb0bfLJYVfXk2Yzl2DVEsZefeZnpHE8YkUoE7UcdhbpVogfBph8BNVCiOdQ4uetCc29fK-5Vt9ucGC6oNV9suczx5AZEpgqufdggWtjL9WV4w7BeYnEETyIBKOEO9SQhi4iAq-q9vbNdIu6RzzBvFugqIclxeSPszLxGJXt54DGz1f03l5MK2ozxnlioI_BqVd0rB28ncJvzBWWxvY_E0w7Z3VD2XqjsOOPW8ykEE94wf5mwOicGak7dD-v"/>
+</div>
+<div class="absolute -top-2 -right-2 bg-blue-400 text-white p-1.5 rounded-full shadow-lg border-2 border-white">
+<span class="material-symbols-outlined text-sm fill-1">water_full</span>
+</div>
+</div>
+<span class="text-[10px] font-bold text-white/50 uppercase tracking-widest mt-2">Dr. Marcie Liss</span>
+</div>
+</div>
+</main>
+<!-- Footer Controls -->
+<footer class="p-6 flex justify-center border-t border-white/5">
+<div class="flex gap-4">
+<button class="px-8 py-3 rounded-xl border border-white/20 hover:bg-white/5 transition-colors font-bold text-white">Previous Step</button>
+<button class="px-12 py-3 rounded-xl bg-primary hover:bg-primary/80 shadow-lg shadow-primary/20 transition-all font-bold text-white flex items-center gap-2">
+                Continue Game <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</footer>
+</div>
+</body></html>

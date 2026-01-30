@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GIF Battle - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f91085",
+                        "background-light": "#f8f5f7",
+                        "background-dark": "#230f19",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Spline Sans', sans-serif;
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(249, 16, 133, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.15) 0%, transparent 40%),
+                        #181114;
+        }
+        .glass-panel {
+            background: rgba(58, 39, 48, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(249, 16, 133, 0.2);
+        }
+        .winner-stamp {
+            transform: rotate(-12deg);
+            text-shadow: 0 0 15px rgba(249, 16, 133, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen nebula-bg">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/20 px-10 py-4 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Love Actually... The Game</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">How to Play</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Scores</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Exit Game</a>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/50" data-alt="User avatar profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCUNQ5SxAXRxHBJsQhaWFSYY4_gjC6ufPtx-hu_QJHmO3SqFxlrGq0XFXQx5xZblWUSfuVN7pAuAF1bZzODP_EFlk_yWjWO58Np8pLwIKvVXgAVn0a9a3STnvddUs5cNViSgOcHquxP3DtRFEh6xvEjTScuCBfgh7aV3We9GH_mD7H23fGQnA7SXFm46dppvN5QVXCMcXq7KhQaNYmC67gXnX45P1AggUY9mFUeR8UkyuxwIVbWetoJm5WVJgt7Ay9yfV-arSQYsPxz");'></div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-6 py-8">
+<!-- Game Progress -->
+<div class="flex flex-col gap-3 mb-8 max-w-md mx-auto">
+<div class="flex gap-6 justify-between items-end">
+<p class="text-white/80 text-sm font-medium uppercase tracking-widest">Round Progress</p>
+<p class="text-primary text-lg font-bold">8 / 10</p>
+</div>
+<div class="rounded-full bg-[#3a2730] h-3 overflow-hidden">
+<div class="h-full rounded-full bg-primary shadow-[0_0_10px_rgba(249,16,135,0.5)]" style="width: 80%;"></div>
+</div>
+<p class="text-[#bb9bab] text-xs font-normal text-right italic">Final rounds approaching!</p>
+</div>
+<!-- Headline Prompt -->
+<section class="mb-12">
+<h1 class="text-white tracking-tight text-4xl md:text-5xl font-bold leading-tight text-center max-w-3xl mx-auto">
+                "Your face when they leave <span class="text-primary">wet towels</span> on the bed."
+            </h1>
+</section>
+<!-- Battle Stage -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+<!-- Player 1 Choice -->
+<div class="relative group">
+<div class="absolute -top-4 left-4 bg-[#3a2730] px-4 py-1 rounded-full border border-primary/30 z-10">
+<span class="text-xs font-bold uppercase tracking-tighter text-white/70">Partner A</span>
+</div>
+<div class="aspect-video glass-panel rounded-xl flex items-center justify-center overflow-hidden border-2 border-primary shadow-[0_0_30px_rgba(249,16,133,0.2)] relative">
+<img alt="Shocked reaction GIF" class="w-full h-full object-cover" data-alt="A woman looking shocked and horrified at a mess" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo_RXthv9D7PoCfYZfSunaq1eaKO6cnN9-j9kEUA7QC2XUBhmtJdKUJdv70StMd83NljajFcewLeRP1CPUOUA0RtlNZpjOvFvm4qdnkrI_wNFQ_lRbdQ1NCiEXgd8RAq9qryNIgnxJ8_S1S9-20K1f3YvK38Mkc03-9CipdFZ4DOIInsG3hEZgt4bWrakkITp71yG43QzXu4xrBAJ1p16Vo8EOtV1TcFDjrOQxZfohMDU1Bth_kJAyaLvq2FHvsWRV3rJdMyl5AncP"/>
+<!-- Winner Badge -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="winner-stamp border-8 border-primary text-primary px-8 py-2 rounded-xl text-5xl font-black uppercase tracking-tighter bg-background-dark/80 backdrop-blur-sm opacity-100 scale-110">
+                            Winner!
+                        </div>
+</div>
+</div>
+<p class="mt-3 text-center text-white/60 text-sm italic">"The Ultimate Betrayal"</p>
+</div>
+<!-- Player 2 Choice -->
+<div class="relative group">
+<div class="absolute -top-4 left-4 bg-[#3a2730] px-4 py-1 rounded-full border border-white/10 z-10">
+<span class="text-xs font-bold uppercase tracking-tighter text-white/50">Partner B</span>
+</div>
+<div class="aspect-video glass-panel rounded-xl flex items-center justify-center overflow-hidden border-2 border-white/10 hover:border-primary/30 transition-all relative">
+<img alt="Eye roll reaction GIF" class="w-full h-full object-cover grayscale-[50%]" data-alt="A man performing a dramatic eye roll" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt-zBkBAJeV_BUGiltBNwixqrSSERMiDgB_RpcexEv6F_8qAPkKCGTaqJgocbMhMtQWtsftLsUf1wPywz2Yy97pTgl47RSCOwMDsX4_UhnxfoFfK1yrYN6TUSSChv4IsuFfjuNeS5HaK9GVZDbmT6tr933-YdSm-PRoSt5fPOY97ScJGyJemqyFOxFx21ER3zqHbbE9J1F7QmIaUuokKKn2JfdFzryKP3vHtdQCkGoXBocUQzjZ3aYSCvnoESZ1ttbTsG5vOCj9m9l"/>
+</div>
+<p class="mt-3 text-center text-white/60 text-sm italic">"The Deep Sigh"</p>
+</div>
+</div>
+<!-- Judging & Search Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+<!-- Dr. Marcie Liss Judge Panel -->
+<div class="glass-panel p-6 rounded-xl border-l-4 border-l-primary flex flex-col gap-4">
+<div class="flex items-center gap-4">
+<div class="size-16 rounded-full border-2 border-primary overflow-hidden shrink-0">
+<img alt="Dr. Marcie Liss" class="w-full h-full object-cover" data-alt="Professional woman with a kind smile, Dr. Marcie Liss" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp4mDFYVaV3T8Yp7X1S73_DSOgpipbDzRRWom1VnRLib1fAA_kDZP28zgDSVruHC9eYqmUxwzFtkKqa9yHYZ-mO4sji3t0qiGQx90ZHQo5kh_4Qc-RaC0NWnXMAWktB5kdjyKuCfAeNKRCdOvNC65dUQarkqmindrmczl-GuYCKtxj20A58Aw8Aw1we3nKduJp1ObMj5dAPk-z1NUzkSHuO7ojUOSA02lQlCAGy8UchSX9v1q9ph6W0xXTG7axKWUwTm0YhNhrkZiN"/>
+</div>
+<div>
+<h4 class="font-bold text-lg text-white">Dr. Marcie Liss</h4>
+<p class="text-primary text-xs font-semibold uppercase tracking-widest">Expert Judge</p>
+</div>
+</div>
+<div class="bg-background-dark/50 p-4 rounded-lg italic text-white/90 text-sm leading-relaxed relative">
+<span class="material-symbols-outlined absolute -top-2 -left-2 text-primary text-xl">format_quote</span>
+                    "Partner A's choice captures the pure spatial violation of a wet towel on a duvet. That's a high-level domestic crime right there. Points for visceral accuracy!"
+                </div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg transition-transform active:scale-95 flex items-center justify-center gap-2">
+                    Next Round <span class="material-symbols-outlined">trending_flat</span>
+</button>
+</div>
+<!-- Giphy Search Section -->
+<div class="lg:col-span-2 glass-panel rounded-xl overflow-hidden flex flex-col">
+<div class="p-4 border-b border-white/10 flex items-center justify-between">
+<h3 class="font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">search</span>
+                        GIF Library
+                    </h3>
+<img alt="Powered by GIPHY" class="h-4 opacity-50" data-alt="Small Giphy Logo attribution" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ5toLMyjUJyBhiZJdxsspFK3OHS4edcGnT8knSI4RzWGIKrM0dECi68NW_voUYTO0RCEykxMC3kDbxySeOTIzQ8xPiZVFqXMbpQNJuLoDEuSU2r1KQjLeP2__O4dZPGYahDk6jidSRO_ffa01yUhtuhPmjRLBwwsreMw2Au4lg2DIBYhyOodY7AtkkMb6JCQvJYESYlVRN3vXRh4rsGZcTxpWg0gOjZHtb7J7oCEB7y5Vz1IsPEFfimwNYLUfx4q2471rbYtwj6kS"/>
+</div>
+<!-- Search Input -->
+<div class="px-4 py-3">
+<label class="flex flex-col w-full">
+<div class="flex w-full items-stretch rounded-xl bg-[#3a2730] border border-white/5 focus-within:border-primary/50 transition-colors">
+<div class="text-[#bb9bab] flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-[#bb9bab] px-4 py-3 text-base" placeholder="Search for the perfect reaction GIF..." value="Wet Towels"/>
+</div>
+</label>
+</div>
+<!-- Chips/Tags -->
+<div class="flex gap-2 p-4 flex-wrap overflow-x-auto no-scrollbar">
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary text-white px-4 cursor-pointer">
+<p class="text-xs font-bold uppercase">Wet Towels</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#3a2730] hover:bg-white/10 text-white/70 px-4 cursor-pointer transition-colors">
+<p class="text-xs font-bold uppercase">Disbelief</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#3a2730] hover:bg-white/10 text-white/70 px-4 cursor-pointer transition-colors">
+<p class="text-xs font-bold uppercase">Sassy</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#3a2730] hover:bg-white/10 text-white/70 px-4 cursor-pointer transition-colors">
+<p class="text-xs font-bold uppercase">Angry</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#3a2730] hover:bg-white/10 text-white/70 px-4 cursor-pointer transition-colors">
+<p class="text-xs font-bold uppercase">Eye Roll</p>
+</div>
+</div>
+<!-- Results Grid -->
+<div class="grid grid-cols-3 sm:grid-cols-4 gap-2 p-4 h-64 overflow-y-auto custom-scrollbar">
+<div class="aspect-square bg-[#3a2730] rounded-lg overflow-hidden border border-white/5 hover:border-primary cursor-pointer transition-all">
+<img class="w-full h-full object-cover" data-alt="Abstract reaction gif" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0DLT7u7oD13pyOP-k6rA6oLbRYsdEsX-YpynzshXLbPqTtQEtdXU-i9g3XMyCE6IG3sOgX1QVd7wTLAcWkIoelFWcoesa8Mok-5yc8hIpF9VirMG79gdKwhtYestZgMKdxayUzumnpPQQAdIklxoVDNSEHYCnK83euR93nUC5SIQNKDl_mKN9TvA4eQk_IP_k-9vs7k2CaaRDldCayxxoN3QWDBs0NALUoixL1VByUzpxbclHwieD4PMju6CYUwMvZnhGDmmDTKGC"/>
+</div>
+<div class="aspect-square bg-[#3a2730] rounded-lg overflow-hidden border border-white/5 hover:border-primary cursor-pointer transition-all">
+<img class="w-full h-full object-cover" data-alt="Frustrated reaction gif" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABT5hN3SCM5KuCShCrpedyZ3-Xs1Qq0DiikS_hCc4tti5tJgvCM-oNTZIiiL4e1gat4MFabsESPo9xQZ6b4HAHIWEMisVyblATB18HfZ-wEdQ9hV399xlxVJEneaWsIQvRshqoBf15KyKUBw2XrbZTXdDye1S-wYyr2QKjU93XOppQOLRfMmdtFIO0flWyM3kZtt4rmuQ7P47UvvRg1jgYnT_eA-CZDhTHxeJVsb2QKaXjoaXlPpAD0qgDpeyNC8vC_iiovIFFhL5L"/>
+</div>
+<div class="aspect-square bg-[#3a2730] rounded-lg overflow-hidden border border-white/5 hover:border-primary cursor-pointer transition-all">
+<img class="w-full h-full object-cover" data-alt="Wait what reaction gif" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlmjhuWs-6haqBjgPguNAPGuvNZeZlVOOr-JUkYRiwPt0fcUqflSzAnAPRUBGFzKG06WFLCn9Kz5yoTbWXTBgk-nDymLvDb4hc5W4xy91zz62ViRxIqrBAtJtE4C3w9tCCzH85J7EKD_N3k6SnHQRA5foIrodJL_4uipbvpG_Aw6qAc2wsggbV6XeE3e202ZYia7EWR-urD-TZHb9bYHvwTjM1x6ceCWjtLi65u58y8NDZmBKuAC11KzflPYHVe61VCwpMGgUaQDTK"/>
+</div>
+<div class="aspect-square bg-[#3a2730] rounded-lg overflow-hidden border border-white/5 hover:border-primary cursor-pointer transition-all">
+<img class="w-full h-full object-cover" data-alt="Oh no reaction gif" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2DtzHZbdNLjBlXIS4Y6es4uWxHOQ7Hf-al2JxgpXNOy8eZHvFGKu8j88cSMGw3fZtoEg1ndw-TOfc9ZnT5hpg3BPbvZR8XtSDXPP9rTObfKpazLi4PsUUC28Xn0zwGHDuKthpqzCLIRK1bqkSS2SXEYIZXSRCD285z12R4TAxbjJnZAj-HK_OF5MccyuSKlek45OR-Bl8DwpmaEXqJmOh1EsYHFY9CFZ6SttGrh-bHpK7pTzQBzFY9-AVbf_iPUWrOZDRSvjsXsIp"/>
+</div>
+<div class="aspect-square bg-[#3a2730] rounded-lg overflow-hidden border border-white/5 hover:border-primary cursor-pointer transition-all">
+<img class="w-full h-full object-cover" data-alt="Confused person gif" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbW5O5XqSpP-PjT9ituQLK0NBNC8aoQ5aesKiSJ7y5g7_s_fOGRbnYdYWw8hHGuZMTuyFTLf5QSJam6jHxOiUZsWLWpPPjq1jf1qt5o5gI-Kal0H0H6eTyWS8ACoST3O-dMBfOzE69XvSZAW6pjZiaIWTzRil2nfR32Rg2ADBoY_59YO7okEjNYjqFCZZtOZXQt-U_MNhgwSY5UWjMaCflRf8sebBurSgLj177Gd3L3aKoL1GZskZtBILCs6YxDhNcsZsspACZ5om6"/>
+</div>
+<div class="aspect-square bg-[#3a2730] rounded-lg overflow-hidden border border-white/5 hover:border-primary cursor-pointer transition-all">
+<img class="w-full h-full object-cover" data-alt="Mind blown gif" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6C6RQ8ESi2LnH-sUdRbbK4n_z2vNF3v1T_izDxQ_5kaA3iXAnXE9-IRXEU2tyTPaGA3Zf-GMn19tezR5uY6XfHt5QK3qEDcTkJCeyhJNMO4VVJO6TG_3Q7TFW9rCptYEhLF1f3ntiERSTJd0xBmTPnnyQaO3hblFCFVnV0Gm4Dl1vaZZd7fj0yvJjzPR7Mg0lzUh4Wr4IggOx1z_7Pi8EZpO6By7_NJgSzUCTUeoDAC4dwp5uAL_Yi6OGaV4iLKqIZs-i0XcUkUNp"/>
+</div>
+<div class="aspect-square bg-[#3a2730] rounded-lg overflow-hidden border border-white/5 hover:border-primary cursor-pointer transition-all">
+<img class="w-full h-full object-cover" data-alt="Winking reaction gif" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7z1clFkaEpj6N4IysZHCKpPlzJVkGpDm_5DPiSHAa9a3DmQHnWEZIaI-M-r_FCy77G42IKGFkL1WYsmy9p4t2QoVaIY03p85TMjKf7wd9EqlrTzTRbWz7AZaKbdo-yUfIOyYvPbJxn-7qt-WAgFStbFmDTc1hlC2lJ0hzXOQDPq29koXOXjrWfOuIV-P1FhmQdrTTN1PyGxauMmquETQN6qG6ipIWLlLE0UcQX_YdlmEQvSQR_cVMQJCVUi_sEJ9d36b_Dkz4deMV"/>
+</div>
+<div class="aspect-square bg-[#3a2730] rounded-lg overflow-hidden border border-white/5 hover:border-primary cursor-pointer transition-all">
+<img class="w-full h-full object-cover" data-alt="Screaming internally gif" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHqRskyPUv51A1s4rpX8EPAuzNTBuvbpzyQtMuwtVUGkZoch6sZm-bE6S6e0Tu-b8rF6MF9Vm3PyDA2b1n-B6JM2DZr1P4EuPnIvaN9uDiQkucZ44cZKAhcIuslxZo8U_OB61GwfRcW6zvyy50bBzdLDta6tAlmkBX9Up5-CeI3g9H39JrGXuy9RyodbWfBhdabUUcrj1wTELWxfuI_Pt18DNX1wvdyN5_dtDXtPlI0rL84E-9ZM7wpXVazpt5VYE80QL8ZHH_eEGn"/>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Background Elements -->
+<div class="fixed top-20 right-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="fixed bottom-[-10%] left-[-5%] w-[30%] h-[30%] bg-purple-600/5 blur-[100px] rounded-full pointer-events-none"></div>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(58, 39, 48, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #f91085;
+            border-radius: 10px;
+        }
+    </style>
+</body></html>

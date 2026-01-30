@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Heart-to-Heart | Family Forge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff0055", "background-light": "#f8f5f6", "background-dark": "#230f16", "charcoal-panel": "#231a1e"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #2d1622 0%, #181114 100%);
+        }
+        .nebula-bg {
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(249, 11, 130, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(147, 51, 234, 0.15) 0%, transparent 40%);
+        }
+        .glass-panel {
+            background: rgba(35, 26, 30, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-heart {
+            filter: drop-shadow(0 0 15px rgba(249, 11, 130, 0.6));
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-white min-h-screen nebula-bg overflow-x-hidden font-display">
+<!-- Main Container -->
+<div class="layout-container flex h-full min-h-screen flex-col">
+<!-- Header / Nav -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-3 glass-panel sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 text-primary">
+<span class="material-symbols-outlined text-3xl">family_restroom</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Family Forge</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Phase 2: Co-parenting</a>
+<a class="text-primary text-sm font-bold leading-normal border-b-2 border-primary" href="#">Heart-to-Heart</a>
+</div>
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-full h-10 px-5 bg-primary text-white text-sm font-bold hover:bg-primary/80 transition-all">
+<span>Exit Session</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/30" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAtqYp6m3IuElYbshh5EfcJrgyp2HAb04MPuXKn-QBDbz03vHbe-216kN0MbfO34S9J--dfBOeQFXBfWalLxmKTHbjv6az9cI7t1IDZDb7T0arqO7lVo9qlF-vi_nY9NWtyw5WL2HB32NvO2n4wG-MX-H3xRWGFwp9wmQlOW4gVTbubcib3V5xTu6_ayLg9iSVJbjLCPNJRsJlmA8U9MIPnlyo1kAS3l6K61B7-h2ql3KO2aOENIrPd0JDcCISmbbmufjuzK101i4c7");'>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-4 py-8">
+<div class="max-w-[1000px] w-full">
+<!-- Progress Indicator -->
+<div class="flex flex-col gap-3 p-4 mb-8 glass-panel rounded-xl">
+<div class="flex gap-6 justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">sync_saved_locally</span>
+<p class="text-white text-base font-medium leading-normal">Variant 6 of 8: Rebuilding Trust</p>
+</div>
+<p class="text-white/60 text-sm font-normal">Step 6/8</p>
+</div>
+<div class="rounded-full bg-white/10 h-2.5 overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 75%;"></div>
+</div>
+<p class="text-primary/70 text-xs font-bold uppercase tracking-widest">Current Stage: Alignment Check</p>
+</div>
+<!-- Game Heading -->
+<div class="text-center mb-12">
+<h1 class="text-white tracking-tight text-4xl font-bold leading-tight pb-2">The Newlywed Game: Heart-to-Heart</h1>
+<p class="text-primary text-xl font-medium">What is our top family value?</p>
+</div>
+<!-- Game Board -->
+<div class="relative flex flex-col md:flex-row items-center justify-between gap-12 mb-16">
+<!-- Partner 1 Card -->
+<div class="flex-1 w-full group">
+<div class="flex flex-col items-center gap-4">
+<div class="w-full h-64 glass-panel rounded-xl border-2 border-primary/20 flex flex-col items-center justify-center p-8 text-center transition-all duration-500 hover:border-primary">
+<span class="material-symbols-outlined text-4xl mb-4 text-primary/40">lock</span>
+<p class="text-white/30 text-xs uppercase tracking-widest mb-2">Partner 1</p>
+<p class="text-2xl font-bold text-white">Integrity</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full border-2 border-primary bg-cover" data-alt="Partner 1 profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD6J0dL6rAg_hqaK1uX1OfOpLTcplYmkEq0bczngTuLwxEj_B8gkQRklbcascBrli36tsLPgH48gev_iN7Q9LFfmjBAvh1_4z5I6yLwn7FRIunxN5wjE-W-rVn3thMkY--rcZLc1l2a-z69k5Kl3AP7UNaDjQu_nOdHdziqJoU7D8C5QDLKqmpuvnh-6sRwH4R2RVCXN1bcyptLDfcJgRS8QnO87-72eSrwaTuIa_m7zhh_IsUmi6jtEWh-zFM9MBWUw07Qy2j6TFM-')"></div>
+<span class="font-bold text-sm">Alex</span>
+</div>
+</div>
+</div>
+<!-- Center Host & Match Indicator -->
+<div class="relative flex flex-col items-center z-10">
+<div class="glow-heart text-primary mb-4 animate-pulse">
+<span class="material-symbols-outlined text-6xl fill-1">favorite</span>
+</div>
+<!-- Dr. Marcie Liss -->
+<div class="flex flex-col items-center">
+<div class="relative mb-2">
+<div class="size-20 rounded-full border-4 border-primary/30 p-1">
+<div class="size-full rounded-full bg-cover" data-alt="Dr. Marcie Liss Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAzVCONKIIsEwmL2K1vG5wbBmdsuKtY3UISZ2c6iMNC8kyyDyY4h3AQZfVlyK9kH_7Znjq3d9yueDfsizU4ajnkf8OoFAIDTiR8JBBN3O5QyoTOpd2wDtpamyaCyIi6RvoS85cfxaJzC2gRCACur8hbjbEc6S4BXASpz6WSR7YYlKsF3EpUBJG5CQFBA2O8v4RRZrcooPpClguztpQSwAwX23ttfMALG5MkbRicRbCTqui8f_weW2md05dhduOtyctjCczsZoVglLaA')"></div>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-green-500 size-5 rounded-full border-2 border-background-dark"></div>
+</div>
+<p class="text-xs font-bold text-primary/80 uppercase">Dr. Marcie Liss</p>
+</div>
+<!-- Match Logic -->
+<div class="absolute top-44 w-64 glass-panel rounded-xl p-4 text-center border border-white/10">
+<div class="flex items-center justify-center gap-2 mb-1">
+<span class="material-symbols-outlined text-green-400 text-sm">check_circle</span>
+<span class="text-xs font-bold text-green-400 uppercase">Semantic Match</span>
+</div>
+<p class="text-sm italic text-white/80">"Slightly less messy than last week. Progress looks good."</p>
+</div>
+</div>
+<!-- Partner 2 Card -->
+<div class="flex-1 w-full group">
+<div class="flex flex-col items-center gap-4">
+<div class="w-full h-64 glass-panel rounded-xl border-2 border-primary/20 flex flex-col items-center justify-center p-8 text-center transition-all duration-500 hover:border-primary">
+<span class="material-symbols-outlined text-4xl mb-4 text-primary/40">lock</span>
+<p class="text-white/30 text-xs uppercase tracking-widest mb-2">Partner 2</p>
+<p class="text-2xl font-bold text-white">Honesty</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full border-2 border-primary bg-cover" data-alt="Partner 2 profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC-Jh250ieSSNoTWS6_WVBjS8roER5jHJE2cmlP35HAbGXyvONVMqSjIhmOaIRbKBOU7h_whDqeQli8_YnD-dEN9Hl_xIdiZSw9mSgMqLcHU6bMZKK76mDwbqIIW7qvuEILwdLyW7KnnHySbBHGJ9p8a6Q9N41I2vp4FH32o1sYT8ry9bsDBlT9m0Yhbwj4ICCxGHLV37TH2t-NDnI03ZZlDncelJUfHxOapN-d0xdBfkUAXCf4G26oPVRyTJxsK03AP2MgLJhiYkcS')"></div>
+<span class="font-bold text-sm">Jordan</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Tabs / Controls -->
+<div class="w-full glass-panel rounded-xl overflow-hidden">
+<div class="flex border-b border-white/10 px-4">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-primary text-white pb-[13px] pt-4 flex-1" href="#">
+<p class="text-white text-sm font-bold leading-normal tracking-[0.015em]">Summary</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-white/40 pb-[13px] pt-4 flex-1 hover:text-white transition-colors" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Match Logs</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-white/40 pb-[13px] pt-4 flex-1 hover:text-white transition-colors" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Resources</p>
+</a>
+</div>
+<div class="p-6 flex justify-between items-center">
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="text-[10px] text-white/40 uppercase font-bold">Session Score</span>
+<span class="text-2xl font-bold text-primary">82%</span>
+</div>
+<div class="w-[1px] h-10 bg-white/10 self-center"></div>
+<div class="flex flex-col">
+<span class="text-[10px] text-white/40 uppercase font-bold">Alignment</span>
+<span class="text-2xl font-bold text-white">High</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-3 rounded-full border border-white/20 hover:bg-white/10 transition-colors font-bold text-sm">Review Last Answer</button>
+<button class="px-8 py-3 rounded-full bg-primary hover:bg-primary/80 transition-all font-bold text-sm shadow-lg shadow-primary/20">Next Question</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Tooltip or Extra Context Footer -->
+<footer class="py-6 px-10 text-center text-white/30 text-xs">
+            Family Forge System • Dr. Marcie Liss Clinical Protocol 12-B • Heart-to-Heart Sync v2.4
+        </footer>
+</div>
+</body></html>

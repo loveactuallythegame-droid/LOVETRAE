@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admiration Aim AR Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#f40b61", secondary: "#d946ef", accent: "#8b5cf6", "background-light": "#f8f5f6", "background-dark": "#221017"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>.nebula-bg {
+    background: radial-gradient(circle at center, #2e1065 0%, #0a0a0f 70%);
+    position: relative;
+    overflow: hidden
+    }
+.nebula-bg::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuA4rIyR4fNWye9pWh21kRq9BnLDmM5UPJQXQQ-4r1v17eZXSOvV-CHrKOUeDfzOCqF-r4nXKsbDITv5utDTEDvHimte6P6bRPQGo2729Q5iHu0RLxNx7FJnaobgnCn_1LX4hOTZvX3392J5BjS4rhlkzQw1GrhUr93lAhTGvEpol-aXOiTXIdLWJxpp-bTNmsXHgo1548t3M3t5fTX-BCxwmvSAFKLQX4UVlBSo2pSeC9u7WK6RGRH4Edv8rm1HzhNVgYipcwGarLcz);
+    opacity: 0.3
+    }
+.target-float {
+    filter: drop-shadow(0 0 15px rgba(217, 70, 239, 0.4))
+    }
+.hud-line {
+    background: linear-gradient(90deg, transparent 0%, rgba(19, 236, 19, 0.2) 50%, transparent 100%);
+    height: 1px;
+    width: 100%
+    }
+.crosshair-pulse {
+    border: 2px solid #13ec13;
+    box-shadow: 0 0 20px rgba(19, 236, 19, 0.5)
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30 overflow-hidden">
+<!-- Main Game Container -->
+<div class="relative flex h-screen w-full flex-col nebula-bg group/design-root">
+<!-- Header HUD -->
+<header class="relative z-20 flex items-center justify-between px-10 py-6 border-b border-primary/10 bg-black/20 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-4xl">target</span>
+</div>
+<div>
+<h2 class="text-xl font-bold tracking-tight uppercase">Love Actually... <span class="text-secondary text-sm block">Admiration Aim AR</span></h2>
+</div>
+</div>
+<div class="flex items-center gap-12">
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-primary/60 uppercase tracking-[0.2em]">Current Streak</span>
+<span class="text-3xl font-bold text-white tracking-widest">14x</span>
+</div>
+<div class="h-10 w-[2px] bg-white/10"></div>
+<div class="flex flex-col items-end">
+<span class="text-[10px] text-primary/60 uppercase tracking-[0.2em]">Total Score</span>
+<span class="text-3xl font-bold text-primary">084,200</span>
+</div>
+</div>
+</header>
+<!-- Game World / AR Field -->
+<main class="relative flex-1 flex flex-col items-center justify-center">
+<!-- Scanning Lines HUD -->
+<div class="absolute inset-0 pointer-events-none">
+<div class="hud-line absolute top-1/4"></div>
+<div class="hud-line absolute bottom-1/4"></div>
+<div class="absolute left-10 top-1/2 -translate-y-1/2 flex flex-col gap-2">
+<div class="w-1 h-24 bg-primary/20 rounded-full">
+<div class="w-full h-3/4 bg-primary rounded-full shadow-[0_0_10px_#13ec13]"></div>
+</div>
+<span class="text-[10px] text-primary origin-left rotate-90 translate-y-8 tracking-widest uppercase">Sync_Level</span>
+</div>
+</div>
+<!-- Floating Target: Headline -->
+<div class="absolute top-10 z-10 w-full flex flex-col items-center">
+<div class="bg-black/40 border border-primary/30 backdrop-blur-lg px-8 py-3 rounded-xl">
+<h1 class="text-white tracking-[0.3em] text-2xl font-bold leading-tight text-center uppercase">
+                        Target Profile: <span class="text-primary">Resilient</span>
+</h1>
+</div>
+</div>
+<!-- Floating Words (The Targets) -->
+<div class="relative w-full h-full flex items-center justify-center">
+<!-- Word: Witty -->
+<div class="absolute top-[20%] left-[15%] target-float animate-bounce">
+<div class="px-6 py-2 rounded-full border border-secondary bg-secondary/10 backdrop-blur-sm text-secondary font-bold text-xl shadow-[0_0_20px_rgba(217,70,239,0.3)] cursor-crosshair hover:bg-secondary hover:text-white transition-all">
+                        WITTY
+                    </div>
+</div>
+<!-- Word: Patient -->
+<div class="absolute bottom-[25%] left-[20%] target-float">
+<div class="px-6 py-2 rounded-full border border-accent bg-accent/10 backdrop-blur-sm text-accent font-bold text-xl shadow-[0_0_20px_rgba(139,92,246,0.3)] cursor-crosshair">
+                        PATIENT
+                    </div>
+</div>
+<!-- Word: Resilient (Primary Target) -->
+<div class="absolute top-[35%] right-[20%] target-float scale-125">
+<div class="px-8 py-3 rounded-full border-2 border-primary bg-primary/20 backdrop-blur-md text-white font-bold text-2xl shadow-[0_0_30px_#13ec13] cursor-crosshair animate-pulse">
+                        RESILIENT
+                    </div>
+</div>
+<!-- Word: Strong -->
+<div class="absolute bottom-[15%] right-[30%] target-float">
+<div class="px-6 py-2 rounded-full border border-white/30 bg-white/5 backdrop-blur-sm text-white/70 font-bold text-lg cursor-crosshair">
+                        STRONG
+                    </div>
+</div>
+<!-- Word: Calm -->
+<div class="absolute top-[15%] right-[40%] target-float">
+<div class="px-5 py-2 rounded-full border border-secondary/40 bg-secondary/5 backdrop-blur-sm text-secondary/60 font-bold text-lg cursor-crosshair">
+                        CALM
+                    </div>
+</div>
+<!-- Central Crosshair (Compliment Launcher) -->
+<div class="relative z-30 pointer-events-none">
+<!-- Outer Ring -->
+<div class="w-48 h-48 rounded-full border border-primary/20 flex items-center justify-center animate-[spin_10s_linear_infinite]">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-4 bg-primary"></div>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-4 bg-primary"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-1 bg-primary"></div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-1 bg-primary"></div>
+</div>
+<!-- Inner Circle -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-12 h-12 rounded-full border-2 border-primary/60 flex items-center justify-center">
+<div class="w-1 h-1 bg-primary rounded-full shadow-[0_0_10px_#13ec13]"></div>
+</div>
+</div>
+<!-- UI Readouts near crosshair -->
+<div class="absolute -right-32 top-1/2 -translate-y-1/2 flex flex-col gap-1 text-[10px] text-primary/80 font-mono">
+<p>LOCK_STBL: 98.4%</p>
+<p>RANGE: 40.2m</p>
+<p>MODE: COMPLIMENT_L</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Trainer Overlay (Dr. Marcie Liss) -->
+<div class="absolute bottom-10 left-10 z-50 flex items-end gap-6 max-w-2xl">
+<div class="relative">
+<!-- Camo/Tactical Styled Border -->
+<div class="absolute inset-0 rounded-full border-4 border-primary/40 animate-pulse"></div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-40 w-40 border-4 border-black shadow-[0_0_40px_rgba(0,0,0,0.8)]" data-alt="Dr Marcie Liss in tactical camo gear training outfit" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDayY9XY67DHWoxRyouodapSXUFvJJic9CSUgkbmIw6TwbVCzCee9s3aUALEWf02ytsz4lrD4MpsCbkuDve_2GUZcMdIt6ZAK-lzjjFXDY2l6D4YQeZKYdgMEQyNTaSwGlmiyzZF2Thf98xYqEgYnG-Nw5TSOnwesgQt4JdZbHue3wXTrrZctDgxIVpSsw4-fRVPz_rULOKGN09y4DxP_v-z0B4E7ImVCWkJrygBqd6Fvq2WEzaXuaLlXL9QLM0UJTft7V6kpR87Tn7");'>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-primary text-black px-2 py-1 rounded font-bold text-xs">
+                    TRAINER
+                </div>
+</div>
+<div class="flex flex-col gap-3 mb-4">
+<div class="bg-black/60 backdrop-blur-md border border-white/10 p-5 rounded-2xl rounded-bl-none">
+<p class="text-primary font-bold text-lg leading-tight uppercase mb-1">Dr. Marcie Liss</p>
+<p class="text-white/90 text-lg italic leading-relaxed">
+                        "Aim for <span class="text-primary font-bold not-italic">RESILIENT</span>! Precision is key to a healthy relationship. Take the shot!"
+                    </p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-6 py-3 bg-primary text-black font-bold rounded-xl hover:bg-white transition-all shadow-[0_0_20px_rgba(19,236,19,0.4)]">
+<span class="material-symbols-outlined">rocket_launch</span>
+                        LAUNCH COMPLIMENT
+                    </button>
+<button class="flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/20 text-white font-bold rounded-xl hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined">tactic</span>
+                        TACTICAL BRIEFING
+                    </button>
+</div>
+</div>
+</div>
+<!-- Right Side HUD Controls -->
+<aside class="absolute bottom-10 right-10 z-50 flex flex-col items-end gap-4">
+<div class="bg-black/40 backdrop-blur-md border border-white/10 p-4 rounded-xl flex flex-col gap-3 min-w-[200px]">
+<div class="flex justify-between items-center text-[10px] text-white/50 uppercase tracking-widest">
+<span>Power Cell</span>
+<span>92%</span>
+</div>
+<div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[92%] shadow-[0_0_10px_#d946ef]"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] text-white/50 uppercase tracking-widest">
+<span>Love Tank</span>
+<span>64%</span>
+</div>
+<div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[64%] shadow-[0_0_10px_#13ec13]"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<div class="flex flex-col gap-2">
+<button class="size-12 flex items-center justify-center rounded-xl bg-black/40 border border-white/10 text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<button class="size-12 flex items-center justify-center rounded-xl bg-black/40 border border-white/10 text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined">zoom_out</span>
+</button>
+</div>
+<button class="size-26 w-24 flex flex-col items-center justify-center rounded-xl bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 transition-all group">
+<span class="material-symbols-outlined text-4xl group-hover:scale-110 transition-transform">my_location</span>
+<span class="text-[10px] font-bold mt-1">CENTER</span>
+</button>
+</div>
+</aside>
+<!-- Footer / Controls Hint -->
+<footer class="absolute bottom-4 w-full text-center pointer-events-none">
+<p class="text-[10px] text-white/30 uppercase tracking-[0.5em]">
+                Move Mouse to Aim  |  Left Click to Launch  |  Space to Scan
+            </p>
+</footer>
+</div>
+</body></html>

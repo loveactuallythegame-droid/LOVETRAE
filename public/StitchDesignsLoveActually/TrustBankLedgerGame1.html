@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trust Bank Ledger Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff006d", "background-light": "#f8f5f7", "background-dark": "#230f18", "nebula-purple": "#2d1b4e", "nebula-pink": "#702283"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, #2d1b4e 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, #702283 0%, transparent 50%),
+                        #102220;
+        }
+        .glass-panel {
+            background: rgba(16, 34, 32, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(19, 236, 218, 0.1);
+        }
+        .liquid-glow {
+            box-shadow: 0 0 20px rgba(19, 236, 218, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-white font-display nebula-bg">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-white/10 px-10 py-4 glass-panel sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<span class="material-symbols-outlined text-4xl">favorite</span>
+</div>
+<div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Love Actually... <span class="text-primary italic">The Game</span></h2>
+<p class="text-xs text-white/50 uppercase tracking-[0.2em]">Hosted by Dr. Marcie Liss</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<nav class="flex items-center gap-8 mr-8">
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary py-1" href="#">Ledger</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Vault</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Audits</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-white/5 hover:bg-white/10 text-white transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-10 w-px bg-white/10 mx-1"></div>
+<div class="flex items-center gap-3 bg-white/5 rounded-full pl-2 pr-4 py-1">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 border-2 border-primary" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA6uppRMCxd5D_vcXpMWHgvfFodAWpqQsV5XL-qxpVp60NCqUTJcnsJxFnTJxdfBGnJW3rx1ju8ktpVBrcWiiaaIHi_PFE2W7BN0Di69nEef65E9PLBjSOQ9-9IbPlbjleD7kJH0s7bAysHgrSHdV1gR2Bhya3pr7vtVjvwzZ7JUx5XR5yzV3qklPEr3Q2XLfpVei_Rfy7aRUxRBjtdNtf8mGw-F9ToSIwLPBWSlvDy3nM5gKcLw2sWVr6QcC63Ox6uX5dwSU_OZsJj");'></div>
+<span class="text-sm font-medium">Player 1</span>
+</div>
+</div>
+</div>
+</header>
+<main class="flex flex-1 p-8 gap-8 max-w-[1400px] mx-auto w-full">
+<!-- Sidebar: Dr. Marcie's Office -->
+<aside class="w-80 flex flex-col gap-6">
+<div class="glass-panel rounded-xl p-6 flex flex-col gap-4 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 text-[10px] text-primary/50 font-bold uppercase tracking-wider">Variant 8/10</div>
+<div class="flex flex-col items-center gap-4 text-center">
+<div class="relative">
+<div class="size-24 rounded-full border-4 border-primary/30 overflow-hidden bg-background-dark">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" data-alt="Dr Marcie Liss wearing banker glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmrJq4PxU4XpqoOjAlGV2TzxeuQUR6m2UQ8cBvFInKj0bRA2Q9_tffCP8ZlKcdqgeR2qZPmTDf723j3NcW9fiHdXH-fRQXH9UVqaiUeqWU9zUja5bfckXkKaRO3Y3GcYcjnA5rF2nhwoJ5KEvHbJOGLy2zRJ0qOPZWNLV331yoEHw5m3rQ6b6NM2ZnURx95Am31MxAcG8Y6pWXRg15A2mbSq2YBN7v09vKJQFIijZ1wV54WaXEcYRdwEzmqSv8ZK-h5Q6k_BYlEl_M"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-primary text-background-dark rounded-full p-1 border-2 border-background-dark">
+<span class="material-symbols-outlined text-sm font-bold">account_balance</span>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-bold">Dr. Marcie Liss</h3>
+<p class="text-primary text-sm font-medium">Bank Manager Persona</p>
+</div>
+<div class="bg-primary/10 rounded-lg p-3 text-sm text-primary/90 italic italic leading-relaxed border border-primary/20">
+                            "Remember, your emotional credit score is everything in this game. Are you making an investment or a withdrawal?"
+                        </div>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-4 flex flex-col gap-2">
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/20 text-primary border border-primary/30">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-bold uppercase tracking-wide">Ledger Overview</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-green-400">arrow_downward</span>
+<p class="text-sm font-medium">Recent Deposits</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-orange-400">arrow_upward</span>
+<p class="text-sm font-medium">Recent Withdrawals</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined">percent</span>
+<p class="text-sm font-medium">Yield Multipliers</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-blue-400">verified_user</span>
+<p class="text-sm font-medium">Audit History</p>
+</div>
+</div>
+</aside>
+<!-- Main Content: The Ledger -->
+<div class="flex-1 flex flex-col gap-8">
+<!-- Trust Balance Section -->
+<div class="flex gap-8 items-center">
+<div class="flex-1">
+<h1 class="text-4xl font-bold tracking-tight mb-2">Trust Bank Ledger</h1>
+<p class="text-white/60 text-lg">Real-time emotional capital tracking.</p>
+<div class="flex gap-4 mt-6">
+<div class="flex-1 glass-panel rounded-xl p-5 border-l-4 border-l-primary">
+<p class="text-white/50 text-xs font-bold uppercase mb-1">Net Growth</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">+1,200</span>
+<span class="text-green-400 text-sm font-bold">+12%</span>
+</div>
+</div>
+<div class="flex-1 glass-panel rounded-xl p-5 border-l-4 border-l-blue-400">
+<p class="text-white/50 text-xs font-bold uppercase mb-1">Interest Rate</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">x1.5</span>
+<span class="text-blue-400 text-sm font-bold">Peak</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Glowing Liquid Cylinder -->
+<div class="w-64 glass-panel rounded-2xl p-6 flex flex-col items-center gap-4 relative">
+<div class="w-full h-48 bg-background-dark/80 rounded-full border-4 border-white/10 relative overflow-hidden flex items-end">
+<!-- Liquid container -->
+<div class="w-full bg-gradient-to-t from-primary/80 to-primary liquid-glow transition-all" style="height: 65%;">
+<div class="absolute top-0 left-0 w-full h-2 bg-white/30 blur-sm"></div>
+</div>
+<!-- Markings -->
+<div class="absolute inset-0 flex flex-col justify-between py-4 px-2 pointer-events-none opacity-20">
+<div class="w-full border-t border-white h-0"></div>
+<div class="w-full border-t border-white h-0"></div>
+<div class="w-full border-t border-white h-0"></div>
+<div class="w-full border-t border-white h-0"></div>
+</div>
+</div>
+<div class="text-center">
+<p class="text-3xl font-bold tracking-tighter text-primary">8,450 TBU</p>
+<p class="text-xs font-medium text-white/50 uppercase">Current Balance</p>
+</div>
+<div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+<p class="text-[10px] text-white/40 text-center font-bold">65% TO NEXT RELATIONSHIP MILESTONE</p>
+</div>
+</div>
+<!-- Transaction List -->
+<div class="glass-panel rounded-xl flex-1 flex flex-col overflow-hidden">
+<div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">list_alt</span>
+                            Recent Transaction Ledger
+                        </h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded bg-white/10 text-xs font-bold hover:bg-white/20">ALL</button>
+<button class="px-3 py-1 rounded text-xs font-bold text-white/40 hover:text-white">DEPOSITS</button>
+<button class="px-3 py-1 rounded text-xs font-bold text-white/40 hover:text-white">WITHDRAWALS</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-[10px] text-white/40 font-bold uppercase tracking-wider border-b border-white/5">
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Action Details</th>
+<th class="px-6 py-4">Category</th>
+<th class="px-6 py-4 text-right">Amount (TBU)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="size-6 bg-green-500/20 text-green-500 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">keyboard_double_arrow_up</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium">Active Listening during dinner</div>
+<div class="text-xs text-white/40">2 hours ago • Player 1</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 border border-white/10">Communication</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="text-green-400 font-bold font-display">+500.00</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="size-6 bg-orange-500/20 text-orange-500 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">keyboard_double_arrow_down</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium">Forgot the first cat anniversary</div>
+<div class="text-xs text-white/40">5 hours ago • Player 2</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 border border-white/10">Memory</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="text-orange-400 font-bold font-display">-250.00</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="size-6 bg-green-500/20 text-green-500 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">keyboard_double_arrow_up</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium">Unprompted laundry completion</div>
+<div class="text-xs text-white/40">Yesterday • Player 1</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 border border-white/10">Acts of Service</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="text-green-400 font-bold font-display">+150.00</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4">
+<div class="size-6 bg-green-500/20 text-green-500 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">keyboard_double_arrow_up</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="font-medium">Vulnerable emotional check-in</div>
+<div class="text-xs text-white/40">2 days ago • Player 2</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 rounded-full text-[10px] bg-white/10 border border-white/10">Intimacy</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="text-green-400 font-bold font-display">+800.00</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Action Hub Footer -->
+<div class="flex justify-center pb-8">
+<button class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-500 rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
+<div class="relative flex items-center gap-4 bg-gradient-to-r from-primary to-[#0dc8b8] px-12 py-5 rounded-xl text-background-dark font-black text-xl uppercase tracking-widest shadow-2xl hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-2xl">add_circle</span>
+                            Log New Action
+                        </div>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

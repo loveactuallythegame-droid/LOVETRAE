@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff0a64", "background-light": "#f8f5f6", "background-dark": "#230f16"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(140, 43, 238, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.1) 0%, transparent 40%),
+                        #141118;
+        }
+        .glow-crater {
+            box-shadow: 0 0 20px rgba(140, 43, 238, 0.6);
+            border: 2px solid rgba(140, 43, 238, 0.8);
+        }
+        .dragons-zone {
+            background: linear-gradient(45deg, rgba(255, 0, 0, 0.1), rgba(255, 165, 0, 0.1));
+            border: 1px dashed #ff4d4d;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col nebula-bg overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 backdrop-blur-md bg-black/20 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Love Actually... <span class="text-primary/80">The Game</span></h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white/70 hover:text-white transition-colors text-sm font-medium" href="#">The Sea of Shared Dreams</a>
+<a class="text-white/70 hover:text-white transition-colors text-sm font-medium" href="#">The Peak of Passion</a>
+</div>
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span class="material-symbols-outlined text-sm">auto_stories</span>
+<span class="truncate">Quest Log</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/50 shadow-sm" data-alt="User profile avatar with cosmic glow" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCO5ZjGSCUd2grHoc9aaBfdBTlEPBkV35TMwDM-cOD3MJKq3vjDJFsf1j72gR5_6wMj8VJl4jihrS8C0ecvJRqehFvWggadLN0rG1Vw0fuxZv8TIX1BkuNcCIdtX3kw0NNOzNReG_ps7RUrFnulqrdgqUdjp2rc416fk_69QxM4lQx753qidjXbCMLDHhEKaYQExTHu8ogZ6v-Nls86Cp3PJzuW7qvbuO_G0RsNiCPGG-eX3kT07bufyv21ucuVUfSAakAyjqvF5NsO");'></div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8 grid grid-cols-12 gap-8">
+<!-- Left Sidebar: Progress & Navigation -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+<!-- Progress Component -->
+<div class="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
+<div class="flex flex-col gap-4">
+<div class="flex gap-6 justify-between items-end">
+<p class="text-white text-lg font-bold leading-none">Map Progress</p>
+<p class="text-primary text-sm font-bold">2 of 10</p>
+</div>
+<div class="h-3 rounded-full bg-white/10 overflow-hidden">
+<div class="h-full rounded-full bg-gradient-to-r from-primary to-fuchsia-500" style="width: 20%;"></div>
+</div>
+<p class="text-white/50 text-xs font-medium tracking-widest uppercase">Gap Quest Journey</p>
+</div>
+</div>
+<!-- Dr. Marcie Liss Card -->
+<div class="relative group">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary to-fuchsia-600 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+<div class="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+<div class="h-48 bg-cover bg-center relative" data-alt="Dr. Marcie Liss as a Victorian Cartographer holding a compass" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2aTQWziNNpmwj9U_M9wszTZbUZHZfxudLCplcjaVXzCwPpjaRrGBdjN2W_7kGAOCafR2tt_6z8w-s34RldzwpWSmSvDdzQ8Bvg4XIS0Xa6i3-6sMue9YNlMlHL7QCMvJkj9qXeTKhqn6S8QHG-JUa1tBkWgnD1xr3pymd6raeChpwLycM_KYNGGq5G6_wQMDW2zZC2rLyZrqGlQc_R7VBqM1Ac6pnNVXlzGzmqHcoHF6gP_CsPOvU--lNjVWhcjZu1S0E8Gf1GUpG");'>
+<div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent"></div>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-lg">explore</span>
+<p class="text-xs font-bold uppercase tracking-tighter">The Navigator</p>
+</div>
+<h3 class="text-white text-xl font-bold">Dr. Marcie Liss</h3>
+<p class="text-white/80 text-sm italic leading-relaxed">
+                                "Careful now! Uncharted territory requires the right question to bridge the gap."
+                            </p>
+<button class="mt-2 w-full py-2 bg-white/10 hover:bg-white/20 rounded-lg text-xs font-bold transition-all border border-white/5">
+                                Ask for Discovery Hint
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Central Content: Map & Quest -->
+<div class="col-span-12 lg:col-span-9 flex flex-col gap-6">
+<!-- Headline Section -->
+<div class="text-center py-4">
+<h1 class="text-white text-4xl lg:text-5xl font-bold tracking-tight mb-2">
+                        Discovery Needed: <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-fuchsia-400">The Pottery Void</span>
+</h1>
+<p class="text-white/60 text-lg">Partner A: Craft a 'Curious Question' to reveal this hidden passion.</p>
+</div>
+<!-- Main Game Map Area -->
+<div class="relative min-h-[500px] flex flex-col bg-black/40 rounded-2xl border border-white/10 overflow-hidden shadow-inner">
+<!-- Map Canvas Simulation -->
+<div class="absolute inset-0 z-0 bg-cover bg-center opacity-40 grayscale-[0.5] contrast-125" data-alt="Stylized cosmic map with faint constellation lines and glowing purple nebulas" data-location="The Astral Connection Plane" style='background-image: url("https://placeholder.pics/svg/300");'></div>
+<!-- Map UI Overlays -->
+<div class="relative z-10 flex flex-col h-full p-8 flex-1">
+<!-- Top Map Overlay: Search -->
+<div class="flex justify-between items-start mb-auto">
+<div class="w-72">
+<div class="flex items-center bg-black/60 backdrop-blur-md rounded-xl border border-white/10 px-4 py-3 shadow-xl">
+<span class="material-symbols-outlined text-white/40 mr-3">search</span>
+<input class="bg-transparent border-none text-white focus:ring-0 p-0 text-sm placeholder:text-white/30 w-full" placeholder="Locate a Relationship Gap..." type="text"/>
+</div>
+</div>
+<!-- "Here Be Dragons" Hazard Area -->
+<div class="dragons-zone px-4 py-2 rounded-lg border border-red-500/30 text-red-400 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2">
+<span class="material-symbols-outlined text-sm animate-pulse">warning</span>
+                                Here Be Dragons Zone
+                            </div>
+</div>
+<!-- The Glowing Crater (The Focus) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="size-48 rounded-full glow-crater flex items-center justify-center bg-primary/10 relative overflow-hidden group">
+<div class="absolute inset-0 bg-primary/20 animate-pulse"></div>
+<span class="material-symbols-outlined text-6xl text-primary drop-shadow-[0_0_15px_rgba(140,43,238,1)]">skillet</span>
+<!-- Label -->
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
+                                    Pottery Crater
+                                </div>
+</div>
+</div>
+<!-- Map Controls -->
+<div class="flex justify-between items-end mt-auto">
+<div class="flex flex-col gap-2">
+<div class="flex flex-col bg-black/60 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden shadow-xl">
+<button class="p-3 hover:bg-white/10 text-white transition-colors border-b border-white/5">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="p-3 hover:bg-white/10 text-white transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<button class="p-3 bg-black/60 backdrop-blur-md border border-white/10 rounded-lg text-primary hover:bg-white/10 transition-colors shadow-xl">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+<!-- Interaction Panel -->
+<div class="w-full max-w-md bg-black/80 backdrop-blur-2xl border border-primary/40 rounded-xl p-6 shadow-2xl ml-8">
+<div class="flex items-center gap-3 mb-4">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg">edit_note</span>
+</div>
+<h4 class="text-white font-bold tracking-tight">Bridge the Gap</h4>
+</div>
+<div class="flex flex-col gap-4">
+<textarea class="w-full bg-white/5 border border-white/10 rounded-lg p-4 text-white text-sm placeholder:text-white/30 focus:ring-2 focus:ring-primary focus:border-transparent min-h-[100px] resize-none" placeholder="Type your curious question here... e.g., 'What drew you to the tactile nature of clay?'"></textarea>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 shadow-lg shadow-primary/30 transition-all active:scale-[0.98]">
+<span>Deploy Bridge</span>
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Meta Info -->
+<div class="flex justify-between items-center px-4 opacity-50 text-[10px] font-bold uppercase tracking-widest">
+<div class="flex gap-4">
+<span>LAT: 42.069 LOVE</span>
+<span>LONG: 88.202 HOPE</span>
+</div>
+<div class="text-primary">
+                        System Status: Mapping Relationship Voids...
+                    </div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

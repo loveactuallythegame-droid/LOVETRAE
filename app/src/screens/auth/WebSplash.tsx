@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { View, Image, StyleSheet, Pressable, Text, Linking } from 'react-native';
 import { LOGO_IMAGES } from '../../constants/assetManifest';
 import { LinearGradient } from 'expo-linear-gradient';
+import { MarcieHost } from '../../components/ai-host';
 
 export default function WebSplash() {
   return (
@@ -29,6 +31,7 @@ export default function WebSplash() {
         
         <Text style={styles.footer}>Preview Mode • Web</Text>
       </View>
+      <MarcieHost mode={'idle'} size={180} float position={{ x: 0, y: 150 }} />
     </View>
   );
 }

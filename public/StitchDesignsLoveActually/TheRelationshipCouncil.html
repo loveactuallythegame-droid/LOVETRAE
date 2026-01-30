@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Relationship Council | Trust Renovation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100..900&amp;family=Work+Sans:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff005e", negotiate: "#f97316", "background-light": "#f8f5f6", "background-dark": "#230f16", "panel-dark": "#162525"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>.cosmic-bg {
+    background: radial-gradient(circle at 50% 50%, #1a2e2e 0%, #0a1111 100%);
+    position: relative;
+    overflow: hidden
+    }
+.nebula {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    top: -25%;
+    left: -25%;
+    background-image: radial-gradient(circle at 20% 30%, rgba(17, 212, 212, 0.1) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(249, 115, 22, 0.05) 0%, transparent 40%);
+    filter: blur(80px);
+    z-index: 0
+    }
+.seal-pulse {
+    box-shadow: 0 0 0 0 rgba(17, 212, 212, 0.4);
+    animation: pulse 3s infinite
+    }
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(17, 212, 212, 0.4);
+        } 70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 20px rgba(17, 212, 212, 0);
+        } 100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(17, 212, 212, 0);
+        }
+    }
+.document-texture {
+    background-color: #fff;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAngH1U6Po1HzzbmnHg-jgIXx_jbBjHkCUzGKn3zBLwEEp-96EXHTOhO_5DfdNMApL8f6b_gS2lEhisovpMxWPSlEty8jYPh6xsLwEdfj4iy5m2U2bMMpwEDZiR1eApTfm_oVSRoSw0pqpTwI4AGjaMjBghkcQrjoYX1eq7cXy0U76AVwYDz-LNTbd74APsW1g-bVd86MyEcrHWBwuFrV7upcyWF5jgr7QpFodZA8HnRyStaE_GFHyYK-wkJ97xOAqkZ_yMbftuR63n)
+    }</style>
+</head>
+<body class="bg-background-dark font-display text-white cosmic-bg min-h-screen">
+<div class="nebula"></div>
+<div class="relative z-10 flex flex-col h-screen overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-white/10 bg-black/40 px-8 py-3 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">auto_awesome</span>
+</div>
+<div>
+<h2 class="text-lg font-bold leading-tight tracking-tight uppercase">The Relationship Council</h2>
+<p class="text-xs text-primary/70 font-medium">Love Actually... The Game</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<nav class="flex items-center gap-6">
+<a class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors" href="#">Council Minutes</a>
+<a class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors" href="#">Protocol</a>
+<a class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors" href="#">Archives</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-white/5 hover:bg-white/10 transition-colors border border-white/10">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-white/5 hover:bg-white/10 transition-colors border border-white/10 relative">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+</div>
+<div class="h-10 w-10 rounded-full border-2 border-primary/50 bg-center bg-cover" data-alt="User profile avatar with teal glow" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAR1TvMVM_X4JT8LgOyvVFcPTmWZuSjf9s9O0XufWFlPuN06QtZMD8VTEfTKy7E_RVs61ZlUY9VM-hG7tNqUEXTlP5UQGfsAV-xcoypIrvZsXX-CUdKeMysDAqisVDlvlvC7MD-WLDymEiAFKUoWzEWLjNiHq0TeTpCgfrKy5yHIuY1NNe9uukzQ0-_ISGzUBgyhkBVnDjvO71MJtt3UKGhxfJxOlAe2fFoflKnPDVfACx6pSiIdpQb4heeeplrUwptV906l0raN8Ph");'>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Left Side Panel: Chair Info -->
+<aside class="w-72 bg-panel-dark/80 border-r border-white/5 p-6 flex flex-col justify-between backdrop-blur-sm">
+<div class="flex flex-col gap-8">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="h-14 w-14 rounded-xl border border-primary/30 bg-center bg-cover shadow-lg shadow-primary/10" data-alt="Portrait of Dr. Marcie Liss council chair" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBinPwdkvlwidI20SW7FYII9pcenUrX7_Xp0R3LFEWceE_gZVHlsv7HIxmjSxA1vLaCfdYtY5nJNq6z1FppYngArAMX0rf2EbF35ugILzyBI8j-Kj5jrhLxiwVOHHUFZiw8Kjnm6FaCyP-NmFZgWjiat8plIw1noGiBKbZDsF2dlEJCq_eBfE9_ud8niCn9s8s0re41gnJOBPbuAgIyk4b3xwTI2f1X01EcbB-AQVM-wwJb1asS4OIXHa6EDTwBcQgHqTMJnFrqi2zu");'></div>
+<div>
+<h1 class="text-white text-lg font-bold leading-tight">Dr. Marcie Liss</h1>
+<p class="text-primary text-xs font-bold uppercase tracking-tighter">Council Chair</p>
+</div>
+</div>
+<div class="bg-black/40 rounded-lg p-3 border border-white/5">
+<div class="flex items-center gap-2 mb-2 text-primary">
+<span class="material-symbols-outlined text-lg">gavel</span>
+<span class="text-[10px] font-bold uppercase">Judicial Status</span>
+</div>
+<p class="text-white/70 text-xs italic leading-relaxed">"Order in the court. We are here to finalize the pillars of your shared future."</p>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-[10px] font-bold text-white/40 uppercase mb-2 ml-3">Project Milestones</p>
+<div class="flex items-center gap-3 px-3 py-3 text-white/40 grayscale opacity-50">
+<span class="material-symbols-outlined">foundation</span>
+<p class="text-xs font-bold uppercase">Phase 1: Foundation</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 text-white/40 grayscale opacity-50">
+<span class="material-symbols-outlined">forum</span>
+<p class="text-xs font-bold uppercase">Phase 2: Dialogue</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 text-white/40 grayscale opacity-50">
+<span class="material-symbols-outlined">favorite</span>
+<p class="text-xs font-bold uppercase">Phase 3: Vulnerability</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary border border-primary/20">
+<span class="material-symbols-outlined">gavel</span>
+<p class="text-xs font-bold uppercase">Phase 5: Ratification</p>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-white/5">
+<div class="flex items-center justify-between mb-4">
+<span class="text-[10px] font-bold text-white/40 uppercase">Global Consensus</span>
+<span class="text-[10px] font-bold text-primary">88% Match</span>
+</div>
+<div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 88%"></div>
+</div>
+</div>
+</aside>
+<!-- Central Workspace -->
+<section class="flex-1 flex flex-col p-8 items-center overflow-y-auto custom-scrollbar">
+<!-- Page Heading -->
+<div class="max-w-4xl w-full flex justify-between items-end mb-8">
+<div>
+<p class="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-1">Trust Renovation Project</p>
+<h2 class="text-5xl font-black tracking-tighter text-white">Final Terms of Trust</h2>
+</div>
+<div class="bg-white/5 px-4 py-2 rounded-lg border border-white/10">
+<span class="text-white/40 text-xs font-bold uppercase tracking-widest mr-2">Sequence:</span>
+<span class="text-white text-sm font-bold">Variant 5 of 10</span>
+</div>
+</div>
+<!-- Main Document -->
+<div class="max-w-3xl w-full bg-white text-gray-900 rounded-xl shadow-2xl overflow-hidden document-texture border-[12px] border-white/10 relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-negotiate to-primary"></div>
+<div class="p-12">
+<div class="flex flex-col items-center mb-10">
+<div class="w-16 h-px bg-gray-300 mb-6"></div>
+<h3 class="text-2xl font-serif font-bold text-center uppercase tracking-widest text-gray-800">The Relationship Agreement</h3>
+<p class="text-sm text-gray-500 font-medium mt-2">DATED: THE PRESENT MOMENT</p>
+</div>
+<div class="space-y-8 font-serif leading-relaxed text-gray-700">
+<section>
+<h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Article I: Emotional Sovereignty</h4>
+<p class="text-lg">Both parties acknowledge the right to independent emotional processing, provided that such distance is communicated with clarity and the intent to return to connection.</p>
+</section>
+<section>
+<h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Article II: The Radical Truth</h4>
+<p class="text-lg">Trust shall not be defined as the absence of error, but as the presence of accountability. We agree to honor the difficult truth over the comfortable facade.</p>
+</section>
+<section>
+<h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Article III: Conflict Sanctity</h4>
+<p class="text-lg">Arguments are not battles to be won, but signals of unmet needs. We commit to a 'no-shame' approach to repair following any council disruption.</p>
+</section>
+</div>
+<!-- Seal of Trust -->
+<div class="flex flex-col items-center mt-16 pt-16 border-t border-gray-100">
+<div class="relative">
+<div class="seal-pulse absolute inset-0 rounded-full bg-primary/20"></div>
+<div class="relative w-32 h-32 rounded-full flex items-center justify-center p-1 bg-gradient-to-tr from-primary via-purple-400 to-negotiate shadow-xl">
+<div class="w-full h-full rounded-full bg-white flex flex-col items-center justify-center border-2 border-white/50">
+<span class="material-symbols-outlined text-primary text-4xl mb-1">verified_user</span>
+<span class="text-[8px] font-bold text-gray-400 uppercase tracking-tighter">Seal of Trust</span>
+</div>
+</div>
+</div>
+<p class="mt-4 text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Pending Ratification</p>
+</div>
+</div>
+</div>
+<!-- Footer Vote Area -->
+<div class="max-w-4xl w-full mt-12 grid grid-cols-2 gap-8">
+<!-- Partner A Actions -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded-full border border-primary/50 bg-center bg-cover" data-alt="Partner A profile image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBna8LXhU54ZKfz1hfZ_KqBHSAH9fioGzOtST8dowjGB45hahI1Y1nv5GCJIOSytQKiRM1P8Tp5Qij_QQHYUkNahxQwwK3SVcyAzPQYnwSHv_qU0pfzRGtiAFGomKZp0FnneoBwYiofzkT5Q9vZTetW_6R2WkjCJTuHv-xpVgIjQ0F9hcvAaExOWPK-kd2Px1eWl1nkyVWODUPneqjJ9kmG3QqT57sFoJD0h6Q_wUbllgjQ9zW7_tNreH9URT4rF3bEZ-TsnfzwP3AQ");'></div>
+<p class="text-xs font-bold text-white/60 uppercase">Partner A</p>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-black h-16 rounded-xl font-black text-lg uppercase tracking-widest shadow-lg shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+                                Ratify
+                            </button>
+<button class="flex-1 bg-negotiate/20 hover:bg-negotiate/30 text-negotiate border border-negotiate/40 h-16 rounded-xl font-bold text-sm uppercase tracking-widest transition-all active:scale-95">
+                                Negotiate
+                            </button>
+</div>
+</div>
+<!-- Partner B Actions -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 mb-2 justify-end">
+<p class="text-xs font-bold text-white/60 uppercase">Partner B</p>
+<div class="w-8 h-8 rounded-full border border-primary/50 bg-center bg-cover" data-alt="Partner B profile image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBeEhCjK--WRDR-oZKvUBtTVE7MHMpcYgvfhH0jnm0RC9xTR1yUgZ8tPa6eAWc_MgIDm_UHKiTIeb2S1cDFr-XNjZxgaB4a7WLAye88_PwoCGnuWhX4wrGx2mYtc2V6AXqql4us3kvLfFEAPhdKifrW9YNiqk7DH2LfE-6ZKpx9UHnkAx1xgvu6Enmb14WcpQRAtaKrXEFKzluaNOmvbXEyc6h4I_Zge-iX9TCFIkaByhlxUAKYmces5mbKwU14VpwIWeJ5FB-5ANCZ");'></div>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 bg-negotiate/20 hover:bg-negotiate/30 text-negotiate border border-negotiate/40 h-16 rounded-xl font-bold text-sm uppercase tracking-widest transition-all active:scale-95">
+                                Negotiate
+                            </button>
+<button class="flex-1 bg-primary hover:bg-primary/90 text-black h-16 rounded-xl font-black text-lg uppercase tracking-widest shadow-lg shadow-primary/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+                                Ratify
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Council Activity -->
+<aside class="w-80 bg-panel-dark/80 border-l border-white/5 p-6 flex flex-col backdrop-blur-sm">
+<h3 class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-6 border-b border-primary/20 pb-2">Council Live Feed</h3>
+<div class="flex-1 overflow-y-auto space-y-6">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-bold text-white/30">14:02 PM</span>
+<span class="text-[10px] font-bold text-primary">SYSTEM</span>
+</div>
+<p class="text-xs text-white/70 leading-relaxed bg-white/5 p-3 rounded-lg border-l-2 border-primary">Document "Final Terms of Trust" has been drafted by Dr. Marcie Liss.</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-bold text-white/30">14:05 PM</span>
+<span class="text-[10px] font-bold text-white/60">PARTNER A</span>
+</div>
+<p class="text-xs text-white/70 leading-relaxed bg-white/5 p-3 rounded-lg border-l-2 border-white/20">Is the "Emotional Sovereignty" clause meant to cover weekend travel?</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-bold text-white/30">14:06 PM</span>
+<span class="text-[10px] font-bold text-primary">CHAIR</span>
+</div>
+<p class="text-xs text-white/70 leading-relaxed bg-primary/5 p-3 rounded-lg border-l-2 border-primary italic">"It covers all space required for individual growth, Partner A."</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-bold text-white/30">14:10 PM</span>
+<span class="text-[10px] font-bold text-white/60">PARTNER B</span>
+</div>
+<p class="text-xs text-white/70 leading-relaxed bg-white/5 p-3 rounded-lg border-l-2 border-white/20">I am ready to proceed with Article II as written.</p>
+</div>
+</div>
+<div class="mt-6">
+<div class="relative">
+<input class="w-full bg-black/40 border-white/10 rounded-lg py-3 px-4 text-xs focus:ring-primary focus:border-primary text-white" placeholder="Protocol query..." type="text"/>
+<button class="absolute right-2 top-2 text-primary">
+<span class="material-symbols-outlined text-lg">send</span>
+</button>
+</div>
+</div>
+</aside>
+</main>
+</div>
+</body></html>

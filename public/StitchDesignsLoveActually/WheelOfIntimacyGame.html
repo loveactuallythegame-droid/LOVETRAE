@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wheel of Intimacy Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff005e", "background-light": "#f8f5f6", "background-dark": "#230f16"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>.nebula-bg {
+    background: radial-gradient(circle at 50% 50%, #392830 0%, #221019 100%);
+    position: relative;
+    overflow: hidden
+    }
+.nebula-bg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBhgNo8n4ACZ9C_N7gphrRTx9Wbz4CcGG2QUqRkuy7K-PucVwJ72GGfIlH9xVzpBZLIrYspMKMOz5oZc72kTFEaRZRMMkChx--XnE_avdf_a7cetVoxutSQmL-uRfqQakeGsdE8Gaf-U_lG3eXBLIekrwIBrnFVnp7NP8Sor0YjKa4eONneO1pgMjJHAgg8scXUUAtWMzIyIn7btQ-_mtHixYgX1E7ky3Imr0SdMgpuR8215E1eEDGf9VkSR-XLxJp8AEsN38pipZAk);
+    opacity: 0.3;
+    pointer-events: none
+    }
+.neon-glow {
+    text-shadow: 0 0 10px #f4258c, 0 0 20px #f4258c
+    }
+.wheel-container {
+    perspective: 1000px
+    }
+.wheel-segment {
+    clip-path: polygon(50% 50%, 0% 0%, 100% 0%)
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative flex h-screen w-full flex-col nebula-bg group/design-root overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-solid border-white/10 px-10 py-3 z-20 bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight uppercase italic">Love Actually... <span class="text-primary">The Game</span></h2>
+</div>
+<div class="flex items-center gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-white/80 hover:text-primary text-sm font-medium transition-colors" href="#">Rules</a>
+<a class="text-white/80 hover:text-primary text-sm font-medium transition-colors" href="#">Leaderboard</a>
+<a class="text-white/80 hover:text-primary text-sm font-medium transition-colors" href="#">Settings</a>
+</nav>
+<div class="h-6 w-px bg-white/10"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-xs text-white/50 uppercase tracking-widest">Intimacy Points</p>
+<p class="text-primary font-bold">2,450</p>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCbjweRNxcL3WebQ20Wqkfac-BI_UnOA2o69XC_Kp8qkkSlE7uivREwmrxh9w-lClxhOdtU20fuFXmf_S9cwVQB7beJzBcVrk9q7FO724ruJdtf1uMwrFNBQEH1VrStBR-uTigF2lyoEo_6gbKma3PdweheE1zUgwfRw3rycq_xI5bYuCJh3jmiZXkAkjGsb8Uh5X5Obhz4AmxqINDzs_nKOi1qMN3xQo3AgY5kn-UlwgwUQW0E0ngVwbFkD8OwKVcYqGkzB1yupH_M");'></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex relative">
+<!-- Side Navigation (Minimized/Icon Style) -->
+<aside class="w-20 border-r border-white/10 flex flex-col items-center py-8 gap-8 z-20 bg-background-dark/40">
+<div class="p-3 rounded-xl bg-primary shadow-[0_0_15px_rgba(244,37,140,0.4)] text-white">
+<span class="material-symbols-outlined">casino</span>
+</div>
+<div class="p-3 rounded-xl hover:bg-white/5 text-white/60 transition-all cursor-pointer">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<div class="p-3 rounded-xl hover:bg-white/5 text-white/60 transition-all cursor-pointer">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div class="mt-auto p-3 rounded-xl hover:bg-white/5 text-white/60 transition-all cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+</div>
+</aside>
+<!-- Main Game Area -->
+<div class="flex-1 flex flex-col items-center justify-between py-10 px-4 relative">
+<!-- Game Heading -->
+<div class="text-center">
+<h1 class="text-white tracking-tighter text-5xl font-bold uppercase italic pb-2 neon-glow">Wheel of Intimacy</h1>
+<p class="text-primary/80 text-sm tracking-[0.3em] uppercase font-medium">Hosted by Dr. Marcie Liss</p>
+</div>
+<!-- Central Wheel & Host Section -->
+<div class="relative w-full max-w-4xl flex justify-center items-center gap-12">
+<!-- Dr. Marcie Liss Avatar Overlay -->
+<div class="absolute -left-10 bottom-0 w-64 z-30 flex flex-col items-center">
+<div class="relative bg-white text-background-dark p-4 rounded-2xl rounded-bl-none mb-4 shadow-xl">
+<p class="text-sm font-bold leading-tight">"Feeling lucky? <br/>Buy a vowel for 50 pts!"</p>
+<div class="absolute -bottom-2 left-0 w-4 h-4 bg-white transform rotate-45 origin-top-left"></div>
+</div>
+<div class="w-full aspect-[3/4] bg-contain bg-no-repeat bg-bottom" data-alt="Dr. Marcie Liss leaning on the wheel" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5G6IkcDFtqqHdXGwbMAO2Mh6OQIpz9VboGZAF41I9o1aQIw8ELJ6tKr_7xbgF37OUEhvI-CMrgiUQkl9iim5fO_eL3EHApyjMiC6SGWsB0m5yfv2nDb7UaSuR9VvU-vm_2DLey-rJS28fGHnRFIU28LEX3Z_VgFElvMCINM9baRv5rbZoHE14Nab-XbRr8yrktXwsklEIAvuVeEPMx20FdtipxXiI-h-NDP3u2xu1gwXdyU4dv9dcaEABkTrBzYXUAs8T-LddB3Y-');">
+</div>
+</div>
+<!-- The Wheel -->
+<div class="relative w-96 h-96 wheel-container">
+<!-- The Spinner Arrow -->
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 z-20 text-primary drop-shadow-lg">
+<span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1">expand_more</span>
+</div>
+<!-- Decorative Ring -->
+<div class="absolute inset-0 border-[12px] border-primary/20 rounded-full shadow-[0_0_50px_rgba(244,37,140,0.2)]"></div>
+<!-- Wheel Visual -->
+<div class="w-full h-full rounded-full border-4 border-primary relative overflow-hidden bg-background-dark shadow-[inset_0_0_40px_rgba(0,0,0,0.8)]">
+<!-- Segments (Visual representation) -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-full h-full rounded-full bg-gradient-to-tr from-primary/10 via-background-dark to-primary/30"></div>
+<!-- Segments Overlay -->
+<div class="absolute inset-0 flex items-center justify-center text-[10px] font-bold uppercase tracking-wider">
+<div class="absolute top-10 transform -rotate-45 text-white/40">Massage</div>
+<div class="absolute right-10 transform rotate-45 text-white">Kiss</div>
+<div class="absolute bottom-10 transform rotate-[135deg] text-white/40">Cuddle</div>
+<div class="absolute left-10 transform -rotate-[135deg] text-primary neon-glow">Jackpot</div>
+</div>
+</div>
+<div class="absolute inset-0 bg-[repeating-conic-gradient(from_0deg,#f4258c22_0deg_30deg,transparent_30deg_60deg)]"></div>
+</div>
+<!-- Spin Button -->
+<button class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-primary shadow-[0_0_30px_#f4258c] flex items-center justify-center text-white font-black text-xl hover:scale-105 transition-transform z-10 border-4 border-background-dark uppercase">
+                        Spin
+                    </button>
+</div>
+<!-- Puzzle Area -->
+<div class="flex-1 flex flex-col items-center gap-8 pl-10">
+<!-- Hangman Style Word Board -->
+<div class="flex flex-wrap justify-center gap-3">
+<!-- Word 1: LOVE -->
+<div class="flex gap-2 mr-6">
+<div class="w-12 h-16 border-b-4 border-primary flex items-center justify-center text-3xl font-bold neon-glow">L</div>
+<div class="w-12 h-16 border-b-4 border-primary/30 flex items-center justify-center text-3xl font-bold">_</div>
+<div class="w-12 h-16 border-b-4 border-primary/30 flex items-center justify-center text-3xl font-bold">_</div>
+<div class="w-12 h-16 border-b-4 border-primary flex items-center justify-center text-3xl font-bold neon-glow">E</div>
+</div>
+<!-- Word 2: ACTUALLY -->
+<div class="flex gap-2">
+<div class="w-12 h-16 border-b-4 border-primary/30 flex items-center justify-center text-3xl font-bold">_</div>
+<div class="w-12 h-16 border-b-4 border-primary/30 flex items-center justify-center text-3xl font-bold">_</div>
+<div class="w-12 h-16 border-b-4 border-primary/30 flex items-center justify-center text-3xl font-bold">_</div>
+<div class="w-12 h-16 border-b-4 border-primary/30 flex items-center justify-center text-3xl font-bold">_</div>
+<div class="w-12 h-16 border-b-4 border-primary/30 flex items-center justify-center text-3xl font-bold">_</div>
+<div class="w-12 h-16 border-b-4 border-primary/30 flex items-center justify-center text-3xl font-bold">_</div>
+<div class="w-12 h-16 border-b-4 border-primary flex items-center justify-center text-3xl font-bold neon-glow">L</div>
+<div class="w-12 h-16 border-b-4 border-primary flex items-center justify-center text-3xl font-bold neon-glow">Y</div>
+</div>
+</div>
+<!-- Category Hint -->
+<div class="bg-primary/10 border border-primary/30 px-6 py-2 rounded-full">
+<p class="text-xs uppercase tracking-[0.2em] font-bold text-primary">Category: Romantic Connection</p>
+</div>
+</div>
+</div>
+<!-- Custom Neon Keyboard -->
+<div class="w-full max-w-4xl bg-black/40 backdrop-blur-sm border border-white/10 p-6 rounded-2xl flex flex-col gap-3">
+<!-- Vowels (Special Action) -->
+<div class="flex justify-center gap-3 mb-2">
+<button class="px-6 py-2 rounded-lg bg-primary/20 border border-primary text-primary font-bold hover:bg-primary hover:text-white transition-all shadow-[0_0_10px_rgba(244,37,140,0.2)]">Buy Vowel (A, E, I, O, U)</button>
+</div>
+<!-- Keyboard Rows -->
+<div class="flex justify-center gap-2">
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">Q</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">W</button>
+<button class="w-12 h-12 rounded-lg border border-primary bg-primary/20 text-primary shadow-[0_0_10px_rgba(244,37,140,0.2)] font-bold">E</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">R</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">T</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">Y</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">U</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">I</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">O</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">P</button>
+</div>
+<div class="flex justify-center gap-2">
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">A</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">S</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">D</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">F</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">G</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">H</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">J</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">K</button>
+<button class="w-12 h-12 rounded-lg border border-primary bg-primary text-white font-bold">L</button>
+</div>
+<div class="flex justify-center gap-2">
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">Z</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">X</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">C</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">V</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">B</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">N</button>
+<button class="w-12 h-12 rounded-lg border border-white/20 bg-white/5 hover:border-primary hover:text-primary transition-all font-bold">M</button>
+<button class="px-6 h-12 rounded-lg border border-white/20 bg-white/10 text-white/40 cursor-not-allowed font-bold">Used</button>
+</div>
+</div>
+</div>
+<!-- Right Scoreboard HUD -->
+<aside class="w-64 border-l border-white/10 p-6 flex flex-col gap-6 z-20 bg-background-dark/40">
+<div>
+<h3 class="text-xs uppercase tracking-widest text-white/50 mb-4 font-bold">Current Quest</h3>
+<div class="bg-primary/5 rounded-xl border border-primary/20 p-4">
+<p class="text-sm text-primary font-bold mb-1 italic">The Long Embrace</p>
+<p class="text-xs text-white/70">Solve the phrase to unlock a 5-minute cuddle session.</p>
+</div>
+</div>
+<div>
+<h3 class="text-xs uppercase tracking-widest text-white/50 mb-4 font-bold">History</h3>
+<div class="space-y-3">
+<div class="flex items-center gap-3 text-sm">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_5px_#f4258c]"></div>
+<span class="text-white/80">Kiss on the cheek</span>
+<span class="ml-auto text-primary font-bold">+50</span>
+</div>
+<div class="flex items-center gap-3 text-sm">
+<div class="w-2 h-2 rounded-full bg-white/20"></div>
+<span class="text-white/40">Deep eye contact</span>
+<span class="ml-auto text-white/20">+100</span>
+</div>
+<div class="flex items-center gap-3 text-sm">
+<div class="w-2 h-2 rounded-full bg-white/20"></div>
+<span class="text-white/40">Back massage</span>
+<span class="ml-auto text-white/20">+250</span>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-[#ff4eab] text-white font-bold text-sm uppercase tracking-widest shadow-lg hover:shadow-primary/40 transition-shadow">
+                    Quit Session
+                </button>
+</div>
+</aside>
+</main>
+<!-- Footer Controls -->
+<footer class="h-12 border-t border-white/10 px-10 flex items-center justify-between bg-background-dark text-[10px] text-white/30 uppercase tracking-[0.2em] font-medium">
+<div>© 2024 Love Actually... The Game</div>
+<div class="flex gap-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">volume_up</span>
+<span>Audio: On</span>
+</div>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">shield_moon</span>
+<span>Nebula Mode Active</span>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

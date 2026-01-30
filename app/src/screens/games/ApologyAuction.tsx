@@ -1,91 +1,121 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
-import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
-import { speakMarcie } from '../../lib/voice-engine';
 
-const SAMPLES = [
-  { text: 'Sorry you feel that way.', expected: 10 },
-  { text: "I'm sorry I hurt you. I was wrong.", expected: 90 },
-  { text: 'Fine, sorry. Happy now?', expected: 5 },
-  { text: 'I take responsibility and will repair this.', expected: 85 },
-];
+import React from 'react';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
+import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
+import { Header } from '../../components/ui/Header';
+import { SquishyButton } from '../../components/ui';
 
-export default function ApologyAuction({ route, navigation }: any) {
-  const { gameId } = route.params;
-  const [value, setValue] = useState(50);
-  const [index, setIndex] = useState(0);
-  const x = useSharedValue(0);
-  const sessionId = useRef<string | null>(null);
+const ApologyAuctionScreen = () => {
+  // Placeholder for game state and logic
+  const currentItem = {
+    name: 'Vintage Regret',
+    description: 'A classic, heartfelt apology for that thing you did.',
+    highBid: 150,
+  };
 
-  useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }: any) => {
-      const user = data.session?.user;
-      const couple_id = (await supabase.from('profiles').select('couple_code').eq('user_id', user?.id || '').single()).data?.couple_code;
-      if (user && couple_id) {
-        const session = await createGameSession(gameId, user.id, couple_id);
-        sessionId.current = session.id;
-      }
-    });
-  }, [gameId]);
-
-  function onMove(nx: number, width: number) {
-    x.value = withTiming(nx);
-    setValue(Math.max(0, Math.min(100, Math.round((nx / width) * 100))));
-  }
-
-  function next() {
-    const sample = SAMPLES[index];
-    const diff = Math.abs(value - sample.expected);
-    if (sample.text.includes('Sorry you feel that way') && value >= 80) { speakMarcie("You rated 'Sorry you feel that way' as 80/100? No wonder you're here."); HapticFeedbackSystem.warning(); }
-    setIndex((i) => Math.min(SAMPLES.length - 1, i + 1));
-  }
-
-  async function finish(scoreFromEngine: number, xpFromEngine: number) {
-    const sample = SAMPLES[index];
-    const accuracyBonus = Math.min(35, Math.max(0, 35 - Math.abs(value - sample.expected) * 0.35));
-    const xp = Math.min(100, 65 + Math.round(accuracyBonus));
-    const score = Math.round(scoreFromEngine * 0.8 + (100 - Math.abs(value - sample.expected)) * 0.2);
-    if (sessionId.current) await updateGameSession(sessionId.current, { finished_at: new Date().toISOString(), score, state: JSON.stringify({ ratings: value, sampleIndex: index, xp }) });
-    navigation.goBack();
-  }
-
-  const inputArea = (
-    <View>
-      <GlassCard>
-        <Text variant="body">Rate apology sincerity</Text>
-        <Text variant="sass">{SAMPLES[index].text}</Text>
-        <View style={styles.slider} onLayout={(e) => onMove(x.value, e.nativeEvent.layout.width)}>
-          <Animated.View style={[styles.knob, useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }))]} />
+  return (
+    <SafeAreaView style={styles.container}>
+      <LinearGradient colors={['#5C1459', '#1a0a1a']} style={styles.background} />
+      <Header title="Apology Auction" />
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.auctionItemContainer}>
+          <Image source={require('../../../assets/images/apology-item-placeholder.png')} style={styles.itemImage} />
+          <Text style={styles.itemName}>{currentItem.name}</Text>
+          <Text style={styles.itemDescription}>{currentItem.description}</Text>
         </View>
-        <Text variant="keyword">{value}</Text>
-        <View style={{ flexDirection: 'row', gap: 8 }}>
-          <SquishyButton onPress={next} style={styles.btn}><Text variant="header">Next</Text></SquishyButton>
-          <SquishyButton onPress={() => finish(0, 0)} style={styles.btn}><Text variant="header">Submit</Text></SquishyButton>
+
+        <View style={styles.biddingContainer}>
+          <View style={styles.highBidContainer}>
+            <Text style={styles.highBidLabel}>High Bid</Text>
+            <Text style={styles.highBidValue}>${currentItem.highBid}</Text>
+          </View>
+          <View style={styles.biddingControls}>
+            <SquishyButton style={styles.bidButton}>
+              <Text style={styles.bidButtonText}>Place Bid</Text>
+            </SquishyButton>
+            <SquishyButton style={[styles.bidButton, styles.passButton]}>
+              <Text style={styles.bidButtonText}>Pass</Text>
+            </SquishyButton>
+          </View>
         </View>
-      </GlassCard>
-    </View>
+      </ScrollView>
+      <GlobalMarcieOverlay quote={`Going once, going twice... Are you going to let them win this one?`} />
+    </SafeAreaView>
   );
-
-  const baseState = useMemo(() => ({
-    id: gameId,
-    title: 'Apology Auction',
-    description: 'Rate apology statements against healthy standards',
-    category: 'conflict' as const,
-    difficulty: 'medium' as const,
-    xpReward: 65,
-    currentStep: index,
-    totalTime: 60,
-    playerData: { vulnerabilityScore: 50, honestyScore: 60, completionTime: index * 10, partnerSync: 0 },
-  }), [gameId, index]);
-
-  return <GameContainer state={baseState} inputs={["slider"]} inputArea={inputArea} onComplete={({ score, xpEarned }) => finish(score, xpEarned)} />;
-}
+};
 
 const styles = StyleSheet.create({
-  slider: { height: 24, backgroundColor: '#120016', borderRadius: 12, overflow: 'hidden', marginTop: 8 },
-  knob: { width: 24, height: 24, borderRadius: 12, backgroundColor: '#FA1F63' },
-  btn: { marginTop: 10, paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#33DEA5', borderRadius: 12 },
+  container: { flex: 1, backgroundColor: '#1a0a1a' },
+  background: { ...StyleSheet.absoluteFillObject },
+  content: { padding: 20 },
+  auctionItemContainer: {
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'rgba(92, 20, 89, 0.2)', // #5C1459 with opacity
+    borderColor: 'rgba(250, 31, 99, 0.3)', // #FA1F63 with opacity
+    borderWidth: 1,
+    borderRadius: 16,
+    marginBottom: 20,
+  },
+  itemImage: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+  },
+  itemName: {
+    fontFamily: 'BarbieDream-Regular',
+    color: '#FFF',
+    fontSize: 28,
+    marginBottom: 10,
+  },
+  itemDescription: {
+    fontFamily: 'SweetPink-Regular',
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  biddingContainer: {
+    padding: 20,
+    backgroundColor: 'rgba(92, 20, 89, 0.2)', // #5C1459 with opacity
+    borderColor: 'rgba(250, 31, 99, 0.3)', // #FA1F63 with opacity
+    borderWidth: 1,
+    borderRadius: 16,
+  },
+  highBidContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  highBidLabel: {
+    fontFamily: 'HolidayChristmas-Regular',
+    color: '#33DEA5',
+    fontSize: 16,
+    textTransform: 'uppercase',
+  },
+  highBidValue: {
+    fontFamily: 'WonderfulSometimes-Regular',
+    color: '#FFF',
+    fontSize: 48,
+  },
+  biddingControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  bidButton: {
+    backgroundColor: '#FA1F63',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+  },
+  passButton: {
+      backgroundColor: '#5C1459'
+  },
+  bidButtonText: {
+    fontFamily: 'BarbieDream-Regular',
+    color: '#FFF',
+    fontSize: 20,
+  },
 });
+
+export default ApologyAuctionScreen;

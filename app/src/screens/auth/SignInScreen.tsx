@@ -1,11 +1,15 @@
+
 import { useState } from 'react';
-import { View, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton, RadialGradientBackground } from '../../components/ui';
+import {
+  View, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform
+} from 'react-native';
+import { Text } from '../../components/ui';
 import * as Haptics from 'expo-haptics';
 import { signInEmail, signUpEmail, signInWithGoogle } from '../../lib/supabase';
-import { MarcieHost } from '../../components/ai-host';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Header from '../../components/ui/Header';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type Props = {
   onAuthenticated: () => void;
@@ -31,7 +35,7 @@ export default function SignInScreen({ onAuthenticated, onForgot }: Props) {
     setError(null);
     try {
       if (!email.includes('@') || password.length < 6) {
-        setError('Please enter a valid cosmic handle and a secret frequency of at least 6 chars.');
+        setError('Please enter a valid cosmic handle and a secret frequency of at least 6 characters.');
         setLoading(false);
         return;
       }
@@ -65,157 +69,351 @@ export default function SignInScreen({ onAuthenticated, onForgot }: Props) {
   }
 
   return (
-    <View style={styles.root}>
-      <RadialGradientBackground />
-      <SafeAreaView style={styles.safeArea}>
-        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          {/* Header */}
-          <View style={styles.header}>
-            <Text variant="header" style={styles.appTitle}>LOVE ACTUALLY...</Text>
-          </View>
-
-          {/* Hero Text */}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.root}
+    >
+      <LinearGradient
+        colors={['#0f0a0c', '#230f19', '#392830']}
+        style={styles.nebulaBg}
+      />
+      <SafeAreaView style={{ flex: 1 }}>
+        <Header />
+        <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.heroContainer}>
-            <Text variant="header" style={styles.heroTitle}>Navigate the stars of your relationship.</Text>
-            <Text variant="body" style={styles.heroSubtitle}>Sync your frequencies to begin the journey.</Text>
+            <Text variant='header' style={styles.heroTitle}>Navigate the stars of your relationship.</Text>
+            <Text variant='body' style={styles.heroSubtitle}>Sync your frequencies to begin the journey.</Text>
           </View>
 
-          {/* Marcie Host - Floating */}
-          <View style={styles.marcieContainer}>
-            <MarcieHost mode="idle" size={120} float position={{ x: 0, y: 0 }} />
-          </View>
-
-          {/* Glass Panel */}
-          <GlassCard style={styles.card}>
-            {/* Toggle */}
+          <View style={styles.glassPanel}>
             <View style={styles.toggleContainer}>
               <TouchableOpacity
                 style={[styles.toggleBtn, isLogin && styles.toggleActive]}
                 onPress={() => toggleMode(true)}
               >
-                <Text variant="body" style={[styles.toggleText, isLogin && styles.toggleTextActive]}>LOGIN</Text>
+                <Text style={[styles.toggleText, isLogin && { color: 'white' }]}>Login</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.toggleBtn, !isLogin && styles.toggleActive]}
                 onPress={() => toggleMode(false)}
               >
-                <Text variant="body" style={[styles.toggleText, !isLogin && styles.toggleTextActive]}>SIGN UP</Text>
+                <Text style={[styles.toggleText, !isLogin && { color: 'white' }]}>Sign Up</Text>
               </TouchableOpacity>
             </View>
 
-            {/* Form */}
             <View style={styles.form}>
-              {/* Email */}
               <View style={styles.inputGroup}>
                 <View style={styles.labelRow}>
-                  <Text variant="keyword" style={styles.label}>YOUR COSMIC HANDLE</Text>
-                  <View style={styles.statusDot}><View style={[styles.dot, { backgroundColor: '#FACC15' }]} /></View>
+                  <Text style={styles.labelText}>Your Cosmic Handle</Text>
+                  <View style={styles.statusDotRow}>
+                    <Text style={styles.statusText}>Connection Live</Text>
+                    <View style={[styles.statusDot, { backgroundColor: '#FBBF24', shadowColor: '#FBBF24' }]} />
+                  </View>
                 </View>
                 <TextInput
+                  style={styles.input}
                   value={email}
                   onChangeText={setEmail}
                   placeholder="commander@nebula.space"
-                  placeholderTextColor="rgba(255,255,255,0.3)"
+                  placeholderTextColor="rgba(255,255,255,0.2)"
                   keyboardType="email-address"
                   autoCapitalize="none"
-                  style={styles.input}
                 />
               </View>
 
-              {/* Password */}
               <View style={styles.inputGroup}>
                 <View style={styles.labelRow}>
-                  <Text variant="keyword" style={styles.label}>SECRET FREQUENCY</Text>
-                  <View style={styles.statusDot}><View style={[styles.dot, { backgroundColor: '#F97316' }]} /></View>
+                  <Text style={styles.labelText}>Secret Frequency</Text>
+                  <View style={styles.statusDotRow}>
+                    <Text style={styles.statusText}>Secure</Text>
+                    <View style={[styles.statusDot, { backgroundColor: '#F97316', shadowColor: '#F97316' }]} />
+                  </View>
                 </View>
-                <View style={styles.passwordContainer}>
+                <View style={styles.passwordInputContainer}>
                   <TextInput
+                    style={styles.passwordInput}
                     value={password}
                     onChangeText={setPassword}
                     placeholder="••••••••••••"
-                    placeholderTextColor="rgba(255,255,255,0.3)"
+                    placeholderTextColor="rgba(255,255,255,0.2)"
                     secureTextEntry={!showPassword}
-                    style={[styles.input, { flex: 1, borderWidth: 0, backgroundColor: 'transparent' }]}
                   />
-                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                    <Ionicons name={showPassword ? "eye-off" : "eye"} size={20} color="rgba(255,255,255,0.5)" />
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                    <MaterialIcons name={showPassword ? "visibility-off" : "visibility"} size={24} color="rgba(255,255,255,0.4)" />
                   </TouchableOpacity>
                 </View>
               </View>
 
-              {error && <Text variant="sass" style={styles.error}>{error}</Text>}
-
-              <SquishyButton style={styles.submitBtn} onPress={handleSubmit}>
-                {loading ? <ActivityIndicator color="#fff" /> :
-                  <Text variant="header" style={styles.submitBtnText}>INITIATE CONNECTION</Text>
-                }
-              </SquishyButton>
-
-              {/* Footer Actions */}
-              <View style={styles.footerActions}>
+              <View style={styles.formActions}>
+                  <TouchableOpacity style={styles.rememberMe} >
+                      <MaterialCommunityIcons name="checkbox-blank-outline" size={20} color="rgba(255,255,255,0.6)" />
+                      <Text style={styles.rememberMeText}>Remember Frequency</Text>
+                  </TouchableOpacity>
                 <TouchableOpacity onPress={onForgot}>
-                  <Text variant="body" style={styles.forgotLink}>LOST IN SPACE?</Text>
+                  <Text style={styles.forgotLink}>Lost in Space?</Text>
                 </TouchableOpacity>
               </View>
 
-              {/* Divider */}
-              <View style={styles.divider}>
-                <View style={styles.line} />
-                <Text variant="body" style={styles.orText}>OR BRIDGE VIA</Text>
-                <View style={styles.line} />
-              </View>
+              {error && <Text style={styles.errorText}>{error}</Text>}
 
-              {/* Social */}
-              <View style={styles.socialRow}>
-                <TouchableOpacity style={styles.socialBtn} onPress={doGoogle}>
-                  <Ionicons name="logo-google" size={24} color="white" />
-                  <Text variant="body" style={styles.socialText}>GOOGLE</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit} disabled={loading}>
+                {loading ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.submitBtnText}>Initiate Connection</Text>
+                )}
+              </TouchableOpacity>
             </View>
-          </GlassCard>
 
-          <View style={{ height: 40 }} />
+            <View style={styles.dividerContainer}>
+              <View style={styles.dividerLine} />
+              <Text style={styles.dividerText}>or bridge via</Text>
+              <View style={styles.dividerLine} />
+            </View>
+
+            <View style={styles.socialLoginContainer}>
+                <TouchableOpacity style={[styles.socialBtn, {backgroundColor: 'rgba(255, 149, 0, 0.2)'}]}>
+                    <MaterialIcons name="phone-iphone" size={24} color="white" />
+                    <Text style={styles.socialBtnText}>Apple</Text>
+                </TouchableOpacity>
+                 <TouchableOpacity style={[styles.socialBtn, {backgroundColor: 'rgba(0, 128, 128, 0.2)'}]} onPress={doGoogle}>
+                    <MaterialCommunityIcons name="google" size={24} color="white" />
+                    <Text style={styles.socialBtnText}>Google</Text>
+                </TouchableOpacity>
+                 <TouchableOpacity style={[styles.socialBtn, {backgroundColor: 'rgba(238, 43, 140, 0.2)'}]}>
+                    <MaterialIcons name="email" size={24} color="white" />
+                    <Text style={styles.socialBtnText}>Email</Text>
+                </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>© 2024 Love Actually... The Game. All Rights Reserved.</Text>
+            <View style={styles.footerLinks}>
+              <TouchableOpacity><Text style={styles.footerLink}>Privacy Nebula</Text></TouchableOpacity>
+              <Text style={styles.footerSeparator}>•</Text>
+              <TouchableOpacity><Text style={styles.footerLink}>Safety Protocol</Text></TouchableOpacity>
+              <Text style={styles.footerSeparator}>•</Text>
+              <TouchableOpacity><Text style={styles.footerLink}>Contact Ground Control</Text></TouchableOpacity>
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#120016' },
-  safeArea: { flex: 1 },
-  scrollContent: { paddingHorizontal: 20 },
-  header: { alignItems: 'center', marginTop: 10 },
-  appTitle: { color: 'white', fontSize: 16, letterSpacing: 2 },
-  heroContainer: { marginTop: 20, alignItems: 'center', marginBottom: 20 },
-  heroTitle: { color: 'white', fontSize: 32, textAlign: 'center', lineHeight: 38 },
-  heroSubtitle: { color: 'rgba(255,255,255,0.6)', fontSize: 16, marginTop: 10, textAlign: 'center' },
-  marcieContainer: { alignItems: 'center', height: 140, justifyContent: 'center', zIndex: 10 },
-  card: { padding: 24, borderRadius: 24, backgroundColor: 'rgba(30, 20, 40, 0.6)', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1 },
-  toggleContainer: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: 12, padding: 4, marginBottom: 24 },
-  toggleBtn: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 8 },
-  toggleActive: { backgroundColor: '#FA1F63' },
-  toggleText: { color: 'rgba(255,255,255,0.5)', fontSize: 14, fontWeight: 'bold' },
-  toggleTextActive: { color: 'white' },
-  form: { gap: 20 },
+  root: { flex: 1 },
+  nebulaBg: { ...StyleSheet.absoluteFillObject },
+  scrollContent: { 
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  heroContainer: {
+    alignItems: 'center',
+    marginVertical: 40,
+  },
+  heroTitle: {
+    color: 'white',
+    fontSize: 36,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    lineHeight: 44,
+  },
+  heroSubtitle: {
+    color: 'rgba(255,255,255,0.6)',
+    textAlign: 'center',
+    fontSize: 18,
+    marginTop: 8,
+  },
+  glassPanel: {
+    backgroundColor: 'rgba(39, 28, 33, 0.6)',
+    borderRadius: 16,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.03)',
+  },
+  toggleContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 12,
+    padding: 4,
+    marginBottom: 24
+  },
+  toggleBtn: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 8,
+  },
+  toggleActive: { backgroundColor: '#fc0c84' },
+  toggleText: { 
+    color: 'rgba(255,255,255,0.5)', 
+    fontSize: 14, 
+    fontWeight: 'bold' 
+  },
+  form: { gap: 24 },
   inputGroup: { gap: 8 },
-  labelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  label: { color: 'rgba(255,255,255,0.8)', fontSize: 12, letterSpacing: 1 },
-  statusDot: {},
-  dot: { width: 8, height: 8, borderRadius: 4, shadowColor: 'white', shadowOpacity: 0.5, shadowRadius: 4 },
-  input: { backgroundColor: 'rgba(255,255,255,0.08)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)', borderRadius: 12, padding: 16, color: 'white', fontSize: 16 },
-  passwordContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.2)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-  eyeIcon: { padding: 16 },
-  submitBtn: { backgroundColor: '#FA1F63', paddingVertical: 16, borderRadius: 16, alignItems: 'center', shadowColor: '#FA1F63', shadowOpacity: 0.4, shadowRadius: 10 },
-  submitBtnText: { color: 'white', fontSize: 16, letterSpacing: 1 },
-  error: { color: '#E4E831', textAlign: 'center' },
-  footerActions: { alignItems: 'center' },
-  forgotLink: { color: '#FA1F63', fontSize: 12, letterSpacing: 1 },
-  divider: { flexDirection: 'row', alignItems: 'center', gap: 10, marginVertical: 10 },
-  line: { flex: 1, height: 1, backgroundColor: 'rgba(255,255,255,0.1)' },
-  orText: { color: 'rgba(255,255,255,0.4)', fontSize: 10 },
-  socialRow: { flexDirection: 'row', justifyContent: 'center' },
-  socialBtn: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 12, paddingHorizontal: 24, borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.05)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-  socialText: { color: 'white', fontSize: 14, letterSpacing: 1 }
+  labelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  labelText: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 10,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1.2
+  },
+  statusDotRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6
+  },
+  statusText: {
+    fontSize: 8,
+    color: 'rgba(255,255,255,0.4)',
+    textTransform: 'uppercase',
+    fontWeight: 'bold'
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+  },
+  input: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    color: 'white',
+    fontSize: 16,
+  },
+  passwordInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+  },
+  passwordInput: {
+    flex: 1,
+    color: 'white',
+    fontSize: 16,
+    paddingVertical: 14,
+  },
+  formActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 4
+  },
+  rememberMe: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8
+  },
+  rememberMeText: {
+      color: 'rgba(255,255,255,0.6)',
+      fontSize: 10,
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+  },
+  forgotLink: {
+    color: '#fc0c84',
+    fontWeight: 'bold',
+    fontSize: 10,
+    textTransform: 'uppercase',
+  },
+  submitBtn: {
+    backgroundColor: '#fc0c84',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    shadowColor: '#fc0c84',
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+    marginTop: 8
+  },
+  submitBtnText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+  },
+  errorText: {
+    color: '#FBBF24',
+    textAlign: 'center',
+    marginVertical: 10
+  },
+  dividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 32,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  dividerText: {
+    color: 'rgba(255,255,255,0.4)',
+    marginHorizontal: 10,
+    fontSize: 10,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+  },
+  socialLoginContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 16
+  },
+  socialBtn: {
+      flex: 1,
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 8,
+      padding: 16,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: 'rgba(255,255,255,0.05)',
+  },
+  socialBtnText: {
+      fontSize: 9,
+      fontWeight: 'bold',
+      color: 'white',
+      textTransform: 'uppercase',
+  },
+  footer: {
+    marginTop: 40,
+    alignItems: 'center',
+    gap: 8,
+  },
+  footerText: {
+    color: 'rgba(255,255,255,0.4)',
+    fontSize: 10,
+  },
+  footerLinks: {
+    flexDirection: 'row',
+    gap: 6,
+    alignItems: 'center'
+  },
+  footerLink: {
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 10,
+  },
+  footerSeparator: {
+      color: 'rgba(255,255,255,0.2)',
+      fontSize: 10
+  }
 });

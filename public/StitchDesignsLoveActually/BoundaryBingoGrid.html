@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Boundary Bingo Grid - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#f80b5a", "background-light": "#f8f5f6", "background-dark": "#230f16", "charcoal-panel": "#1a0d17", "accent-purple": "#8a2be2", "accent-cyan": "#00f5ff"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #23101e 0%, #120a12 100%);
+        }
+        .nebula-bg {
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(244, 37, 192, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.05) 0%, transparent 40%);
+        }
+        .glow-fuchsia {
+            box-shadow: 0 0 15px rgba(244, 37, 192, 0.4), inset 0 0 10px rgba(244, 37, 192, 0.2);
+            border: 2px solid #f425c0 !important;
+        }
+        .glow-purple-icon {
+            text-shadow: 0 0 8px #8a2be2;
+            color: #d8b4fe;
+        }
+        .grid-tile {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(73, 34, 63, 0.4) 0%, rgba(35, 16, 30, 0.6) 100%);
+        }
+        .grid-tile:hover {
+            background: linear-gradient(135deg, rgba(73, 34, 63, 0.6) 0%, rgba(35, 16, 30, 0.8) 100%);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen overflow-x-hidden nebula-bg">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#49223f] px-10 py-3 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight font-display">Love Actually... The Game</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#">Bingo Board</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">History</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Settings</a>
+</nav>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold shadow-[0_0_15px_rgba(244,37,192,0.4)]">
+<span class="truncate">Session Active</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-accent-purple" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCWv8QnBOzGnez7-NNtXsNvLlIiy7UcPkH0GSI6AqS48X1d_9dDMro0XJgngLpoxPHOluXHphw_YzAqI23IkIyTrkLCbjX3BPw7bwwZC31v4QeyU46W6WT7pb4ySN7QgBfUeGFibjPq9fUbcZ3E_4fEforH3SgGMEoqLTfLjKKYHdJQeZ098abUtU01c0NcBVnqYdfV0ow90bNoioomq93b5irooJJQOed8BLQo_Fpt-kF7Z1oM7NiIEcYlv_FS4rk_Q3YFzhg9hazJ");'></div>
+</div>
+</header>
+<main class="flex-1 flex justify-center py-8 px-6 md:px-20 lg:px-40 gap-8">
+<!-- Sidebar Navigation & Auditor Panel -->
+<aside class="w-80 hidden lg:flex flex-col gap-6">
+<div class="bg-charcoal-panel rounded-xl p-6 border border-[#49223f] flex flex-col gap-6">
+<div class="flex gap-4 items-start">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl size-14 border border-primary/50" data-alt="Marcie Firmware Auditor avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_Ajvr8eCA39NYP6qx7R-zxqVWr346d5eFugF6huT0oKiYxQJXMTAkzGIZWpuFSr3nj81SrSuY-3RN6Mp2a9LB9haD30yBtvum_OPNEBkCwN32xBREnUEyIksTdMHJQxQD9xjIx81_6gT5DxSJLVwxUhgkYHC48Jm4ofmRbq4O39rOr4Wfixc19B8JdxfApyn7b1vhW4wDMyWGuKr0Ly1qb404wYps72s4em_uh0x1eUGlWg3TH3KDjLPzYIhxB_AXc-JpcLbeSI90");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold font-display">Marcie</h1>
+<p class="text-primary text-xs font-bold uppercase tracking-widest">Firmware Auditor</p>
+<p class="text-[#cb90bc] text-xs mt-1 italic">"Integrity scan complete. Boundary verified."</p>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 border border-primary/30 group cursor-pointer transition-all hover:bg-primary/20">
+<span class="material-symbols-outlined text-primary glow-purple-icon">photo_camera</span>
+<p class="text-white text-sm font-medium">Evidence Upload</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#49223f]/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[#cb90bc]">assignment</span>
+<p class="text-white text-sm font-medium">Audit Notes</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#49223f]/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[#cb90bc]">verified_user</span>
+<p class="text-white text-sm font-medium">Validation Log</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#49223f]/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[#cb90bc]">tips_and_updates</span>
+<p class="text-white text-sm font-medium">Marcie's Tips</p>
+</div>
+</div>
+<div class="pt-4 border-t border-[#49223f]">
+<p class="text-[#cb90bc] text-[10px] uppercase font-bold tracking-[0.2em] mb-4">Integrity Progress</p>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-xs">
+<span class="text-white">Grid Sync</span>
+<span class="text-primary">6/16</span>
+</div>
+<div class="h-2 w-full bg-[#49223f] rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 37.5%"></div>
+</div>
+</div>
+</div>
+<button class="w-full py-3 px-4 bg-primary text-white rounded-xl font-bold text-sm shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">upload</span>
+<span>Upload Evidence</span>
+</button>
+</div>
+<div class="bg-charcoal-panel/50 rounded-xl p-4 border border-[#49223f]/50 flex items-center gap-3">
+<span class="material-symbols-outlined text-accent-cyan text-sm">help</span>
+<p class="text-[#cb90bc] text-xs font-medium">Need help with validation?</p>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 max-w-[960px] flex flex-col gap-6">
+<!-- Heading -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 p-4 rounded-xl bg-charcoal-panel/40 border border-[#49223f]/30">
+<div class="flex flex-col gap-1">
+<h2 class="text-white text-3xl font-black font-display tracking-tight uppercase">Boundary Bingo</h2>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-accent-purple/20 text-accent-purple text-[10px] font-bold rounded uppercase tracking-wider border border-accent-purple/30">Variant 3 of 10</span>
+<p class="text-[#cb90bc] text-sm font-medium">Firmware Integrity Check • Auditor Marcie</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#49223f] text-white text-xs font-bold border border-primary/20 hover:bg-[#68315a] transition-all">
+<span class="material-symbols-outlined text-sm">security</span>
+                            Verification Mode
+                        </button>
+</div>
+</div>
+<!-- Bingo Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-charcoal-panel rounded-2xl border border-[#49223f] relative overflow-hidden">
+<!-- Tile 1: Verified -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between grid-tile glow-fuchsia relative cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-xl font-bold">check_circle</span>
+<p class="text-white text-sm font-bold leading-tight font-display">Said No without Guilt</p>
+<div class="absolute inset-0 bg-primary/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<!-- Tile 2 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer group">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">Respected Space</p>
+</div>
+<!-- Tile 3: Verified -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between grid-tile glow-fuchsia relative cursor-pointer">
+<span class="material-symbols-outlined text-primary text-xl font-bold">check_circle</span>
+<p class="text-white text-sm font-bold leading-tight font-display">Digital Privacy</p>
+</div>
+<!-- Tile 4 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">Honest Check-in</p>
+</div>
+<!-- Tile 5 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">Set Time Limit</p>
+</div>
+<!-- Tile 6: Verified -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between grid-tile glow-fuchsia relative cursor-pointer">
+<span class="material-symbols-outlined text-primary text-xl font-bold">check_circle</span>
+<p class="text-white text-sm font-bold leading-tight font-display">Expressed Need</p>
+</div>
+<!-- Tile 7 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">Honored Silences</p>
+</div>
+<!-- Tile 8: Verified -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between grid-tile glow-fuchsia relative cursor-pointer">
+<span class="material-symbols-outlined text-primary text-xl font-bold">check_circle</span>
+<p class="text-white text-sm font-bold leading-tight font-display">Physical Bounds</p>
+</div>
+<!-- Tile 9 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">Financial Clarity</p>
+</div>
+<!-- Tile 10: Verified -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between grid-tile glow-fuchsia relative cursor-pointer">
+<span class="material-symbols-outlined text-primary text-xl font-bold">check_circle</span>
+<p class="text-white text-sm font-bold leading-tight font-display">Social Battery</p>
+</div>
+<!-- Tile 11 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">Work Life Sync</p>
+</div>
+<!-- Tile 12 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">Priority Shield</p>
+</div>
+<!-- Tile 13: Verified -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between grid-tile glow-fuchsia relative cursor-pointer">
+<span class="material-symbols-outlined text-primary text-xl font-bold">check_circle</span>
+<p class="text-white text-sm font-bold leading-tight font-display">Vulnerability Safe</p>
+</div>
+<!-- Tile 14 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">Conflict Resolution</p>
+</div>
+<!-- Tile 15 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">No Over-explaining</p>
+</div>
+<!-- Tile 16 -->
+<div class="aspect-square rounded-xl p-4 flex flex-col justify-between border border-[#49223f] grid-tile cursor-pointer">
+<span class="material-symbols-outlined text-white/20 text-xl">radio_button_unchecked</span>
+<p class="text-white/80 text-sm font-bold leading-tight font-display">Mutual Support</p>
+</div>
+</div>
+<!-- Footer Stats -->
+<div class="flex flex-col gap-3 p-6 bg-charcoal-panel/60 rounded-xl border border-[#49223f]/50">
+<div class="flex gap-6 justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<p class="text-white text-base font-medium font-display">Integrity Scan Result</p>
+</div>
+<p class="text-primary text-lg font-black font-display tracking-widest">37.5%</p>
+</div>
+<div class="rounded-full bg-[#49223f] h-3 overflow-hidden">
+<div class="h-full rounded-full bg-gradient-to-r from-primary to-accent-purple shadow-[0_0_10px_#f425c0]" style="width: 37.5%;"></div>
+</div>
+<p class="text-[#cb90bc] text-sm font-normal text-center">6/16 boundary squares mutually verified by both parties.</p>
+</div>
+</div>
+</main>
+</div>
+</body></html>

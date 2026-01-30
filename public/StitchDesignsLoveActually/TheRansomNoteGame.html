@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Ransom Note - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600&amp;family=Special+Elite&amp;family=Creepster&amp;family=Permanent+Marker&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"],
+                        "ransom": ["Special Elite", "serif"],
+                        "marker": ["Permanent Marker", "cursive"],
+                        "spooky": ["Creepster", "cursive"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>.nebula-bg {
+    background: radial-gradient(circle at 20% 30%, rgba(127, 19, 236, 0.15) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(236, 19, 154, 0.1) 0%, transparent 40%), #191022
+    }
+.clipping {
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease
+    }
+.clipping:hover {
+    transform: scale(1.05) rotate(2deg);
+    cursor: grab
+    }
+.paper-texture {
+    background-color: #f3f4f6;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBIDg5rCbQl_1CRWOuPTFQr2UJ-xyKBY2SNIzpF_-I0qqOmkStL1LMPCA2-qzvC8Nvje-dWlkzLa3c4mVvx64L7GOjRW2G8o2qUiOYK8bFq-dQ5xetxpH__517Dd64flNuEuGA4I00P2jRN7Xyr1jRhk_JVi2nh-GB-PHsTJOgVnj94SOj4tmTCvcUisDHCiHtgpqeCZvSzC87SxFtp2Z8I0VPt3mx4DVNVuybhdCR0VmTNDldtgVlzlJeDOSaJk3kkUZ7g4iMpA_pS)
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen overflow-x-hidden nebula-bg">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#302839] px-10 py-3 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Love Actually... <span class="text-primary">The Game</span></h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">How to Play</a>
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Gallery</a>
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Leaderboard</a>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/80 transition-all">
+<span>Quit Game</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/50" data-alt="User profile avatar silhouette" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCpYNg_jk3QGsp-YFBuBRFyB6fEtpFikzCymBdxPeWYMWOMM1RtC5ipM0taOgYsyrcB7SOe890o0fO_zMbyjSsvihtP71IdzlQoFR7gktNDPgm26anTxKp5rp7qL2zaGAJKXRzmkw7JjG87pm_g1008S3t9SnZXKPYHuskMFGVA_vAhBBKWrtsRvkUHzVSqgx6GARf_RKLlWF46BzWB10SInjEYG9CMeRZ2_m6B_rKHxsPcnEUKjHI-Wp5NMUyLUzbuA1JxMq7_MOSC");'></div>
+</div>
+</header>
+<main class="flex flex-1 flex-col items-center py-8 px-4 md:px-20 lg:px-40 relative">
+<!-- Page Heading Section -->
+<div class="w-full max-w-[1200px] flex flex-wrap justify-between items-end gap-3 mb-8">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-lg">description</span>
+<span class="text-xs font-bold uppercase tracking-widest">Puzzle Level 10</span>
+</div>
+<h1 class="text-white text-5xl font-black leading-tight tracking-[-0.033em]">The Ransom Note</h1>
+<p class="text-[#ab9db9] text-lg font-normal leading-normal">Objective: Invite your partner on a date... or else.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-sm">refresh</span>
+<span class="text-sm font-bold">Reset Canvas</span>
+</button>
+<button class="flex items-center gap-2 px-6 py-2 rounded-lg bg-primary hover:shadow-[0_0_15px_rgba(127,19,236,0.5)] transition-all">
+<span class="text-sm font-bold uppercase tracking-wider">Submit to Marcie</span>
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+<!-- Workspace Area -->
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6 w-full max-w-[1200px] flex-1">
+<!-- Main Canvas -->
+<div class="lg:col-span-3 flex flex-col gap-4">
+<div class="relative w-full aspect-[16/9] paper-texture rounded-xl shadow-2xl p-12 overflow-hidden border-8 border-[#211c27]">
+<!-- Grid Lines Hint -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- Ransom Note Area -->
+<div class="relative w-full h-full flex flex-col items-start gap-4">
+<div class="flex flex-wrap gap-4">
+<div class="clipping bg-white text-black px-4 py-2 rotate-[-2deg] font-ransom text-3xl uppercase border-l-4 border-primary">Dear</div>
+<div class="clipping bg-black text-white px-3 py-1 rotate-[3deg] font-marker text-2xl">Sweetheart</div>
+</div>
+<div class="mt-8 p-4 border-2 border-dashed border-black/20 w-full h-full rounded-lg flex items-center justify-center text-black/30 font-display italic">
+                                Drag and drop words here to build your invitation
+                            </div>
+</div>
+<!-- Dr. Marcie Overlay -->
+<div class="absolute -bottom-10 -right-10 w-80 h-80 z-20 group">
+<!-- Dr. Marcie Character -->
+<div class="absolute inset-0 bg-contain bg-no-repeat bg-bottom transition-transform group-hover:scale-105" data-alt="Cartoon of Dr. Marcie Liss in a lab coat" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuALNTuX1rr7_QC4Ha8KLOGx4Mt6KAdMY2mrAuHoZTkbCBccjWwQh6_jSuV6aLJBZl6Zrc-z171JGZe-e58_XwsmPKRq8iTKt-yURy2X-z4IUDuY_56PqwHzK0YOjWfMLVHeaLmX49UedXSBgmXeBMsjY2zrnJUCqKz7Hl7CkO9NF25VPSfWNMefSLFxVy7YhYbNc3CEcP_QpfyiLlQMafSKbS-9XdNL0zMeYCo3rMt4z8PXrbOxmS_2fdB11lq_xGnEqatAYTClSh4-');"></div>
+<!-- Magnifying Glass Effect -->
+<div class="absolute top-10 left-10 size-24 rounded-full border-4 border-zinc-400 bg-white/10 backdrop-blur-sm shadow-xl flex items-center justify-center overflow-hidden">
+<div class="material-symbols-outlined text-6xl text-zinc-400 opacity-30 select-none">search</div>
+<div class="absolute inset-0 border-[10px] border-zinc-400/30 rounded-full"></div>
+</div>
+<!-- Speech Bubble -->
+<div class="absolute -top-4 -left-32 bg-white text-black p-3 rounded-2xl rounded-tr-none shadow-lg max-w-[180px] text-sm font-medium border-2 border-primary">
+                                "Ooh, bold choice of font there! Very... expressive."
+                            </div>
+</div>
+</div>
+</div>
+<!-- Side Panel Info / Help -->
+<div class="flex flex-col gap-4">
+<div class="bg-[#211c27] p-6 rounded-xl border border-white/5 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<h3 class="font-bold text-lg">Marcie's Insights</h3>
+</div>
+<p class="text-sm text-[#ab9db9] leading-relaxed">
+                            "Psychologically speaking, a ransom note is just a very urgent request. Use the most 'convincing' words from the bank below."
+                        </p>
+<div class="h-px bg-white/5 w-full"></div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-xs">
+<span class="text-[#ab9db9]">Suspicion Level</span>
+<span class="text-primary font-bold">12%</span>
+</div>
+<div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[12%]"></div>
+</div>
+</div>
+</div>
+<div class="bg-primary/20 p-6 rounded-xl border border-primary/30 flex flex-col gap-3">
+<h4 class="font-bold text-sm uppercase tracking-widest text-primary">Hint</h4>
+<p class="text-sm text-white/80">Try mixing <strong>Romantic</strong> and <strong>Mundane</strong> words for a truly bizarre effect.</p>
+</div>
+</div>
+</div>
+<!-- Word Bank Section -->
+<div class="w-full max-w-[1200px] mt-12 bg-background-dark/50 backdrop-blur-lg border border-white/5 rounded-2xl p-6">
+<div class="pb-3 mb-6">
+<div class="flex border-b border-[#473b54] px-4 gap-8">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-primary text-white pb-[13px] pt-4" href="#">
+<p class="text-white text-sm font-bold leading-normal tracking-[0.015em]">Romantic Words</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#ab9db9] pb-[13px] pt-4 hover:text-white transition-colors" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Funny Words</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-b-transparent text-[#ab9db9] pb-[13px] pt-4 hover:text-white transition-colors" href="#">
+<p class="text-sm font-bold leading-normal tracking-[0.015em]">Mundane Words</p>
+</a>
+<div class="flex-1 flex justify-end items-center">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#ab9db9] text-sm">search</span>
+<input class="w-full bg-white/5 border-none rounded-lg pl-10 text-xs focus:ring-1 focus:ring-primary" placeholder="Filter clippings..." type="text"/>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 overflow-y-auto max-h-64 p-2 custom-scrollbar">
+<!-- Word Clippings -->
+<div class="clipping bg-white text-black p-4 flex items-center justify-center font-ransom text-lg shadow-lg rotate-1">TONIGHT</div>
+<div class="clipping bg-red-600 text-white p-4 flex items-center justify-center font-spooky text-xl shadow-lg rotate-[-2deg]">PIZZA</div>
+<div class="clipping bg-blue-100 text-blue-900 p-4 flex items-center justify-center font-marker text-lg shadow-lg rotate-3">BEHOLD</div>
+<div class="clipping bg-yellow-300 text-black p-4 flex items-center justify-center font-ransom text-lg shadow-lg rotate-[-1deg]">MY</div>
+<div class="clipping bg-zinc-800 text-white p-4 flex items-center justify-center font-spooky text-2xl shadow-lg rotate-2 tracking-widest">ETERNAL</div>
+<div class="clipping bg-pink-200 text-pink-800 p-4 flex items-center justify-center font-marker text-lg shadow-lg rotate-[-3deg]">FEAST</div>
+<div class="clipping bg-green-200 text-green-900 p-4 flex items-center justify-center font-ransom text-lg shadow-lg rotate-1">WITH</div>
+<div class="clipping bg-white text-red-600 p-4 flex items-center justify-center font-spooky text-xl shadow-lg rotate-[2deg] border-2 border-red-600">YOU</div>
+<div class="clipping bg-slate-200 text-slate-800 p-4 flex items-center justify-center font-ransom text-lg shadow-lg rotate-[-2deg]">DANCE</div>
+<div class="clipping bg-orange-400 text-white p-4 flex items-center justify-center font-marker text-lg shadow-lg rotate-1">NOW</div>
+<div class="clipping bg-purple-600 text-white p-4 flex items-center justify-center font-spooky text-xl shadow-lg rotate-3">FOREVER</div>
+<div class="clipping bg-white text-black p-4 flex items-center justify-center font-ransom text-lg shadow-lg rotate-[-1deg] underline">OR ELSE</div>
+<div class="clipping bg-blue-600 text-white p-4 flex items-center justify-center font-marker text-lg shadow-lg rotate-2">RESERVATION</div>
+<div class="clipping bg-black text-lime-400 p-4 flex items-center justify-center font-spooky text-xl shadow-lg rotate-[-2deg]">DANGER</div>
+<div class="clipping bg-yellow-100 text-yellow-900 p-4 flex items-center justify-center font-ransom text-lg shadow-lg rotate-1">DATE</div>
+<div class="clipping bg-white text-black p-4 flex items-center justify-center font-marker text-lg shadow-lg rotate-3">7PM</div>
+</div>
+</div>
+</main>
+<!-- Footer / Status Bar -->
+<footer class="bg-background-dark border-t border-white/5 px-10 py-4 flex justify-between items-center text-[#ab9db9] text-xs">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
+<span>Game Session Active</span>
+</div>
+<span>Level: Ransom Note</span>
+</div>
+<div class="flex items-center gap-4">
+<span>Created by Dr. Marcie Liss</span>
+<span class="text-white/20">|</span>
+<span>v1.0.10 Final</span>
+</div>
+</footer>
+</div>
+</body></html>

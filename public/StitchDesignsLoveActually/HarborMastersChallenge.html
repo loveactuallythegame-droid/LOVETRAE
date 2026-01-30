@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Harbor Master's Challenge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff005e", "background-light": "#f8f5f6", "background-dark": "#230f16", charcoal: "#111817", nebula: "#1a1a1a"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at top right, rgba(13, 242, 223, 0.05), transparent),
+                        radial-gradient(circle at bottom left, rgba(13, 242, 223, 0.02), transparent),
+                        #111817;
+        }
+        .glass-panel {
+            background: rgba(26, 35, 34, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(13, 242, 223, 0.1);
+        }
+        .harbor-glow {
+            box-shadow: 0 0 40px rgba(13, 242, 223, 0.15);
+        }
+        .maneuver-active {
+            box-shadow: 0 0 15px rgba(13, 242, 223, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative min-h-screen w-full flex flex-col nebula-bg overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#283938] px-10 py-3 glass-panel sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">sailing</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Harbor Master's Challenge</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<div class="flex items-center gap-9">
+<a class="text-[#9cbab7] hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Phase 4: Partnering with BPD</a>
+<span class="text-primary/60 text-sm font-medium leading-normal bg-primary/10 px-3 py-1 rounded-full">Variant 4 of 9</span>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full border-2 border-primary/30 size-10" data-alt="Close up of a brass telescope lens" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDRa5Ba78ffUhgMbzSDnama7EODNVjjOeIwzA7OOVCyOWIJTCqJDxsvROImDy_LeMvQZNZ3y0axn2wcTa5_QilNzYpRppC7W4ME1_rS54MATtzqqMKMYpWUd1VZ14aO1UKhvJw6nvBE6KmKEJXY4YYxC-x3_oN0f51PWXgKFKpW-DXyxvsucYbEvhTEiFxOsF2G4ajgHSaXmxP9z1bL2VAuV_VL8kDQIGmh_yt6ATS-SPeg9qkhr8MlV9kgU-4b34Yk9YJPOgORgxs6");'></div>
+</div>
+</header>
+<div class="flex flex-1 p-6 gap-6 max-w-[1600px] mx-auto w-full h-[calc(100vh-64px)] overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-72 flex flex-col justify-between glass-panel rounded-xl p-6">
+<div class="flex flex-col gap-8">
+<div class="flex gap-4 items-center">
+<div class="bg-cover bg-center aspect-square rounded-full size-12 border-2 border-primary shadow-[0_0_10px_rgba(13,242,223,0.3)]" data-alt="Portrait of Dr. Marcie Liss in nautical uniform" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAKpcJzEeCxcM6Rsy2deoov0fTJJySiKrAa3z8_1NfzUOn6jrWDXC_AHfo88r-28ik7CowLHbpvDyhVRpAN_fdjNysUUyMRTxkXhTQDcOgg8Tkroqzb_IS2tslx_n61HWNHoop7YqrpqiFs6l0pnI3kec_OP-ds6pejP6BPwQHFxa9mttuSEV4IRs_GW3UfxD6h32kpEZJ5eHzIQhCpfdAIHF9hLrud_Uqp9_1fmTXbuYkNV7RpGW-CZ_wBDVj0hEtbtnB8HRxX4hwX");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-none">Dr. Marcie Liss</h1>
+<p class="text-primary text-xs font-medium uppercase tracking-widest mt-1">Harbor Master</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-4 py-3 rounded-full bg-primary/10 text-primary border border-primary/20 cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-bold">Command Deck</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full text-[#9cbab7] hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined">history</span>
+<p class="text-sm font-medium">Maneuver History</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full text-[#9cbab7] hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined">library_books</span>
+<p class="text-sm font-medium">BPD Resources</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full text-[#9cbab7] hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined">auto_stories</span>
+<p class="text-sm font-medium">Captain's Logs</p>
+</div>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<div class="p-4 rounded-xl bg-[#283938]/30 border border-[#283938]">
+<p class="text-xs text-[#9cbab7] leading-relaxed italic">"Steady the helm. Select a maneuver to guide us toward the Harbor."</p>
+</div>
+<button class="w-full flex cursor-pointer items-center justify-center rounded-full h-12 bg-primary text-background-dark text-sm font-bold tracking-widest uppercase hover:brightness-110 transition-all">
+                    Emergency Calm
+                </button>
+</div>
+</aside>
+<!-- Main Dashboard Content -->
+<main class="flex-1 flex flex-col gap-6 overflow-hidden">
+<!-- Storm Intensity Banner -->
+<div class="glass-panel rounded-xl overflow-hidden relative min-h-[120px] flex items-center px-10">
+<div class="absolute inset-0 opacity-20" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBxcc6bnTNr7vgg8vMAuYeATqR5eQBhvvdHeuqBwHfo7gkfBOaNonjPk3JQdJCCdMTcJEBe77bryK7EKptc3Pfc97JnPZk5_uq_NiFjvlnSwHbZzBPP_HyInIrcliA4If1NCNVPeWpHBnWiO_RZH-hbL91GHN3n_2Z82NFnqCDhx7DvfszhF8J6auhj5d3Fp7dQZEULDP9qtnVIEGsVqnRecFvPaZSv-M5nPFnzx6TgLbc5CG3bEewFRF2SeEODOABu6mL2tTYZBnsL'); background-size: cover; filter: grayscale(1);"></div>
+<div class="relative z-10 w-full flex justify-between items-center">
+<div>
+<h1 class="text-white text-3xl font-bold tracking-tight">Storm Level: High Intensity</h1>
+<p class="text-[#9cbab7] mt-1">Emotional turbulence detected in Phase 4 sectors.</p>
+</div>
+<div class="flex flex-col items-end gap-2 w-72">
+<div class="flex justify-between w-full">
+<span class="text-xs font-bold text-primary uppercase tracking-tighter">Storm Turbulence</span>
+<span class="text-xs font-bold text-white">85%</span>
+</div>
+<div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 85%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 grid grid-cols-12 gap-6 overflow-hidden">
+<!-- Central Visualizer: The Storm Panel -->
+<div class="col-span-8 glass-panel rounded-xl p-1 overflow-hidden relative group">
+<div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" data-alt="Dark dramatic ocean waves under a starry sky" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB2UHoLbTfSJO4x0MPnufGj_ulNH-W6_GS_oJU_9kyRgzJWmdAhH39QXFJfFWJMnNPfsTUfiikdjK9lXhbL0g3_lW0YrsKxudx0-E5Mujm1VjlnCAteQSpN7yyqB6JNHXwZLCVP6D4jXO4lN78lwbMDJpWNH7TSXAKlQU65fSApxnAhzPbzU-i-ulOkN1LBveiW1RD4FxFxGPEAbWPnBS_cR74YHeTVEvjZOOZmW68aAWmV6PuW2q8Xii2gdUer62TN2lxvpLM_bi8K');"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8 z-10 flex flex-col gap-4">
+<div class="flex items-center gap-4 bg-background-dark/80 backdrop-blur-md p-4 rounded-xl border border-primary/20">
+<div class="p-3 bg-primary/20 rounded-full text-primary">
+<span class="material-symbols-outlined text-3xl">waves</span>
+</div>
+<div>
+<h3 class="font-bold text-lg">Maneuver Required</h3>
+<p class="text-sm text-[#9cbab7]">Deploy co-regulation tools to reduce wave height.</p>
+</div>
+</div>
+</div>
+<!-- Harbor Glow Element -->
+<div class="absolute top-8 right-8 w-48 h-48 rounded-full bg-primary/5 blur-[80px] border border-primary/30 flex items-center justify-center harbor-glow">
+<div class="text-primary text-center">
+<span class="material-symbols-outlined text-4xl mb-1">anchor</span>
+<p class="text-[10px] font-bold uppercase tracking-widest">Safe Zone</p>
+</div>
+</div>
+</div>
+<!-- Co-regulation Maneuver Wheel / List -->
+<div class="col-span-4 flex flex-col gap-6">
+<div class="flex-1 glass-panel rounded-xl p-6 flex flex-col">
+<h2 class="text-sm font-bold text-primary uppercase tracking-[0.2em] mb-4">Maneuver Wheel</h2>
+<div class="flex-1 grid grid-cols-2 gap-3">
+<div class="glass-panel border-primary/40 rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-primary/10 transition-all cursor-pointer maneuver-active group">
+<span class="material-symbols-outlined text-3xl text-primary group-hover:scale-110 transition-transform">air</span>
+<span class="text-xs font-bold text-center">Deep Breathing</span>
+</div>
+<div class="glass-panel border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-primary/10 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-3xl text-white group-hover:text-primary group-hover:scale-110 transition-transform">vibration</span>
+<span class="text-xs font-bold text-center">Grounding</span>
+</div>
+<div class="glass-panel border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-primary/10 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-3xl text-white group-hover:text-primary group-hover:scale-110 transition-transform">favorite</span>
+<span class="text-xs font-bold text-center">Affirmation</span>
+</div>
+<div class="glass-panel border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-primary/10 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-3xl text-white group-hover:text-primary group-hover:scale-110 transition-transform">visibility</span>
+<span class="text-xs font-bold text-center">Sensing</span>
+</div>
+<div class="glass-panel border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-primary/10 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-3xl text-white group-hover:text-primary group-hover:scale-110 transition-transform">music_note</span>
+<span class="text-xs font-bold text-center">Auditory Calm</span>
+</div>
+<div class="glass-panel border-white/10 rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-primary/10 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-3xl text-white group-hover:text-primary group-hover:scale-110 transition-transform">self_improvement</span>
+<span class="text-xs font-bold text-center">Muscle Focus</span>
+</div>
+</div>
+</div>
+<!-- Harbor Target Status -->
+<div class="glass-panel rounded-xl p-4 border-l-4 border-primary">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-bold text-[#9cbab7] uppercase">Harbor Safe-Zone Distance</span>
+<span class="text-xs font-bold text-primary">12 Nautical Miles</span>
+</div>
+<div class="flex gap-1">
+<div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+<div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+<div class="h-1.5 flex-1 bg-primary/20 rounded-full"></div>
+<div class="h-1.5 flex-1 bg-primary/20 rounded-full"></div>
+<div class="h-1.5 flex-1 bg-primary/20 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Status Bar -->
+<div class="flex items-center justify-between glass-panel px-6 py-4 rounded-xl">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(13,242,223,0.8)]"></div>
+<span class="text-[10px] font-bold text-white uppercase tracking-widest">Co-regulation Active</span>
+</div>
+<div class="h-4 w-[1px] bg-white/10"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-[#9cbab7]">location_on</span>
+<span class="text-[10px] font-medium text-[#9cbab7]" data-location="The Harbor">Location: Outer Reef</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[10px] font-medium text-[#9cbab7]">Maneuver Multiplier: x1.4</span>
+<div class="bg-white/5 px-4 py-1.5 rounded-full border border-white/10 text-[10px] font-bold tracking-widest uppercase">
+                        Quadrant 4D-A
+                    </div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

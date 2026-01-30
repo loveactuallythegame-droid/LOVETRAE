@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Empathy Echo - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Work+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#f40b61", "accent-purple": "#a855f7", "accent-pink": "#ec4899", "accent-turquoise": "#2dd4bf", "background-light": "#f8f5f6", "background-dark": "#221017"}, fontFamily: {display: "Work Sans", sans: ["Noto Sans"]}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(17, 50, 212, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.1) 0%, transparent 40%),
+                        #101322;
+        }
+        .waveform-glow-turquoise {
+            filter: drop-shadow(0 0 8px rgba(45, 212, 191, 0.6));
+        }
+        .waveform-glow-purple {
+            filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.7));
+        }
+        .gauge-gradient {
+            background: conic-gradient(from 180deg at 50% 100%, #ef4444 0deg, #f59e0b 90deg, #2dd4bf 180deg);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative min-h-screen w-full flex flex-col nebula-bg overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-white/10 px-6 py-4 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-accent-pink">
+<span class="material-symbols-outlined text-4xl">favorite</span>
+</div>
+<div>
+<h2 class="text-xl font-bold tracking-tight">Love Actually... <span class="text-accent-purple">The Game</span></h2>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex flex-col items-end">
+<span class="text-xs uppercase tracking-widest text-slate-400">Current Progress</span>
+<span class="text-sm font-bold">Round 2 of 10</span>
+</div>
+<div class="h-10 px-4 rounded-xl bg-primary flex items-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">bolt</span>
+<span class="text-sm font-bold tracking-wide">Connection: 85%</span>
+</div>
+<div class="size-10 rounded-full border-2 border-accent-purple overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAxHsJsrgq2YDiKYoMUAWFkQho92DcbGtCniR5VMN4OQyG97HlLSmTgAI2C50TMQe-_FcZMYKT5aRsB4EzPRlC0T603afAjtNmHy_9OP1mR2Wu4tDgKawwpLQqT2g-lWmF3aVFt-_uvC-HTLMPaZOpAv_Eh4zhJP50j4vxAwa9AR7lPJEpHkMHci5LjvINc6X_67MFWqTeZJrWCndnHEm8T38C3DgNjfsbQlZnwZkZmVzgJLbMChDuT3HWVk4LkhvuBkqcg_9yPhZP"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 flex-col lg:flex-row">
+<!-- Side Navigation -->
+<aside class="w-full lg:w-64 border-r border-white/5 bg-black/20 p-6 flex flex-col justify-between">
+<div class="space-y-8">
+<div class="flex gap-3 items-center">
+<div class="size-12 rounded-full ring-2 ring-primary ring-offset-2 ring-offset-[#101322] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Dr. Marcie Liss portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo8BU7qNRSrd-6ecHV1Ozp126HGyILOdOlUMPAN3K3mG3nGBFcsoO42iuwsdiMEztLb54Os9Fd8Lp4yjPo-3TMY9MdlSOnJVg37coQ41ZuTcxMXTXha-J9_LYWFGP53KaRcX-WkBbP3-jLCBfM7M2mzJC0mq5EaIaH_F5W_y6DFyFLi5J0dPKbaL3tYEJ07mtOv4huUZUUGbMXou22LAk_uWdabNyy5-iPkWiF1dF1egKcYhPsk7q16jzZFtwQv209dX8_uRNTMJe1"/>
+</div>
+<div>
+<h3 class="font-bold text-sm">Dr. Marcie Liss</h3>
+<p class="text-[10px] text-accent-turquoise uppercase font-bold tracking-tighter">Host &amp; Therapist</p>
+</div>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/20 text-white border border-primary/30" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-sm font-medium">Game Home</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="text-sm font-medium">Global Stats</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="text-sm font-medium">Journal</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Game Settings</span>
+</a>
+</nav>
+</div>
+<div class="mt-8 space-y-4">
+<div class="bg-black/40 p-4 rounded-xl border border-white/5 relative overflow-hidden group">
+<div class="absolute -right-2 -top-2 text-white/5 group-hover:text-accent-pink/20 transition-colors">
+<span class="material-symbols-outlined text-6xl">format_quote</span>
+</div>
+<p class="text-xs italic text-slate-300 relative z-10">"Try again... less fixing, more feeling!"</p>
+</div>
+<button class="w-full py-3 rounded-xl border border-red-500/50 text-red-400 text-sm font-bold hover:bg-red-500/10 transition-all uppercase tracking-widest">
+                        End Session
+                    </button>
+</div>
+</aside>
+<!-- Main Game Area -->
+<main class="flex-1 p-6 lg:p-10 flex flex-col gap-8">
+<!-- Page Heading -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 rounded-full bg-accent-purple/20 text-accent-purple text-[10px] font-bold uppercase tracking-widest border border-accent-purple/30">Phase: Validation</span>
+<h1 class="text-4xl md:text-5xl font-black tracking-tight italic">Empathy Echo</h1>
+</div>
+<p class="text-slate-400 text-lg max-w-2xl">Partner B: Mirror the emotional core back to Partner A. <span class="text-white font-bold">Avoid the 'Fixing' trap!</span></p>
+</div>
+<!-- Game Split Interface -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6 flex-1">
+<!-- Left: Partner A (Static/Recorded) -->
+<div class="flex flex-col gap-4 bg-black/30 p-6 rounded-2xl border border-white/5 relative group hover:border-accent-turquoise/30 transition-all">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg bg-accent-turquoise/20 text-accent-turquoise">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<div>
+<h3 class="text-lg font-bold">Partner A's Heart</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest">The Worry (Recorded 2m ago)</p>
+</div>
+</div>
+<button class="size-12 rounded-full bg-accent-turquoise flex items-center justify-center text-background-dark hover:scale-110 transition-transform">
+<span class="material-symbols-outlined font-bold">play_arrow</span>
+</button>
+</div>
+<!-- Waveform Placeholder -->
+<div class="flex-1 min-h-[180px] flex items-center justify-center gap-1 waveform-glow-turquoise px-4">
+<!-- Visual Waveform representation -->
+<div class="h-8 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-12 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-20 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-32 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-24 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-40 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-28 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-16 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-36 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-20 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-12 w-1 bg-accent-turquoise rounded-full"></div>
+<div class="h-8 w-1 bg-accent-turquoise rounded-full"></div>
+</div>
+<div class="flex items-center gap-2 text-[10px] text-accent-turquoise/60 font-mono tracking-widest uppercase">
+<span>00:00</span>
+<div class="flex-1 h-[1px] bg-accent-turquoise/20"></div>
+<span>00:14</span>
+</div>
+</div>
+<!-- Right: Partner B (Live Recording) -->
+<div class="flex flex-col gap-4 bg-primary/5 p-6 rounded-2xl border border-accent-purple/30 relative shadow-[0_0_40px_rgba(168,85,247,0.05)]">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg bg-accent-purple/20 text-accent-purple">
+<span class="material-symbols-outlined">mic</span>
+</div>
+<div>
+<h3 class="text-lg font-bold">Your Echo</h3>
+<p class="text-xs text-slate-500 uppercase tracking-widest">The Validation (Recording Now)</p>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-500 text-[10px] font-bold animate-pulse">
+<div class="size-2 rounded-full bg-red-500"></div> REC
+                            </div>
+</div>
+<!-- Dynamic Waveform Placeholder -->
+<div class="flex-1 min-h-[180px] flex items-center justify-center gap-2 waveform-glow-purple px-4">
+<div class="h-10 w-2 bg-accent-purple rounded-full opacity-50"></div>
+<div class="h-24 w-2 bg-accent-purple rounded-full opacity-70"></div>
+<div class="h-48 w-2 bg-accent-purple rounded-full"></div>
+<div class="h-32 w-2 bg-accent-purple rounded-full"></div>
+<div class="h-20 w-2 bg-accent-purple rounded-full opacity-60"></div>
+<div class="h-40 w-2 bg-accent-purple rounded-full"></div>
+<div class="h-16 w-2 bg-accent-purple rounded-full opacity-40"></div>
+</div>
+<div class="flex justify-center -mt-8 mb-4">
+<button class="group relative size-24 flex items-center justify-center">
+<div class="absolute inset-0 bg-accent-purple rounded-full animate-ping opacity-20"></div>
+<div class="absolute inset-0 bg-accent-purple/40 rounded-full scale-125"></div>
+<div class="relative size-16 bg-accent-purple rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(168,85,247,0.5)] active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-white text-3xl font-bold">stop</span>
+</div>
+</button>
+</div>
+<p class="text-center text-xs text-slate-400 font-medium">Press stop to submit your echo</p>
+</div>
+</div>
+<!-- Empathy Gauge Area -->
+<div class="mt-auto flex flex-col items-center gap-4 bg-black/20 p-8 rounded-3xl border border-white/5">
+<div class="flex justify-between w-full max-w-xl text-[10px] uppercase font-bold tracking-[0.2em]">
+<span class="text-red-500">Fixing Zone</span>
+<span class="text-accent-turquoise">Deep Empathy</span>
+</div>
+<div class="relative w-full max-w-sm aspect-[2/1] overflow-hidden">
+<!-- Gauge Shape -->
+<div class="absolute bottom-0 w-full h-[200%] border-[24px] border-white/5 rounded-full"></div>
+<div class="absolute bottom-0 w-full h-[200%] border-[24px] border-transparent rounded-full gauge-gradient opacity-30"></div>
+<!-- Needle -->
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-[85%] bg-white origin-bottom rotate-[45deg] transition-transform duration-500">
+<div class="absolute -top-1 -left-1.5 size-4 bg-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.8)]"></div>
+</div>
+<!-- Center Point -->
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 size-12 bg-background-dark border-4 border-white/10 rounded-full z-10"></div>
+</div>
+<div class="text-center space-y-2">
+<p class="text-4xl font-black italic tracking-tighter">Empathy Score: 72</p>
+<p class="text-slate-400 text-sm italic">"You're drifting toward 'fixing'. Try acknowledging the feeling without offering a solution yet."</p>
+</div>
+<div class="flex gap-4 w-full justify-center pt-4">
+<button class="flex-1 max-w-[200px] h-14 rounded-xl border border-white/10 hover:bg-white/5 font-bold transition-all text-sm uppercase tracking-widest">
+                            Try Again
+                        </button>
+<button class="flex-1 max-w-[200px] h-14 rounded-xl bg-primary shadow-lg shadow-primary/30 font-bold hover:brightness-110 transition-all text-sm uppercase tracking-widest">
+                            Submit Echo
+                        </button>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

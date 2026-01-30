@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Text Tone Translator - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff0a64", "background-light": "#f8f5f6", "background-dark": "#230f16", "accent-purple": "#8b5cf6", "accent-pink": "#ec4899", "risk-high": "#ef4444"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                        #101922;
+        }
+        .glass-card {
+            background: rgba(40, 48, 57, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative min-h-screen flex flex-col nebula-bg overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-solid border-white/10 px-10 py-4 glass-card sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-accent-pink bg-clip-text text-transparent">Love Actually... The Game</h2>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">How to Play</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Global Leaderboard</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Dr. Marcie's Tips</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span class="truncate">My Profile</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white/10 text-white hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-6xl mx-auto w-full p-6 grid grid-cols-12 gap-8 items-start">
+<!-- Left Column: The "Crime Scene" -->
+<div class="col-span-12 lg:col-span-7 space-y-6">
+<!-- Progress Header -->
+<div class="glass-card rounded-2xl p-6">
+<div class="flex justify-between items-end mb-3">
+<div>
+<p class="text-accent-pink text-xs font-bold uppercase tracking-widest mb-1">Current Round</p>
+<h3 class="text-2xl font-bold">Text Tone Translator</h3>
+</div>
+<div class="text-right">
+<p class="text-white/60 text-sm mb-1">Level 4 of 10</p>
+<div class="w-32 h-2 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-accent-purple" style="width: 40%;"></div>
+</div>
+</div>
+</div>
+<p class="text-white/60 text-sm italic">"Decoding the silent treatment, one character at a time."</p>
+</div>
+<!-- The "Crime" Message Card -->
+<div class="relative">
+<div class="bg-gradient-to-br from-risk-high/20 to-accent-purple/20 p-8 rounded-3xl border border-risk-high/30 shadow-2xl overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<span class="bg-risk-high text-white text-[10px] font-black px-3 py-1 rounded-full tracking-tighter uppercase">Risk Tone: Nuclear</span>
+</div>
+<div class="flex items-start gap-6 mt-4">
+<div class="flex-1">
+<p class="text-white/40 text-xs font-bold uppercase mb-4">Incoming Message:</p>
+<div class="bg-background-dark/80 p-6 rounded-2xl border border-white/5 inline-block min-w-[200px] shadow-inner">
+<h1 class="text-6xl font-bold text-white mb-2">K.</h1>
+</div>
+<div class="mt-6 space-y-1">
+<p class="text-risk-high font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">warning</span>
+                                        Passive-Aggressive Payload Detected
+                                    </p>
+<p class="text-white/60 text-sm">Potential interpretation: "I am upset but I won't tell you why."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Dr. Marcie & Speech Bubble Overlay -->
+<div class="flex items-end gap-6 pt-4 relative group">
+<div class="relative w-24 h-24 shrink-0">
+<div class="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:bg-primary/40 transition-all"></div>
+<div class="w-full h-full rounded-full border-2 border-primary overflow-hidden relative z-10 bg-background-dark">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of Dr. Marcie Liss, smiling expert linguist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrb6IRPgWSnO1AfPiRWGT52vsiBQydEErv681_quWmnbJjROhxp8N_FA8rx4zGEL5DoYzgz0dtkAaDe99QaCKZxgeYdEiMp7issXvYhdqHWnSpSyXUMFOfps6ogw9XFYQyfjwhcbky-D0Xp5n4GX2GWRMzO85VsDuO0Lfec2kMDrjMj_w18OhTQAk9jvGXrPDS_apPXVvJVUlWbXZbZnWnwDn20hxDvxp0cFpQpM3JJ6T50LEdxG-ABZJ9MdxKih64j63yOpRUIAM2"/>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-2 mb-4">
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold text-sm uppercase">Dr. Marcie Liss</span>
+<span class="bg-primary/20 text-primary text-[10px] px-2 py-0.5 rounded font-bold">Linguist Host</span>
+</div>
+<div class="bg-white text-background-dark px-6 py-4 rounded-2xl rounded-bl-none relative shadow-xl">
+<p class="text-lg font-bold leading-tight">"Ouch! Using a single 'K' followed by a period? That's not just a text, <span class="text-risk-high underline decoration-2 underline-offset-4">that's a war crime!</span>"</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Guessing Interface -->
+<div class="col-span-12 lg:col-span-5 space-y-6">
+<div class="glass-card rounded-3xl p-8 border-primary/20 shadow-2xl shadow-primary/5">
+<div class="mb-8">
+<h2 class="text-2xl font-bold mb-2">The "Safer" Search</h2>
+<p class="text-white/60 text-sm">Select the ❤️❤️ version that builds harmony without the drama.</p>
+</div>
+<div class="space-y-4">
+<!-- Option 1 -->
+<button class="w-full text-left p-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all group flex items-center justify-between">
+<div>
+<p class="text-white font-medium mb-1">"Sounds good, see you then!"</p>
+<p class="text-white/40 text-xs uppercase font-bold group-hover:text-primary transition-colors">The Safe Bet</p>
+</div>
+<span class="material-symbols-outlined text-white/20 group-hover:text-primary">check_circle</span>
+</button>
+<!-- Option 2 (Correct One) -->
+<button class="w-full text-left p-5 rounded-2xl border-2 border-primary/50 bg-primary/10 hover:bg-primary/20 transition-all group flex items-center justify-between shadow-[0_0_20px_rgba(19,127,236,0.15)]">
+<div>
+<p class="text-white font-bold mb-1">"Got it! Looking forward to it ❤️❤️"</p>
+<p class="text-primary text-xs uppercase font-black">The Harmony Master</p>
+</div>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-accent-pink fill-accent-pink">favorite</span>
+<span class="material-symbols-outlined text-accent-pink fill-accent-pink">favorite</span>
+</div>
+</button>
+<!-- Option 3 -->
+<button class="w-full text-left p-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all group flex items-center justify-between">
+<div>
+<p class="text-white font-medium mb-1">"K (but nicely)"</p>
+<p class="text-white/40 text-xs uppercase font-bold group-hover:text-risk-high transition-colors">The Still-A-Crime</p>
+</div>
+<span class="material-symbols-outlined text-white/20 group-hover:text-risk-high">cancel</span>
+</button>
+</div>
+<div class="mt-10 flex flex-col gap-4">
+<button class="w-full py-4 bg-primary rounded-xl font-bold text-lg shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all">
+                            Submit My Guess
+                        </button>
+<button class="w-full py-3 bg-white/5 rounded-xl font-medium text-sm text-white/70 hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">lightbulb</span>
+                            Ask Dr. Liss for a Hint (-50 pts)
+                        </button>
+</div>
+<div class="mt-8 pt-8 border-t border-white/10 flex justify-between items-center">
+<div>
+<p class="text-white/40 text-[10px] font-bold uppercase tracking-widest">Player Score</p>
+<p class="text-2xl font-bold text-white">1,200 <span class="text-accent-pink">HP</span></p>
+</div>
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-background-dark bg-accent-purple flex items-center justify-center font-bold text-xs shadow-lg" title="Your Partner">SJ</div>
+<div class="w-10 h-10 rounded-full border-2 border-background-dark bg-primary flex items-center justify-center font-bold text-xs shadow-lg" title="You">ME</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Background Accent -->
+<div class="fixed bottom-0 left-0 w-full h-1/2 pointer-events-none z-[-1] opacity-20">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent"></div>
+</div>
+</div>
+</body></html>

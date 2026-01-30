@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Micro-Moment Museum Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff0a64", "background-light": "#f8f5f6", "background-dark": "#230f16", "accent-turquoise": "#20e3b2"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(236, 19, 91, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(32, 227, 178, 0.1) 0%, transparent 40%),
+                        #181113;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-pink { box-shadow: 0 0 15px rgba(236, 19, 91, 0.4); }
+        .glow-turquoise { box-shadow: 0 0 15px rgba(32, 227, 178, 0.4); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen nebula-bg">
+<div class="layout-container flex flex-col min-h-screen">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#39282e] px-10 py-3 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Micro-Moment Museum</h2>
+<p class="text-primary text-xs font-bold uppercase tracking-widest">Love Actually... The Game</p>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Gallery</a>
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Exhibits</a>
+<a class="text-white hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Curator Feedback</a>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
+<span class="truncate">Submit to Collection</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User avatar profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA6qZ3ysZAYiq7cl-eFwS6K2orOgD9Z4eOU4XlMC3q3BT3I0kju5NBYknhJUrqqz1WOI2Qbp_p5NkbwE1hEyHRsUSCChowHkYVMB0_0Sr-RoMfqbePaDr1sSCvzeGlriSBIq-1qcM-4nPbqElr00gLh1GqgaGN8e8B9rfbkorTv8hVN0nQWBfl77Z7SoIISZTbwBylllNSrIs3XcHr8tc8bCcEk3mqhLDm9R7gvpfCmJDCg34J39wci12xkH_s-AeWJS3YaElEY_aK4");'></div>
+</div>
+</header>
+<main class="flex-1 max-w-[1200px] mx-auto w-full px-6 py-8">
+<!-- Breadcrumbs & Progress -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+<div class="flex flex-wrap gap-2 py-2">
+<a class="text-[#b99da6] text-base font-medium leading-normal flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-sm">auto_awesome</span> Love Actually Game Show
+                    </a>
+<span class="text-[#b99da6] text-base font-medium leading-normal">/</span>
+<span class="text-white text-base font-medium leading-normal">Exhibit 7 of 10</span>
+</div>
+<div class="flex flex-col gap-2 glass-panel p-3 rounded-xl min-w-[280px]">
+<div class="flex gap-6 justify-between">
+<p class="text-white text-xs font-bold uppercase tracking-tighter">Museum Progress</p>
+<p class="text-primary text-xs font-bold">70%</p>
+</div>
+<div class="rounded-full bg-[#543b43] h-1.5 overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 70%;"></div>
+</div>
+</div>
+</div>
+<!-- Main Stage -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left: The Artifact -->
+<div class="lg:col-span-7 flex flex-col gap-4">
+<div class="relative group">
+<!-- Curator Overlay -->
+<div class="absolute -top-6 -left-6 z-10 w-48 transition-transform hover:scale-110">
+<div class="relative bg-background-dark border-2 border-primary rounded-xl p-4 shadow-2xl overflow-hidden">
+<div class="absolute top-0 right-0 p-1 opacity-20">
+<span class="material-symbols-outlined text-primary text-4xl">history_edu</span>
+</div>
+<p class="text-[10px] font-bold text-primary uppercase mb-1">Dr. Marcie Liss</p>
+<p class="text-xs text-white leading-tight italic">"Be specific. How did their touch change the room?"</p>
+<div class="mt-3 py-1 px-2 bg-primary/20 border border-primary/30 rounded text-[10px] font-bold text-center">
+                                    PLAQ-7: THE GREAT CARB HEIST
+                                </div>
+</div>
+</div>
+<!-- Header Image as Artwork -->
+<div class="@[480px]:px-0">
+<div class="bg-cover bg-center flex flex-col justify-end overflow-hidden border-8 border-[#39282e] rounded-xl min-h-[500px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.6)] relative" data-alt="Close up of two people holding hands warmly" style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 40%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBGshh1GoAVFeQHjdwfKpXl9JFK6rzXCAjL8XrxqcVCfeUYAIeUC3DWT1E0fvq7MdgODLk2CE9QCFOqlYCMAFYxtuXE4epUYHFDu8zLv8Dtt-eHomplxJiXr0OvwtrNySfRf2P0T7fHES2eM8YrXNfa5mCd4HbeAtmqkGuikVB9jboKIwcCAF5r4CxIf0lRrhrqfc7Nyp54djpN6CLDvlp6-VvVpKoti19lCNdB6Wh7lPiPaGj4d5jkIX7O_f88nGrprmqt9IPD1upO");'>
+<div class="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors"></div>
+<div class="flex p-8 relative z-20">
+<div>
+<p class="text-primary text-sm font-bold uppercase tracking-[0.2em] mb-2">Connection Artifact #7</p>
+<h2 class="text-white tracking-tight text-[32px] font-bold leading-tight">Hand-Holding at Midnight</h2>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Interaction Side -->
+<div class="lg:col-span-5 flex flex-col gap-6 h-full">
+<div class="glass-panel p-8 rounded-2xl flex flex-col gap-8 flex-grow shadow-2xl">
+<div>
+<h2 class="text-white text-2xl font-bold leading-tight tracking-tight mb-2">Curate the Caption</h2>
+<p class="text-[#b99da6] text-sm leading-relaxed">Describe this micro-moment in a way that captures the sensory details. What was the unspoken vibe?</p>
+</div>
+<!-- Input Field -->
+<div class="flex flex-col gap-2">
+<label class="text-xs font-bold text-primary uppercase tracking-widest ml-1">Your Narrative</label>
+<textarea class="w-full bg-background-dark/50 border-2 border-[#39282e] focus:border-primary rounded-xl p-4 text-white font-display text-lg resize-none transition-all focus:ring-0 placeholder:text-[#543b43]" placeholder="e.g. 'It wasn't just holding hands, it was a silent promise during the drive home...'" rows="6"></textarea>
+</div>
+<!-- Gauges -->
+<div class="grid grid-cols-1 gap-6">
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">favorite</span>
+<span class="text-white text-sm font-bold">Warmth Meter</span>
+</div>
+<span class="text-primary text-xs font-bold">High Intensity</span>
+</div>
+<div class="h-4 rounded-full bg-white/5 overflow-hidden glow-pink">
+<div class="h-full bg-primary w-[85%] rounded-full shadow-[0_0_10px_#ec135b]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-turquoise">precision_manufacturing</span>
+<span class="text-white text-sm font-bold">Specificity Meter</span>
+</div>
+<span class="text-accent-turquoise text-xs font-bold">Needs Detail</span>
+</div>
+<div class="h-4 rounded-full bg-white/5 overflow-hidden glow-turquoise">
+<div class="h-full bg-accent-turquoise w-[42%] rounded-full shadow-[0_0_10px_#20e3b2]"></div>
+</div>
+</div>
+</div>
+<!-- Action -->
+<div class="mt-auto pt-6 border-t border-white/10 flex flex-col gap-4">
+<div class="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/5">
+<div class="size-8 rounded bg-primary flex items-center justify-center text-white font-bold">
+                                    7
+                                </div>
+<p class="text-sm text-[#b99da6]">Only 3 more moments to complete your <strong>Love Story Gallery</strong>.</p>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl text-lg shadow-xl shadow-primary/30 transition-all hover:scale-[1.02] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">auto_awesome_motion</span>
+                                Curate This Moment
+                            </button>
+</div>
+</div>
+<!-- Additional Details / Plaque -->
+<div class="flex items-center gap-4 px-4">
+<div class="h-[1px] flex-1 bg-white/10"></div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-[#543b43]">Artifact ID: MM-9823-7</span>
+<div class="h-[1px] flex-1 bg-white/10"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Gallery Footer Hint -->
+<footer class="mt-auto py-6 px-10 border-t border-white/5 bg-background-dark/40 backdrop-blur-sm">
+<div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-6">
+<p class="text-xs text-[#b99da6] uppercase tracking-tighter font-bold">Current Exhibit: <span class="text-white italic">The Great Carb Heist Series</span></p>
+</div>
+<div class="flex gap-2">
+<div class="size-2 rounded-full bg-primary"></div>
+<div class="size-2 rounded-full bg-primary"></div>
+<div class="size-2 rounded-full bg-primary"></div>
+<div class="size-2 rounded-full bg-primary"></div>
+<div class="size-2 rounded-full bg-primary"></div>
+<div class="size-2 rounded-full bg-primary"></div>
+<div class="size-3 rounded-full bg-white ring-2 ring-primary ring-offset-2 ring-offset-background-dark"></div>
+<div class="size-2 rounded-full bg-white/20"></div>
+<div class="size-2 rounded-full bg-white/20"></div>
+<div class="size-2 rounded-full bg-white/20"></div>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

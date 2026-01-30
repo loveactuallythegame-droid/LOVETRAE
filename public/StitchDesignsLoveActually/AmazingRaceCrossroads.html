@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Amazing Race: Crossroads - Phase 4</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff005e", "background-light": "#f8f5f6", "background-dark": "#230f16", charcoal: "#1c2727"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: "Plus Jakarta Sans", sans-serif;
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 50% 50%, #1a2a2a 0%, #102222 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .nebula-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: transparent radial-gradient(circle at 20% 30%, rgba(17, 212, 212, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.03) 0%, transparent 40%);
+            z-index: 0;
+        }
+        .speed-bar-gradient {
+            background: linear-gradient(to right, #ef4444, #f59e0b, #eab308, #22c55e, #3b82f6, #a855f7);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen nebula-bg">
+<div class="relative z-10 flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-3 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<span class="material-symbols-outlined">explore</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] uppercase">Amazing Race: Crossroads</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/70 hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Mission Control</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Decision Log</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Protocol Rules</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">World Rankings</a>
+</nav>
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-background-dark text-sm font-bold leading-normal tracking-[0.015em] hover:brightness-110 transition-all">
+<span class="truncate">Sync Progress</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="Avatar of the user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAwI9B2hO7YV2r5aE-Vj6xg44tkNr2vw3hryRJlWZMIEfydGJiHGOLOaSpjSI8hOEAdUamtFO6qdmL9h-csGWgGYIGbBr3M6F_ljKpfadUZxLYXG9iBBaz0neMgJ54VrirO3WhYwJQKZOasg7dkrlAkHcb76jI-s3Ux3JGe8RBi3dBwm0nzfexynEcVFAoDtGvwbVCowNVCFdDrOeGaBN-UGmVbo4Ec0qJgRskTiZMriX1fMFf_g6Mz9x-MgU91ZiSWu9GYWA8yO-j7");'></div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl mx-auto w-full px-4 py-6 grid grid-cols-12 gap-6">
+<!-- Left Sidebar: Moderator & Team Stats -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+<!-- Moderator Card -->
+<div class="bg-charcoal/60 backdrop-blur-md rounded-xl p-6 border border-white/5 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary scale-150">campaign</span>
+</div>
+<div class="flex flex-col gap-4 relative z-10">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full min-h-24 w-24 mx-auto border-4 border-primary" data-alt="Dr. Marcie Liss Race Moderator with a whistle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBkmzuNxDvz02L0i8oOPWUj8HThUkcW8scID1Dqr3i-ltPrFUDIp_6RsfRGseIKQzal5WTy9KB2_l9r-9-rsrtcczVtDb8ia4OaMkeShTCfa72gBo7AfFgs-eho1Bdq54c2FAPnRZCraRbhPYyCwsap7JhpOZS8PCWFPsliBMF-NGj8lwCvlexQw2hwVStRxWLCieRoWtsNO8isv6wBoElRE-rdvWh3S6xqNNl6QQzVgeRo32rFllaG_1rtayUoT9DMHTEQ24QTSHnC");'></div>
+<div class="absolute -bottom-2 -right-0 bg-primary text-background-dark p-1 rounded-full border-2 border-charcoal">
+<span class="material-symbols-outlined text-sm font-bold">sports</span>
+</div>
+</div>
+<div class="text-center">
+<p class="text-white text-xl font-bold leading-tight">Dr. Marcie Liss</p>
+<p class="text-primary text-xs font-bold uppercase tracking-widest mt-1">Race Moderator</p>
+<div class="mt-4 p-3 bg-background-dark/50 rounded-lg border border-primary/20 italic text-sm text-[#9db9b9]">
+                                "Phase 4 Word-Wound Protocol is active. Choose your path wisely, the rift is closing!"
+                            </div>
+</div>
+<button class="w-full py-2.5 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">record_voice_over</span>
+                            Moderator Briefing
+                        </button>
+</div>
+</div>
+<!-- Team Speed Bar -->
+<div class="bg-charcoal/60 backdrop-blur-md rounded-xl p-5 border border-white/5">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-xs font-bold text-[#9db9b9] uppercase tracking-tighter">Team Velocity</h3>
+<span class="text-primary text-xs font-bold">MACH 0.82</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="h-3 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full speed-bar-gradient" style="width: 82%;"></div>
+</div>
+<div class="flex justify-between text-[10px] text-white/40 font-medium px-1">
+<span>STALL</span>
+<span>CRUISING</span>
+<span>SUPERSONIC</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Center: Map Dashboard -->
+<div class="col-span-12 lg:col-span-6 flex flex-col gap-6">
+<div class="bg-charcoal/40 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden flex flex-col h-[600px] relative">
+<!-- Map Header Overlays -->
+<div class="absolute top-4 left-4 z-20 flex gap-2">
+<div class="bg-background-dark/80 px-4 py-2 rounded-lg border border-primary/30 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-lg">location_on</span>
+<span class="text-sm font-bold tracking-tight">LEG 04: CROSSROADS</span>
+</div>
+</div>
+<!-- Map Search & Controls -->
+<div class="absolute top-4 right-4 z-20 flex flex-col gap-2">
+<div class="flex bg-background-dark/80 rounded-lg border border-white/10 overflow-hidden h-10">
+<div class="flex items-center justify-center px-3 text-[#9db9b9]">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="bg-transparent border-none text-sm focus:ring-0 text-white placeholder:text-white/30 w-32 focus:w-48 transition-all" placeholder="Scan checkpoints..." type="text"/>
+</div>
+<div class="flex flex-col gap-1 items-end">
+<button class="size-10 bg-background-dark/80 rounded-lg border border-white/10 flex items-center justify-center hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="size-10 bg-background-dark/80 rounded-lg border border-white/10 flex items-center justify-center hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="size-10 bg-background-dark/80 rounded-lg border border-white/10 flex items-center justify-center hover:bg-primary/20 transition-colors mt-2">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+</div>
+<!-- The Map Visual -->
+<div class="flex-1 bg-cover bg-center" data-location="Global Command Center Map" style='background-image: linear-gradient(rgba(16, 34, 34, 0.4), rgba(16, 34, 34, 0.4)), url("https://placeholder.pics/svg/300");'>
+<!-- Map Nodes Overlay (Simulated) -->
+<div class="relative w-full h-full">
+<!-- Checkpoint 1 -->
+<div class="absolute top-1/4 left-1/3 group cursor-pointer">
+<div class="size-4 bg-primary rounded-full animate-pulse shadow-[0_0_15px_#11d4d4]"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-background-dark/90 px-3 py-1.5 rounded-md border border-primary/50 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="text-[10px] font-bold text-primary uppercase">COMPLETED</p>
+<p class="text-xs font-bold">Valley of Silence</p>
+</div>
+</div>
+<!-- Current Checkpoint -->
+<div class="absolute top-1/2 left-2/3 group cursor-pointer">
+<div class="size-6 bg-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.5)] border-4 border-primary">
+<span class="material-symbols-outlined text-background-dark text-xs font-bold">flag</span>
+</div>
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 bg-background-dark px-4 py-2 rounded-lg border-2 border-primary whitespace-nowrap shadow-xl">
+<p class="text-[10px] font-bold text-primary uppercase tracking-widest">CURRENT LOCATION</p>
+<p class="text-sm font-bold">The Crossroads Leg</p>
+</div>
+<!-- Connection Line -->
+<div class="absolute top-1/2 right-full w-32 h-[2px] bg-gradient-to-r from-primary to-transparent -translate-y-1/2 origin-right -rotate-12 opacity-50"></div>
+</div>
+</div>
+</div>
+<!-- Bottom Status Bar -->
+<div class="bg-background-dark/90 p-4 border-t border-white/10 flex items-center justify-between">
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="text-[10px] text-[#9db9b9] uppercase font-bold tracking-wider">Distance to Pit Stop</span>
+<span class="text-sm font-bold">1,240 MILES</span>
+</div>
+<div class="w-px h-8 bg-white/10"></div>
+<div class="flex flex-col">
+<span class="text-[10px] text-[#9db9b9] uppercase font-bold tracking-wider">Est. Completion</span>
+<span class="text-sm font-bold">04H : 22M : 15S</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex size-2 bg-green-500 rounded-full"></span>
+<span class="text-xs font-medium text-green-500">SYSTEMS NOMINAL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Decision Hub -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+<!-- Headline Card -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 -mr-4 -mt-4 size-24 bg-primary/20 rounded-full blur-2xl"></div>
+<h1 class="text-white text-2xl font-black leading-tight mb-2 italic">WORD-WOUND PROTOCOL</h1>
+<p class="text-primary text-sm font-bold uppercase tracking-tighter">PHASE 04: ACTIVE</p>
+</div>
+<!-- Detours Card -->
+<div class="bg-charcoal/60 backdrop-blur-md rounded-xl border border-white/5 overflow-hidden flex flex-col">
+<div class="bg-white/5 px-4 py-3 border-b border-white/5 flex items-center justify-between">
+<span class="text-xs font-bold text-white uppercase tracking-widest">DETOUR</span>
+<span class="material-symbols-outlined text-primary text-lg">alt_route</span>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<p class="text-xs text-[#9db9b9]">Choose your communication style for the next 500 miles:</p>
+<button class="group p-3 rounded-lg border border-white/10 bg-white/5 text-left hover:border-primary/50 hover:bg-primary/5 transition-all">
+<p class="text-sm font-bold group-hover:text-primary transition-colors">Radical Candor</p>
+<p class="text-[11px] text-[#9db9b9] mt-1">High intensity, direct feedback, zero filters.</p>
+</button>
+<div class="flex items-center justify-center py-1">
+<span class="text-[10px] font-bold text-white/20">-- OR --</span>
+</div>
+<button class="group p-3 rounded-lg border border-white/10 bg-white/5 text-left hover:border-primary/50 hover:bg-primary/5 transition-all">
+<p class="text-sm font-bold group-hover:text-primary transition-colors">Softened Start-up</p>
+<p class="text-[11px] text-[#9db9b9] mt-1">Low impact, high empathy, gradual entry.</p>
+</button>
+</div>
+</div>
+<!-- Roadblocks Card -->
+<div class="bg-charcoal/60 backdrop-blur-md rounded-xl border border-white/5 overflow-hidden flex flex-col">
+<div class="bg-red-500/10 px-4 py-3 border-b border-red-500/20 flex items-center justify-between">
+<span class="text-xs font-bold text-red-500 uppercase tracking-widest">ROADBLOCK</span>
+<span class="material-symbols-outlined text-red-500 text-lg">warning</span>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<p class="text-xs text-[#9db9b9]">A personal growth task for ONE partner only:</p>
+<div class="bg-background-dark/40 rounded-lg p-3 border border-red-500/10">
+<h4 class="text-sm font-bold text-white mb-1">Mirror Meditation</h4>
+<p class="text-[11px] text-[#9db9b9]">Facing self-criticism without projection. Takes approx 20 mins.</p>
+</div>
+<button class="w-full py-2 bg-red-500 text-white rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-red-600 transition-colors shadow-lg shadow-red-500/20">
+                            I'll Take This Task
+                        </button>
+</div>
+</div>
+<!-- Phase Progress Segment -->
+<div class="mt-auto flex flex-col gap-2">
+<div class="flex justify-between text-[10px] font-bold uppercase text-[#9db9b9]">
+<span>Protocol Progress</span>
+<span>Stage 4/6</span>
+</div>
+<div class="flex gap-1">
+<div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+<div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+<div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+<div class="h-1.5 flex-1 bg-primary rounded-full"></div>
+<div class="h-1.5 flex-1 bg-white/10 rounded-full"></div>
+<div class="h-1.5 flex-1 bg-white/10 rounded-full"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Global Footer Bar -->
+<footer class="bg-background-dark/90 border-t border-white/10 p-4">
+<div class="max-w-7xl mx-auto flex items-center justify-between text-[#9db9b9] text-[10px] font-medium tracking-widest uppercase">
+<div class="flex gap-6">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">security</span> Encryption: Active</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">router</span> Connection: Stable</span>
+</div>
+<div>
+                    Love Actually... The Game © 2024 Phase 4 Protocol
+                </div>
+<div class="flex gap-4">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="hover:text-primary transition-colors" href="#">Emergency Halt</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

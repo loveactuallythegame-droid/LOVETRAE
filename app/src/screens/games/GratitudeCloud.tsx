@@ -3,7 +3,8 @@ import { View, StyleSheet, TextInput } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 import { Text, GlassCard } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
-import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
+import { auth, db } from '../../lib/firebaseClient';
+import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
 import { COLORS } from '../../constants/colors';
 
 type CloudWord = { text: string; weight: number; left: number; top: number; size: number };
@@ -16,48 +17,70 @@ export default function GratitudeCloud({ route, navigation }: any) {
   const sessionId = useRef<string | null>(null);
   const coupleId = useRef<string | null>(null);
   const [partnerWords, setPartnerWords] = useState<string[]>([]);
+  const userId = useRef<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }: any) => {
-      const user = data.session?.user;
-      let couple_id: string | null = null;
-      try {
-        const base = supabase.from('profiles').select('couple_code,user_id') as any;
-        if (typeof base.eq === 'function') {
-          const res = await base.eq('user_id', user?.id || '').single();
-          couple_id = res?.data?.couple_code ?? null;
-        } else {
-          const res = await (supabase.from('profiles').select('couple_code,user_id') as any);
-          const row = (res?.data || []).find((r: any) => r.user_id === (user?.id || ''));
-          couple_id = row?.couple_code ?? null;
+    const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        userId.current = user.uid;
+        const profileRef = doc(db, 'profiles', user.uid);
+        const profileSnap = await getDoc(profileRef);
+        const couple_code = profileSnap.data()?.couple_code;
+
+        if (couple_code) {
+          coupleId.current = couple_code;
+          const sessionRef = await addDoc(collection(db, 'game_sessions'), {
+            gameId,
+            userId: user.uid,
+            couple_id: couple_code,
+            createdAt: new Date(),
+            state: { words: [] },
+          });
+          sessionId.current = sessionRef.id;
+
+          const q = query(
+            collection(db, 'game_sessions'),
+            where('couple_id', '==', couple_code),
+            where('gameId', '==', gameId)
+          );
+
+          const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              if (doc.id !== sessionId.current) {
+                const data = doc.data();
+                if (data.state?.words) {
+                  setPartnerWords(data.state.words);
+                }
+              }
+            });
+          });
+          return () => unsubscribeSnapshot();
         }
-      } catch {
-        couple_id = null;
-      }
-      if (user && couple_id) {
-        coupleId.current = couple_id;
-        const session = await createGameSession(gameId, user.id, couple_id);
-        sessionId.current = session.id;
-        supabase
-          .channel('gratitude_sync')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'game_sessions', filter: `couple_id=eq.${couple_id}` }, (payload: any) => {
-            const row: any = payload.new;
-            if (row && row.game_id === gameId && row.id !== sessionId.current) {
-              try {
-                const st = JSON.parse(row.state || '{}');
-                if (st.words) setPartnerWords(st.words);
-              } catch {}
-            }
-          })
-          .subscribe();
       }
     });
+
+    return () => unsubscribeAuth();
   }, [gameId]);
+
+  async function updateWordsInFirestore(newWords: string[]) {
+      if (sessionId.current) {
+          const sessionRef = doc(db, 'game_sessions', sessionId.current);
+          await updateDoc(sessionRef, {
+              state: { words: newWords }
+          });
+      }
+  }
 
   function addWord(t: string) {
     const cleaned = t.trim().toLowerCase();
     if (!cleaned) return;
-    setWords((prev) => (prev.includes(cleaned) ? prev : [...prev, cleaned]));
+
+    if (!words.includes(cleaned)) {
+        const newWords = [...words, cleaned];
+        setWords(newWords);
+        updateWordsInFirestore(newWords);
+    }
+    
     setInput('');
     if (cleaned === 'tolerable') {
       try { const { speakMarcie } = require('../../lib/voice-engine'); speakMarcie("I see you typed 'tolerable' three times. How romantic."); } catch {}
@@ -108,7 +131,14 @@ export default function GratitudeCloud({ route, navigation }: any) {
 
   async function onComplete(res: { score: number; xpEarned: number }) {
     const xp = Math.min(60, 30 + uniqueCount * 2);
-    if (sessionId.current) await updateGameSession(sessionId.current, { finished_at: new Date().toISOString(), score: res.score, state: JSON.stringify({ words, xp }) });
+    if (sessionId.current) {
+        const sessionRef = doc(db, 'game_sessions', sessionId.current);
+        await updateDoc(sessionRef, {
+            finished_at: new Date().toISOString(),
+            score: res.score,
+            state: { words, xp }
+        });
+    }
     navigation.goBack();
   }
 

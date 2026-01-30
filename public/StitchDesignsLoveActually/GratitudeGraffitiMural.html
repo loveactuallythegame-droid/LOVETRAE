@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gratitude Graffiti Mural - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff034a", "accent-pink": "#ff007f", "accent-teal": "#00f2ff", "background-light": "#f8f5f6", "background-dark": "#230f15", charcoal: "#120b18"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(127, 19, 236, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 0, 127, 0.1) 0%, transparent 40%),
+                        #191022;
+        }
+        .mural-canvas {
+            background-color: #120b18;
+            background-image: radial-gradient(#2d1b3d 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .neon-glow-pink {
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.8), 0 0 20px rgba(255, 0, 127, 0.4);
+        }
+        .neon-glow-teal {
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.8), 0 0 20px rgba(0, 242, 255, 0.4);
+        }
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-white selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col nebula-bg overflow-x-hidden">
+<!-- Header / TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 backdrop-blur-md bg-background-dark/50 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Love Actually... <span class="text-primary/80">The Game</span></h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Mural Board</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Gallery</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">History</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-xl h-10 px-5 bg-primary hover:bg-primary/80 text-white text-sm font-bold transition-all shadow-lg shadow-primary/20">
+                        End Game
+                    </button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/10">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-white/5 hover:bg-white/10 text-white transition-colors border border-white/10">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col px-6 lg:px-20 py-6 max-w-[1400px] mx-auto w-full gap-6">
+<!-- Page Heading & Timer Row -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 rounded bg-primary/20 text-primary text-xs font-bold uppercase tracking-widest">Variant 2 of 10</span>
+<p class="text-white text-3xl font-bold tracking-tight">Round 2: Gratitude Graffiti</p>
+</div>
+<p class="text-white/50 text-base font-normal">Collaborate to draw metaphors of appreciation for your partner!</p>
+</div>
+<!-- Timer Component -->
+<div class="flex gap-3 bg-white/5 p-3 rounded-2xl border border-white/10 shadow-2xl pulse-animation">
+<div class="flex flex-col items-center min-w-[60px]">
+<div class="flex h-12 w-full items-center justify-center rounded-xl bg-charcoal border border-white/5">
+<p class="text-accent-pink text-xl font-bold">00</p>
+</div>
+<p class="text-white/40 text-[10px] uppercase font-bold mt-1">Hours</p>
+</div>
+<div class="flex flex-col items-center min-w-[60px]">
+<div class="flex h-12 w-full items-center justify-center rounded-xl bg-charcoal border border-white/5">
+<p class="text-accent-pink text-xl font-bold">00</p>
+</div>
+<p class="text-white/40 text-[10px] uppercase font-bold mt-1">Mins</p>
+</div>
+<div class="flex flex-col items-center min-w-[60px]">
+<div class="flex h-12 w-full items-center justify-center rounded-xl bg-charcoal border border-accent-pink/30">
+<p class="text-accent-pink text-xl font-bold">59</p>
+</div>
+<p class="text-white/40 text-[10px] uppercase font-bold mt-1 tracking-tighter">Seconds</p>
+</div>
+</div>
+</div>
+<div class="flex flex-1 gap-6 relative min-h-[500px]">
+<!-- Sidebar Prompts -->
+<div class="hidden xl:flex flex-col w-64 gap-4">
+<div class="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+<h3 class="text-sm font-bold text-white/80 mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">lightbulb</span>
+                            Inspiration Prompts
+                        </h3>
+<div class="space-y-3">
+<div class="p-3 rounded-lg bg-charcoal/50 border border-white/5 text-xs text-white/70 italic">
+                                "You're the guac to my toast."
+                            </div>
+<div class="p-3 rounded-lg bg-charcoal/50 border border-white/5 text-xs text-white/70 italic">
+                                "The wifi signal to my heart."
+                            </div>
+<div class="p-3 rounded-lg bg-charcoal/50 border border-white/5 text-xs text-white/70 italic">
+                                "The anchor in my storm."
+                            </div>
+</div>
+</div>
+<div class="flex-1 rounded-xl border border-dashed border-white/10 flex items-center justify-center p-6 text-center">
+<p class="text-white/30 text-xs uppercase tracking-widest leading-relaxed">Partner is currently drawing...</p>
+</div>
+</div>
+<!-- Main Drawing Board (Map/Canvas) -->
+<div class="flex-1 flex flex-col relative bg-charcoal rounded-3xl border-4 border-white/5 shadow-2xl overflow-hidden group">
+<div class="absolute inset-0 mural-canvas opacity-50"></div>
+<!-- Graffiti Rendered -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none p-20 select-none">
+<div class="relative w-full h-full">
+<span class="absolute top-1/4 left-1/4 rotate-[-12deg] text-4xl lg:text-6xl font-black neon-glow-pink text-accent-pink opacity-90 italic">
+                                GUAC 🥑
+                            </span>
+<span class="absolute top-1/3 left-1/2 translate-x-[-50%] text-2xl lg:text-4xl font-bold text-white/40">
+                                TO MY
+                            </span>
+<span class="absolute bottom-1/4 right-1/4 rotate-[8deg] text-4xl lg:text-6xl font-black neon-glow-teal text-accent-teal opacity-90 italic">
+                                TOAST 🍞
+                            </span>
+<!-- Scribbles -->
+<svg class="absolute inset-0 w-full h-full" fill="none" viewbox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+<path class="opacity-40" d="M150 100C200 150 250 50 300 120" stroke="#ff007f" stroke-dasharray="10 5" stroke-linecap="round" stroke-width="4"></path>
+<path class="opacity-30" d="M600 350C650 400 700 300 750 370" stroke="#00f2ff" stroke-linecap="round" stroke-width="6"></path>
+</svg>
+</div>
+</div>
+<!-- Drawing ToolBar Overlay -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 px-6 py-3 rounded-2xl bg-charcoal/90 backdrop-blur-xl border border-white/10 shadow-2xl z-20">
+<div class="flex items-center gap-1 border-r border-white/10 pr-4 mr-2">
+<button class="p-2.5 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined">brush</span>
+</button>
+<button class="p-2.5 rounded-lg bg-primary text-white shadow-lg shadow-primary/40 transition-all">
+<span class="material-symbols-outlined">ink_eraser</span>
+</button>
+<button class="p-2.5 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined">format_color_fill</span>
+</button>
+<button class="p-2.5 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined">undo</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex gap-2 mr-4">
+<div class="w-6 h-6 rounded-full bg-accent-pink ring-2 ring-white/20 cursor-pointer"></div>
+<div class="w-6 h-6 rounded-full bg-accent-teal cursor-pointer"></div>
+<div class="w-6 h-6 rounded-full bg-primary cursor-pointer"></div>
+<div class="w-6 h-6 rounded-full bg-white cursor-pointer"></div>
+</div>
+<button class="flex items-center gap-2 px-6 h-10 bg-primary hover:bg-primary/80 rounded-xl text-sm font-bold transition-all">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                                Finish Mural
+                            </button>
+</div>
+</div>
+<!-- Partner Indicators -->
+<div class="absolute top-4 right-4 flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-accent-pink bg-cover bg-center shadow-lg" data-alt="Female partner profile photo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDg479tol2l4hAHDxTcSYOH7nBOLDtWWzmKI7q83gDStigyeM1Tf_0TEPrmpq9sakuDNxm24qQ5sQLslYXoZr5HAlPrsl1A5viRfEfXkkYAJfhjVBuBCAYmNIvu0YK6Xf0ehoT12dCCvfoddBBNw0xOWjxw8ap20WP1hR2IHHFeiI3G66v8J4Wn_-eQ790WUbnbtf5EcClaYf4iGSk8ytR55nESYNg1_k1j6wQ3mCb3P9Otfi4a3exUEFeupbYF_i-uWqrwMLsg--Gn')"></div>
+<div class="w-10 h-10 rounded-full border-2 border-accent-teal bg-cover bg-center shadow-lg" data-alt="Male partner profile photo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBaLwwXjXo0gTtaYzCsnqKvk7fuGk7O3AHkXUXq7esIk508Da3Mt_mwdHHUebzjT4SNtFtaXGNri0o6wk974lM2R8VYiOizyNiOrt1G7RZathfb92PdhC2oEYtIPunT4m8151eQnPQbSrgdPH62QK4B2s7UTygs0RSXTXL2H0KiaKbjYFtiZAEkoe64WXitsKrLGvfvU8gxUxmtVA6aSfBY7PtAbxDYvvL2nw2ldfjBWIdDVOlyJ4fZAb1TtNc1dErKZ10LDbSAo2lZ')"></div>
+</div>
+</div>
+<!-- Dr. Marcie Overlay -->
+<div class="absolute bottom-4 right-4 w-72 flex flex-col items-end gap-3 z-30">
+<div class="bg-primary/20 backdrop-blur-md border border-primary/30 p-4 rounded-2xl rounded-br-none shadow-xl text-sm relative">
+<p class="text-white font-medium leading-relaxed">
+                            "I'm loving those neon choices! That 
+                            <span class="text-accent-pink font-bold">guac metaphor</span> 
+                            is absolutely brilliant, Sarah! Keep going, 30 seconds left!"
+                        </p>
+</div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-white font-bold text-sm">Dr. Marcie Liss</p>
+<p class="text-primary text-xs font-medium uppercase tracking-tighter">Art Critic &amp; Host</p>
+</div>
+<div class="w-16 h-16 rounded-full border-4 border-primary shadow-2xl overflow-hidden bg-charcoal">
+<img alt="Dr Marcie Liss Avatar" class="w-full h-full object-cover" data-alt="Dr Marcie Liss professional headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbjZqn0EuA_bLPGF_2xMgEku8yTNeLnB6rEaNrYuSuTagrh6IRhH2BtQ1cUSt-aeNMdLJtLTHT4GQbAuXiYYHV0jAoY-6xoWHUaZd3BWjPr2ZCv4FSA4bFf0zgPPMS-sPZonL6hk5MjD7bHlPLcbxOfCnrSv7OS-HaUQCrK5otY5Ji91JS4KGa4IyYqNiASOxvDmowdERpUFbShSJEr1RzvxOepA2vAx8UYLfHhXDT1DUfmCZ-M1QsbVb-WQEAC4sRsqqAQY6Uxm94"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / Status -->
+<footer class="flex items-center justify-between py-4 border-t border-white/5">
+<div class="flex gap-6 items-center">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-xs text-white/40 uppercase tracking-widest font-bold">Sarah Connected</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-xs text-white/40 uppercase tracking-widest font-bold">James Connected</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs text-white/40 font-medium">Session ID: #LVE-GRAF-429</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

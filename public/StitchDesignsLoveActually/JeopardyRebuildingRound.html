@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jeopardy: Rebuilding Round</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff005e", "background-light": "#f8f5f6", "background-dark": "#230f16", charcoal: "#1c2727", gold: "#facc15"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Spline Sans', sans-serif;
+            background: radial-gradient(circle at center, #1a2e2e 0%, #102222 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* Nebula effect */
+        .nebula-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(17, 212, 212, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(147, 51, 234, 0.08) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .glow-text-gold {
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+        }
+        .glow-box-primary {
+            box-shadow: 0 0 20px rgba(17, 212, 212, 0.3);
+        }
+        .grid-tile:hover {
+            background-color: rgba(17, 212, 212, 0.1);
+            border-color: #11d4d4;
+            transform: translateY(-2px);
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen">
+<div class="nebula-overlay"></div>
+<div class="relative flex flex-col min-h-screen">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between px-10 py-4 border-b border-white/10 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-xl font-black tracking-tight">JEOPARDY!: <span class="text-primary">REBUILDING</span></h2>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Rules</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Forensics</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Archives</a>
+</nav>
+<div class="flex items-center gap-4 border-l border-white/10 pl-8">
+<div class="text-right">
+<p class="text-[10px] uppercase tracking-widest text-primary font-bold">Player Score</p>
+<p class="text-lg font-black">$4,200</p>
+</div>
+<div class="bg-charcoal rounded-full border border-primary/30 p-1">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="User profile avatar with glow border" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAVHFalRHvtrVsNt-f93SyLL239Xs5ZhOp85KE97wzzHK8yWpk-jHVGJdAdjDlR7FlbJ1rH79yRNRMacrA3eX5C90EmbZaNhCQi6J35gSgLpxAJPub82fPzjzSw9ki_P8YyhMRzkm_DtXbIO9GK2gk3MoZR7b79fY4Awkk3QlIDdOnUj7LYRm6BtORNWJbqIyesAW69zej4558YOeNipzKDGd8ta0wx6AOTDb2J8SmnSdhFI8u0HQziuJSI4B4JgO6OvhOo6eR7fYgN')"></div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center p-8 gap-8">
+<!-- Page Heading & Host Info -->
+<div class="w-full max-w-6xl flex flex-col md:flex-row items-end justify-between gap-6">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-widest">Phase 3</span>
+<h1 class="text-4xl md:text-5xl font-black tracking-tighter uppercase italic">Word-Wound Protocol</h1>
+</div>
+<p class="text-white/60 text-lg">Systematic healing through competitive linguistic forensic analysis.</p>
+</div>
+<!-- Host Profile Card -->
+<div class="flex items-center gap-4 bg-charcoal/50 backdrop-blur px-6 py-4 rounded-xl border border-white/5">
+<div class="relative">
+<div class="size-16 rounded-full bg-cover bg-center border-2 border-primary" data-alt="Dr. Marcie Liss holding a laser pointer" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBpOPpZiAiyZEf-7ANDKn8eJJFSw2MhlWpCvZxmP6DfOAXOHfrAGj7UqYoXGrpvxBEN2G7Sa4OiruLCZ7B0PNPvO5yQy4yig7Yz_VDQCh41rvYL7Pt4gLLkjKSCDVyJScWZGU5psAtpb4os7l7-gOiSqmd1IGk6Jnq3Dfn6LlZrgZaiAyGAW0-bkFZdKTs-ZJfojkMpXSlSkBMcYJSAQFo07TUTLdlBG_fuzjKHRvhP3GIUPw5iepfu5ykGXKabyLv0KpgcGPaKADQd')"></div>
+<div class="absolute -top-1 -right-1 size-4 bg-primary rounded-full border-2 border-background-dark animate-pulse"></div>
+</div>
+<div>
+<p class="text-sm font-bold text-primary uppercase tracking-tighter">Quizmaster</p>
+<p class="text-xl font-black">Dr. Marcie Liss</p>
+<p class="text-xs text-white/40">Protocol Director</p>
+</div>
+</div>
+</div>
+<!-- Jeopardy Grid Container -->
+<div class="w-full max-w-6xl @container">
+<div class="bg-charcoal/30 backdrop-blur-xl rounded-xl border border-white/10 p-6 overflow-x-auto">
+<table class="w-full border-separate border-spacing-3">
+<thead>
+<tr>
+<th class="min-w-[160px] p-4 text-primary text-sm font-black uppercase tracking-widest text-center border-b-2 border-primary/20">Forensic Truth</th>
+<th class="min-w-[160px] p-4 text-primary text-sm font-black uppercase tracking-widest text-center border-b-2 border-primary/20">Repair Tactics</th>
+<th class="min-w-[160px] p-4 text-primary text-sm font-black uppercase tracking-widest text-center border-b-2 border-primary/20">Emotional Rebuild</th>
+<th class="min-w-[160px] p-4 text-primary text-sm font-black uppercase tracking-widest text-center border-b-2 border-primary/20">Healing Syntax</th>
+<th class="min-w-[160px] p-4 text-primary text-sm font-black uppercase tracking-widest text-center border-b-2 border-primary/20">Word-Wound Protocol</th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1 -->
+<tr>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$200</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$200</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$200</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$200</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$200</td>
+</tr>
+<!-- Row 2 -->
+<tr>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$400</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$400</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$400</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$400</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$400</td>
+</tr>
+<!-- Row 3 -->
+<tr>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$600</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$600</td>
+<td class="grid-tile h-24 bg-background-dark/50 border border-white/5 opacity-20 rounded-lg text-center text-3xl font-black text-gold line-through">$600</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$600</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$600</td>
+</tr>
+<!-- Row 4 -->
+<tr>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$800</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$800</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$800</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$800</td>
+<td class="grid-tile h-24 bg-background-dark/50 border border-white/5 opacity-20 rounded-lg text-center text-3xl font-black text-gold line-through">$800</td>
+</tr>
+<!-- Row 5 -->
+<tr>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$1000</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$1000</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$1000</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$1000</td>
+<td class="grid-tile cursor-pointer h-24 bg-charcoal/80 border border-white/10 rounded-lg text-center text-3xl font-black text-gold glow-text-gold">$1000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Footer / Interaction Zone -->
+<div class="w-full max-w-6xl flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-white/40 tracking-widest">Current Turn</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+<span class="font-bold">Player One</span>
+</div>
+</div>
+<div class="h-8 w-px bg-white/10"></div>
+<button class="px-6 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-semibold hover:bg-white/10 transition-colors">
+                        View Log
+                    </button>
+</div>
+<!-- BUZZ BUTTON -->
+<button class="group relative flex items-center justify-center size-24 md:size-32 rounded-full bg-primary text-background-dark font-black tracking-tighter text-2xl md:text-3xl transition-transform active:scale-90 hover:scale-105 glow-box-primary">
+<span class="absolute inset-0 rounded-full border-4 border-primary/50 animate-ping"></span>
+                    BUZZ
+                </button>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<p class="text-[10px] font-bold text-white/40 uppercase tracking-widest">Variant 9/10</p>
+<p class="text-xs italic text-primary">Stability: High</p>
+</div>
+<div class="p-3 rounded-xl bg-charcoal/80 border border-white/10">
+<span class="material-symbols-outlined text-primary">bolt</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Floating UI elements for 'Laser Pointer' feel -->
+<div class="fixed bottom-0 left-0 p-4 pointer-events-none opacity-20">
+<p class="text-[8px] uppercase tracking-[0.5em] text-white">REBUILD_PROTOCOL_INITIATED // SESSION_ID_88312</p>
+</div>
+</body></html>

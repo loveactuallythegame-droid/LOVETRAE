@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Validation Game Show</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff005e", "background-light": "#f8f5f6", "background-dark": "#230f16", charcoal: "#1e293b", invalidating: "#f97316", "neutral-lila": "#a855f7"}, fontFamily: {display: "Work Sans", sans: ["Plus Jakarta Sans"]}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: "Plus Jakarta Sans", sans-serif;
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(13, 242, 223, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.1) 0%, transparent 40%),
+                        #102221;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-white overflow-x-hidden nebula-bg">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 glass-panel sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 text-primary">
+<span class="material-symbols-outlined text-4xl">theater_comedy</span>
+</div>
+<div>
+<h2 class="text-white text-lg font-extrabold leading-tight tracking-tight">The Validation Game Show</h2>
+<p class="text-white/60 text-xs font-medium uppercase tracking-widest">Phase 2: Partnering with BPD</p>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="hidden md:flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">person</span>
+<span class="text-white text-sm font-medium">Host: Dr. Marcie Liss</span>
+</div>
+<div class="h-8 w-[1px] bg-white/10"></div>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-primary text-background-dark text-sm font-bold leading-normal tracking-wide shadow-[0_0_20px_rgba(13,242,223,0.3)]">
+<span class="truncate uppercase italic">Round 2 of 9</span>
+</button>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 gap-10">
+<!-- Game Title Section -->
+<div class="max-w-3xl w-full text-center space-y-4">
+<h1 class="text-white tracking-tight text-4xl md:text-5xl font-extrabold leading-tight px-4 drop-shadow-md">
+                    How would you respond to your partner?
+                </h1>
+<p class="text-white/70 text-lg">Select the response type that builds the most connection.</p>
+</div>
+<!-- Main Stage Area -->
+<div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Left: Dr. Marcie Liss & Meter -->
+<div class="lg:col-span-3 flex flex-col gap-8 order-2 lg:order-1">
+<!-- Validation Meter -->
+<div class="glass-panel p-6 rounded-xl flex flex-col gap-4 shadow-xl">
+<div class="flex items-center justify-between">
+<span class="text-primary font-bold text-sm tracking-wider uppercase">Validation Meter</span>
+<span class="text-primary font-bold">75%</span>
+</div>
+<div class="h-32 w-full bg-white/5 rounded-lg relative overflow-hidden flex items-end p-1">
+<div class="w-full rounded bg-primary shadow-[0_0_15px_rgba(13,242,223,0.6)]" style="height: 75%;"></div>
+</div>
+<p class="text-primary/80 text-xs text-center font-semibold italic animate-pulse">Turquoise Glow Active!</p>
+</div>
+<!-- Host Podium -->
+<div class="flex flex-col items-center">
+<div class="relative size-40 md:size-48 mb-[-20px] z-10">
+<div class="absolute inset-0 bg-primary/20 rounded-full blur-2xl"></div>
+<img alt="Dr. Marcie Liss host avatar" class="rounded-full border-4 border-primary/50 relative z-10 w-full h-full object-cover" data-alt="Female therapist host smiling in front of microphone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY199KJ-bzEkI_6oX5A4zZNhK7c2NylO_d0D5FBYPZAni-i-ySaTQAgoDtjULqL0T-X215PDflQkkrIJjJNzozkIxjaxVa1QfL6_9ezhWipReg-E6bcsI3l4_M-1Uqu2Oas1pgn0FRxmm-NPmMwuCnIuBNQ7pfWLNGXVuLpaszY8H8WbXtL1Is5DZzFX60gqgA5_oOmKSrfBdrl8VaOu8v17f4_Z_vwaDu_lFtGhuCpQREZFKHHJau5XexjG3gNtoNNrnT0rC4WGVc"/>
+</div>
+<div class="glass-panel px-6 py-4 rounded-xl text-center border-t-4 border-primary shadow-2xl w-full">
+<p class="text-white font-bold italic">"You're doing great! Look for the deeper emotion."</p>
+</div>
+</div>
+</div>
+<!-- Center: The Statement Card -->
+<div class="lg:col-span-6 flex flex-col gap-8 order-1 lg:order-2">
+<div class="glass-panel rounded-3xl p-1 relative group overflow-hidden shadow-2xl">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent"></div>
+<div class="bg-cover bg-center rounded-2xl min-h-[340px] flex flex-col items-center justify-center p-8 relative z-10 text-center" data-alt="Abstract dark nebula background with purple swirls" style='background-image: linear-gradient(rgba(30, 41, 59, 0.8), rgba(30, 41, 59, 0.9)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZklLS1zM6Ek1RHWq9t05LQSCNkkdFbfr0NwyLE2HoRuU9_aJoTC-6VrFiqjE9G_iRdbjAwSB7GY1V0yPJJ1YhfrV8VSmRtlRWiVVLRivWPMIvOSTqHdFp5uZeWkun5wR5QgZVNllR8RMCkb49w8jMRN9a1GWKMuMIhTjUIWDJFhvNOouTgXitVy2yMIIjZ9JzlPnV5KIcdZMOyOgeM4vxsAyeoVy6ivIXmmWI7adJPF3TF4SEvHxjzsJlYydge7cjS3_FOYk1VjiC");'>
+<span class="material-symbols-outlined text-primary/40 text-6xl mb-4">format_quote</span>
+<h2 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-tight mb-4 drop-shadow-lg">
+                                "I feel overwhelmed"
+                            </h2>
+<div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full border border-white/20">
+<span class="material-symbols-outlined text-sm">favorite</span>
+<p class="text-white/80 text-sm font-bold uppercase tracking-widest">Partner's Core Statement</p>
+</div>
+</div>
+</div>
+<!-- Response Buttons -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Invalidating -->
+<button class="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl glass-panel border-b-4 border-invalidating hover:bg-invalidating/20 transition-all group">
+<div class="size-12 rounded-full flex items-center justify-center bg-invalidating/20 text-invalidating group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">error</span>
+</div>
+<span class="text-white font-bold tracking-tight">Invalidating</span>
+<span class="text-[10px] text-invalidating font-black uppercase">(Orange)</span>
+</button>
+<!-- Neutral -->
+<button class="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl glass-panel border-b-4 border-neutral-lila hover:bg-neutral-lila/20 transition-all group">
+<div class="size-12 rounded-full flex items-center justify-center bg-neutral-lila/20 text-neutral-lila group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">drag_handle</span>
+</div>
+<span class="text-white font-bold tracking-tight">Neutral</span>
+<span class="text-[10px] text-neutral-lila font-black uppercase">(Lila)</span>
+</button>
+<!-- Deeply Validating -->
+<button class="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl glass-panel border-b-4 border-primary hover:bg-primary/20 transition-all group shadow-[0_10px_30px_rgba(13,242,223,0.2)]">
+<div class="size-12 rounded-full flex items-center justify-center bg-primary/20 text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">verified</span>
+</div>
+<span class="text-white font-bold tracking-tight text-center">Deeply Validating</span>
+<span class="text-[10px] text-primary font-black uppercase">(Teal)</span>
+</button>
+</div>
+</div>
+<!-- Right: Stats & Game Info -->
+<div class="lg:col-span-3 flex flex-col gap-6 order-3">
+<div class="glass-panel rounded-2xl p-6 flex flex-col gap-6 h-full">
+<div class="space-y-1">
+<h3 class="text-white font-bold text-lg">Global Leaderboard</h3>
+<p class="text-white/40 text-xs">Top Validators Today</p>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">1</div>
+<div class="flex-1">
+<p class="text-sm font-bold">User_829</p>
+<div class="h-1 bg-white/10 rounded-full w-full"><div class="h-full bg-primary rounded-full w-[95%]"></div></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-white/5 flex items-center justify-center text-white/40 font-bold text-xs">2</div>
+<div class="flex-1">
+<p class="text-sm font-bold">MindfulMark</p>
+<div class="h-1 bg-white/10 rounded-full w-full"><div class="h-full bg-primary/60 rounded-full w-[88%]"></div></div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-white/5 flex items-center justify-center text-white/40 font-bold text-xs">3</div>
+<div class="flex-1">
+<p class="text-sm font-bold">PeacefulPath</p>
+<div class="h-1 bg-white/10 rounded-full w-full"><div class="h-full bg-primary/40 rounded-full w-[82%]"></div></div>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-white/10 flex flex-col gap-3">
+<div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-white/50">
+<span>Streak</span>
+<span class="text-primary">🔥 5 Correct</span>
+</div>
+<div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-white/50">
+<span>Time Bonus</span>
+<span class="text-primary">+140 pts</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Footer -->
+<footer class="glass-panel px-10 py-6 border-t border-white/10">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-4 text-white/60 text-sm">
+<a class="hover:text-primary transition-colors" href="#">Help Center</a>
+<span class="size-1 rounded-full bg-white/20"></span>
+<a class="hover:text-primary transition-colors" href="#">Game Rules</a>
+<span class="size-1 rounded-full bg-white/20"></span>
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex -space-x-3">
+<img class="size-8 rounded-full border-2 border-background-dark" data-alt="Avatar of online user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_jnaprLlhSVu2T0PlvnKSGODZOKgtfCEQA099AHMznFbObmXPpcecWvd4sj3StAaiX88dI3LPDvAnQf0DvLcch42qy7A2RucIpPP8POQPgESRaSjfltJlARrCrQbMFKqfsqZXNCOC62CIOi0RFghAHPfE_E-M928aJBUA0-UN85-_QpQ8yq_eVwz5ExXVqAMZWzu4kFwU2YtfuhAJrO79jguLE8kXvzOk-qU_8Vutd6dTWgPUej46odOqT-qe2fkaEoqngV_y7lIR"/>
+<img class="size-8 rounded-full border-2 border-background-dark" data-alt="Avatar of online user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTeXR_AmUVkNYcfn_FhEGDoCQrMWGO6Ozeyj1W01aLDleldXbMK6NcT5Dc4hjpyZEjyG4twWJVxZLem9Gaz_JmxLySbK_LTjiLEI08yG6J5EbxvkAQftMX1ap06Wqj8HqGEK3109cE9O5cwakeM4lrnd7EqIOubGR1YMMbHZIYLtvZnxprbCuHR7WzGLnVrMeSJ4T_bYXTI3-FDcCCm8Qcx-RugU9jrhw4fVHUuPp-K2P2sqbsRXGdr45-PfG6fGnj7Af83QXmeWpL"/>
+<img class="size-8 rounded-full border-2 border-background-dark" data-alt="Avatar of online user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5XbWf9na5h0WDnGW_0PaUCG0O9LMr0egsbk4GOlLo4p0vmOD3g3qOi4rCfhkwGHHBBktTO4-79y72eMk6_bTQfZkh_Mdue5bd4q489Sm1vqcwbIzOF8MgvRUbtihs_CmGcNL8vEJM_9NAh0anjBa8eLe79PVte7yfXOLVgc8J29497nyw_nzsXpsQgfaJs30AgfVw6A4leWQJ2FK3dKNNc6jbkRwtbUGQUM8vj1Zzp__MbsF8P3cAmLEVOTzkhP2SKeqc20SRizWM"/>
+<div class="size-8 rounded-full border-2 border-background-dark bg-charcoal flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+<p class="text-white/40 text-xs font-medium italic">1,402 people playing right now</p>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

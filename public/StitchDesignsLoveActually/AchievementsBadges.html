@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Achievements &amp; Badges | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#fc0c84", "background-light": "#f8f5f7", "background-dark": "#230f19", charcoal: "#1a2e2e", "locked-purple": "#A855F7"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .cosmic-bg {
+            background: radial-gradient(circle at 50% 50%, #1a2e2e 0%, #102222 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .cosmic-bg::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: transparent radial-gradient(circle at 20% 30%, rgba(19, 236, 236, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        .unlocked-glow {
+            box-shadow: 0 0 20px rgba(19, 236, 236, 0.3);
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background-color: rgba(26, 46, 46, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen cosmic-bg">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 border-b border-white/10 glass-panel">
+<div class="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl">storm</span>
+<h2 class="text-xl font-bold tracking-tight">Love Actually</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Home</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Quests</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#">Achievements</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Shop</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Profile</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-primary">search</span>
+<input class="bg-white/5 border-none rounded-full pl-10 pr-4 py-2 text-sm w-64 focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-white/30" placeholder="Search relics..." type="text"/>
+</div>
+<button class="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="size-10 rounded-full border-2 border-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar with cosmic theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5f0RQvZSxiDNzKe2-iMQN1q61lQdRByZZhIq9nnI7nXB5_lzGuVKPkmONofOnbmlaJaMKr_mORfAOLqHGNn_3-_FliJCDXx5oRPPMlLV8bomD53Gn17a1MnGPXthADUE7UZAwhpPujOorV0BrZBzk3T5GRMLP0CEePZ2zpgxMbKVZsW0P_cKonARb6I39GuBbFW3BH2QP-fs92waaEYTgbgeOFmmdtz458JhHAbOp1pHNG8y9k1UKbDExuoCy5fWetj_du1-JMMJr"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1200px] mx-auto px-6 py-8">
+<!-- Hero Header Section -->
+<div class="mb-10 rounded-xl overflow-hidden relative h-64 flex flex-col justify-end p-8 bg-cover bg-center" data-alt="Abstract vibrant cosmic nebula with swirling cyan and violet gas clouds" style="background-image: linear-gradient(to top, rgba(16, 34, 34, 1), rgba(16, 34, 34, 0.4)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuC2mvjLAlTkLBW6D1eAUM0_bh2_Onn0TXmy_xLxCfZi4J5tFOBsatN7uoTmlFEJoCL3TmXoy5vd_OJa_LaNLwnXk5r-G-4CW4CTVw0uRf7vY08JuNxxzcEfxQM1-55jZXAdY-Akry-e3wYNgYWHfDJ1aehH7fGTFugOK_l-zzz-2kypLf6NBtBJrYzQj32sLhc2G31ofrKNKzM29sl54-jiP-7asfjUgb_LBWKrDTRqoZtjBIv_vhG_6ex5MpmiYsLVOEnSDcs34GyZ');">
+<div class="relative z-10">
+<div class="flex items-end justify-between">
+<div>
+<h1 class="text-5xl font-bold mb-2">Achievements &amp; Badges</h1>
+<p class="text-white/60 text-lg">Track your relationship evolution across the cosmos.</p>
+</div>
+<div class="text-right">
+<p class="text-primary text-3xl font-bold">12 / 40</p>
+<p class="text-white/40 text-sm uppercase tracking-widest font-bold">Relics Collected</p>
+</div>
+</div>
+<!-- Mini Progress Bar -->
+<div class="w-full bg-white/10 h-2 rounded-full mt-6 overflow-hidden">
+<div class="bg-primary h-full w-[30%] shadow-[0_0_10px_#13ecec]"></div>
+</div>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div class="glass-panel p-6 rounded-xl border border-white/5 flex items-center gap-5">
+<div class="size-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">workspace_premium</span>
+</div>
+<div>
+<p class="text-white/50 text-xs uppercase tracking-wider font-bold">Total Points</p>
+<p class="text-2xl font-bold">2,450 XP</p>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl border border-white/5 flex items-center gap-5">
+<div class="size-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">leaderboard</span>
+</div>
+<div>
+<p class="text-white/50 text-xs uppercase tracking-wider font-bold">Global Rank</p>
+<p class="text-2xl font-bold">Top 15%</p>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl border border-white/5 flex items-center gap-5">
+<div class="size-14 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">bolt</span>
+</div>
+<div>
+<p class="text-white/50 text-xs uppercase tracking-wider font-bold">Current Streak</p>
+<p class="text-2xl font-bold">14 Days</p>
+</div>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+<div class="flex gap-8">
+<button class="text-primary font-bold border-b-2 border-primary pb-4 transition-all">All Badges</button>
+<button class="text-white/50 hover:text-white font-medium pb-4 transition-all">Communication</button>
+<button class="text-white/50 hover:text-white font-medium pb-4 transition-all">Intimacy</button>
+<button class="text-white/50 hover:text-white font-medium pb-4 transition-all">Conflict</button>
+<button class="text-white/50 hover:text-white font-medium pb-4 transition-all">Milestones</button>
+</div>
+<div class="flex items-center gap-2 text-white/40 text-sm">
+<span>Sort by:</span>
+<button class="text-white flex items-center gap-1 font-medium">Rarity <span class="material-symbols-outlined text-xs">expand_more</span></button>
+</div>
+</div>
+<!-- Achievements Grid -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+<!-- Unlocked Achievement 1 -->
+<div class="group relative bg-charcoal rounded-xl border border-primary/30 p-5 transition-all hover:-translate-y-1 unlocked-glow">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center p-0.5 shadow-lg shadow-primary/20">
+<div class="w-full h-full rounded-full bg-charcoal flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-primary to-blue-400">forum</span>
+</div>
+</div>
+<h3 class="font-bold text-lg mb-1">Communication King</h3>
+<p class="text-white/50 text-xs">Unlock 10 deep conversations without interruption</p>
+<div class="mt-4 text-[10px] uppercase font-bold text-primary tracking-widest py-1 px-3 bg-primary/10 rounded-full">Earned 2d ago</div>
+</div>
+</div>
+<!-- Unlocked Achievement 2 -->
+<div class="group relative bg-charcoal rounded-xl border border-primary/30 p-5 transition-all hover:-translate-y-1 unlocked-glow">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full bg-gradient-to-tr from-red-500 to-amber-500 flex items-center justify-center p-0.5 shadow-lg shadow-red-500/20">
+<div class="w-full h-full rounded-full bg-charcoal flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-red-400 to-amber-400">shield_with_heart</span>
+</div>
+</div>
+<h3 class="font-bold text-lg mb-1">Conflict Crusher</h3>
+<p class="text-white/50 text-xs">Resolve a Tier 3 argument with perfect empathy</p>
+<div class="mt-4 text-[10px] uppercase font-bold text-primary tracking-widest py-1 px-3 bg-primary/10 rounded-full">Earned 1w ago</div>
+</div>
+</div>
+<!-- Unlocked Achievement 3 -->
+<div class="group relative bg-charcoal rounded-xl border border-primary/30 p-5 transition-all hover:-translate-y-1 unlocked-glow">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-400 flex items-center justify-center p-0.5 shadow-lg shadow-emerald-400/20">
+<div class="w-full h-full rounded-full bg-charcoal flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-emerald-300 to-cyan-300">spa</span>
+</div>
+</div>
+<h3 class="font-bold text-lg mb-1">Zen Master</h3>
+<p class="text-white/50 text-xs">Complete a 20-minute guided partner meditation</p>
+<div class="mt-4 text-[10px] uppercase font-bold text-primary tracking-widest py-1 px-3 bg-primary/10 rounded-full">Earned Oct 12</div>
+</div>
+</div>
+<!-- Locked Achievement 1 -->
+<div class="group relative bg-charcoal/50 rounded-xl border border-locked-purple/30 p-5 grayscale opacity-70">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-white/20">lock</span>
+</div>
+<h3 class="font-bold text-lg mb-1 text-white/40">First Date Redux</h3>
+<p class="text-white/20 text-xs">Recreate your very first date in the Metaverse</p>
+<div class="mt-4 w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-locked-purple/50 h-full w-[40%]"></div>
+</div>
+<p class="text-[10px] mt-2 text-white/30 font-bold">40% COMPLETE</p>
+</div>
+</div>
+<!-- Locked Achievement 2 -->
+<div class="group relative bg-charcoal/50 rounded-xl border border-locked-purple/30 p-5 grayscale opacity-70">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-white/20">celebration</span>
+</div>
+<h3 class="font-bold text-lg mb-1 text-white/40">Golden Anniversary</h3>
+<p class="text-white/20 text-xs">Maintain a 365-day relationship streak</p>
+<div class="mt-4 w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-locked-purple/50 h-full w-[12%]"></div>
+</div>
+<p class="text-[10px] mt-2 text-white/30 font-bold">44/365 DAYS</p>
+</div>
+</div>
+<!-- Locked Achievement 3 -->
+<div class="group relative bg-charcoal/50 rounded-xl border border-locked-purple/30 p-5 grayscale opacity-70">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-white/20">explore</span>
+</div>
+<h3 class="font-bold text-lg mb-1 text-white/40">World Travelers</h3>
+<p class="text-white/20 text-xs">Unlock 5 destination-based quest lines</p>
+<div class="mt-4 w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-locked-purple/50 h-full w-[60%]"></div>
+</div>
+<p class="text-[10px] mt-2 text-white/30 font-bold">3/5 UNLOCKED</p>
+</div>
+</div>
+<!-- Locked Achievement 4 -->
+<div class="group relative bg-charcoal/50 rounded-xl border border-locked-purple/30 p-5 grayscale opacity-70">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-white/20">loyalty</span>
+</div>
+<h3 class="font-bold text-lg mb-1 text-white/40">Soul Resonance</h3>
+<p class="text-white/20 text-xs">Reach Level 50 Sync with your partner</p>
+<div class="mt-4 w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-locked-purple/50 h-full w-[80%]"></div>
+</div>
+<p class="text-[10px] mt-2 text-white/30 font-bold">LVL 41</p>
+</div>
+</div>
+<!-- Unlocked Achievement 4 (Hidden Gem) -->
+<div class="group relative bg-charcoal rounded-xl border border-primary/30 p-5 transition-all hover:-translate-y-1 unlocked-glow">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center p-0.5 shadow-lg shadow-purple-500/20">
+<div class="w-full h-full rounded-full bg-charcoal flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-transparent bg-clip-text bg-gradient-to-tr from-purple-400 to-pink-400">volunteer_activism</span>
+</div>
+</div>
+<h3 class="font-bold text-lg mb-1">True Empath</h3>
+<p class="text-white/50 text-xs">Identify 5 unstated partner emotions correctly</p>
+<div class="mt-4 text-[10px] uppercase font-bold text-primary tracking-widest py-1 px-3 bg-primary/10 rounded-full">Earned Yesterday</div>
+</div>
+</div>
+<!-- Locked Achievement 5 -->
+<div class="group relative bg-charcoal/50 rounded-xl border border-locked-purple/30 p-5 grayscale opacity-70">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-white/20">auto_awesome</span>
+</div>
+<h3 class="font-bold text-lg mb-1 text-white/40">Star-Crossed</h3>
+<p class="text-white/20 text-xs">Complete the Cosmic Reunion quest-line</p>
+<div class="mt-4 w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-locked-purple/50 h-full w-[0%]"></div>
+</div>
+<p class="text-[10px] mt-2 text-white/30 font-bold">LOCKED</p>
+</div>
+</div>
+<!-- Locked Achievement 6 -->
+<div class="group relative bg-charcoal/50 rounded-xl border border-locked-purple/30 p-5 grayscale opacity-70">
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="size-24 mb-4 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-white/20">military_tech</span>
+</div>
+<h3 class="font-bold text-lg mb-1 text-white/40">Ultimate Bond</h3>
+<p class="text-white/20 text-xs">Earn all other badges in the game</p>
+<div class="mt-4 w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-locked-purple/50 h-full w-[25%]"></div>
+</div>
+<p class="text-[10px] mt-2 text-white/30 font-bold">12/40 EARNED</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Detailed Sidebar Overlay (Mocked) -->
+<aside class="fixed right-0 top-16 bottom-0 w-80 glass-panel border-l border-white/10 p-6 flex flex-col hidden lg:flex">
+<div class="mb-8">
+<h4 class="text-white/40 text-xs uppercase tracking-widest font-bold mb-4">Last Earned</h4>
+<div class="flex items-center gap-4 p-3 bg-white/5 rounded-lg border border-primary/20">
+<div class="size-12 rounded-full bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">forum</span>
+</div>
+<div>
+<p class="font-bold text-sm">Communication King</p>
+<p class="text-xs text-primary">+500 XP</p>
+</div>
+</div>
+</div>
+<div>
+<h4 class="text-white/40 text-xs uppercase tracking-widest font-bold mb-4">Milestone Progress</h4>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-xs mb-2">
+<span>Level 15 Explorer</span>
+<span class="text-primary">85%</span>
+</div>
+<div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-2">
+<span>Empathy Expert</span>
+<span class="text-primary">40%</span>
+</div>
+<div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[40%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-2">
+<span>Daily Devotion</span>
+<span class="text-primary">92%</span>
+</div>
+<div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[92%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6">
+<button class="w-full bg-primary py-3 rounded-lg text-background-dark font-bold hover:bg-white transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">share</span>
+                Share Journey
+            </button>
+</div>
+</aside>
+</body></html>

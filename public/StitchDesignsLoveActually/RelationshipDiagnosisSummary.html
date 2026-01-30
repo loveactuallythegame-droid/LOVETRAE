@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#f20c75", "background-light": "#f8f5f7", "background-dark": "#221018", charcoal: "#1c1a16", "nebula-purple": "#a855f7", "nebula-pink": "#ec4899", "nebula-teal": "#14b8a6", "nebula-turquoise": "#06b6d4", "nebula-orange": "#f97316"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-glow {
+            box-shadow: 0 0 40px -10px rgba(244, 175, 37, 0.3);
+        }
+        .bg-nebula-gradient {
+            background: radial-gradient(circle at 50% 50%, #2a1b3d 0%, #12110e 100%);
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(8px);
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen relative overflow-x-hidden">
+<!-- Atmospheric Background Particles -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden bg-nebula-gradient">
+<div class="particle bg-nebula-purple/20 w-64 h-64 -top-20 -left-20"></div>
+<div class="particle bg-nebula-pink/10 w-96 h-96 top-1/2 -right-32"></div>
+<div class="particle bg-nebula-teal/10 w-80 h-80 bottom-0 left-1/4"></div>
+</div>
+<div class="relative z-10 flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 backdrop-blur-md bg-background-dark/50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight uppercase">Love Actually</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="#">Dashboard</a>
+<a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="#">Journey</a>
+<a class="text-primary text-sm font-medium" href="#">Diagnosis</a>
+<a class="text-white/70 hover:text-primary transition-colors text-sm font-medium" href="#">Nebula</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-white">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-white">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User profile avatar in space suit" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC_AoTReZUyea8F8ePeylEuoh9IoqtggOWvFg80IBaL_PGoNltLbl9LxSxATB5Y17DXzo-wgzL-DJu7WL9XVMAq8vuez62l6DqnePkc9zHulYKRBkbWoQfdUNosboeGEVWXphwMZHzhQG90rjY5a2iyyR5O9A_TyIuGnb7WvzvVYqFcNzv6u1vt1HxB0AQvvJqfY37dBHFllme4EaDP0CVgIvYq1gJeV6wSCeoVZpqhXoTLM95AEcDaEo9ji4Ffeb1up7NawvIKUsJw");'></div>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center p-6 md:p-12">
+<div class="max-w-[1000px] w-full">
+<!-- Page Heading -->
+<div class="mb-8 text-center md:text-left">
+<h1 class="text-white text-5xl font-black leading-tight tracking-[-0.033em] mb-2">Relationship Diagnosis Summary</h1>
+<p class="text-white/60 text-lg">A cosmic overview of your interpersonal synergy and resonance sectors.</p>
+</div>
+<!-- Main Futuristic Card -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+<!-- Left Column: Radar Chart Panel -->
+<div class="lg:col-span-8 bg-charcoal/80 border border-white/10 rounded-xl p-8 backdrop-blur-xl nebula-glow relative overflow-hidden group">
+<!-- Decorative corner accents -->
+<div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-primary rounded-tl-lg opacity-50"></div>
+<div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-primary rounded-br-lg opacity-50"></div>
+<div class="flex items-center justify-between mb-8">
+<div>
+<h3 class="text-xl font-bold tracking-tight">Multi-Dimensional Resonance</h3>
+<p class="text-white/50 text-sm">Compatibility mapping across 6 core sectors</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs font-bold uppercase tracking-widest">Active Cycle</span>
+</div>
+</div>
+<!-- Radar Chart Placeholder (SVG) -->
+<div class="flex justify-center items-center py-6 relative">
+<svg class="w-full max-w-[400px] h-auto drop-shadow-[0_0_15px_rgba(244,175,37,0.2)]" viewbox="0 0 100 100">
+<!-- Background Web -->
+<circle cx="50" cy="50" fill="none" opacity="0.3" r="45" stroke="white" stroke-dasharray="1 2" stroke-width="0.1"></circle>
+<circle cx="50" cy="50" fill="none" opacity="0.2" r="30" stroke="white" stroke-dasharray="1 2" stroke-width="0.1"></circle>
+<circle cx="50" cy="50" fill="none" opacity="0.1" r="15" stroke="white" stroke-dasharray="1 2" stroke-width="0.1"></circle>
+<!-- Axis Lines -->
+<path d="M50 5 L50 95 M5 50 L95 50 M18 18 L82 82 M18 82 L82 18" opacity="0.2" stroke="white" stroke-width="0.05"></path>
+<!-- Multi-color Plot Lines -->
+<!-- Purple/Pink Layer -->
+<path d="M50 15 L78 35 L85 65 L50 85 L20 60 L25 30 Z" fill="rgba(168, 85, 247, 0.1)" stroke="#a855f7" stroke-linejoin="round" stroke-width="1.5"></path>
+<!-- Turquoise Layer -->
+<path d="M50 25 L65 45 L75 75 L45 80 L15 55 L35 35 Z" fill="rgba(6, 182, 212, 0.1)" stroke="#06b6d4" stroke-linejoin="round" stroke-width="1.5"></path>
+<!-- Primary Gold/Orange Result -->
+<path class="drop-shadow-lg" d="M50 10 L85 40 L90 70 L55 90 L10 65 L20 25 Z" fill="rgba(244, 175, 37, 0.2)" stroke="#f4af25" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Points -->
+<circle cx="50" cy="10" fill="#f4af25" r="1.5"></circle>
+<circle cx="85" cy="40" fill="#f97316" r="1.5"></circle>
+<circle cx="90" cy="70" fill="#ec4899" r="1.5"></circle>
+<circle cx="55" cy="90" fill="#a855f7" r="1.5"></circle>
+<circle cx="10" cy="65" fill="#14b8a6" r="1.5"></circle>
+<circle cx="20" cy="25" fill="#06b6d4" r="1.5"></circle>
+</svg>
+<!-- Legend/Labels -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none text-[10px] font-bold uppercase tracking-tighter">
+<div class="text-center pt-2 text-primary">Communication</div>
+<div class="flex justify-between items-center px-4 h-full">
+<div class="text-nebula-turquoise -rotate-45">Trust</div>
+<div class="text-nebula-orange rotate-45">Intimacy</div>
+</div>
+<div class="flex justify-between items-center px-4 h-full">
+<div class="text-nebula-teal -rotate-135">Growth</div>
+<div class="text-nebula-pink rotate-135">Values</div>
+</div>
+<div class="text-center pb-2 text-nebula-purple">Playfulness</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Stats & CTA -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Overall Synergy Card -->
+<div class="bg-charcoal/80 border border-white/10 rounded-xl p-6 backdrop-blur-xl">
+<p class="text-white/50 text-xs font-bold uppercase tracking-widest mb-1">Global Alignment</p>
+<h2 class="text-white text-4xl font-bold mb-6">92<span class="text-primary">%</span></h2>
+<div class="space-y-5">
+<!-- Progress Bar 1: Pink to Purple -->
+<div>
+<div class="flex justify-between text-xs font-medium mb-2">
+<span class="text-nebula-pink uppercase">Emotional Resonance</span>
+<span class="text-white">88%</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-nebula-pink to-nebula-purple rounded-full w-[88%]"></div>
+</div>
+</div>
+<!-- Progress Bar 2: Teal to Turquoise -->
+<div>
+<div class="flex justify-between text-xs font-medium mb-2">
+<span class="text-nebula-teal uppercase">Cognitive Sync</span>
+<span class="text-white">95%</span>
+</div>
+<div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-nebula-teal to-nebula-turquoise rounded-full w-[95%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Insight Card -->
+<div class="bg-charcoal/80 border border-white/10 rounded-xl p-6 backdrop-blur-xl flex-1">
+<div class="flex items-center gap-3 mb-4">
+<div class="size-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+</div>
+<p class="text-sm font-bold uppercase tracking-tight">Nebula Insight</p>
+</div>
+<p class="text-white/70 text-sm leading-relaxed">
+                                Your cosmic alignment is peaking in the communication sector. The stars suggest a deep dive into the "Vulnerability Vortex" mission to solidify this bond.
+                            </p>
+</div>
+<!-- Main CTA Button -->
+<button class="group relative flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-16 bg-gradient-to-r from-primary to-nebula-orange text-background-dark text-lg font-black leading-normal tracking-tight shadow-[0_0_30px_rgba(244,175,37,0.4)] hover:shadow-[0_0_45px_rgba(244,175,37,0.6)] transition-all active:scale-[0.98]">
+<div class="flex items-center gap-3 z-10">
+<span class="uppercase tracking-[0.1em]">Enter the Nebula</span>
+<span class="material-symbols-outlined font-bold">rocket_launch</span>
+</div>
+<!-- Subtle shimmer overlay -->
+<div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 skew-x-[-20deg]"></div>
+</button>
+</div>
+</div>
+<!-- Bottom Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+<div class="flex items-center gap-4 bg-white/5 border border-white/5 p-4 rounded-xl">
+<div class="size-10 rounded-full bg-nebula-turquoise/20 flex items-center justify-center text-nebula-turquoise">
+<span class="material-symbols-outlined">history</span>
+</div>
+<div>
+<p class="text-white/40 text-[10px] uppercase font-bold tracking-widest leading-none mb-1">Last Sync</p>
+<p class="text-white font-medium">2.4 Light Years Ago</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-white/5 border border-white/5 p-4 rounded-xl">
+<div class="size-10 rounded-full bg-nebula-purple/20 flex items-center justify-center text-nebula-purple">
+<span class="material-symbols-outlined">stars</span>
+</div>
+<div>
+<p class="text-white/40 text-[10px] uppercase font-bold tracking-widest leading-none mb-1">Rank</p>
+<p class="text-white font-medium">Star Voyagers</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-white/5 border border-white/5 p-4 rounded-xl">
+<div class="size-10 rounded-full bg-nebula-pink/20 flex items-center justify-center text-nebula-pink">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<div>
+<p class="text-white/40 text-[10px] uppercase font-bold tracking-widest leading-none mb-1">Soul Bond</p>
+<p class="text-white font-medium">Tier IV Resonance</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Background decorative glow -->
+<div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-primary/10 blur-[120px] rounded-[100%] pointer-events-none"></div>
+</div>
+</body></html>

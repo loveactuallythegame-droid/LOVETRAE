@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Iceberg Emotional Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff0048", "background-light": "#f8f5f6", "background-dark": "#230f15"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}}}};</script>
+<style>
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(127, 19, 236, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(236, 19, 182, 0.1) 0%, transparent 40%),
+                        linear-gradient(180deg, #05010a 0%, #1a052e 100%);
+        }
+        .iceberg-gradient {
+            background: linear-gradient(180deg, #ffffff 0%, #a5f3fc 30%, #0ea5e9 60%, #1e40af 100%);
+            clip-path: polygon(50% 0%, 80% 10%, 95% 45%, 85% 65%, 70% 95%, 50% 100%, 30% 95%, 15% 65%, 5% 45%, 20% 10%);
+        }
+        .waterline {
+            border-top: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+        .node-glow {
+            box-shadow: 0 0 15px currentColor;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative flex h-screen w-full flex-col nebula-bg overflow-hidden">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-white/10 px-10 py-3 backdrop-blur-md bg-black/20 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Love Actually... <span class="text-primary">The Game</span></h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="flex items-center gap-9">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Game Rules</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Session History</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Settings</a>
+</nav>
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary hover:bg-primary/80 text-white text-sm font-bold transition-all shadow-lg shadow-primary/20">
+<span>Save Progress</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/50" data-alt="User profile avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAj2qVAcf5tV4EJzNfJeuLFd1cmBmv9mHBhokqUctHulac0wd3nSYG85LvvtV8_kojxZfRpXOq9s-NSdRwY9CQ-qokrCIa9zq8y6u5jytJvqvgnMv4X29KsZQkwwyGgAJ0Sq5-bwNQy6dnBNHODmY2yHHAGjcPZgA3zFQmSlw7ULDqA73x84Wyuwpz1htFJi-mCt-eqmMwOyEmLdOI4a5YkAAYnUCo0PnVKxw7q-uCf5cqhoTx95-klPKHwE_W-SLNmH6wweBrGIStk");'></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-72 border-r border-white/10 flex flex-col justify-between bg-black/20 backdrop-blur-sm p-6 z-40">
+<div class="flex flex-col gap-8">
+<div class="flex flex-col items-center text-center gap-3">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-24 border-4 border-primary shadow-xl shadow-primary/30" data-alt="Dr Marcie Liss portrait therapist host" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBbtI2gymNKWOj7WA3GTEzS8UQLfo1e29UHLS9ssVxhw745L0fHFo_Ie497bkLB_8fsmnHcvsNgBFWg8IYrTBZI70nhOU87a1KuPTKF_ovG3HhlnqiQS7v05anqW1UkNQgQjj-6VgvR44KIH8mdKOft_bG4g1DsvoxLajYJ93UuDJsY9rRkyQDSVqS-95FsjR3mIIJOIYztVLvSh3J1haBTDUo39D3L6uXwuurzxuswl8i_FPCrMgsYbF4TcrpZEX5-EAKyiYlB05PY");'></div>
+<div class="absolute bottom-0 right-0 bg-green-500 size-4 rounded-full border-2 border-background-dark"></div>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold">Dr. Marcie Liss</h1>
+<p class="text-primary text-xs font-semibold uppercase tracking-widest">Excavation Guide</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<p class="text-white/40 text-[10px] font-bold uppercase tracking-widest px-3">Current Depth</p>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-all border border-transparent">
+<span class="material-symbols-outlined text-sky-400">cloud</span>
+<p class="text-white text-sm font-medium">Surface Layer</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/20 border border-primary/40 cursor-pointer shadow-inner">
+<span class="material-symbols-outlined text-primary">water_drop</span>
+<p class="text-white text-sm font-medium">The Mid-Section</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-all border border-transparent opacity-50">
+<span class="material-symbols-outlined text-indigo-400">anchor</span>
+<p class="text-white text-sm font-medium">The Deep Core</p>
+</div>
+</div>
+<!-- Progress Bar Component -->
+<div class="flex flex-col gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+<div class="flex justify-between items-center">
+<p class="text-white/80 text-xs font-medium">Excavation Depth</p>
+<p class="text-primary text-xs font-bold">65%</p>
+</div>
+<div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary shadow-[0_0_10px_#7f13ec]" style="width: 65%;"></div>
+</div>
+<p class="text-white/40 text-[10px] italic">Approaching core needs...</p>
+</div>
+</div>
+<button class="group flex items-center justify-center gap-2 w-full py-4 rounded-xl border border-primary/30 hover:bg-primary/10 transition-all">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">support_agent</span>
+<span class="text-white text-sm font-bold">Ask for Guidance</span>
+</button>
+</aside>
+<!-- Main Game Area -->
+<main class="flex-1 relative flex flex-col items-center justify-center p-10 overflow-hidden">
+<div class="absolute top-10 text-center z-10">
+<h2 class="text-white/60 text-sm font-bold uppercase tracking-[0.3em] mb-2">Phase II</h2>
+<h1 class="text-white text-5xl font-bold tracking-tight">The Iceberg <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-pink-500">Excavation</span></h1>
+</div>
+<!-- Iceberg Canvas Container -->
+<div class="relative w-full max-w-4xl h-full flex flex-col items-center justify-center">
+<!-- The Iceberg Visual -->
+<div class="relative w-[500px] h-[700px] iceberg-gradient opacity-90 shadow-2xl shadow-sky-900/50">
+<!-- Surface Waterline -->
+<div class="absolute top-[35%] w-full waterline flex items-center justify-center">
+<span class="bg-background-dark/80 px-4 py-1 rounded-full text-[10px] text-white/50 uppercase tracking-widest -mt-3 backdrop-blur-sm border border-white/10">Ocean Surface</span>
+</div>
+<!-- Interaction Nodes - Surface -->
+<div class="absolute top-[15%] left-[45%] group cursor-pointer">
+<div class="size-6 rounded-full bg-orange-500 node-glow text-orange-200 animate-pulse flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">priority_high</span>
+</div>
+<div class="absolute left-8 top-0 bg-black/60 backdrop-blur-md p-2 rounded-lg border border-orange-500/30 w-32 hidden group-hover:block transition-all">
+<p class="text-xs font-bold text-orange-400">Surface: Anger</p>
+<p class="text-[10px] text-white/70 italic">Revealed</p>
+</div>
+</div>
+<!-- Interaction Nodes - Mid -->
+<div class="absolute top-[50%] left-[60%] group cursor-pointer">
+<div class="size-8 rounded-full bg-primary node-glow text-white flex items-center justify-center border-2 border-white/20">
+<span class="material-symbols-outlined text-sm">water_drop</span>
+</div>
+<div class="absolute left-10 top-0 bg-black/60 backdrop-blur-md p-3 rounded-lg border border-primary/50 w-48 shadow-2xl">
+<p class="text-sm font-bold text-white">Mid: Hurt &amp; Sadness</p>
+<p class="text-[10px] text-white/70 mt-1 line-clamp-2">"It hurts when you don't listen to my day."</p>
+</div>
+</div>
+<!-- Interaction Nodes - Deep (Target) -->
+<div class="absolute top-[80%] left-[35%] group cursor-pointer">
+<div class="size-10 rounded-full bg-white/10 border-2 border-white/30 text-white/30 flex items-center justify-center hover:bg-primary/40 hover:border-primary transition-all">
+<span class="material-symbols-outlined text-lg">lock</span>
+</div>
+<div class="absolute right-12 top-0 bg-black/80 backdrop-blur-md p-4 rounded-xl border border-white/20 w-56 text-right">
+<p class="text-sm font-bold text-white/50 italic">The Deep</p>
+<p class="text-xs text-white/40">Drill deeper to unlock Core Fear</p>
+</div>
+</div>
+</div>
+<!-- Sea Depth Labels -->
+<div class="absolute left-10 top-0 h-full flex flex-col justify-around py-20 pointer-events-none">
+<div class="flex items-center gap-4">
+<div class="w-8 h-[1px] bg-white/20"></div>
+<span class="text-[10px] font-bold text-white/20 uppercase tracking-widest">Atmosphere</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-[1px] bg-sky-400/40"></div>
+<span class="text-[10px] font-bold text-sky-400/60 uppercase tracking-widest">Photic Zone</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-16 h-[1px] bg-primary/40"></div>
+<span class="text-[10px] font-bold text-primary/60 uppercase tracking-widest">Abyssal Zone</span>
+</div>
+</div>
+</div>
+<!-- Insight Overlay Card -->
+<div class="absolute bottom-10 right-10 max-w-sm bg-background-dark/90 backdrop-blur-xl border border-primary/30 p-6 rounded-2xl shadow-2xl z-20">
+<div class="flex items-start gap-4 mb-4">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">psychology</span>
+</div>
+<div>
+<h4 class="text-white font-bold leading-tight">Insight Discovered</h4>
+<p class="text-white/40 text-xs">Layer: The Mid-Section</p>
+</div>
+</div>
+<p class="text-white/80 text-sm leading-relaxed mb-6">
+                    "Often the anger we show on the surface is a protective shield for the sadness we feel underneath. Why is it safer to be angry than sad?"
+                </p>
+<div class="flex gap-3">
+<button class="flex-1 bg-primary text-white text-xs font-bold py-3 rounded-lg hover:brightness-110 transition-all">Discuss Prompt</button>
+<button class="px-4 border border-white/10 rounded-lg hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined text-sm">share</span>
+</button>
+</div>
+</div>
+<!-- Floaties/Nebula Details -->
+<div class="absolute top-[20%] right-[10%] size-24 bg-pink-500/10 blur-[60px] rounded-full"></div>
+<div class="absolute bottom-[20%] left-[10%] size-40 bg-primary/10 blur-[80px] rounded-full"></div>
+</main>
+<!-- Right Tool Panel -->
+<aside class="w-16 border-l border-white/10 flex flex-col items-center py-6 gap-6 bg-black/20 z-40">
+<button class="size-10 flex items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/40">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-xl hover:bg-white/5 text-white/50 transition-all">
+<span class="material-symbols-outlined">history_edu</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-xl hover:bg-white/5 text-white/50 transition-all">
+<span class="material-symbols-outlined">forum</span>
+</button>
+<div class="mt-auto flex flex-col gap-4">
+<button class="size-10 flex items-center justify-center rounded-full border border-white/10 text-white/40 hover:text-white">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-full border border-white/10 text-white/40 hover:text-white">
+<span class="material-symbols-outlined">fullscreen</span>
+</button>
+</div>
+</aside>
+</div>
+<!-- Footer Status -->
+<footer class="h-10 border-t border-white/5 flex items-center justify-between px-6 bg-black/40 text-[10px] text-white/30 uppercase tracking-widest z-50">
+<div class="flex gap-4">
+<span>Session ID: LOVE-29402</span>
+<span>Duration: 24:12</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-1.5 bg-green-500 rounded-full"></span>
+<span>Dr. Marcie is Listening</span>
+</div>
+</footer>
+</div>
+</body></html>

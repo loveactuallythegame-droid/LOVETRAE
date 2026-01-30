@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Future Council - Phoenix Protocol</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff005e", "background-light": "#f8f5f6", "background-dark": "#230f16", charcoal: "#1a1a1b", parchment: "#fdfaf1", "discuss-orange": "#ff8c00"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>body {
+    background: radial-gradient(circle at center, #1a2a2a 0%, #0a0a0b 100%);
+    background-attachment: fixed
+    }
+.nebula-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=2048) center/cover no-repeat;
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none
+    }
+.glass-panel {
+    background: rgba(26, 34, 34, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    }
+.parchment-bg {
+    background-color: #fdfaf1;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDKjnTsapPw_UfUNxr80amxmvOAEfrwETnEBsdKM1skzQc35dBgXAL2Ix6cuKKJ45UyDVyV5PKOo6OIIwi9X-wYzB10RmcIlJ9smIbo01a9yYzAGi4qV2NTC3vvCfd_SXqs02gz6uuDYs28nUqPDllqXuPDCfr2bcEacSC02CmrMagP1reVdwZOCRAGta3Xx0xqJdWnFSnrVjUQtl9ed078JHt4YpR9YBzeuq2szSRJAgLQgqi5pFCoJnFo8aMJs0-6bBQTqjqHF7Q1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5)
+    }</style>
+</head>
+<body class="font-display text-white">
+<div class="nebula-overlay" data-alt="Dark deep space nebula with teal and purple cosmic clouds"></div>
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-3 glass-panel sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">flare</span>
+</div>
+<div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Phoenix Protocol Phase 5</h2>
+<p class="text-xs text-primary/70 font-medium uppercase tracking-widest">Rebuilding After Infidelity</p>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white/80 hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">The Future Council</a>
+<a class="text-white/80 hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">History</a>
+<a class="text-white/80 hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Resources</a>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-background-dark text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Chairwoman Dr. Marcie Liss</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="Portrait of Dr. Marcie Liss in formal attire" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBHFwJw-FxuT6qzNsYAXgLFWMercqlpnaIXuokvVbN_ANrOBdfN50lT-VuuErIw_9meewHb-tkKqE4DvpyfooffinJPb_zK8nnOtMwvWjrNzOYxW9EU3vAcFYpispbR6wRKEPDCf8AeodwFnfrQosO7yKZTS-BDf_UtE9LGUOtgpMzoOSNZKVMKjS2fmP7CSwMNKQLafqFBUr3yRQL6Fu2T4i7VNGJV9p8C_BcwanJADJb8NuviOoaF5WTIpV6lZQKMHDGuUSALVkU4");'></div>
+</div>
+</div>
+</header>
+<main class="flex flex-1 flex-col items-center py-10 px-4">
+<div class="layout-content-container flex flex-col max-w-[1200px] w-full gap-8">
+<!-- Headline Section -->
+<div class="text-center">
+<h1 class="text-white tracking-light text-[40px] font-bold leading-tight pb-2">The Future Council: Clause Deliberation</h1>
+<div class="flex items-center justify-center gap-2 text-primary/80">
+<span class="material-symbols-outlined text-sm">gavel</span>
+<p class="text-sm font-medium uppercase tracking-[0.2em]">Sovereign Boardroom Session 09-B</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Sidebar: Council Members -->
+<div class="lg:col-span-3 flex flex-col gap-4">
+<div class="glass-panel p-6 rounded-xl flex flex-col gap-6">
+<h3 class="text-sm font-bold text-primary border-b border-white/10 pb-2 uppercase tracking-wider">Council Participants</h3>
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-cover bg-center border border-primary/50" data-alt="Partner A portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBkDUQIwELrghbfNKRsyJVmODV77Mm1FwFsmE5SyOmmZdRCpMnXpvsLwUqK1K0TOAXBOtUOjrcO_EEpHG1p14TKEH7VrLgYsqJuD943hTtZ3P1Ewtd2fwiPA8nWgafrBhlGR9x0OCAnFhcBbx9syv_gcgjlM8p7xFCFS0CNGGiFnEEExNvU-R5yNjZk-zpXQEQG5gicipQoUUlgVK3AX_5__eJ598eO3lTq9uHqW5obaGSQ1NAMKYSMmvYnKbfXaFt8LY-Vk_A3Zehu')"></div>
+<div>
+<p class="text-sm font-bold">Partner Alpha</p>
+<p class="text-[10px] text-primary uppercase font-bold tracking-tighter">Status: Ready</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-lg bg-cover bg-center border border-white/20" data-alt="Partner B portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAuJ_rsnOMHXxSldaeaeIbeJrx6DPZtM6PBIHyZfRbg63qE5hoUS0O8laqZpqa3M10k4UiXFi-sLwuLWAu-CdeuHAl7wcxutwaDbhhr9OjRgOZ4VHJ7dn2U6gCG3Cp2rfkmiqARadh8MmlxNF3kI_GUDdiIlDYPvumwxvsEtSP7p3UrhB5FDTcznSF6Sdx5ISA1p5AwRZ69FZRWwsUByRODntepcqTmFO1AkOVY2ZrLGdHRu4YZpgCKEhTo-1EAcHnErPFCi8Fb5WLt')"></div>
+<div>
+<p class="text-sm font-bold">Partner Beta</p>
+<p class="text-[10px] text-white/40 uppercase font-bold tracking-tighter">Status: Deliberating</p>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-white/10">
+<div class="flex items-center justify-between mb-2">
+<p class="text-xs text-white/60">Ratification Progress</p>
+<p class="text-xs font-bold text-primary">80%</p>
+</div>
+<div class="rounded-full bg-white/10 h-1.5 w-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 80%;"></div>
+</div>
+<p class="text-[10px] mt-2 text-white/40 italic">Final Clause in Deliberation</p>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl">
+<p class="text-xs text-white/60 leading-relaxed italic">
+                                    "The Council observes that radical honesty is the only path through the ashes of the old world." 
+                                    <span class="block text-primary mt-1 font-bold">— Chairwoman Liss</span>
+</p>
+</div>
+</div>
+<!-- Center: The Parchment Contract -->
+<div class="lg:col-span-6">
+<div class="parchment-bg p-12 rounded-sm relative shadow-2xl min-h-[700px]">
+<div class="absolute inset-0 border-[16px] border-double border-[#8b4513]/10 pointer-events-none"></div>
+<div class="text-[#2c1810] text-center mb-10">
+<h2 class="text-3xl font-serif font-bold italic border-b border-[#2c1810]/20 pb-4 inline-block">New Relationship Contract</h2>
+<p class="text-sm font-medium mt-4 uppercase tracking-[0.2em] opacity-60">Covenant of the Phoenix Protocol</p>
+</div>
+<div class="flex flex-col gap-10 text-[#2c1810]">
+<!-- Clause 1: Ratified -->
+<div class="relative opacity-60">
+<div class="absolute -left-6 top-1 text-primary">
+<span class="material-symbols-outlined text-xl">verified</span>
+</div>
+<h3 class="font-bold text-lg mb-2">Article III: Physical Sanctity</h3>
+<p class="text-base leading-relaxed font-normal italic">
+                                            We commit to a sanctuary of exclusive intimacy. Our boundaries are sacred, defined by mutual consent and the intentional cultivation of desire within the bounds of our union.
+                                        </p>
+</div>
+<!-- Clause 2: Current Focus -->
+<div class="p-6 bg-primary/5 border border-primary/20 rounded-lg scale-[1.02] transition-transform duration-300">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary">edit_document</span>
+<h3 class="font-bold text-xl">Article IV: Digital Boundaries</h3>
+</div>
+<p class="text-lg leading-relaxed font-medium">
+                                            We agree to maintain an environment of radical transparency. This includes shared access to digital accounts and a commitment to honesty in all online interactions to restore trust and emotional safety.
+                                        </p>
+<p class="text-sm mt-4 text-[#2c1810]/70 italic">
+                                            * Requires dual confirmation for ratification.
+                                        </p>
+</div>
+<!-- Clause 3: Future -->
+<div class="opacity-30">
+<h3 class="font-bold text-lg mb-2">Article V: Financial Unity</h3>
+<p class="text-base leading-relaxed font-normal italic">
+                                            All assets and debts are disclosed. Future expenditures exceeding the agreed threshold require mutual council deliberation.
+                                        </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Controls & Actions -->
+<div class="lg:col-span-3 flex flex-col gap-4">
+<div class="glass-panel p-6 rounded-xl flex flex-col items-center text-center gap-6">
+<div class="size-20 bg-primary/20 rounded-full flex items-center justify-center border-2 border-primary">
+<span class="material-symbols-outlined text-primary text-4xl">gavel</span>
+</div>
+<div>
+<h3 class="text-lg font-bold">Protocol Action</h3>
+<p class="text-sm text-white/60">Deliberating Article IV</p>
+</div>
+<div class="flex flex-col w-full gap-3">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-background-dark font-bold py-4 rounded-lg hover:brightness-110 transition-all">
+<span class="material-symbols-outlined">how_to_reg</span>
+                                        APPROVE (TEAL)
+                                    </button>
+<button class="w-full flex items-center justify-center gap-2 bg-[#f0f4f4] text-background-dark font-bold py-4 rounded-lg hover:bg-discuss-orange hover:text-white transition-all">
+<span class="material-symbols-outlined">forum</span>
+                                        DISCUSS (ORANGE)
+                                    </button>
+</div>
+<div class="pt-4 border-t border-white/10 w-full">
+<p class="text-[10px] text-white/40 uppercase tracking-widest font-bold mb-4">Live Council Feed</p>
+<div class="text-left space-y-3">
+<div class="text-xs">
+<span class="text-primary font-bold">Partner Alpha:</span>
+<span class="text-white/70"> "I need clarity on the shared access timeline."</span>
+</div>
+<div class="text-xs">
+<span class="text-white/40">Council: Waiting for Partner Beta...</span>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl bg-primary/10 border-primary/30">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-xs text-white/80 leading-snug">
+                                        Once both partners select <span class="text-primary font-bold">Approve</span>, Dr. Marcie Liss will strike the gavel to finalize this clause into the permanent record.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Status Bar -->
+<footer class="glass-panel border-t border-white/10 px-10 py-4 flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-2 bg-green-500 rounded-full animate-pulse"></div>
+<p class="text-xs font-medium text-white/60">Council Session Active</p>
+</div>
+<p class="text-xs font-medium text-white/60 border-l border-white/20 pl-6">Secure Neural Link Established</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

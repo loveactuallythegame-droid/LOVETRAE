@@ -1,68 +1,95 @@
-import { useMemo, useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
-import { speakMarcie } from '../../lib/voice-engine';
 
-const SCENARIOS = [
-  { text: "You never do the dishes! (Criticism)", options: ["Defensiveness", "Gentle Start-Up", "Stonewalling"], correct: 1 },
-  { text: "I'm better than you. (Contempt)", options: ["Build Culture of Appreciation", "Defensiveness", "Flooding"], correct: 0 },
-  { text: "It's not my fault! (Defensiveness)", options: ["Take Responsibility", "Criticism", "Contempt"], correct: 0 },
-];
+import React, { useState, useEffect } from "react";
+import { View, Text, Pressable } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-export default function AntidoteArena({ route, navigation }: any) {
+import { Header } from "../../components/ui/Header";
+import { RadialGradientBackground } from "../../components/ui/RadialGradientBackground";
+import { MarcieHost } from "../../components/ai-host/MarcieHost";
+
+import firestore from "@react-native-firebase/firestore";
+
+const AntidoteArena = ({ route }) => {
   const { gameId } = route.params;
-  const [index, setIndex] = useState(0);
+  const navigation = useNavigation();
 
-  function guess(idx: number) {
-    if (idx === SCENARIOS[index].correct) {
-      HapticFeedbackSystem.success();
-      speakMarcie("Correct antidote applied.");
-    } else {
-      HapticFeedbackSystem.error();
-      speakMarcie("Wrong. That just makes it worse.");
-    }
+  const [gameState, setGameState] = useState(null);
+  const [selectedAntidote, setSelectedAntidote] = useState(null);
 
-    if (index < SCENARIOS.length - 1) {
-      setIndex(i => i + 1);
-    } else {
-      Alert.alert("Arena Cleared", "You neutralized the toxins.", [{ text: "OK", onPress: () => navigation.goBack() }]);
-    }
+  useEffect(() => {
+    const unsub = firestore()
+      .collection("active_games")
+      .doc(gameId)
+      .onSnapshot((doc) => {
+        const data = doc.data();
+        if (data) {
+          setGameState(data);
+        }
+      });
+
+    return () => unsub();
+  }, [gameId]);
+
+  const handleAntidoteSelection = (antidote) => {
+    setSelectedAntidote(antidote);
+    const isCorrect = antidote === gameState.correctAntidote;
+
+    firestore()
+      .collection("active_games")
+      .doc(gameId)
+      .update({
+        score: firestore.FieldValue.increment(isCorrect ? 100 : -50),
+      });
+
+    // Navigate to next round or results
+    setTimeout(() => {
+      navigation.navigate("NextRound", { gameId });
+    }, 1000);
+  };
+
+  if (!gameState) {
+    return (
+      <SafeAreaView className="flex-1 bg-background-dark items-center justify-center">
+        <Text className="text-white">Loading...</Text>
+      </SafeAreaView>
+    );
   }
 
-  const inputArea = (
-    <View style={{ gap: 12 }}>
-      <GlassCard>
-        <Text variant="header">Threat Detected</Text>
-        <Text variant="sass" style={styles.threat}>{SCENARIOS[index].text}</Text>
-        <Text variant="body">Select the Antidote:</Text>
-        <View style={{ gap: 8, marginTop: 8 }}>
-          {SCENARIOS[index].options.map((opt, i) => (
-            <SquishyButton key={i} onPress={() => guess(i)} style={styles.btn}>
-              <Text variant="body">{opt}</Text>
-            </SquishyButton>
-          ))}
+  return (
+    <SafeAreaView className="flex-1 bg-background-dark">
+      <RadialGradientBackground>
+        <Header
+          title="Antidote Arena"
+          logo={require("../../../assets/logo/mainlogoone.png")}
+        />
+        <View className="flex-1 p-4">
+          <MarcieHost quote={gameState.quote} />
+
+          <View className="my-8 items-center">
+            <MaterialCommunityIcons name="sword-cross" size={64} color="#ff006d" />
+            <Text className="text-white font-barbie text-2xl text-center mt-4">
+              The Horseman of {gameState.horseman} is attacking!
+            </Text>
+          </View>
+
+          <View className="flex-row flex-wrap justify-around">
+            {gameState.antidotes.map((antidote) => (
+              <Pressable
+                key={antidote.name}
+                className="w-2/5 bg-primary p-4 rounded-lg m-2 items-center"
+                onPress={() => handleAntidoteSelection(antidote.name)}
+              >
+                <MaterialCommunityIcons name={antidote.icon} size={32} color="white" />
+                <Text className="text-white font-holiday text-center mt-2">{antidote.name}</Text>
+              </Pressable>
+            ))}
+          </View>
         </View>
-      </GlassCard>
-    </View>
+      </RadialGradientBackground>
+    </SafeAreaView>
   );
+};
 
-  const baseState = useMemo(() => ({
-    id: gameId,
-    title: 'Antidote Arena',
-    description: 'Neutralize the Four Horsemen',
-    category: 'conflict' as const,
-    difficulty: 'hard' as const,
-    xpReward: 350,
-    currentStep: index,
-    totalTime: 60,
-    playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
-  }), [gameId, index]);
-
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />;
-}
-
-const styles = StyleSheet.create({
-  threat: { fontSize: 20, color: '#FA1F63', marginVertical: 12, textAlign: 'center' },
-  btn: { backgroundColor: 'rgba(255,255,255,0.1)', padding: 16, borderRadius: 8, alignItems: 'center' },
-});
+export default AntidoteArena;

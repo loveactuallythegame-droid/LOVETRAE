@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flooding Forecast | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#f90248", "background-light": "#f8f5f6", "background-dark": "#230f15", cosmic: "#221611", turquoise: "#40e0d0"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.cosmic-bg {
+    background: radial-gradient(circle at 50% 50%, #2c1a12 0%, #110906 100%);
+    position: relative;
+    overflow: hidden
+    }
+.cosmic-bg::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCYnQfAx6sJ2D4y5gvuOIg0RFSPpbdX9gCHhajeJrpjw9LhLRNPrxGwIkFwSiTBg1Q2Mm3JcLLyxS3qCAnAakbIrk7ISKpA_c3YhdB06w2owitUjh3jIiEKtzclZCZWb0TztzOtqdvqf-dmGuO8B0T7Bk_eOABnMDtikeL0M3LtEccT4DGmluo_zoowqFbIuioyL4QGdCXJAanNowBM5x0CrD1CHsLMJpLhQUZ_pufaWn3ynUADrAgk09qmXasWbIdiCovN6Vhe_IvW);
+    opacity: 0.1;
+    pointer-events: none
+    }
+.glow-orange {
+    box-shadow: 0 0 40px rgba(236, 84, 19, 0.3)
+    }
+.glow-turquoise {
+    box-shadow: 0 0 30px rgba(64, 224, 208, 0.3)
+    }
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+        } 50% {
+        transform: scale(1.05);
+        opacity: 1;
+        } 100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+        }
+    }
+.animate-pulse-slow {
+    animation: pulse-ring 2s ease-in-out infinite
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col cosmic-bg group/design-root">
+<!-- Top Nav Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-wider uppercase">Love Actually... The Game</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">DASHBOARD</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">MISSIONS</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#">BIOMETRICS</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">ARCHIVE</a>
+</nav>
+<div class="flex gap-3">
+<button class="flex size-10 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors border border-white/10">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/50" data-alt="Cybernetic user profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB0to1KWnXN7iTDbvu7y10W3zGCNi4BroaeioknLX9zdoHsdz32jBEKw7jS1bSlVcxyoNtisjLV-YxQd9kO52mqYYIACNZxkDaIbT5JJqrYWx4BICgVSdpBqLAf2iPLkHNdTiC0uUsYYpYv5fX7zV16sKACEb4S3Rlc30AIlC5pQlS2j7VZ_4ctSEGeU_D26NeRYnvdH95bFTxRlUfUyhVIat9X2SVkzAFeon8_xMLzoXALqULC0kMImmckHp_LI9AvcLD27yy7Ibff");'></div>
+</div>
+</div>
+</header>
+<main class="flex flex-1 px-10 py-6 gap-8 overflow-hidden">
+<!-- Left HUD: Navigation & Status -->
+<aside class="flex w-64 flex-col justify-between bg-white/5 backdrop-blur-xl p-6 rounded-xl border border-white/10">
+<div class="flex flex-col gap-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-xs font-bold tracking-[0.2em] text-white/50 uppercase">Session Stream</h1>
+<p class="text-primary text-sm font-bold">VAR_01_OF_10 // BIOMETRIC_HUD</p>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3 px-4 py-3 rounded-full bg-primary text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">monitoring</span>
+<p class="text-sm font-bold">Pulse Monitor</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full hover:bg-white/5 transition-all text-white/60 hover:text-white">
+<span class="material-symbols-outlined">warning</span>
+<p class="text-sm font-medium">Risk Analysis</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full hover:bg-white/5 transition-all text-white/60 hover:text-white">
+<span class="material-symbols-outlined">air</span>
+<p class="text-sm font-medium">Breathing Lab</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-full hover:bg-white/5 transition-all text-white/60 hover:text-white">
+<span class="material-symbols-outlined">forum</span>
+<p class="text-sm font-medium">Dr. Liss Chat</p>
+</div>
+</div>
+<div class="pt-6 border-t border-white/10">
+<p class="text-[10px] text-white/40 tracking-widest mb-4">ENVIRONMENT DATA</p>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-xs text-white/60">CORTISOL</span>
+<span class="text-xs font-bold text-primary">RISING</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs text-white/60">EMPATHY INDEX</span>
+<span class="text-xs font-bold text-turquoise">LOW</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full rounded-full py-3 bg-red-600/20 border border-red-500/50 text-red-500 text-xs font-black tracking-widest hover:bg-red-600 hover:text-white transition-all">
+                EMERGENCY RESET
+            </button>
+</aside>
+<!-- Center: Pulse Monitor -->
+<section class="flex-1 flex flex-col gap-6 items-center justify-center">
+<div class="text-center space-y-2">
+<h2 class="text-white tracking-[0.3em] text-sm font-bold uppercase">System Status</h2>
+<h3 class="text-white text-4xl font-black uppercase">Flooding Forecast</h3>
+</div>
+<!-- Glowing Heart Monitor -->
+<div class="relative flex items-center justify-center size-[400px]">
+<!-- Outer Rings -->
+<div class="absolute inset-0 border-2 border-primary/20 rounded-full animate-pulse-slow"></div>
+<div class="absolute inset-8 border border-white/5 rounded-full"></div>
+<div class="absolute inset-16 border-4 border-primary/10 rounded-full border-dashed"></div>
+<!-- Center BPM Display -->
+<div class="relative z-10 flex flex-col items-center justify-center bg-black/40 backdrop-blur-2xl size-64 rounded-full border border-primary/40 glow-orange">
+<span class="material-symbols-outlined text-primary text-5xl mb-2">favorite</span>
+<div class="text-6xl font-black tracking-tighter">112</div>
+<div class="text-primary text-sm font-bold tracking-widest uppercase">BPM REAL-TIME</div>
+<div class="mt-4 flex items-center gap-2 px-3 py-1 bg-primary/20 rounded-full text-[10px] text-primary font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span> +15% STRESS SPIKE
+                    </div>
+</div>
+<!-- Circular Chart Decoration -->
+<svg class="absolute inset-0 size-full -rotate-90">
+<circle cx="200" cy="200" fill="none" r="190" stroke="rgba(236,84,19,0.1)" stroke-width="2"></circle>
+<circle cx="200" cy="200" fill="none" r="190" stroke="#ec5413" stroke-dasharray="200 1200" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+</div>
+<!-- Wave Graph -->
+<div class="w-full max-w-2xl bg-white/5 p-6 rounded-xl border border-white/10">
+<div class="flex justify-between mb-4">
+<p class="text-[10px] font-bold tracking-widest text-white/50">WAVEFORM ANALYSIS // FREQUENCY_004</p>
+<p class="text-[10px] font-bold tracking-widest text-primary">CRITICAL RANGE</p>
+</div>
+<svg fill="none" height="80" preserveaspectratio="none" viewbox="0 0 478 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path class="drop-shadow-[0_0_8px_rgba(236,84,19,0.8)]" d="M0 109C18 109 18 21 36 21C54 21 54 41 72 41C90 41 90 93 108 93C127 93 127 33 145 33C163 33 163 101 181 101C199 101 199 61 217 61C236 61 236 45 254 45C272 45 272 121 290 121C308 121 308 149 326 149C344 149 344 1 363 1C381 1 381 81 399 81C417 81 417 129 435 129C453 129 453 25 472 25" stroke="#ec5413" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+</div>
+</section>
+<!-- Right HUD: Analyst & Risk -->
+<aside class="flex w-80 flex-col gap-6">
+<!-- Analyst Overlay -->
+<div class="relative bg-white/10 backdrop-blur-2xl rounded-xl p-6 border border-white/20 overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-20">
+<span class="material-symbols-outlined text-4xl">psychology</span>
+</div>
+<div class="flex items-center gap-4 mb-4">
+<div class="size-14 rounded-full border-2 border-primary p-0.5">
+<img class="size-full rounded-full object-cover grayscale brightness-125" data-alt="Holographic portrait of Dr. Marcie Liss" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0N9IOoQwX7EdJL9Fb77zygh_1pRMQElxjrF8XIofoBLlJReSbRcH27Kfajvhd32jdJ3Z4ORX33cXyZkrB1cztW1q-adYkWQ1CK-KMolgxnpXduuY02w4Oxu8uCYifF-BowfJox1ajKMcEOuCaOceg8t27VjWTURRaIhN7MIWud2FlWL3ein_DaA11fGnkbOgQWBp9pdyRCxYOzoWURveimA38aY-yr3BYLoiWhvXlvVRMxTHFXHVDki3Umgzlh6We4Igzuwa2rNqJ"/>
+</div>
+<div>
+<h4 class="text-sm font-bold">DR. MARCIE LISS</h4>
+<p class="text-[10px] text-primary font-bold tracking-widest">BIOMETRIC ANALYST</p>
+</div>
+</div>
+<div class="bg-black/40 p-4 rounded-lg border border-white/5 italic">
+<p class="text-sm leading-relaxed text-white/90">
+                        "Your heart is doing the salsa and your brain is out to lunch. Maybe try breathing before you say something you'll have to apologize for in 2029?"
+                    </p>
+</div>
+</div>
+<!-- Flooding Risk Gauge -->
+<div class="bg-white/5 backdrop-blur-xl rounded-xl p-6 border border-white/10 flex-1">
+<div class="flex justify-between items-center mb-6">
+<h4 class="text-xs font-bold tracking-widest text-white/50">FLOODING RISK</h4>
+<span class="px-2 py-0.5 bg-red-500/20 text-red-500 text-[10px] font-bold rounded">LEVEL: HIGH</span>
+</div>
+<div class="flex flex-col h-full gap-4 pb-12">
+<div class="flex-1 w-full bg-white/5 rounded-full relative overflow-hidden flex flex-col justify-end">
+<!-- Risk Zones -->
+<div class="absolute top-0 w-full h-1/4 bg-primary/40 border-b border-primary/60 flex items-center justify-center">
+<span class="text-[10px] font-bold rotate-90 whitespace-nowrap">FLOODING ZONE</span>
+</div>
+<div class="absolute top-1/4 w-full h-1/4 bg-yellow-500/20 border-b border-yellow-500/30"></div>
+<!-- Risk Level Indicator -->
+<div class="w-full bg-primary h-[82%] glow-orange relative">
+<div class="absolute -top-1 left-0 w-full h-2 bg-white blur-sm"></div>
+</div>
+</div>
+<div class="flex justify-between text-[10px] font-bold text-white/40">
+<span>CALM</span>
+<span>0%</span>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom: Box-Breathing Mini-game -->
+<footer class="p-6 px-10">
+<div class="bg-white/5 backdrop-blur-2xl rounded-xl border border-turquoise/30 p-6 flex items-center gap-10 glow-turquoise">
+<div class="flex flex-col gap-1 w-64">
+<div class="flex items-center gap-2 text-turquoise">
+<span class="material-symbols-outlined">eco</span>
+<h4 class="font-bold tracking-widest text-sm">STABILIZER MODULE</h4>
+</div>
+<p class="text-xs text-white/60">Match your breath to the square to stabilize the core and reduce risk.</p>
+</div>
+<!-- Breathing Square -->
+<div class="flex-1 flex items-center justify-center">
+<div class="flex items-center gap-12">
+<div class="text-right">
+<p class="text-xs font-bold text-turquoise tracking-widest uppercase">Inhale</p>
+<p class="text-[10px] text-white/40">4 SECONDS</p>
+</div>
+<div class="size-24 border-2 border-turquoise rounded-lg flex items-center justify-center relative overflow-hidden">
+<div class="size-16 bg-turquoise/40 rounded scale-90 animate-pulse glow-turquoise"></div>
+<div class="absolute inset-0 bg-turquoise/10"></div>
+</div>
+<div class="text-left">
+<p class="text-xs font-bold text-white/40 tracking-widest uppercase">Exhale</p>
+<p class="text-[10px] text-white/20">4 SECONDS</p>
+</div>
+</div>
+</div>
+<div class="w-64">
+<div class="flex justify-between mb-2">
+<p class="text-[10px] font-bold text-turquoise">PROGRESS</p>
+<p class="text-[10px] font-bold text-turquoise">3 / 10</p>
+</div>
+<div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-turquoise w-[30%]"></div>
+</div>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

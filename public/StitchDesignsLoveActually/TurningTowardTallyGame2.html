@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Turning Toward Tally Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#f90248", "background-light": "#f8f5f6", "background-dark": "#230f15"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #1a1e3a 0%, #101322 100%);
+        }
+        .cosmic-glow {
+            box-shadow: 0 0 20px rgba(17, 50, 212, 0.3);
+        }
+        .pulse-cyan { border: 2px solid #00f2ff; box-shadow: 0 0 10px #00f2ff; }
+        .pulse-magenta { border: 2px solid #ff00ff; box-shadow: 0 0 10px #ff00ff; }
+        .pulse-lime { border: 2px solid #32ff00; box-shadow: 0 0 10px #32ff00; }
+        .pulse-amber { border: 2px solid #ffbf00; box-shadow: 0 0 10px #ffbf00; }
+        .pulse-violet { border: 2px solid #8f00ff; box-shadow: 0 0 10px #8f00ff; }
+        .pulse-rose { border: 2px solid #ff007f; box-shadow: 0 0 10px #ff007f; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen">
+<div class="flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#232948] px-10 py-3 bg-background-dark/80 backdrop-blur-md z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<span class="material-symbols-outlined text-3xl">star_rate</span>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight font-display">Love Actually... The Game</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Mission Control</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Tally Vault</a>
+<a class="text-white/70 hover:text-white text-sm font-medium transition-colors" href="#">Sync History</a>
+<a class="text-primary text-sm font-bold leading-normal border-b-2 border-primary" href="#">Auditor Terminal</a>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-[#232948] hover:bg-primary/20 text-white transition-all">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-[#232948] hover:bg-primary/20 text-white transition-all">
+<span class="material-symbols-outlined text-xl">notifications_active</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="Avatar of the user profile" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUIA_XcVM4CBemNxjsKDWdr4dtsYbDJCfexwRTTB-ezdR5ZtfK43MC9sa2H2BKEvLKiWna6Ek1em8MDW5jeo_93UcC8yCUFjwQuwiEIOu9hIhMB3X1TYMDlvsU0aiwhTUMy2ylH7fCdAyMQG1OfKVOvB5me90u9JRo8PaATXqgF6B0nVbkNX0L3XKRY7Blla0qopcOHySsLtfodprnXNY0dw8mH8FUP96GnU6EN36-s_f6GUgYu9yfU0jrTgOz5yecSGLOftKfWA-u");'></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar (The Auditor) -->
+<aside class="w-72 bg-[#111422] border-r border-[#232948] p-6 flex flex-col justify-between overflow-y-auto">
+<div class="flex flex-col gap-8">
+<div class="flex flex-col items-center gap-3 p-4 rounded-xl bg-primary/10 border border-primary/30">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-2xl size-24 cosmic-glow" data-alt="Marcie the Senior Auditor with holographic visor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3GrRGWYJAbNQqLL1JnsaIEUd-m-xiLKu0ymIjplPyI9XbkQdyg9dzgQhuQvs8c69LXKL8LXlNaYbeojLLP0eTot4-qi4NM8HUwOGnIiZeDO5j4GAkXRMZ01u0YbiunMvQRyWiZLiXpe0t2dcf5LOQU92RGB5SMnqsK962kRqNqJtxHNpVCGz81MWEpDaatj05Dtvqp8LIdBvYGzEtASf9lGSaAfcO4iBx3gfsa5ENF2ivust-EOe3LuUxo6pgHwWAxr7qYRUfUIRL");'></div>
+<div class="flex flex-col text-center">
+<h1 class="text-white text-xl font-bold font-display tracking-tight">MARCIE</h1>
+<p class="text-[#929bc9] text-xs uppercase tracking-widest font-semibold">Senior Auditor [Level 10]</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<p class="text-[#929bc9] text-[10px] font-bold uppercase tracking-[0.2em] mb-2 px-3">Active Modules</p>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">calculate</span>
+<p class="text-sm font-bold">Tally Calculator</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#232948] text-white/70 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+<p class="text-sm font-medium">Bids Sentiment</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#232948] text-white/70 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">query_stats</span>
+<p class="text-sm font-medium">Heatmap Analysis</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#232948] text-white/70 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">redeem</span>
+<p class="text-sm font-medium">Unlocked Perks</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#232948] text-white/70 hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">wifi_tethering</span>
+<p class="text-sm font-medium">Sync Status</p>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-black/40 border border-[#323b67]">
+<p class="text-[#929bc9] text-[10px] font-bold uppercase tracking-widest mb-3">Live Indicators</p>
+<div class="grid grid-cols-3 gap-3">
+<div class="size-6 rounded-full pulse-cyan flex items-center justify-center"><span class="material-symbols-outlined text-[10px]">touch_app</span></div>
+<div class="size-6 rounded-full pulse-magenta flex items-center justify-center"><span class="material-symbols-outlined text-[10px]">forum</span></div>
+<div class="size-6 rounded-full pulse-lime flex items-center justify-center"><span class="material-symbols-outlined text-[10px]">volunteer_activism</span></div>
+<div class="size-6 rounded-full pulse-amber flex items-center justify-center"><span class="material-symbols-outlined text-[10px]">schedule</span></div>
+<div class="size-6 rounded-full pulse-violet flex items-center justify-center"><span class="material-symbols-outlined text-[10px]">card_giftcard</span></div>
+<div class="size-6 rounded-full pulse-rose flex items-center justify-center"><span class="material-symbols-outlined text-[10px]">favorite</span></div>
+</div>
+</div>
+</div>
+<button class="flex min-w-full cursor-pointer items-center justify-center rounded-xl h-12 px-4 bg-primary text-white text-sm font-bold tracking-widest uppercase hover:brightness-110 transition-all active:scale-95 shadow-lg shadow-primary/40">
+<span class="truncate">Finalize Audit</span>
+</button>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-transparent relative">
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between items-end gap-3 p-8">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded border border-primary/30 uppercase tracking-widest">Live Feed</span>
+<div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
+</div>
+<h2 class="text-white text-5xl font-black leading-none tracking-tight font-display">Turning Toward Tally</h2>
+<p class="text-[#929bc9] text-lg font-normal leading-normal max-w-xl">
+                            Efficiency is up <span class="text-primary font-bold">14%</span>. Your emotional dividends are maturing. Keep the streak active to unlock the Weekend Perk.
+                        </p>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center justify-center rounded-xl h-12 px-6 bg-[#232948] text-white text-sm font-bold border border-[#323b67] hover:bg-[#323b67] transition-all">
+<span class="material-symbols-outlined mr-2">download</span> Export Audit
+                        </button>
+</div>
+</div>
+<!-- Stats Section -->
+<div class="px-8 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-background-dark/60 backdrop-blur border border-primary/20 hover:border-primary/50 transition-all group">
+<div class="flex justify-between items-start">
+<p class="text-[#929bc9] text-sm font-medium uppercase tracking-widest">Days in Sync</p>
+<span class="material-symbols-outlined text-primary opacity-50 group-hover:opacity-100">calendar_today</span>
+</div>
+<p class="text-white text-3xl font-bold font-display leading-tight">12 Days</p>
+<p class="text-[#0bda65] text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span> +2% Sync Consistency
+                            </p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-background-dark/60 backdrop-blur border border-[#323b67] hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start">
+<p class="text-[#929bc9] text-sm font-medium uppercase tracking-widest">Emotional Currency</p>
+<span class="material-symbols-outlined text-amber-400">monetization_on</span>
+</div>
+<p class="text-white text-3xl font-bold font-display leading-tight">4,250</p>
+<p class="text-[#0bda65] text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span> +540 Today
+                            </p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-background-dark/60 backdrop-blur border border-[#323b67] hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start">
+<p class="text-[#929bc9] text-sm font-medium uppercase tracking-widest">Response Rate</p>
+<span class="material-symbols-outlined text-cyan-400">speed</span>
+</div>
+<p class="text-white text-3xl font-bold font-display leading-tight">92%</p>
+<p class="text-[#0bda65] text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span> +5% Speed
+                            </p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-background-dark/60 backdrop-blur border border-[#323b67] hover:border-primary/50 transition-all">
+<div class="flex justify-between items-start">
+<p class="text-[#929bc9] text-sm font-medium uppercase tracking-widest">Total Bids</p>
+<span class="material-symbols-outlined text-magenta-400">record_voice_over</span>
+</div>
+<p class="text-white text-3xl font-bold font-display leading-tight">148</p>
+<p class="text-[#0bda65] text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span> +12 New
+                            </p>
+</div>
+</div>
+</div>
+<!-- Main Grid: Timeline and Table -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 px-8 pb-10">
+<!-- 24-Hour Bid Tracker -->
+<div class="lg:col-span-1 bg-background-dark/60 backdrop-blur border border-[#323b67] rounded-xl p-6">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-bold font-display uppercase tracking-tight">Bid Timeline</h3>
+<span class="text-xs text-[#929bc9] font-bold">24H CYCLE</span>
+</div>
+<div class="grid grid-cols-[40px_1fr] gap-x-4">
+<!-- Physical Bid -->
+<div class="flex flex-col items-center gap-1 pt-1">
+<div class="size-8 rounded-full border border-cyan-400/50 flex items-center justify-center text-cyan-400">
+<span class="material-symbols-outlined text-lg">touch_app</span>
+</div>
+<div class="w-[2px] bg-cyan-400/20 h-10"></div>
+</div>
+<div class="flex flex-1 flex-col pb-6">
+<p class="text-white text-base font-bold">Physical Bid</p>
+<p class="text-[#929bc9] text-sm font-normal leading-normal">2m response time • <span class="text-cyan-400">Synchronized</span></p>
+</div>
+<!-- Verbal Bid -->
+<div class="flex flex-col items-center gap-1">
+<div class="size-8 rounded-full border border-primary/50 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">chat_bubble</span>
+</div>
+<div class="w-[2px] bg-primary/20 h-10"></div>
+</div>
+<div class="flex flex-1 flex-col pb-6">
+<p class="text-white text-base font-bold font-display">Verbal Bid</p>
+<p class="text-[#929bc9] text-sm font-normal leading-normal">Instant turn-toward • <span class="text-primary font-bold">+50pts</span></p>
+</div>
+<!-- Service Bid -->
+<div class="flex flex-col items-center gap-1">
+<div class="size-8 rounded-full border border-lime-400/50 flex items-center justify-center text-lime-400">
+<span class="material-symbols-outlined text-lg">volunteer_activism</span>
+</div>
+<div class="w-[2px] bg-lime-400/20 h-10"></div>
+</div>
+<div class="flex flex-1 flex-col pb-6">
+<p class="text-white text-base font-bold">Service Bid</p>
+<p class="text-[#929bc9] text-sm font-normal leading-normal">15m response time • <span class="text-lime-400">Processed</span></p>
+</div>
+<!-- Missed Bid -->
+<div class="flex flex-col items-center gap-1">
+<div class="size-8 rounded-full border border-rose-500/50 bg-rose-500/10 flex items-center justify-center text-rose-500">
+<span class="material-symbols-outlined text-lg">error</span>
+</div>
+<div class="w-[2px] bg-rose-500/20 h-10"></div>
+</div>
+<div class="flex flex-1 flex-col pb-6">
+<p class="text-rose-400 text-base font-bold">Failed Sync</p>
+<p class="text-rose-400/60 text-sm font-normal leading-normal italic">Turned away • Missed bid penalty</p>
+</div>
+<!-- Quality Time -->
+<div class="flex flex-col items-center gap-1">
+<div class="size-8 rounded-full border border-violet-400/50 flex items-center justify-center text-violet-400">
+<span class="material-symbols-outlined text-lg">hotel_class</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col">
+<p class="text-white text-base font-bold">Quality Time Bid</p>
+<p class="text-[#929bc9] text-sm font-normal leading-normal">Ongoing Session • <span class="text-violet-400">Active</span></p>
+</div>
+</div>
+</div>
+<!-- Data Tally Board -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Heatmap Mockup -->
+<div class="bg-background-dark/60 backdrop-blur border border-[#323b67] rounded-xl p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold font-display uppercase tracking-tight">Responsiveness Heatmap</h3>
+<div class="flex gap-2">
+<div class="flex items-center gap-1"><div class="size-2 rounded bg-primary/20"></div><span class="text-[10px] text-[#929bc9]">Low</span></div>
+<div class="flex items-center gap-1"><div class="size-2 rounded bg-primary/60"></div><span class="text-[10px] text-[#929bc9]">Mid</span></div>
+<div class="flex items-center gap-1"><div class="size-2 rounded bg-primary"></div><span class="text-[10px] text-[#929bc9]">High</span></div>
+</div>
+</div>
+<div class="grid grid-cols-24 h-24 gap-1">
+<!-- Horizontal bars mockup -->
+<div class="flex flex-wrap gap-1">
+<!-- Generator would typically loop this, manually creating a pattern -->
+<div class="h-10 flex-1 bg-primary/10 rounded"></div>
+<div class="h-10 flex-1 bg-primary/30 rounded"></div>
+<div class="h-10 flex-1 bg-primary/60 rounded"></div>
+<div class="h-10 flex-1 bg-primary rounded"></div>
+<div class="h-10 flex-1 bg-primary rounded"></div>
+<div class="h-10 flex-1 bg-primary/40 rounded"></div>
+<div class="h-10 flex-1 bg-primary/10 rounded"></div>
+<div class="h-10 flex-1 bg-primary/10 rounded"></div>
+<div class="h-10 flex-1 bg-primary/60 rounded"></div>
+<div class="h-10 flex-1 bg-primary rounded"></div>
+<div class="h-10 flex-1 bg-primary/80 rounded"></div>
+<div class="h-10 flex-1 bg-primary/20 rounded"></div>
+<div class="h-10 flex-1 bg-primary/10 rounded"></div>
+<div class="h-10 flex-1 bg-primary/10 rounded"></div>
+<div class="h-10 flex-1 bg-primary/60 rounded"></div>
+<div class="h-10 flex-1 bg-primary/90 rounded"></div>
+<div class="h-10 flex-1 bg-primary rounded"></div>
+<div class="h-10 flex-1 bg-primary/30 rounded"></div>
+</div>
+</div>
+<div class="flex justify-between mt-2 text-[#929bc9] text-[10px] font-bold">
+<span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:59</span>
+</div>
+</div>
+<!-- Rewards Scorecard -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-background-dark/60 backdrop-blur border border-primary/20 rounded-xl p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-all">
+<span class="material-symbols-outlined text-8xl">military_tech</span>
+</div>
+<h4 class="text-white text-lg font-bold mb-4 font-display">Daily Streak Reward</h4>
+<p class="text-[#929bc9] text-sm mb-6 leading-relaxed">Reach <span class="text-white font-bold">15 days</span> to unlock the "Active Listening" HUD overlay for your mobile sensors.</p>
+<div class="w-full bg-[#232948] h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[80%] rounded-full shadow-[0_0_10px_#1132d4]"></div>
+</div>
+<p class="text-xs mt-3 text-right text-primary font-bold">12/15 DAYS COMPLETED</p>
+</div>
+<div class="bg-gradient-to-br from-primary/20 to-violet-900/20 backdrop-blur border border-white/10 rounded-xl p-6">
+<h4 class="text-white text-lg font-bold mb-2 font-display">Auditor's Tip</h4>
+<div class="flex gap-4">
+<div class="flex-shrink-0 size-12 rounded-lg bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-white">lightbulb</span>
+</div>
+<p class="text-white/80 text-sm leading-relaxed">
+                                        "I've noticed a recurring lag in Verbal Bids between 18:00 and 19:30. Decreasing screen time during dinner will boost your Emotional Currency by <span class="text-lime-400">+25%</span>."
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

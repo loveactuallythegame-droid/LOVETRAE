@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Love Actually... The Game Prototype</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#fc0c84",
+                        "background-light": "#f8f5f7",
+                        "background-dark": "#230f19",
+                        charcoal: "#1c2727",
+                        "deep-charcoal": "#111818",
+                        "accent-yellow": "#fbbf24",
+                        "accent-purple": "#a855f7",
+                        "accent-turquoise": "#2dd4bf",
+                        "accent-teal": "#14b8a6",
+                        "accent-orange": "#fb923c",
+                        "accent-pink": "#ec4899"
+                    },
+                    fontFamily: {
+                        display: "Work Sans",
+                        sans: "Space Grotesk"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        full: "9999px"
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .nebula-glow { background: radial-gradient(circle at 50% 50%, rgba(252, 12, 132, 0.05) 0%, transparent 70%); }
+        .glass-panel { background: rgba(28, 39, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .cosmic-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(252, 12, 132, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+                        #101012;
+        }
+        .spectrum-ring {
+            background: conic-gradient(#fbbf24, #13ecec, #f97316, #14b8a6, #a855f7, #ec4899, #fbbf24);
+            mask: radial-gradient(transparent 65%, black 67%);
+            -webkit-mask: radial-gradient(transparent 65%, black 67%);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #121217; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #fc0c84; border-radius: 10px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background-dark text-white min-h-screen overflow-x-hidden">
+    <div id="root"></div>
+
+    <!-- React/Router Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+        const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        // --- Shared Components ---
+        const Header = () => {
+            const navigate = useNavigate();
+            return (
+                <header className="flex items-center justify-between whitespace-nowrap border-b border-white/10 px-6 py-3 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+                    <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate('/')}>
+                        <div className="size-6 text-primary">
+                            <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+                            </svg>
+                        </div>
+                        <h2 className="text-white text-lg font-bold leading-tight tracking-tight">Love Actually... <span className="text-primary/80 font-light">The Game</span></h2>
+                    </div>
+                    <nav className="hidden md:flex items-center gap-6">
+                        <Link to="/dashboard" className="text-[#9db9b9] hover:text-primary transition-colors text-sm font-medium">Dashboard</Link>
+                        <Link to="/library" className="text-[#9db9b9] hover:text-primary transition-colors text-sm font-medium">Games</Link>
+                        <Link to="/profile" className="text-[#9db9b9] hover:text-primary transition-colors text-sm font-medium">Profile</Link>
+                        <Link to="/sos" className="text-[#9db9b9] hover:text-primary transition-colors text-sm font-medium">SOS</Link>
+                    </nav>
+                    <div className="flex gap-2">
+                        <Link to="/settings" className="flex items-center justify-center rounded-xl h-10 w-10 bg-white/5 hover:bg-white/10 transition-all">
+                            <span className="material-symbols-outlined text-white">settings</span>
+                        </Link>
+                        <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-primary/50" style={{backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuCKcDn4ZzAzP8ETeeM4xjHhqcE_qDgLar89AXjF7H-UXG2uMwl-axfi4jPPHmPCGQFjQ0iCJaq0RnXQPVsa4KK6jaVYbtam67_6BbAhImg4-a2kAErsSt-8F6aHZnf8-Gu_Mqqoqxqx515h1C6QTOjyWLLlrjmfbUMTS6T7QKzUlbQdaBBsMEmQvejWo26bQDQhRiuAPdXAdFj2qXEYU-1NOLtAKyE-2oMEohqYDxMys487LUCr9PAFgpPTavs4Sbt7sFKhIeTAK2lD")`}}></div>
+                    </div>
+                </header>
+            );
+        };
+
+        // --- Screens ---
+
+        const SplashScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="relative flex min-h-screen w-full flex-col items-center justify-center cosmic-bg overflow-hidden" onClick={() => navigate('/login')}>
+                    <div className="relative z-20 flex flex-col items-center text-center px-6 cursor-pointer">
+                        <div className="mb-2">
+                            <span className="material-symbols-outlined text-7xl text-primary mb-4 block animate-bounce">diversity_3</span>
+                            <h1 className="text-6xl md:text-8xl font-bold tracking-tighter italic leading-none text-white drop-shadow-2xl">Love Actually...</h1>
+                            <h2 className="text-2xl md:text-3xl font-light tracking-[0.4em] uppercase mt-2 opacity-90">The Game</h2>
+                        </div>
+                        <div className="mt-12 glass-panel px-10 py-4 rounded-full">
+                            <p className="text-xl md:text-2xl font-medium tracking-widest uppercase">HOW ABOUT WE DON'T <span className="text-primary font-black">BREAK</span> UP?</p>
+                        </div>
+                        <div className="mt-32 text-2xl font-bold uppercase tracking-[0.5em] animate-pulse text-accent-yellow">Press anywhere to start</div>
+                    </div>
+                </div>
+            );
+        };
+
+        const LoginScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="min-h-screen cosmic-bg flex flex-col items-center justify-center p-6">
+                    <div className="glass-panel w-full max-w-[480px] rounded-2xl p-10 shadow-2xl">
+                        <h1 className="text-3xl font-bold text-center mb-8">Initiate Connection</h1>
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <p className="text-[10px] uppercase font-bold text-white/50 tracking-widest">Your Cosmic Handle</p>
+                                <input className="w-full bg-white/5 border border-white/10 rounded-xl h-14 px-4 text-white focus:ring-primary focus:ring-1 outline-none" placeholder="commander@nebula.space" />
+                            </div>
+                            <div className="space-y-2">
+                                <p className="text-[10px] uppercase font-bold text-white/50 tracking-widest">Secret Frequency</p>
+                                <input className="w-full bg-white/5 border border-white/10 rounded-xl h-14 px-4 text-white focus:ring-primary focus:ring-1 outline-none" type="password" placeholder="••••••••••••" />
+                            </div>
+                            <button onClick={() => navigate('/onboarding')} className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-14 rounded-xl shadow-lg shadow-primary/20 transition-all uppercase tracking-widest">Start Journey</button>
+                            <div className="relative my-8">
+                                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10"></div></div>
+                                <div className="relative flex justify-center"><span className="bg-background-dark px-4 text-xs text-white/40 uppercase font-bold tracking-widest">or bridge via</span></div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-4">
+                                <button className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-4 flex flex-col items-center gap-2">
+                                    <span className="material-symbols-outlined">phone_iphone</span>
+                                    <span className="text-[8px] font-bold uppercase">Apple</span>
+                                </button>
+                                <button className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-4 flex flex-col items-center gap-2">
+                                    <span className="text-sm font-bold uppercase">Google</span>
+                                    <span className="text-[8px] font-bold uppercase">Google</span>
+                                </button>
+                                <button className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl p-4 flex flex-col items-center gap-2">
+                                    <span className="material-symbols-outlined">mail</span>
+                                    <span className="text-[8px] font-bold uppercase">Email</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const OnboardingSteps = () => {
+            const [step, setStep] = useState(1);
+            const navigate = useNavigate();
+
+            const renderStep = () => {
+                switch(step) {
+                    case 1: return (
+                        <div className="space-y-8 animate-in fade-in duration-500">
+                            <div className="text-center space-y-4">
+                                <h1 className="text-5xl font-black italic">STEP 1: MEET CUTE</h1>
+                                <p className="text-white/60 text-lg">Every great love story has a beginning. How did you two first meet?</p>
+                            </div>
+                            <textarea className="w-full h-64 bg-white/5 border border-white/10 rounded-2xl p-6 text-xl focus:ring-primary outline-none resize-none" placeholder="Take your time, let the memories flow..."></textarea>
+                        </div>
+                    );
+                    case 2: return (
+                        <div className="space-y-8 animate-in fade-in duration-500">
+                            <div className="text-center space-y-4">
+                                <h1 className="text-5xl font-black italic">STEP 2: VIBE CHECK</h1>
+                                <p className="text-white/60 text-lg">How are things feeling between you two right now?</p>
+                            </div>
+                            <div className="py-20 relative">
+                                <div className="absolute top-0 left-0 text-turquoise-accent font-bold uppercase tracking-widest text-xs">Icy</div>
+                                <div className="absolute top-0 right-0 text-orange-accent font-bold uppercase tracking-widest text-xs">Flaming</div>
+                                <input type="range" className="w-full h-2 bg-white/10 rounded-full appearance-none accent-primary cursor-pointer" />
+                            </div>
+                        </div>
+                    );
+                    default: return null;
+                }
+            }
+
+            return (
+                <div className="min-h-screen cosmic-bg p-10 flex flex-col items-center justify-center">
+                    <div className="w-full max-w-3xl space-y-12">
+                        <div className="flex justify-between items-end px-2">
+                            <span className="text-xs uppercase font-bold text-primary tracking-widest">Journey Progress</span>
+                            <span className="text-white/40 text-sm font-bold">{step}/5</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                            <div className="h-full bg-primary transition-all duration-700" style={{width: `${step * 20}%`}}></div>
+                        </div>
+                        {renderStep()}
+                        <div className="flex justify-end gap-4">
+                            {step > 1 && <button onClick={() => setStep(step - 1)} className="px-8 py-4 rounded-full text-white/40 font-bold uppercase">Back</button>}
+                            <button onClick={() => step < 2 ? setStep(step + 1) : navigate('/dashboard')} className="px-10 py-4 bg-primary text-white font-bold rounded-full shadow-lg shadow-primary/20 flex items-center gap-2">
+                                Continue <span className="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+        const Dashboard = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="min-h-screen bg-background-dark nebula-glow">
+                    <Header />
+                    <main className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-12 gap-6">
+                        {/* Left sidebar stats */}
+                        <div className="col-span-12 lg:col-span-3 space-y-6">
+                            <div className="glass-panel p-6 rounded-2xl text-center">
+                                <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 mb-6">Trust Thermometer</h3>
+                                <div className="h-80 w-12 bg-white/5 rounded-full mx-auto relative p-1 flex flex-col justify-end">
+                                    <div className="w-full bg-gradient-to-t from-primary to-accent-turquoise rounded-full shadow-[0_0_20px_rgba(252,12,132,0.4)]" style={{height: '78%'}}></div>
+                                </div>
+                                <p className="text-3xl font-black mt-6">78%</p>
+                                <p className="text-[10px] font-bold uppercase text-primary tracking-widest">Synchronized</p>
+                            </div>
+                        </div>
+
+                        {/* Main feed */}
+                        <div className="col-span-12 lg:col-span-6 space-y-6">
+                            <div className="glass-panel rounded-3xl p-8 bg-gradient-to-br from-primary/10 to-accent-turquoise/10 relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 p-4"><span className="bg-primary/20 text-primary text-[10px] px-2 py-1 rounded-full font-black uppercase">Active Quest</span></div>
+                                <h2 className="text-4xl font-bold mb-4">Daily Duel #24</h2>
+                                <p className="text-white/60 text-lg mb-8">"Describe your partner's best quality using only cosmic metaphors."</p>
+                                <button onClick={() => navigate('/duel')} className="w-full h-16 bg-primary text-white font-black text-xl rounded-xl shadow-lg hover:scale-[1.02] transition-transform">START DUEL</button>
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-4">
+                                <div onClick={() => navigate('/library')} className="glass-panel p-6 rounded-2xl cursor-pointer hover:border-primary/50 transition-all flex flex-col gap-4">
+                                    <span className="material-symbols-outlined text-primary text-4xl">sports_esports</span>
+                                    <div>
+                                        <h4 className="font-bold">Mini-Games</h4>
+                                        <p className="text-xs text-white/40">Connect through play</p>
+                                    </div>
+                                </div>
+                                <div onClick={() => navigate('/translator')} className="glass-panel p-6 rounded-2xl cursor-pointer hover:border-primary/50 transition-all flex flex-col gap-4">
+                                    <span className="material-symbols-outlined text-accent-turquoise text-4xl">translate</span>
+                                    <div>
+                                        <h4 className="font-bold">Translator</h4>
+                                        <p className="text-xs text-white/40">Decode the hidden meaning</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right sidebar status */}
+                        <div className="col-span-12 lg:col-span-3 space-y-6">
+                            <div className="glass-panel p-6 rounded-2xl space-y-6">
+                                <div className="flex flex-col items-center">
+                                    <div className="relative mb-4">
+                                        <div className="size-20 rounded-full border-4 border-accent-turquoise p-1">
+                                            <img className="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPq6iJGKU2LkUZZMIC0JPHcJ6s-UZ4kDaLGQOo3pmKidu5F_tVhWvd59kInkafIj9tYb9mw1DDNoiN7vFrNAFc51zZSZw1TTbg-l174KJmaIGBwGoj53HZ5iNyyDFT1WM_H0GGFxLol9-UROxyiS9gzjO_c34JfhHoeyTd0j_LE_DRUaxmNy0GC2qbLAk1PWHuAN-0dntEW7f3PS_5LHXt12JsU5e-lv1dKy98E4xHTKjEGkF4aIvWmP8tllCxYC08p6iSLIzGp1fj" />
+                                        </div>
+                                        <div className="absolute bottom-1 right-1 size-4 bg-green-500 rounded-full border-2 border-background-dark"></div>
+                                    </div>
+                                    <h4 className="font-bold">Jamie Starlight</h4>
+                                    <p className="text-xs text-accent-turquoise font-medium">Online & Synced</p>
+                                </div>
+                                <button onClick={() => navigate('/sos')} className="w-full py-4 bg-red-500/20 text-red-500 border border-red-500/30 font-bold rounded-xl flex items-center justify-center gap-2">
+                                    <span className="material-symbols-outlined text-sm">emergency_home</span>
+                                    SOS MODE
+                                </button>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        const Library = () => {
+            const categories = ["All", "Communication", "Intimacy", "Future", "Fun"];
+            const games = [
+                { title: "Soul Sync", time: "15 mins", cat: "Communication", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAWIpTHvb05jkwBvDxLVC32Q-AfzgqzPLS2wjwxJ86AJ-098JAoe8owi90_hmkH39qpdXIWYtYzLTE1_xaK5Wk_JVvrE37V-WggccbdwBL1jCMF5Hrq696sJ4XGKtdeR78O_HaSFX4T9sX8OuhSbEEpXvSWd7cVSqbcAqPaJ3tfloepDNAJ4rAeiJU7HOC4E8YLmMfhjZEbemNYE7Gqzs_7X2Wx3uv2WHUnX3pU8Xk9AEf4jqD4dG2ih0leRzHov1rMMlVCc-yVnC90" },
+                { title: "Cosmic Connect", time: "10 mins", cat: "Intimacy", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBpd_b1gTPxoDK-tDQKVifQtuIZUHspSoyckTrGw0RUG_v3gQbjhzNITRKH0l68PB3g8quKu2utRM0EJF4J2X2tf_K5dtBM82ys7A184UURoytubqr_hfS6p3xj0bzXIxNmTkPVejJ7WbKtWh8Z-9-RoRkg-eVXBNfqNDGHDajGW9DrFK9ymv_sh_oTVFJfKHT2ks6O1tovbM-u3nThk6RDyvSUcxyjbwbcdwih49-u-iu7Cn5npuVrQhFmPv8i999yCQ9cuo8ed3a4" },
+                { title: "Deep Dive", time: "25 mins", cat: "Future", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuB3z8bew-VvClVTDBL3ISYmzaMwyf3Jwz2C7y2NkUUSGwgiVasaryfFh_JEmaUnhgps9YLlnj5H7v8gkF5-8upWQc35K8Y2rTjmUrLnKeLuMb6-tLiqzNFt8-U4IdsQE6BmgwRxIr800buTe5lKww89pzYytj1bRKVUtPYqpgtvfEyq0yiGeA0vfFbc0k-Vzy24u2zbuTiNbjdqZnB4Uj345_gH02v2TZlpYMwoD5GKQ7iMJe6PL0obBLTv3VS2dJyc0-IVx35bIDXZ" },
+                { title: "Stellar Stories", time: "12 mins", cat: "Fun", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD8m89dc6KszMvEOMF1EFGuxixzOdDNR4H7zm8ubHNVJevIAogZVKznhmPI7hUClZcsK8tlnBO9M5Uxen8aEiAFMvnO2A0Lou9zh5Oqsu1cTH6ksfXkUPAqYg4bJG5xpMMlb11VbdftmQvTAQ8j9gcBV1M5BTIjlowycWgcKfu5UmQIVAUU-en8d-GWWPPJk6gaePXkmKN-XmxreaGVWe6aj3XQDb5L-xkzDYSUUFLm7lvYDs2Lz4PvjoBuJrpAZap6zSV1eSMtv1wR" }
+            ];
+
+            return (
+                <div className="min-h-screen cosmic-bg">
+                    <Header />
+                    <main className="max-w-7xl mx-auto px-6 py-8">
+                        <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
+                            <h1 className="text-5xl font-black tracking-tighter">Cosmic Library</h1>
+                            <div className="flex bg-white/5 rounded-full p-1 border border-white/10 overflow-x-auto no-scrollbar max-w-full">
+                                {categories.map(c => (
+                                    <button key={c} className={`px-6 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all ${c === 'All' ? 'bg-primary text-white' : 'text-white/40 hover:text-white'}`}>{c}</button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {games.map((g, i) => (
+                                <div key={i} className="glass-panel rounded-3xl overflow-hidden group cursor-pointer hover:border-primary/50 hover:-translate-y-1 transition-all">
+                                    <div className="aspect-video relative">
+                                        <img className="w-full h-full object-cover opacity-60 group-hover:opacity-90 transition-opacity" src={g.img} />
+                                        <div className="absolute bottom-4 left-4 flex gap-2">
+                                            <span className="bg-black/60 px-2 py-1 rounded text-[8px] font-bold uppercase tracking-widest">{g.time}</span>
+                                        </div>
+                                    </div>
+                                    <div className="p-6">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-1">{g.cat}</p>
+                                        <h4 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{g.title}</h4>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        const DuelScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="min-h-screen bg-background-dark nebula-glow flex flex-col">
+                    <Header />
+                    <main className="flex-1 flex flex-col items-center justify-center p-10">
+                        <h1 className="text-6xl font-black italic mb-2">Word Association</h1>
+                        <p className="text-primary text-xl mb-16">First word that comes to mind when you see: <span className="text-white underline font-bold">COSMOS</span></p>
+                        
+                        <div className="flex flex-col md:flex-row items-center gap-16 w-full max-w-4xl">
+                            <div className="flex-1 flex flex-col items-center gap-6">
+                                <div className="size-64 rounded-full glass-panel flex flex-col items-center justify-center p-8 border-primary/40 relative">
+                                    <div className="absolute -top-4 bg-primary px-4 py-1 rounded-full text-[10px] font-black uppercase">You</div>
+                                    <input className="w-full bg-transparent border-none text-3xl font-bold text-center focus:ring-0" placeholder="Type..." value="Infinity" readOnly />
+                                    <span className="material-symbols-outlined text-primary mt-4">check_circle</span>
+                                </div>
+                                <span className="font-bold">Alex Johnson</span>
+                            </div>
+                            
+                            <div className="text-white/20 font-black italic">VS</div>
+                            
+                            <div className="flex-1 flex flex-col items-center gap-6">
+                                <div className="size-64 rounded-full glass-panel flex flex-col items-center justify-center p-8 border-accent-turquoise/40 relative opacity-60">
+                                    <div className="absolute -top-4 bg-accent-turquoise px-4 py-1 rounded-full text-[10px] font-black uppercase text-black">Partner</div>
+                                    <div className="flex gap-1 animate-pulse">
+                                        <div className="w-2 h-2 rounded-full bg-accent-turquoise"></div>
+                                        <div className="w-2 h-2 rounded-full bg-accent-turquoise"></div>
+                                        <div className="w-2 h-2 rounded-full bg-accent-turquoise"></div>
+                                    </div>
+                                    <p className="text-xs text-accent-turquoise mt-4 font-bold">Jamie is typing...</p>
+                                </div>
+                                <span className="font-bold">Jamie Starlight</span>
+                            </div>
+                        </div>
+                        
+                        <div className="mt-20 flex gap-4">
+                            <button onClick={() => navigate('/results')} className="px-12 py-5 bg-primary text-white font-black rounded-xl shadow-xl shadow-primary/20 hover:scale-105 transition-transform">COMPLETE ROUND</button>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        const TranslatorScreen = () => {
+            const [mode, setMode] = useState('input');
+            return (
+                <div className="min-h-screen cosmic-bg">
+                    <Header />
+                    <main className="max-w-4xl mx-auto px-6 py-20 flex flex-col items-center text-center">
+                        <h1 className="text-5xl font-black tracking-tight mb-4">Deciphering the Frequency...</h1>
+                        <p className="text-white/60 text-lg mb-12">Input your partner's message to bridge the gap and reveal the underlying signal.</p>
+                        
+                        <div className="w-full glass-panel rounded-[2rem] p-10 space-y-6 relative overflow-hidden group">
+                            <div className="flex items-center gap-2 text-primary/60"><span className="material-symbols-outlined">sensors</span> <span className="text-xs font-bold uppercase tracking-widest">Incoming Signal Capture</span></div>
+                            <textarea className="w-full h-48 bg-transparent border-none text-2xl md:text-3xl text-white placeholder:text-white/10 focus:ring-0 resize-none" placeholder="What did they say?"></textarea>
+                            <div className="flex justify-between items-center pt-6 border-t border-white/5">
+                                <span className="text-[10px] uppercase font-bold text-white/30 italic">Awaiting stream...</span>
+                                <button onClick={() => setMode('reveal')} className="px-10 py-4 bg-gradient-to-r from-primary to-accent-turquoise text-background-dark font-black rounded-xl hover:scale-105 transition-transform flex items-center gap-2">
+                                    <span className="material-symbols-outlined">auto_awesome</span> TRANSLATE
+                                </button>
+                            </div>
+                        </div>
+                        
+                        {mode === 'reveal' && (
+                            <div className="mt-12 p-8 glass-panel border-primary rounded-3xl animate-in zoom-in duration-500 w-full">
+                                <p className="text-xs font-black text-primary uppercase tracking-widest mb-4">The Real Meaning</p>
+                                <h3 className="text-3xl font-bold leading-tight">"I'm feeling overwhelmed by decisions and just need to feel <span className="text-accent-purple">taken care of</span> tonight."</h3>
+                            </div>
+                        )}
+                    </main>
+                </div>
+            );
+        };
+
+        const SOSScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="min-h-screen bg-background-dark cosmic-bg flex flex-col items-center justify-center p-6 text-center">
+                    <div className="w-full max-w-2xl glass-panel rounded-[3rem] p-16 space-y-10 border-red-500/30">
+                        <div className="relative inline-block">
+                            <div className="absolute inset-0 bg-red-500/20 blur-3xl rounded-full scale-150 animate-pulse"></div>
+                            <span className="material-symbols-outlined text-[120px] text-red-500">emergency_home</span>
+                        </div>
+                        <h1 className="text-5xl font-black tracking-tighter">Need Support?</h1>
+                        <p className="text-white/50 text-xl">You've hit the SOS beacon. Please select the current frequency of your connection.</p>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button onClick={() => navigate('/breathe')} className="glass-panel p-8 rounded-3xl border-accent-yellow/30 hover:bg-accent-yellow/10 transition-all flex flex-col items-center gap-4 group">
+                                <span className="material-symbols-outlined text-4xl text-accent-yellow">sentiment_dissatisfied</span>
+                                <span className="font-bold text-xl">I'm Frustrated</span>
+                            </button>
+                            <button onClick={() => navigate('/breathe')} className="glass-panel p-8 rounded-3xl border-primary/30 hover:bg-primary/10 transition-all flex flex-col items-center gap-4 group">
+                                <span className="material-symbols-outlined text-4xl text-primary">bolt</span>
+                                <span className="font-bold text-xl">We're Fighting</span>
+                            </button>
+                        </div>
+                        <button onClick={() => navigate('/dashboard')} className="text-white/30 font-bold uppercase tracking-widest text-sm hover:text-white transition-colors">Cancel - Everything is okay</button>
+                    </div>
+                </div>
+            );
+        };
+
+        const BreatheScreen = () => {
+            const [timeLeft, setTimeLeft] = useState(60);
+            const navigate = useNavigate();
+
+            useEffect(() => {
+                if (timeLeft > 0) {
+                    const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+                    return () => clearTimeout(timer);
+                } else {
+                    navigate('/repair');
+                }
+            }, [timeLeft]);
+
+            return (
+                <div className="min-h-screen bg-background-dark cosmic-bg flex flex-col items-center justify-center">
+                    <div className="text-center space-y-12">
+                        <h1 className="text-4xl font-bold tracking-widest uppercase">Finding Your Center</h1>
+                        <div className="relative size-80 flex items-center justify-center">
+                            <div className="absolute inset-0 rounded-full border-[10px] border-white/5"></div>
+                            <div className="absolute inset-0 rounded-full border-[10px] border-t-accent-turquoise border-l-accent-turquoise/50 animate-spin" style={{animationDuration: '3s'}}></div>
+                            <div className="text-center z-10">
+                                <p className="text-7xl font-black tabular-nums">00:{timeLeft < 10 ? `0${timeLeft}` : timeLeft}</p>
+                                <p className="text-xs font-bold uppercase tracking-[0.4em] text-accent-turquoise mt-4">Inhale... Exhale</p>
+                            </div>
+                        </div>
+                        <p className="text-white/40 text-lg max-w-md mx-auto italic">"Take this minute to detach from the tension. You are on the same team."</p>
+                    </div>
+                </div>
+            );
+        };
+
+        const RepairSteps = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="min-h-screen bg-background-dark cosmic-bg flex flex-col">
+                    <Header />
+                    <main className="flex-1 flex flex-col items-center justify-center p-10 text-center">
+                        <div className="max-w-4xl w-full space-y-16">
+                            <div className="space-y-4">
+                                <h1 className="text-6xl font-black tracking-tighter">Choose Your Peace Offering</h1>
+                                <p className="text-white/50 text-xl max-w-2xl mx-auto">Tension detected. Select a repair attempt to realign your orbits.</p>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                {[
+                                    {label: "6-Second Hug", icon: "favorite", col: "orange-accent"},
+                                    {label: "Direct Apology", icon: "verified", col: "accent-teal"},
+                                    {label: "Active Listening", icon: "hearing", col: "accent-yellow"},
+                                    {label: "Silly Humor", icon: "sentiment_very_satisfied", col: "accent-pink"}
+                                ].map((choice, i) => (
+                                    <div key={i} onClick={() => navigate('/verdict')} className="glass-panel p-8 rounded-3xl cursor-pointer hover:scale-105 hover:border-primary/50 transition-all flex flex-col items-center gap-6 group">
+                                        <div className={`size-16 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors`}>
+                                            <span className="material-symbols-outlined text-4xl">{choice.icon}</span>
+                                        </div>
+                                        <h4 className="font-bold text-lg">{choice.label}</h4>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        const VerdictScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="min-h-screen bg-background-dark nebula-bg p-10 flex flex-col items-center">
+                    <Header />
+                    <div className="max-w-6xl w-full py-10 space-y-12">
+                        <div className="text-center space-y-4">
+                            <div className="inline-block px-4 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-widest">Marcie AI Analysis</div>
+                            <h1 className="text-6xl font-black tracking-tighter">The <span className="text-primary italic">"Tough Love"</span> Verdict</h1>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+                            <div className="glass-panel p-8 rounded-3xl border-l-4 border-l-accent-turquoise text-left">
+                                <h3 className="font-bold text-xl mb-4">Alex's Lens</h3>
+                                <p className="text-white/60 italic leading-relaxed">"I feel like I'm constantly being audited for small mistakes, making me want to withdraw entirely."</p>
+                            </div>
+                            <div className="bg-white rounded-3xl p-10 text-deep-charcoal flex flex-col justify-center text-center shadow-2xl scale-105 z-10">
+                                <h3 className="font-black uppercase tracking-widest text-xs text-primary mb-6">The Reality</h3>
+                                <p className="text-2xl font-bold leading-tight">You're both arguing about the <span className="underline decoration-accent-orange">dishes</span> because neither feels <span className="underline decoration-accent-turquoise">seen</span>.</p>
+                            </div>
+                            <div className="glass-panel p-8 rounded-3xl border-r-4 border-r-accent-purple text-right">
+                                <h3 className="font-bold text-xl mb-4">Jordan's Lens</h3>
+                                <p className="text-white/60 italic leading-relaxed">"If I don't point things out, they don't get done. It feels like I'm a manager, not a partner."</p>
+                            </div>
+                        </div>
+                        
+                        <div className="glass-panel p-10 rounded-[3rem] border-primary/30 relative">
+                            <div className="absolute -top-4 left-10 bg-primary px-4 py-1 rounded-full text-xs font-bold">MARCIE'S ROAST</div>
+                            <p className="text-3xl font-bold italic leading-tight text-primary">"Alex, your 'withdrawal' isn't peace, it's strategic ghosting. And Jordan, your 'reminders' are just corporate emails with attitude. Stop acting like roommates."</p>
+                        </div>
+                        
+                        <div className="flex justify-center gap-6 pt-10">
+                             <button onClick={() => navigate('/results')} className="px-16 py-6 bg-primary text-white font-black text-2xl rounded-2xl shadow-2xl hover:scale-105 transition-all uppercase tracking-widest">Fix This Orbit</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ResultsScreen = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="min-h-screen bg-background-dark cosmic-bg flex flex-col items-center">
+                    <Header />
+                    <main className="max-w-4xl w-full py-20 px-6 text-center space-y-16">
+                        <div className="space-y-4">
+                            <p className="text-primary font-bold tracking-[0.4em] uppercase text-sm">Session Complete</p>
+                            <h1 className="text-7xl font-black italic tracking-tighter">Harmony Restored</h1>
+                        </div>
+                        
+                        <div className="relative flex flex-col items-center">
+                            <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full scale-150"></div>
+                            <div className="relative size-80 rounded-full border-8 border-primary flex flex-col items-center justify-center glass-panel shadow-[0_0_60px_rgba(252,12,132,0.4)]">
+                                <span className="material-symbols-outlined text-accent-yellow text-7xl mb-4 animate-pulse">stars</span>
+                                <p className="text-6xl font-black tracking-tighter">LVL 15</p>
+                                <p className="text-primary font-bold uppercase tracking-[0.2em] text-sm">Empathy Masters</p>
+                            </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-6 w-full max-w-2xl mx-auto">
+                            <div className="glass-panel p-6 rounded-3xl text-left border-l-4 border-l-accent-turquoise">
+                                <p className="text-xs font-bold text-white/40 uppercase mb-2">XP Gained</p>
+                                <p className="text-4xl font-black text-accent-turquoise">+2,450</p>
+                            </div>
+                            <div className="glass-panel p-6 rounded-3xl text-left border-l-4 border-l-primary">
+                                <p className="text-xs font-bold text-white/40 uppercase mb-2">Sync Rate</p>
+                                <p className="text-4xl font-black text-primary">94%</p>
+                            </div>
+                        </div>
+                        
+                        <button onClick={() => navigate('/dashboard')} className="px-16 py-6 bg-white text-black font-black text-xl rounded-2xl shadow-2xl hover:bg-primary hover:text-white transition-all">RETURN TO HUB</button>
+                    </main>
+                </div>
+            );
+        };
+
+        const ProfileScreen = () => {
+            return (
+                <div className="min-h-screen bg-background-dark cosmic-bg">
+                    <Header />
+                    <main className="max-w-[1200px] mx-auto w-full px-6 py-10 space-y-8">
+                        <section className="glass-panel rounded-3xl p-10 flex flex-col md:flex-row items-center justify-between gap-10">
+                            <div className="flex flex-col md:flex-row items-center gap-10">
+                                <div className="relative">
+                                    <div className="size-40 rounded-full border-8 border-primary p-1 bg-background-dark shadow-[0_0_50px_rgba(252,12,132,0.3)]">
+                                        <img className="size-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtyoVbyt5ofdhPIRZiC2i8t-16kzID9Ttah4b-aAvPuT4tBvM7P-2InkGls2gyh3VTlxZfHGxp_0XLUgkdxGpqbaJa7Vc_nETGZk6vutPRZ2gG_nUFKd32doZoROO2BkDZ_2D1u3r15-PAmYGduurtUJI_UFiQJt5Gy64hSQgRQsc9y5YjTssMH5RlsJXHgnhqMisgFKuokXXPeZmf31Ynxbv9fxWYPFs9p-6e6upmBAxHG_2PPj6rjlPC32La0Z91P3OOz-C0JiBD" />
+                                    </div>
+                                    <div className="absolute -bottom-2 -right-2 bg-accent-turquoise size-8 rounded-full border-4 border-background-dark"></div>
+                                </div>
+                                <div className="text-center md:text-left space-y-2">
+                                    <h1 className="text-5xl font-black tracking-tighter">Alex Rivera</h1>
+                                    <p className="text-primary text-xl font-bold">Cosmic Explorer • Lvl 15</p>
+                                    <div className="flex gap-2 justify-center md:justify-start">
+                                        <span className="px-3 py-1 bg-white/5 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest">Words of Affirmation</span>
+                                        <span className="px-3 py-1 bg-white/5 rounded-full border border-white/10 text-[10px] font-bold uppercase tracking-widest">Secure Attachment</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-4">
+                                <button className="px-8 py-4 bg-gradient-to-r from-primary to-accent-purple rounded-xl font-black text-sm uppercase tracking-widest shadow-lg">Edit Profile</button>
+                                <div className="flex items-center gap-3 p-4 glass-panel rounded-2xl border-accent-turquoise/30">
+                                    <div className="size-10 rounded-full bg-accent-turquoise/20 flex items-center justify-center"><span className="material-symbols-outlined text-accent-turquoise">favorite</span></div>
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-white/40">Partnered With</p>
+                                        <p className="font-bold">Jamie Starlight</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="glass-panel p-8 rounded-3xl space-y-2">
+                                <p className="text-xs font-bold uppercase text-white/40">Daily Streak</p>
+                                <p className="text-5xl font-black">15 Days</p>
+                                <p className="text-xs text-accent-turquoise font-bold flex items-center gap-1"><span className="material-symbols-outlined text-sm">bolt</span> New Record!</p>
+                            </div>
+                            <div className="glass-panel p-8 rounded-3xl space-y-2">
+                                <p className="text-xs font-bold uppercase text-white/40">Quests Done</p>
+                                <p className="text-5xl font-black">128</p>
+                                <p className="text-xs text-primary font-bold flex items-center gap-1"><span className="material-symbols-outlined text-sm">military_tech</span> Gold Tier</p>
+                            </div>
+                            <div className="glass-panel p-8 rounded-3xl space-y-2">
+                                <p className="text-xs font-bold uppercase text-white/40">Milestones</p>
+                                <p className="text-5xl font-black">24</p>
+                                <p className="text-xs text-white/40">4 more to level up</p>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        const SettingsScreen = () => {
+             const navigate = useNavigate();
+             return (
+                 <div className="min-h-screen bg-background-dark cosmic-bg flex">
+                     <aside className="w-72 border-r border-white/5 bg-black/40 backdrop-blur-3xl flex flex-col p-8">
+                         <div className="mb-12 flex items-center gap-3 cursor-pointer" onClick={() => navigate('/dashboard')}>
+                             <span className="material-symbols-outlined text-primary text-3xl">favorite</span>
+                             <h2 className="text-xl font-bold tracking-tight uppercase italic">Love Actually</h2>
+                         </div>
+                         <nav className="space-y-4">
+                             <div className="text-xs font-black uppercase tracking-[0.2em] text-white/30">User settings</div>
+                             <button className="flex items-center gap-3 text-white/60 hover:text-white font-bold transition-all"><span className="material-symbols-outlined">person</span> Account</button>
+                             <button className="flex items-center gap-3 text-white/60 hover:text-white font-bold transition-all"><span className="material-symbols-outlined">notifications</span> Notifications</button>
+                             <button className="flex items-center gap-3 text-white/60 hover:text-white font-bold transition-all"><span className="material-symbols-outlined">security</span> Privacy</button>
+                             <button className="flex items-center gap-3 text-primary font-black transition-all"><span className="material-symbols-outlined font-fill">auto_awesome</span> Personality</button>
+                         </nav>
+                         <button onClick={() => navigate('/login')} className="mt-auto flex items-center gap-3 text-red-500 font-bold uppercase tracking-widest text-xs"><span className="material-symbols-outlined text-sm">logout</span> Logout</button>
+                     </aside>
+                     <main className="flex-1 p-20 space-y-16 overflow-y-auto custom-scrollbar">
+                        <div className="space-y-4">
+                            <h1 className="text-6xl font-black tracking-tighter">AI Personality</h1>
+                            <p className="text-white/50 text-xl max-w-2xl">Fine-tune the AI's temperament. This dictates how Marcie facilitates your sessions and reacts to your answers.</p>
+                        </div>
+                        
+                        <div className="grid grid-cols-3 gap-8">
+                            {[
+                                {name: "Sweet Marcie", desc: "Gentle, nurturing, focuses on positive reinforcement.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDu1nU17qVNSi6DhyWCKr3N9B42aPpWwFsE_Y99LPJGumg_xVuEnuFljFnatGG-7mLH8PBEf_dw-2gEFNh2TpGXSCUkTobUlIeXjGXvv7c1Yu_05S6rMQme45uBig_cCTEHHSS-PuHIgBRFFunCm3Cwk6NcMiS0xMVL2d9BmAAH1J3bU6HqBhSqM4qQt-guKH0PcY33yThQt-n4Ps0jrl7QSh5CxeXEWhsqOVSvVhF-WJt5-2haTLR2w6-rlalMh1gtJx05hs1jgag6"},
+                                {name: "Neutral", desc: "Objective, direct, balanced clinical warm insights.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBW3ZekNTbiluocoAuNNCjn6bFJqmAhygGOk-lSWSUUdweCghwwfOxJb-bUsBNB_P_0Ttq5GK8kza5Qb0-1e54mW-9dtMLEKxTK5O_1OhZ9742XDC1YvFqkwOmfbkajNHvbRyk4dQR8WiuUas_Qom0LnfDxPMxPUQo4h1uOQ5r7uWPUxxOPG62SCk1qNhWPTxP9NRP683SWcDu9Knx8191o5kQ-4_xwReQX9d3zrJlL0iXvoiKCE-o3zC2T1CjNMC1Zm2TWxi0dyVnd"},
+                                {name: "Spicy/Savage", desc: "Provocative, brutally honest, high energy challenges.", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCl0NxaZdW6LyIekWGOg5v8OBh0Kn84BYvJ2wBR_np_5cwGYXcMjz4dLxcWLeopFNR40fDdrYu44j9yo2jvOMNeJSn1tmsVxRy01W8Y_deLo52PIKWT3sfvfplGFIP2cp29JVTr4liJ6maXPLD04v7w5J37tPquxwUlWyM0PrL6Hhzslw248SN2IrSJYpeKg7K5mpLCLKExGWPnXQ96VizwXsECd0mdeCJZmYeg79klwr4Ed_FQFnq8VNdLs19yMLkftHzskcfe3Ljr", active: true}
+                            ].map((p, i) => (
+                                <div key={i} className={`glass-panel rounded-3xl overflow-hidden cursor-pointer group transition-all ${p.active ? 'ring-4 ring-primary shadow-2xl shadow-primary/30' : 'hover:border-white/20'}`}>
+                                    <div className="aspect-[3/4] relative">
+                                        <img className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${!p.active && 'grayscale opacity-50 hover:grayscale-0 hover:opacity-100'}`} src={p.img} />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+                                        <div className="absolute bottom-6 left-6 right-6 space-y-2">
+                                            {p.active && <span className="text-[10px] font-black uppercase text-primary tracking-widest bg-primary/20 px-2 py-1 rounded">Active choice</span>}
+                                            <h4 className="text-3xl font-black italic">{p.name}</h4>
+                                            <p className="text-xs text-white/60 leading-relaxed">{p.desc}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div className="glass-panel p-10 rounded-[3rem] border-primary/20 bg-gradient-to-r from-primary/5 to-transparent flex items-center justify-between">
+                            <div className="space-y-2">
+                                <h4 className="text-2xl font-bold">Ready to sync changes?</h4>
+                                <p className="text-white/40">Your partner will be notified of the personality shift.</p>
+                            </div>
+                            <button className="px-12 py-5 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:scale-105 transition-all">SAVE CONFIGURATION</button>
+                        </div>
+                     </main>
+                 </div>
+             );
+        };
+
+        const App = () => {
+            return (
+                <MemoryRouter>
+                    <Routes>
+                        <Route path="/" element={<SplashScreen />} />
+                        <Route path="/login" element={<LoginScreen />} />
+                        <Route path="/onboarding" element={<OnboardingSteps />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/library" element={<Library />} />
+                        <Route path="/duel" element={<DuelScreen />} />
+                        <Route path="/translator" element={<TranslatorScreen />} />
+                        <Route path="/sos" element={<SOSScreen />} />
+                        <Route path="/breathe" element={<BreatheScreen />} />
+                        <Route path="/repair" element={<RepairSteps />} />
+                        <Route path="/verdict" element={<VerdictScreen />} />
+                        <Route path="/results" element={<ResultsScreen />} />
+                        <Route path="/profile" element={<ProfileScreen />} />
+                        <Route path="/settings" element={<SettingsScreen />} />
+                    </Routes>
+                </MemoryRouter>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

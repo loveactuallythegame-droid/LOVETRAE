@@ -3,7 +3,7 @@
 ## ENGINEERING CHECKLIST
 
 ### AUTH & DATABASE
-- [x] Supabase project configured (Referenced in `src/lib/supabase.ts`)
+- [x] Firebase project configured (Referenced in `src/lib/firebaseClient.ts`)
 - [x] User authentication working (email, Apple, Google) (`SignInScreen.tsx`, etc.)
 - [x] Couple linking logic implemented (`CoupleCodeScreen.tsx`)
 - [ ] Database schema deployed (users, couples, games, fights, leaderboard, subscriptions)
@@ -21,7 +21,7 @@
 ### ANIMATIONS & HAPTICS
 - [x] Marcie idle animations working (Basic Lottie implementation in `MarcieHost.tsx`)
 - [ ] Contextual reactions trigger correctly
-- [x] Button press animations (squish effect) (`SquishyButton.tsx`)
+- [ ] Button press animations (squish effect) (`SquishyButton.tsx`)
 - [ ] Liquid fill animations for meters
 - [x] Haptic feedback for all interactions (`HapticFeedbackSystem.ts`)
 - [ ] Confetti/celebration animations

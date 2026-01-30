@@ -4,7 +4,7 @@
 
 1.  Copy `.env.example` to `.env` in the `app/` directory.
 2.  Fill in the required API keys:
-    *   **Supabase**: Create a project at supabase.com. Get URL and Anon Key.
+    *   **Firebase**: Create a project at firebase.google.com. Get your web app's configuration object and place it in `app/src/lib/firebaseClient.ts`.
     *   **ElevenLabs**: Get API Key and Voice ID from elevenlabs.io.
     *   **Mapbox**: Get Public Access Token from mapbox.com.
     *   **Giphy**: Get API Key from developers.giphy.com.
@@ -33,7 +33,7 @@
 
 ## 4. API Integration Details
 
-*   **Supabase**: Handles Auth, Profiles, Fights, Game Sessions. Realtime enabled for fights/linking.
+*   **Firebase**: Handles Auth, Profiles, Fights, Game Sessions. Realtime features are handled by Firestore.
 *   **AI Engine**: Fallback logic: OpenAI -> Anthropic -> Hardcoded responses.
 *   **ElevenLabs**: Caches TTS audio files locally to save costs.
 *   **Giphy**: Rate limiting (100/day) persisted locally.

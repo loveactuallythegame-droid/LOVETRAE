@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Truth Teller Tower - Phase 1</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff0055", "background-light": "#f8f5f6", "background-dark": "#230f16", charcoal: "#1c1c1c", "nebula-purple": "#4a2136"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>body {
+    font-family: "Space Grotesk", sans-serif
+    }
+.nebula-bg {
+    background: radial-gradient(circle at 50% 50%, #230f19 0%, #12080d 100%);
+    position: relative;
+    overflow: hidden
+    }
+.nebula-bg::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDY-2c-wg-AcBteqMTEqgtrE0PbyjXsP4zInrW3MiwdrGtvqKYmHK0DQtsFPyF17OMERGSxaPpS6VpD2h2okv254eTBHrIKXEx8048enNA5iZe-su7Nl0_0r_rDkMs_hqk6MTvh5OYWl8_4bO_N-WWpyFTret29sCjAESbRUsBq0UKyIe_AEMl4wLkFlaIQByV08KySuERWW6aP2NbGcRKvxkI842TZ5KIVoXL-j5L1vs0npz4DBg222AWk8NvRF2Eu0dz-TWA-e5jx);
+    background-size: cover;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none
+    }
+.stability-pulse {
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.5)
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen font-display">
+<!-- Top Navigation -->
+<header class="relative z-10 flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-3 bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight uppercase">Truth Teller Tower</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Tower View</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Honesty Logs</a>
+<a class="text-white/70 hover:text-primary text-sm font-medium transition-colors" href="#">Phase Progress</a>
+</nav>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
+<span class="truncate uppercase tracking-wider">Reset Foundation</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/30" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCecu9PJG2j1WyCA8Jj5sAH3W1vv9ozi9t6CUAupzE2OlD_SCRTagxbBjnaihNqYobIORqNZ9Mb_WRRVK8B1syRwpPR_WOzwf0Ua_Hlrjw81Zvon420LBSlXNvgKWY1Znng3DS4ZuPQ0lBZ8m8D0mAKxbu4hxGCGgP317KjGyGdyL2HTZcOvMz3XK3krsz4-gDvsTe5t-QMuSy0SLCtl5V6WTW6le25pywRdpfFVKyoNPi45rIQ2D8v-4usjLojIPnWvMFHHo_RtlEJ");'></div>
+</div>
+</header>
+<main class="relative nebula-bg min-h-[calc(100vh-64px)] flex overflow-hidden">
+<!-- Left Side Bar: Engineer Profile & Metrics -->
+<aside class="w-80 border-r border-white/10 bg-black/40 backdrop-blur-xl p-6 flex flex-col justify-between z-10">
+<div class="flex flex-col gap-8">
+<!-- Dr. Marcie Profile -->
+<div class="flex flex-col items-center text-center gap-3 p-4 rounded-xl border border-white/5 bg-white/5">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-20 ring-4 ring-primary/40 mb-2" data-alt="Portrait of Dr. Marcie Liss, Lead Integrity Engineer" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAcehjS0g9QOzDZjf--8kOTSj264_SzaOgusUygHru6VSnfSZrObGyX_u964eLzoM6i8x3BkZ5BWuiUaLt9mx4TpUPwCUDti7EUdTLV4YiJpT58WYSL2YhFFdt2tZ_-PC0T0o8072RnJ6-R_VhD7DrLURpKotg_QVswock8eXUBbK_cYX86aKgtF_6uVuDEvT7SMcUb7Hi0KKHrr2WW0xd15d988hxaWyRb54GAGOMRfnLTntVOd_XUF21jFZ5ToX3ALTwTYsFdD0f9");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold">Dr. Marcie Liss</h1>
+<p class="text-primary text-xs font-bold uppercase tracking-widest">Lead Integrity Engineer</p>
+</div>
+</div>
+<!-- HUD Stats -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 border border-primary/20">
+<span class="material-symbols-outlined text-primary">shield_with_heart</span>
+<p class="text-white text-sm font-medium">Structural Trust</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5 border border-white/10 opacity-70">
+<span class="material-symbols-outlined">layers</span>
+<p class="text-white text-sm font-medium">Honesty Blocks: 12</p>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5 border border-white/10 opacity-70">
+<span class="material-symbols-outlined">trending_down</span>
+<p class="text-white text-sm font-medium">Gravity Pressure</p>
+</div>
+</div>
+<!-- Stability Meter (Side) -->
+<div class="flex flex-col gap-3 p-4 bg-black/40 border border-white/10 rounded-xl stability-pulse">
+<div class="flex justify-between items-end">
+<p class="text-white text-xs font-bold uppercase tracking-tighter">Stability Meter</p>
+<p class="text-amber-400 text-lg font-bold">65%</p>
+</div>
+<div class="h-48 w-full bg-white/10 rounded-lg relative overflow-hidden flex flex-col justify-end">
+<div class="w-full bg-gradient-to-t from-orange-600 via-amber-400 to-yellow-300" style="height: 65%;"></div>
+</div>
+<p class="text-amber-500/80 text-[10px] uppercase font-bold text-center animate-pulse">Critical Sway Detected</p>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-lg font-bold uppercase tracking-widest shadow-lg shadow-primary/30 transition-all active:scale-95">
+                Deploy Truth Block
+            </button>
+</aside>
+<!-- Center Stage: The Tower Game View -->
+<section class="flex-1 relative flex flex-col items-center justify-between p-8 z-10">
+<div class="w-full">
+<h1 class="text-white tracking-tight text-4xl font-bold uppercase text-center drop-shadow-2xl">Phase 1: Rebuilding after Deception</h1>
+<p class="text-primary/80 text-center font-medium mt-2">Love-Script Debacle Simulation</p>
+</div>
+<!-- Tower Simulation Area -->
+<div class="relative w-full max-w-2xl h-[60vh] flex flex-col items-center justify-end">
+<!-- Physics Visualizer (Static Representation) -->
+<div class="w-full flex flex-col items-center gap-1">
+<!-- Example Blocks -->
+<div class="w-64 h-12 bg-primary/20 border-2 border-primary/80 rounded flex items-center justify-center text-xs font-bold uppercase backdrop-blur-sm shadow-[0_0_15px_rgba(249,11,130,0.4)] rotate-1 translate-x-2">Financial Transparency</div>
+<div class="w-56 h-12 bg-primary/30 border-2 border-primary/80 rounded flex items-center justify-center text-xs font-bold uppercase backdrop-blur-sm shadow-[0_0_15px_rgba(249,11,130,0.4)] -rotate-1 translate-x-[-4px]">Phone Passcode Shared</div>
+<div class="w-72 h-12 bg-primary/40 border-2 border-primary rounded flex items-center justify-center text-xs font-bold uppercase backdrop-blur-md shadow-[0_0_20px_rgba(249,11,130,0.6)]">Old Flame Contact Deleted</div>
+<div class="w-80 h-16 bg-primary border-4 border-white/20 rounded-lg flex items-center justify-center text-sm font-black uppercase text-white shadow-2xl">Foundation: Radical Honesty</div>
+</div>
+<!-- Floor -->
+<div class="w-full h-2 bg-gradient-to-r from-transparent via-white/20 to-transparent mt-4"></div>
+</div>
+<!-- Dr. Marcie's Sarcastic Critique Card -->
+<div class="w-full max-w-4xl px-4 pb-4">
+<div class="bg-charcoal/80 border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-xl">
+<div class="flex flex-col md:flex-row items-center gap-6 p-6">
+<div class="flex-1 flex flex-col gap-2">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-sm">warning</span>
+<p class="text-primary text-xs font-bold uppercase tracking-widest">Engineer's Real-Time Critique</p>
+</div>
+<h3 class="text-white text-3xl font-black italic tracking-tighter uppercase leading-tight">"Gravity always wins."</h3>
+<p class="text-white/60 text-lg font-medium">Is your foundation actually solid, or just pretty? This lean suggests you're still hiding something in the basement.</p>
+</div>
+<div class="flex flex-col gap-3 min-w-[200px]">
+<button class="w-full flex items-center justify-center gap-2 py-3 px-6 bg-primary text-white font-bold rounded-lg shadow-lg hover:brightness-110 transition-all">
+<span class="material-symbols-outlined">architecture</span>
+<span class="uppercase text-xs tracking-widest">Adjust Alignment</span>
+</button>
+<button class="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white/5 border border-white/10 text-white/70 font-bold rounded-lg hover:bg-white/10 transition-all">
+<span class="material-symbols-outlined">history</span>
+<span class="uppercase text-xs tracking-widest">Review Logs</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Side: Admission Palette -->
+<aside class="w-72 border-l border-white/10 bg-black/40 backdrop-blur-xl p-6 z-10 hidden xl:flex flex-col gap-6">
+<h3 class="text-white/50 text-xs font-bold uppercase tracking-widest border-b border-white/10 pb-4">Honest Admissions Palette</h3>
+<div class="flex flex-col gap-4">
+<!-- Block items -->
+<div class="group p-4 bg-white/5 border border-white/10 rounded-xl hover:border-primary/50 cursor-pointer transition-all hover:translate-x-1">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold text-primary px-2 py-0.5 bg-primary/10 rounded uppercase">Light Weight</span>
+<span class="material-symbols-outlined text-white/20 group-hover:text-primary transition-colors">drag_indicator</span>
+</div>
+<p class="text-white font-bold text-sm">Social Media Activity</p>
+</div>
+<div class="group p-4 bg-white/5 border border-white/10 rounded-xl hover:border-primary/50 cursor-pointer transition-all hover:translate-x-1">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold text-amber-500 px-2 py-0.5 bg-amber-500/10 rounded uppercase">Medium Weight</span>
+<span class="material-symbols-outlined text-white/20 group-hover:text-primary transition-colors">drag_indicator</span>
+</div>
+<p class="text-white font-bold text-sm">Hidden Bank Account</p>
+</div>
+<div class="group p-4 bg-white/5 border border-white/10 rounded-xl hover:border-primary/50 cursor-pointer transition-all hover:translate-x-1">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold text-red-500 px-2 py-0.5 bg-red-500/10 rounded uppercase">Heavy Weight</span>
+<span class="material-symbols-outlined text-white/20 group-hover:text-primary transition-colors">drag_indicator</span>
+</div>
+<p class="text-white font-bold text-sm">Infidelity Details</p>
+</div>
+<div class="group p-4 bg-white/5 border border-white/10 rounded-xl hover:border-primary/50 cursor-pointer transition-all hover:translate-x-1 opacity-50">
+<div class="flex justify-between items-center mb-2">
+<span class="material-symbols-outlined text-white/20">lock</span>
+</div>
+<p class="text-white/50 font-bold text-sm italic">Unlocked in Phase 2</p>
+</div>
+</div>
+<div class="mt-auto p-4 bg-nebula-purple/30 border border-primary/20 rounded-xl">
+<p class="text-xs text-white/60 leading-relaxed italic">"A tower built on half-truths is just a slower way to crash."</p>
+</div>
+</aside>
+</main>
+<!-- Footer Stats Overlay -->
+<div class="fixed bottom-0 left-0 right-0 h-1 bg-white/5 z-20">
+<div class="h-full bg-primary" style="width: 45%;"></div>
+</div>
+</body></html>

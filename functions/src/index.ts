@@ -1,0 +1,44 @@
+
+import * as functions from "firebase-functions";
+import *dmin from "firebase-admin";
+
+admin.initializeApp();
+
+exports.calculateGameResults = functions.https.onCall(async (data, context) => {
+  const { gameId, user1Answers, user2Answers } = data;
+  const db = admin.firestore();
+
+  // Basic scoring logic - this should be expanded based on game type
+  let score = 0;
+  for (let i = 0; i < user1Answers.length; i++) {
+    if (user1Answers[i] === user2Answers[i]) {
+      score += 10;
+    }
+  }
+
+  const gameRef = db.collection("games").doc(gameId);
+  await gameRef.update({ score });
+
+  // Update the trust thermometer
+  const user1Ref = db.collection("users").doc(context.auth.uid);
+  const user2Ref = db.collection("users").doc(data.partnerId); // Assuming partnerId is passed in
+
+  await db.runTransaction(async (transaction) => {
+    const user1Doc = await transaction.get(user1Ref);
+    const user2Doc = await transaction.get(user2Ref);
+
+    if (!user1Doc.exists || !user2Doc.exists) {
+      throw "User not found";
+    }
+
+    const user1Trust = user1Doc.data().trust_thermometer || 50;
+    const user2Trust = user2Doc.data().trust_thermometer || 50;
+
+    const newTrust = (user1Trust + user2Trust + score) / 3;
+
+    transaction.update(user1Ref, { trust_thermometer: newTrust });
+    transaction.update(user2Ref, { trust_thermometer: newTrust });
+  });
+
+  return { score };
+});

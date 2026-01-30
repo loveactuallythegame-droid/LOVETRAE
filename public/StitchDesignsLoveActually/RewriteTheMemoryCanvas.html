@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rewrite the Memory Canvas - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#f80b5a", "background-light": "#f8f5f6", "background-dark": "#230f16", charcoal: "#1a1d2e", "partner-pink": "#f472b6", "partner-turquoise": "#2dd4bf"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .cosmic-bg {
+            background: radial-gradient(circle at top right, #1e1b4b, #101322),
+                        radial-gradient(circle at bottom left, #312e81, #101322);
+            background-attachment: fixed;
+        }
+        .nebula-accent {
+            background: linear-gradient(135deg, rgba(17, 50, 212, 0.1) 0%, rgba(244, 114, 182, 0.05) 100%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-white selection:bg-primary/30 cosmic-bg">
+<!-- Main Layout Container -->
+<div class="flex flex-col h-screen overflow-hidden">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-white/10 px-8 py-4 bg-background-dark/80 backdrop-blur-md z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight">Love Actually... <span class="text-primary/80">The Game</span></h1>
+<div class="flex items-center gap-2 text-xs text-white/50 uppercase tracking-widest">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+                        Session: Trust &amp; Betrayal Aftermath
+                    </div>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Memory Canvas</a>
+<a class="text-sm font-medium text-white/60 hover:text-white transition-colors" href="#">The Vault</a>
+<a class="text-sm font-medium text-white/60 hover:text-white transition-colors" href="#">Library</a>
+<a class="text-sm font-medium text-white/60 hover:text-white transition-colors" href="#">Sessions</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="text-right mr-2 hidden sm:block">
+<p class="text-xs text-white/50">Current Narrative</p>
+<p class="text-sm font-bold">The Broken Promise</p>
+</div>
+<button class="bg-primary hover:bg-primary/80 px-6 py-2 rounded-lg text-sm font-bold transition-all shadow-lg shadow-primary/20">
+                    Save Progress
+                </button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-white/5 bg-background-dark/40 backdrop-blur-sm p-6 flex flex-col justify-between hidden lg:flex">
+<div class="space-y-8">
+<!-- Persona Badge -->
+<div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-primary" data-alt="Avatar of Marcie the Poetic Historian" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDS45YAfNXE9DFUM7XJfuSqndZNHuPSO-VFzL-uirRmDtijTXjMQ0BeZ_j7s2Ltlt0a9J8ksjMZW-taUuaritDoVp_-ZMXuiqHbL5asLTd0MlAwTTQZfDhyKO1vNvW7ZcfYcw_Mu6U51o2b0iD7DSCiWQA8WqzPdML4XErRONkCOEc9cDTFI241t43oI7XaMXuC4XRXaKsRwV-1YmRxqp2lqhjxpr83bUYY0WKDf0yNem-PhnVOtROWnPIxhrd-q_uwXuUWYAGB_e2c');"></div>
+<div>
+<p class="text-sm font-bold">Marcie</p>
+<p class="text-[10px] text-primary font-semibold uppercase tracking-wider">Poetic Historian</p>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-4 px-3">Session Modules</p>
+<a class="flex items-center gap-3 px-3 py-2 text-white/60 hover:bg-white/5 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined text-sm group-hover:text-primary transition-colors">description</span>
+<span class="text-sm font-medium">The Fragment</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary/10 text-white border border-primary/20 rounded-lg shadow-inner" href="#">
+<span class="material-symbols-outlined text-sm text-primary">edit_note</span>
+<span class="text-sm font-medium">The Evolution</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-white/60 hover:bg-white/5 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined text-sm group-hover:text-primary transition-colors">monitoring</span>
+<span class="text-sm font-medium">Narrative Score</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-white/60 hover:bg-white/5 rounded-lg transition-all group" href="#">
+<span class="material-symbols-outlined text-sm group-hover:text-primary transition-colors">sync_alt</span>
+<span class="text-sm font-medium">Sync Status</span>
+</a>
+</div>
+</div>
+<div class="space-y-4">
+<div class="p-4 bg-white/5 rounded-xl border border-white/10">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold text-white/40 uppercase">Connection</span>
+<span class="size-2 bg-green-500 rounded-full"></span>
+</div>
+<p class="text-xs text-white/70">Syncing with <span class="text-partner-turquoise font-bold">Alex</span></p>
+</div>
+<button class="w-full bg-white/10 hover:bg-white/20 py-3 rounded-lg text-xs font-bold uppercase tracking-widest border border-white/10 transition-all">
+                        Finalize Narrative
+                    </button>
+</div>
+</aside>
+<!-- Main Canvas Area -->
+<main class="flex-1 overflow-y-auto p-8 nebula-accent">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 text-xs font-medium text-white/40 mb-6 uppercase tracking-wider">
+<a class="hover:text-primary transition-colors" href="#">Game Menu</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Rewrite the Memory</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-white/80">Variant 7 of 10</span>
+</div>
+<!-- Page Heading -->
+<div class="mb-10">
+<h2 class="text-4xl font-black tracking-tight mb-2">Rewrite the Memory Canvas</h2>
+<p class="text-white/50 text-lg max-w-2xl">Collaboratively transform the fragment into a reclaimed story. Reframe the perspective to find agency and shared meaning.</p>
+</div>
+<!-- Collaborative Canvas Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8 h-[600px] mb-12">
+<!-- Left: The Raw Memory -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2 px-2">
+<span class="material-symbols-outlined text-white/40">history</span>
+<h3 class="text-sm font-bold uppercase tracking-widest text-white/60">The Raw Memory (Past)</h3>
+</div>
+<div class="flex-1 bg-charcoal/80 border border-white/10 rounded-xl p-8 shadow-2xl relative overflow-hidden">
+<div class="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]"></div>
+<div class="relative z-10 space-y-4 font-serif text-lg leading-relaxed text-white/80 italic">
+<p>It was Tuesday when the phone rang. You said you were late at work again. I found the receipt later that evening—it wasn't from the office cafe. It was from the place we used to call 'ours'.</p>
+<p>The silence that followed was louder than any argument we'd ever had. It felt like the floor had been pulled out from under me, leaving me in a space where nothing felt solid anymore.</p>
+</div>
+</div>
+</div>
+<!-- Right: The Reclaimed Story -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">auto_fix_high</span>
+<h3 class="text-sm font-bold uppercase tracking-widest text-primary">The Reclaimed Story (Future)</h3>
+</div>
+<div class="flex gap-2">
+<div class="px-2 py-1 rounded bg-partner-pink/20 border border-partner-pink/30 text-[10px] font-bold text-partner-pink uppercase">Partner A</div>
+<div class="px-2 py-1 rounded bg-partner-turquoise/20 border border-partner-turquoise/30 text-[10px] font-bold text-partner-turquoise uppercase">Partner B</div>
+</div>
+</div>
+<div class="flex-1 bg-background-dark border-2 border-primary/30 rounded-xl p-8 shadow-2xl relative ring-4 ring-primary/5">
+<div class="relative z-10 space-y-4 text-lg leading-relaxed">
+<p>
+                                    That Tuesday <span class="bg-partner-pink/30 border-b-2 border-partner-pink px-1 rounded-sm text-white">was a catalyst</span>. Instead of just a phone call, it was the moment we realized the <span class="bg-partner-turquoise/30 border-b-2 border-partner-turquoise px-1 rounded-sm text-white">foundation needed rebuilding</span>.
+                                </p>
+<p>
+                                    The receipt was a painful discovery, but <span class="bg-partner-pink/30 border-b-2 border-partner-pink px-1 rounded-sm text-white">we chose to look at it together</span>. We went back to that 'ours' place a month later to <span class="bg-partner-turquoise/30 border-b-2 border-partner-turquoise px-1 rounded-sm text-white">reclaim the space as ours once again</span>, with a new honesty.
+                                </p>
+<div class="inline-flex items-center gap-1 animate-pulse">
+<span class="w-0.5 h-6 bg-partner-turquoise"></span>
+<span class="text-xs bg-partner-turquoise text-background-dark px-1 font-bold">Alex is typing...</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Dashboard Widgets -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Narrative Score (Radar Chart Simulation) -->
+<div class="bg-charcoal/60 backdrop-blur-md border border-white/10 rounded-xl p-6 relative overflow-hidden">
+<h4 class="text-xs font-bold uppercase tracking-widest text-white/50 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">analytics</span>
+                            Narrative Score
+                        </h4>
+<div class="relative h-48 flex items-center justify-center">
+<!-- Visual Hexagonal Radar Simulation -->
+<div class="absolute inset-0 flex items-center justify-center opacity-20">
+<div class="w-32 h-32 border border-white rounded-full"></div>
+<div class="absolute w-44 h-44 border border-white/50 rounded-full"></div>
+</div>
+<!-- Simulated Radar Polygon -->
+<svg class="w-full h-full transform -rotate-90 drop-shadow-lg" viewbox="0 0 100 100">
+<polygon fill="rgba(17, 50, 212, 0.4)" points="50,10 85,30 80,75 50,90 20,70 15,35" stroke="#1132d4" stroke-width="1"></polygon>
+<circle cx="50" cy="10" fill="#ef4444" r="2"></circle> <!-- Agency -->
+<circle cx="85" cy="30" fill="#f59e0b" r="2"></circle> <!-- Humor -->
+<circle cx="80" cy="75" fill="#10b981" r="2"></circle> <!-- Empathy -->
+<circle cx="50" cy="90" fill="#3b82f6" r="2"></circle> <!-- Perspective -->
+<circle cx="20" cy="70" fill="#a855f7" r="2"></circle> <!-- Future -->
+<circle cx="15" cy="35" fill="#f472b6" r="2"></circle> <!-- Forgiveness -->
+</svg>
+<!-- Labels -->
+<span class="absolute top-0 text-[10px] font-bold text-red-400">AGENCY</span>
+<span class="absolute right-0 top-1/4 translate-x-4 text-[10px] font-bold text-amber-400">HUMOR</span>
+<span class="absolute right-2 bottom-0 text-[10px] font-bold text-emerald-400">EMPATHY</span>
+</div>
+</div>
+<!-- Insight Cards -->
+<div class="md:col-span-2 grid grid-cols-2 gap-4">
+<div class="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-all cursor-pointer">
+<div class="flex items-center gap-3 mb-3">
+<div class="p-2 rounded-lg bg-partner-pink/20 text-partner-pink">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<p class="text-sm font-bold">Poetic Insight</p>
+</div>
+<p class="text-xs text-white/60 leading-relaxed italic">"The use of 'catalyst' shifts the focus from an ending to a beginning. Marcie suggests leaning further into this transformation."</p>
+</div>
+<div class="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-all cursor-pointer">
+<div class="flex items-center gap-3 mb-3">
+<div class="p-2 rounded-lg bg-partner-turquoise/20 text-partner-turquoise">
+<span class="material-symbols-outlined">forum</span>
+</div>
+<p class="text-sm font-bold">Sync Progress</p>
+</div>
+<p class="text-xs text-white/60 leading-relaxed">84% alignment reached on the "Future-Focus" metric. You are both seeing the same horizon for the first time.</p>
+</div>
+<div class="col-span-2 bg-primary/20 border border-primary/30 rounded-xl p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">info</span>
+<div>
+<p class="text-sm font-bold">Ready for Phase 8?</p>
+<p class="text-xs text-white/50">Your narrative score has exceeded the 'Healing Threshold'.</p>
+</div>
+</div>
+<button class="bg-primary px-4 py-2 rounded text-xs font-bold uppercase tracking-wider">Next Module</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

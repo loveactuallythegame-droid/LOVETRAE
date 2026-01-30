@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Memory Lane GPS - Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#ff034a", "background-light": "#f8f5f6", "background-dark": "#230f15"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .nebula-gradient {
+            background: radial-gradient(circle at 50% 50%, #331922 0%, #221016 100%);
+        }
+        .map-overlay {
+            background: linear-gradient(180deg, rgba(34,16,22,0.8) 0%, rgba(34,16,22,0) 20%, rgba(34,16,22,0) 80%, rgba(34,16,22,0.8) 100%);
+        }
+        .heart-pulse {
+            box-shadow: 0 0 0 0 rgba(236, 19, 91, 0.7);
+            animation: pulse-pink 2s infinite;
+        }
+        @keyframes pulse-pink {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 19, 91, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(236, 19, 91, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 19, 91, 0); }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen flex flex-col font-display">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-white/10 px-10 py-4 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-4xl">favorite</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-xl font-extrabold leading-tight tracking-tight">Love Actually...</h1>
+<p class="text-primary text-[10px] uppercase tracking-[0.2em] font-bold">The Game Show</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/60 hover:text-white text-sm font-medium transition-colors" href="#">Memory Lane</a>
+<a class="text-white/60 hover:text-white text-sm font-medium transition-colors" href="#">Milestones</a>
+<a class="text-white/60 hover:text-white text-sm font-medium transition-colors" href="#">Archive</a>
+</nav>
+<div class="h-8 w-[1px] bg-white/10"></div>
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-full h-11 px-6 bg-primary hover:bg-primary/90 text-white text-sm font-bold transition-all shadow-lg shadow-primary/20">
+                Next Landmark
+            </button>
+<div class="relative group">
+<div class="size-10 rounded-full border-2 border-primary/50 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzDlXBrzPFcQmUY_4RdLkJRMJnl6l9DLzeYfmNR8-4G7mi8hOU_We6BBLBDNwTUQTPl8WVt9YIPzufVEugWUV6oM8tc8xJs5j_YvlpVBIknYav5NnBF8qyllxPEc1-OLwwRXPpw3yxoxviKzOYr4jTH8l0olZJOGLmtehusSx4Zef6zhVfpZbc6Oajduyhpj39Iv9b-r1AGrkhy7InSqBCuULynBo6kVbE8r-Tyb6MLXV4qC6_eznPBeygHVMEtjkKGN8O6wY2EfL_"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
+<!-- Left Section: Map Interface -->
+<div class="flex-1 relative min-h-[500px] bg-[#1a0b11]">
+<!-- Breadcrumbs Overlay -->
+<div class="absolute top-4 left-6 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+<a class="text-white/50 text-xs font-medium hover:text-white" href="#">Game Screen</a>
+<span class="text-white/30 text-xs">/</span>
+<span class="text-white text-xs font-bold tracking-wide">Memory Lane GPS (Variant 5 of 10)</span>
+</div>
+<!-- Prompt Header Overlay -->
+<div class="absolute top-6 left-1/2 -translate-x-1/2 z-20 w-full max-w-lg px-4">
+<div class="bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20 backdrop-blur-xl border border-primary/30 rounded-2xl p-4 text-center shadow-2xl">
+<p class="text-primary text-[10px] uppercase tracking-[0.3em] font-black mb-1">Current Mission</p>
+<h2 class="text-white text-2xl font-extrabold tracking-tight">Best fight-turned-hug</h2>
+</div>
+</div>
+<!-- Interactive Map Background -->
+<div class="absolute inset-0 z-0 map-overlay">
+<div class="w-full h-full bg-cover bg-center opacity-60 mix-blend-lighten grayscale contrast-125" data-location="London" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAR1b8e3OCD6y_5rX2wJgLSWQep4pLH7MsydNBV1BqByA2m4OhiBTBt4x4mdb5fSK0Q0gVAF5t2KD8LYQUkt3MyvmIhMUAZSHf_9ZqVctTgTiyTdO_i_TagscVjCWa2bQ7jqgeoGpGxZhhMoeOUN37yIBku6Pg51bxk156JWrMGigLV4FAT7lAwSTsobyX-MycnvomlENz6W2lpIH5vxd_r-6bjF-P8a_tgnSKsRFDuroE7gUkt04iAtRwv-0FFGGtpxbjpN1Oic0CS');">
+</div>
+<!-- Custom Heart Pin -->
+<div class="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center">
+<div class="heart-pulse bg-primary p-3 rounded-full flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-white text-4xl fill-1">favorite</span>
+</div>
+<div class="mt-2 bg-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-xl">The Spot</div>
+</div>
+</div>
+<!-- Search and Zoom Controls -->
+<div class="absolute bottom-10 left-10 z-20 flex flex-col gap-4">
+<div class="flex items-center bg-background-dark/90 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden w-80 shadow-2xl">
+<div class="pl-4 text-primary">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="bg-transparent border-none text-white text-sm focus:ring-0 placeholder:text-white/30 w-full py-4" placeholder="Search the location..." type="text"/>
+</div>
+</div>
+<div class="absolute bottom-10 right-10 z-20 flex flex-col gap-2">
+<div class="bg-background-dark/90 backdrop-blur-md border border-white/10 rounded-full flex flex-col shadow-2xl overflow-hidden">
+<button class="p-3 hover:bg-primary/20 text-white transition-colors border-b border-white/10">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="p-3 hover:bg-primary/20 text-white transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<button class="bg-primary p-3 rounded-full text-white shadow-lg shadow-primary/30 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">near_me</span>
+</button>
+</div>
+</div>
+<!-- Right Section: Sidebar Panel -->
+<aside class="w-full lg:w-[400px] bg-background-dark border-l border-white/10 flex flex-col p-6 overflow-y-auto">
+<!-- Dr. Marcie Narrator -->
+<div class="mb-8 flex items-start gap-4">
+<div class="relative flex-shrink-0">
+<div class="size-16 rounded-full border-2 border-primary overflow-hidden shadow-[0_0_15px_rgba(236,19,91,0.4)]">
+<img class="w-full h-full object-cover" data-alt="Dr. Marcie Liss profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8rVOzMkFqSc_v321dM7RfENeIZMIy7s3bEoIGV-3bVv1XiD5jjLbOM6JpPX0iJBPp3_ZP1btX9uys2ntsssPsTQ5yj3a_VkHED2wC2I7ke359s3RtCor46pnRPadYKFndiTCs2l-0BiG_uhUKr8wDquMAgSq06xnFAyrXd2obCgFpgqAgugO9NtubklHdZEIu4pVnToPoxnVm9oDgTxGi_eJ2dVv3JrZThsXk_zBIJMueNG_h8YFfyG6PxrN9v5hK8yymMTcVuf0m"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary size-6 rounded-full flex items-center justify-center border-2 border-background-dark">
+<span class="material-symbols-outlined text-xs">mic</span>
+</div>
+</div>
+<div class="flex-1">
+<h3 class="text-primary font-black text-xs uppercase tracking-widest mb-1">GPS Narrator</h3>
+<div class="bg-white/5 rounded-2xl p-4 border border-white/10 italic text-white/90 text-sm leading-relaxed relative">
+                        "Drop your heart pin exactly where the sparks flew after the storm. <span class="text-primary font-bold">Love and frozen dumplings</span> go hand in hand, don't they?"
+                        <div class="absolute top-4 -left-2 w-4 h-4 bg-white/5 border-l border-t border-white/10 transform -rotate-45"></div>
+</div>
+</div>
+</div>
+<!-- Photo Upload Area -->
+<div class="flex flex-col gap-4">
+<h4 class="text-white font-bold text-lg tracking-tight">Memory Preview</h4>
+<div class="group relative aspect-video rounded-3xl overflow-hidden border-2 border-dashed border-white/20 hover:border-primary/50 transition-all bg-white/5 flex flex-col items-center justify-center cursor-pointer">
+<!-- Preview Image with Glow Overlay -->
+<div class="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="Couple hugging near street light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxsKxglf4x4FqmlvGhYP4OdFnNGT-VdE5tuXbpOScrzQ6zoitzu1rXz1x5mjdfmukqCGzzsNZ6oPjfPqpErXykbv8axx0ttar9ubV31B1-HjOVmI-1Qg_YJNhWNCzM0FFnrBhS4tJy4GNZ2bhchfZ1q18cPpCRTNWAwTksFDJPnFxz9L1wW3hSTBtWajUlk8c-b-mpuCgaP3RHyYMrgOebekTIj5caSXl5vW_3RER8t7ckp56PbrrMeFay9LELAIxfgpSS0zeO0NpV"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent"></div>
+</div>
+<div class="relative z-10 flex flex-col items-center p-6 text-center">
+<div class="size-12 rounded-full bg-primary/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">cloud_upload</span>
+</div>
+<p class="text-white font-semibold">Replace Photo</p>
+<p class="text-white/50 text-xs mt-1">Shared memory preview from 2023</p>
+</div>
+</div>
+<div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+<div>
+<p class="text-white font-medium text-sm">Timestamp</p>
+<p class="text-white/50 text-xs">October 14, 2023</p>
+</div>
+<button class="text-primary text-xs font-bold hover:underline">EDIT DETAILS</button>
+</div>
+<div class="mt-6 flex flex-col gap-3">
+<button class="w-full bg-primary text-white font-bold py-4 rounded-full shadow-lg shadow-primary/20 hover:translate-y-[-2px] transition-all flex items-center justify-center gap-2">
+                        Confirm Location
+                        <span class="material-symbols-outlined">check_circle</span>
+</button>
+<button class="w-full bg-white/5 text-white/70 font-bold py-4 rounded-full border border-white/10 hover:bg-white/10 transition-all">
+                        Skip Landmark
+                    </button>
+</div>
+</div>
+<!-- Waveform visualizer mock -->
+<div class="mt-auto pt-8 flex items-end justify-center gap-1 h-8 opacity-40">
+<div class="w-1 bg-primary h-2 rounded-full"></div>
+<div class="w-1 bg-primary h-5 rounded-full"></div>
+<div class="w-1 bg-primary h-3 rounded-full"></div>
+<div class="w-1 bg-primary h-6 rounded-full"></div>
+<div class="w-1 bg-primary h-4 rounded-full"></div>
+<div class="w-1 bg-primary h-7 rounded-full"></div>
+<div class="w-1 bg-primary h-2 rounded-full"></div>
+<div class="w-1 bg-primary h-5 rounded-full"></div>
+<div class="w-1 bg-primary h-3 rounded-full"></div>
+<div class="w-1 bg-primary h-6 rounded-full"></div>
+</div>
+</aside>
+</main>
+<!-- Footer Stats -->
+<footer class="bg-background-dark/95 border-t border-white/10 px-10 py-3 flex items-center justify-between text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">
+<div class="flex gap-6">
+<span class="text-primary/60">GPS SIGNAL: STRONG</span>
+<span>UPLOADING MEMORIES... 84%</span>
+</div>
+<div>
+            SESSION ID: LA-992-MARCIE-05
+        </div>
+</footer>
+</body></html>

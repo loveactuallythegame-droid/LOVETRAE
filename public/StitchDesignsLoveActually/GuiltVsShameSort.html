@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Guilt vs. Shame Sort | Love Actually... The Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {primary: "#f80b5a", "background-light": "#f8f5f6", "background-dark": "#230f16", "gold-glow": "#FFD700", "trash-red": "#ff4b4b", "fix-blue": "#1132d4"}, fontFamily: {display: "Work Sans"}, borderRadius: {DEFAULT: "0.5rem", lg: "1rem", xl: "1.5rem", full: "9999px"}}}};</script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(17, 50, 212, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(147, 51, 234, 0.15) 0%, transparent 40%),
+                        #101322;
+        }
+        .gold-shimmer {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        .card-glass {
+            background: rgba(25, 30, 51, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark nebula-bg min-h-screen text-white overflow-hidden">
+<div class="flex h-screen flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-10 py-4 bg-background-dark/50 backdrop-blur-md">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em] font-display">Love Actually... The Game</h2>
+</div>
+<div class="flex flex-1 justify-center">
+<div class="flex flex-col items-center gap-1 w-64">
+<div class="flex justify-between w-full px-1">
+<p class="text-white/70 text-xs font-medium uppercase tracking-widest">Progress</p>
+<p class="text-white text-xs font-bold">8 / 10</p>
+</div>
+<div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 80%;"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white">settings</span>
+</button>
+<button class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white">help</span>
+</button>
+</div>
+</header>
+<main class="flex-1 relative flex flex-col items-center justify-center p-8">
+<!-- Background Zones (Instructional) -->
+<div class="absolute inset-y-0 left-0 w-1/4 flex items-center justify-center pointer-events-none opacity-20">
+<div class="text-center">
+<span class="material-symbols-outlined text-9xl text-primary">build</span>
+<h3 class="text-4xl font-bold font-display mt-4">FIX</h3>
+<p class="text-primary font-medium">Guilt is constructive</p>
+</div>
+</div>
+<div class="absolute inset-y-0 right-0 w-1/4 flex items-center justify-center pointer-events-none opacity-20">
+<div class="text-center">
+<span class="material-symbols-outlined text-9xl text-trash-red">delete_sweep</span>
+<h3 class="text-4xl font-bold font-display mt-4">TRASH</h3>
+<p class="text-trash-red font-medium">Shame is toxic</p>
+</div>
+</div>
+<!-- Header Content -->
+<div class="z-10 text-center mb-8">
+<h1 class="text-white tracking-tight text-4xl font-bold leading-tight mb-2 font-display">Guilt vs. Shame Sort</h1>
+<p class="text-white/60 text-lg">Rapid-fire: Where does this feeling belong?</p>
+</div>
+<!-- Gameplay HUD -->
+<div class="z-10 flex gap-12 items-end mb-12">
+<!-- Streak Counter -->
+<div class="flex flex-col items-center">
+<p class="text-gold-glow/70 text-xs font-bold uppercase tracking-widest mb-1">Current Streak</p>
+<div class="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gold-glow/10 border border-gold-glow/30 shadow-[0_0_20px_rgba(255,215,0,0.2)]">
+<span class="material-symbols-outlined text-gold-glow text-3xl">bolt</span>
+<p class="text-gold-glow text-4xl font-black font-display gold-shimmer tracking-tighter">12</p>
+<p class="text-gold-glow/80 text-sm font-bold ml-1">+5% XP</p>
+</div>
+</div>
+</div>
+<!-- Central Game Area -->
+<div class="z-20 relative w-full max-w-4xl flex items-center justify-between gap-8">
+<!-- Left Action: FIX -->
+<div class="flex flex-col items-center gap-4">
+<button class="group flex flex-col items-center justify-center w-24 h-24 rounded-full bg-primary/20 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-4xl">arrow_back</span>
+<span class="text-xs font-bold mt-1">FIX</span>
+</button>
+<p class="text-primary/60 text-xs font-bold uppercase tracking-widest">Left Key</p>
+</div>
+<!-- Central Card -->
+<div class="relative group cursor-grab active:cursor-grabbing">
+<!-- Card Stack Visual Effect -->
+<div class="absolute -inset-2 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-2 left-2 w-full h-full bg-background-dark/40 rounded-3xl border border-white/5 -z-10"></div>
+<div class="absolute top-4 left-4 w-full h-full bg-background-dark/40 rounded-3xl border border-white/5 -z-20"></div>
+<div class="card-glass w-[400px] h-[520px] rounded-3xl flex flex-col overflow-hidden shadow-2xl relative">
+<div class="h-1/2 overflow-hidden relative">
+<img class="w-full h-full object-cover opacity-80" data-alt="Cyberpunk style broken mirror with blue neon glow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBm5r7s1R8PvSKbfmo12pp-VGq4A94pDGyD-6Nz3YimNk-G_B21Jnf8rM75AAG0uoor3OOqEt837wzzi4YuKRSz4EDcYAq1bkteI1ki1ayiE9s2uMddD3lO25zeq4cRXhmpj14-lY1HH05iDdAm37r0r8fXoIsd-hpzNWOITRVXmvf12y52KJWhTK1vtJ56o2TmjO4jUylYsCMq27Iv6paFKPKDHoC7QmMfcK0lrgSVxYkRsFJjZSstGCUry8Gi30KcyMBzPk5WEEG3"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#191e33] to-transparent"></div>
+<div class="absolute bottom-4 left-6">
+<span class="px-3 py-1 bg-primary text-[10px] font-black tracking-tighter rounded-full text-white uppercase">Active Thought</span>
+</div>
+</div>
+<div class="p-8 flex flex-col flex-1 justify-center items-center text-center">
+<p class="text-white/40 text-xs font-bold uppercase tracking-widest mb-6">Sort this statement</p>
+<h2 class="text-white text-4xl font-bold font-display leading-tight mb-4">"I'm unlovable"</h2>
+<div class="h-1 w-12 bg-trash-red/50 rounded-full mb-6"></div>
+<p class="text-white/60 text-sm leading-relaxed max-w-[280px]">
+                                This thought focuses on who you are at your core, rather than what you've done.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Right Action: TRASH -->
+<div class="flex flex-col items-center gap-4">
+<button class="group flex flex-col items-center justify-center w-24 h-24 rounded-full bg-trash-red/20 border-2 border-trash-red text-trash-red hover:bg-trash-red hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-4xl">arrow_forward</span>
+<span class="text-xs font-bold mt-1">TRASH</span>
+</button>
+<p class="text-trash-red/60 text-xs font-bold uppercase tracking-widest">Right Key</p>
+</div>
+</div>
+<!-- Marcie: The Trash Collector -->
+<div class="absolute bottom-0 right-10 flex items-end">
+<div class="relative group">
+<!-- Dialogue Bubble -->
+<div class="absolute -top-32 -left-48 w-64 bg-white p-4 rounded-2xl rounded-br-none shadow-xl border-2 border-background-dark text-background-dark">
+<p class="text-sm font-bold italic">"Darling, that's pure garbage. Throw it in the bin before it ruins your outfit."</p>
+<div class="absolute -bottom-2 -right-1 w-4 h-4 bg-white border-r-2 border-b-2 border-background-dark rotate-45"></div>
+</div>
+<!-- Character Container -->
+<div class="w-80 h-96 overflow-hidden flex items-end">
+<img class="w-full h-auto object-contain" data-alt="Chic older woman in futuristic uniform looking sharp" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK51zH4FOfJ1skN0WS93ccCysExMYwhr0uaSDSlwuE9DAN9_0C2zRDw3nopxkdNXQur6QBlxYhZKDJmNWLPvfZcZAQDJMFyxF2Cuoo_uYYX1jfXkUUbcfXMdUGSbGCXDNTqI3oyI37owT4usaeVZmAMZIaG0YGnarTSMGPAPdPgfGtE0UXFghtrQL5q0a2DetpK5AOVND-AkW1AWJ75YSNd-axucUO1MO092_3m9oCcdNUqUI0YH7EMGlMIwEDGL3GN7tRmviBNlfR"/>
+</div>
+<div class="absolute bottom-8 right-0 bg-background-dark/80 backdrop-blur px-4 py-2 rounded-lg border border-white/10">
+<p class="text-xs font-black tracking-widest uppercase">Marcie</p>
+<p class="text-[10px] text-white/50 uppercase">The Trash Collector</p>
+</div>
+</div>
+</div>
+<!-- Footer Hints -->
+<div class="z-10 mt-12 flex gap-8">
+<div class="flex items-center gap-2 text-white/40">
+<kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[10px] font-bold">SPACE</kbd>
+<span class="text-[10px] uppercase font-bold tracking-widest">Pause Game</span>
+</div>
+<div class="flex items-center gap-2 text-white/40">
+<kbd class="px-2 py-1 rounded bg-white/10 border border-white/20 text-[10px] font-bold">R</kbd>
+<span class="text-[10px] uppercase font-bold tracking-widest">Recall Last</span>
+</div>
+</div>
+</main>
+<!-- Stats Panel (Minimal) -->
+<footer class="p-6 bg-background-dark/30 border-t border-white/5">
+<div class="max-w-6xl mx-auto flex justify-between items-center px-4">
+<div class="flex gap-8">
+<div class="flex flex-col">
+<span class="text-[10px] text-white/40 font-bold uppercase tracking-widest">Accuracy</span>
+<span class="text-white font-bold">94%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-white/40 font-bold uppercase tracking-widest">Avg Speed</span>
+<span class="text-white font-bold">1.2s</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-white/40 font-bold uppercase tracking-widest">Session Time</span>
+<span class="text-white font-bold">04:12</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs font-medium text-white/60">Sorting through <i>Identity vs. Action</i> triggers</span>
+<button class="px-6 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold hover:bg-white/10 transition-colors uppercase tracking-widest">
+                        Exit Session
+                    </button>
+</div>
+</div>
+</footer>
+</div>
+</body></html>
