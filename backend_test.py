@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Dict, Any
 
 class LoveActuallyAPITester:
-    def __init__(self, base_url="https://e1-46-2372-b6a7.onrender.com"):
+    def __init__(self, base_url="http://localhost:8001"):
         self.base_url = base_url
         self.tests_run = 0
         self.tests_passed = 0
