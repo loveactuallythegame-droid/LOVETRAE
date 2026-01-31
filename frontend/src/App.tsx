@@ -3,6 +3,19 @@ import GameLibrary from './components/GameLibrary';
 import LoveArcade from './components/LoveArcade';
 import SOSFightSolver from './components/SOSFightSolver';
 import Dashboard from './components/Dashboard';
+import { 
+  TruthTellerTowerGame, 
+  EchoChamberEscapeGame, 
+  IntimacyFeudGame, 
+  RelationalJeopardyGame 
+} from './components/games/ArcadeGames';
+import {
+  TruthOrTrustGame,
+  EyeContactChallengeGame,
+  GratitudeCloudGame,
+  ApologyAuctionGame,
+  SixSecondKissGame,
+} from './components/games/CategoryGames';
 import './index.css';
 
 type Screen = 'library' | 'arcade' | 'sos' | 'dashboard' | 'game' | 'profile' | 'settings' | 'translator' | 'achievements';
@@ -12,13 +25,41 @@ interface NavigationParams {
   gameName?: string;
 }
 
+// Game ID to Component mapping
+const GAME_COMPONENTS: Record<string, React.FC<any>> = {
+  // Love Arcade Games
+  'truth-teller-tower': TruthTellerTowerGame,
+  'echo-chamber': EchoChamberEscapeGame,
+  'echo-chamber-escape': EchoChamberEscapeGame,
+  'intimacy-feud': IntimacyFeudGame,
+  'relational-jeopardy': RelationalJeopardyGame,
+  
+  // Emotional Connection
+  'truth-or-trust': TruthOrTrustGame,
+  'eye-contact': EyeContactChallengeGame,
+  'eye-contact-challenge': EyeContactChallengeGame,
+  'gratitude-cloud': GratitudeCloudGame,
+  
+  // Conflict Resolution
+  'apology-auction': ApologyAuctionGame,
+  
+  // Romance Hub
+  'six-second-kiss': SixSecondKissGame,
+};
+
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('library');
   const [navParams, setNavParams] = useState<NavigationParams>({});
+  const [gameResults, setGameResults] = useState<{ score: number; badge: string } | null>(null);
 
   const handleNavigate = (screen: string, params?: NavigationParams) => {
     setCurrentScreen(screen as Screen);
     if (params) setNavParams(params);
+    setGameResults(null);
+  };
+
+  const handleGameComplete = (score: number, badge: string) => {
+    setGameResults({ score, badge });
   };
 
   const renderScreen = () => {
@@ -32,7 +73,18 @@ function App() {
       case 'dashboard':
         return <Dashboard onNavigate={handleNavigate} />;
       case 'game':
-        return <GamePlaceholder gameName={navParams.gameName} onNavigate={handleNavigate} />;
+        const GameComponent = navParams.gameId ? GAME_COMPONENTS[navParams.gameId] : null;
+        if (GameComponent) {
+          return (
+            <GameComponent
+              gameId={navParams.gameId}
+              gameName={navParams.gameName}
+              onBack={() => handleNavigate('library')}
+              onComplete={handleGameComplete}
+            />
+          );
+        }
+        return <GamePlaceholder gameName={navParams.gameName} gameId={navParams.gameId} onNavigate={handleNavigate} />;
       case 'profile':
         return <ProfilePlaceholder onNavigate={handleNavigate} />;
       case 'settings':
@@ -53,34 +105,69 @@ function App() {
   );
 }
 
-// Placeholder components for screens to be built
-const GamePlaceholder: React.FC<{ gameName?: string; onNavigate: (screen: string) => void }> = ({ gameName, onNavigate }) => (
-  <div className="min-h-screen gradient-bg flex flex-col items-center justify-center p-6">
-    <div className="glass-card p-8 text-center max-w-md">
-      <h2 className="text-2xl font-bold text-romance-pink mb-4">{gameName || 'Game'}</h2>
-      <div className="text-6xl mb-6">🎮</div>
-      <p className="text-gray-400 mb-6">
-        This game is coming soon! We're working on making it amazing for you and your partner.
-      </p>
-      <img
-        src="/marcieimages/marcieimage1.png"
-        alt="Dr. Marcie"
-        className="w-24 h-36 object-contain mx-auto mb-4"
-        onError={(e) => (e.currentTarget.src = 'https://placehold.co/96x144/FA1F63/ffffff?text=M')}
-      />
-      <p className="text-white italic text-sm mb-4">
-        "Patience is a virtue. Unlike your communication skills."
-      </p>
-      <button 
-        onClick={() => onNavigate('library')}
-        className="btn-primary"
-        data-testid="back-btn"
-      >
-        Back to Games
-      </button>
+// Updated placeholder with actual game list
+const GamePlaceholder: React.FC<{ gameName?: string; gameId?: string; onNavigate: (screen: string) => void }> = ({ gameName, gameId, onNavigate }) => {
+  const implementedGames = [
+    'truth-teller-tower', 'echo-chamber', 'echo-chamber-escape', 'intimacy-feud', 'relational-jeopardy',
+    'truth-or-trust', 'eye-contact', 'eye-contact-challenge', 'gratitude-cloud',
+    'apology-auction', 'six-second-kiss'
+  ];
+  
+  const isImplemented = gameId && implementedGames.includes(gameId);
+  
+  return (
+    <div className="min-h-screen gradient-bg flex flex-col items-center justify-center p-6">
+      <div className="glass-card p-8 text-center max-w-md">
+        <h2 className="text-2xl font-bold text-romance-pink mb-4">{gameName || 'Game'}</h2>
+        <div className="text-6xl mb-6">🎮</div>
+        
+        {isImplemented ? (
+          <p className="text-green-400 mb-6">
+            This game is ready! There might be a routing issue.
+          </p>
+        ) : (
+          <>
+            <p className="text-gray-400 mb-4">
+              This game is coming soon! Currently implemented games:
+            </p>
+            <div className="text-left text-sm text-gray-500 mb-6">
+              <p className="text-romance-pink font-semibold mb-1">Love Arcade:</p>
+              <p>• Truth Teller Tower ✓</p>
+              <p>• Echo Chamber Escape ✓</p>
+              <p>• Intimacy Feud ✓</p>
+              <p>• Relational Jeopardy ✓</p>
+              <p className="text-trust-green font-semibold mt-2 mb-1">Connection:</p>
+              <p>• Truth or Trust ✓</p>
+              <p>• Eye Contact Challenge ✓</p>
+              <p>• Gratitude Cloud ✓</p>
+              <p className="text-chaos-yellow font-semibold mt-2 mb-1">Resolution:</p>
+              <p>• Apology Auction ✓</p>
+              <p className="text-healing-purple font-semibold mt-2 mb-1">Romance:</p>
+              <p>• 6-Second Kiss ✓</p>
+            </div>
+          </>
+        )}
+        
+        <img
+          src="/marcieimages/marcieimage1.png"
+          alt="Dr. Marcie"
+          className="w-24 h-36 object-contain mx-auto mb-4"
+          onError={(e) => (e.currentTarget.src = 'https://placehold.co/96x144/FA1F63/ffffff?text=M')}
+        />
+        <p className="text-white italic text-sm mb-4">
+          "More games are on the way. In the meantime, try the ones that work—novel concept, I know."
+        </p>
+        <button 
+          onClick={() => onNavigate('library')}
+          className="btn-primary"
+          data-testid="back-btn"
+        >
+          Back to Games
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const ProfilePlaceholder: React.FC<{ onNavigate: (screen: string) => void }> = ({ onNavigate }) => (
   <div className="min-h-screen gradient-bg flex flex-col items-center justify-center p-6">
