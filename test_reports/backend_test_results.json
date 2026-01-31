@@ -1,49 +1,331 @@
 {
-  "summary": "0/6 tests passed",
-  "success_rate": 0.0,
+  "summary": "15/15 tests passed",
+  "success_rate": 100.0,
   "tests": [
     {
       "test_name": "Health Check",
-      "success": false,
-      "details": "Status: 404 (expected 200)",
-      "response_data": "Not Found\n",
-      "timestamp": "2026-01-31T05:43:20.630358"
+      "success": true,
+      "details": "Status: 200",
+      "response_data": {
+        "status": "healthy",
+        "app": "Love Actually - The Game",
+        "version": "1.0.0"
+      },
+      "timestamp": "2026-01-31T05:44:08.091785"
+    },
+    {
+      "test_name": "Health Status Validation",
+      "success": true,
+      "details": "Status is healthy",
+      "response_data": null,
+      "timestamp": "2026-01-31T05:44:08.091869"
     },
     {
       "test_name": "Get Game Categories",
-      "success": false,
-      "details": "Status: 404 (expected 200)",
-      "response_data": "Not Found\n",
-      "timestamp": "2026-01-31T05:43:20.992790"
+      "success": true,
+      "details": "Status: 200",
+      "response_data": {
+        "categories": [
+          {
+            "id": "emotional-connection",
+            "name": "Emotional Connection",
+            "description": "SEEN Method focused games",
+            "icon": "heart",
+            "color": "#FA1F63",
+            "games": [
+              "truth-or-trust",
+              "gratitude-cloud",
+              "eye-contact-challenge",
+              "memory-lane-map",
+              "vibe-check"
+            ]
+          },
+          {
+            "id": "conflict-resolution",
+            "name": "Conflict Resolution",
+            "description": "Gottman-inspired games",
+            "icon": "shield",
+            "color": "#33DEA5",
+            "games": [
+              "slap-of-truth",
+              "apology-auction",
+              "defensiveness-detox",
+              "whos-right",
+              "stress-test"
+            ]
+          },
+          {
+            "id": "creative-chaos",
+            "name": "Creative Chaos",
+            "description": "Playful, creative challenges",
+            "icon": "sparkles",
+            "color": "#E4E831",
+            "games": [
+              "role-swap-roast",
+              "draw-your-feelings",
+              "gif-battle",
+              "karaoke-confessional",
+              "ransom-note"
+            ]
+          },
+          {
+            "id": "romance-hub",
+            "name": "Romance Hub",
+            "description": "Spicy & sweet connections",
+            "icon": "flame",
+            "color": "#BE1980",
+            "games": [
+              "date-night-roulette",
+              "bedroom-bingo",
+              "six-second-kiss",
+              "foreplay-slider",
+              "touch-map"
+            ]
+          },
+          {
+            "id": "healing-hospital",
+            "name": "Healing Hospital",
+            "description": "Deep repair & recovery",
+            "icon": "medkit",
+            "color": "#5C1459",
+            "games": [
+              "windows-and-walls",
+              "trigger-triage",
+              "trust-bank",
+              "the-iceberg",
+              "secrecy-audit"
+            ]
+          },
+          {
+            "id": "game-show",
+            "name": "Game Show",
+            "description": "Classic game show formats",
+            "icon": "trophy",
+            "color": "#22d3ee",
+            "games": [
+              "couples-jeopardy",
+              "relationship-millionaire",
+              "family-feud-couples",
+              "newlywed-sync",
+              "wheel-of-intimacy"
+            ]
+          },
+          {
+            "id": "love-arcade",
+            "name": "The Love Arcade",
+            "description": "Championship matches of honesty, wit, and emotional parkour",
+            "icon": "game-controller",
+            "color": "#FF6B6B",
+            "games": [
+              "truth-teller-tower",
+              "echo-chamber-escape",
+              "intimacy-feud",
+              "relational-jeopardy",
+              "family-forge",
+              "harbor-storm"
+            ]
+          }
+        ]
+      },
+      "timestamp": "2026-01-31T05:44:08.093286"
+    },
+    {
+      "test_name": "Categories Count",
+      "success": true,
+      "details": "Found 7 categories",
+      "response_data": null,
+      "timestamp": "2026-01-31T05:44:08.093340"
+    },
+    {
+      "test_name": "Love Arcade Category Found",
+      "success": true,
+      "details": "Love Arcade category exists",
+      "response_data": null,
+      "timestamp": "2026-01-31T05:44:08.093348"
+    },
+    {
+      "test_name": "Love Arcade Properties",
+      "success": true,
+      "details": "All required properties present",
+      "response_data": null,
+      "timestamp": "2026-01-31T05:44:08.093355"
     },
     {
       "test_name": "Get Love Arcade Games",
-      "success": false,
-      "details": "Status: 404 (expected 200)",
-      "response_data": "Not Found\n",
-      "timestamp": "2026-01-31T05:43:21.154878"
+      "success": true,
+      "details": "Status: 200",
+      "response_data": {
+        "games": [
+          {
+            "id": "truth-teller-tower",
+            "name": "Truth Teller Tower",
+            "phase": "Foundation (Phase 1)",
+            "format": "Who Wants to Be a Millionaire meets The Newlywed Game",
+            "description": "Scale the lie-avalanche. Five questions. Three lifelines. One shared brain.",
+            "max_score": 100,
+            "lifelines": [
+              "50/50",
+              "Double Confidence",
+              "Trust Check"
+            ],
+            "scoring": {
+              "correct_answer": 10,
+              "predicted_partner": 5,
+              "double_truth": 20
+            }
+          },
+          {
+            "id": "echo-chamber-escape",
+            "name": "Escape from the Echo Chamber",
+            "phase": "Deconstruction (Phase 2)",
+            "format": "Digital Escape Room",
+            "description": "Trapped in a hall of infinite mirrors. Break the loop together.",
+            "max_score": 100,
+            "time_limit_per_puzzle": 90,
+            "puzzles": 5
+          },
+          {
+            "id": "intimacy-feud",
+            "name": "The Intimacy Feud",
+            "phase": "Shared Reality (Phase 3)",
+            "format": "Family Feud style",
+            "description": "Survey says... be boring. Be authentic. Be real.",
+            "max_score": 250,
+            "scoring": {
+              "1st_place": 50,
+              "2nd_place": 30,
+              "3rd_place": 20,
+              "partner_match": 10,
+              "authenticity_streak": 15
+            }
+          },
+          {
+            "id": "relational-jeopardy",
+            "name": "Relational Jeopardy!",
+            "phase": "The Future (Phase 4)",
+            "format": "Jeopardy style",
+            "description": "Categories designed by couples who rebuilt.",
+            "max_score": 2000,
+            "categories": [
+              "Accountability Plans",
+              "Redefinition",
+              "Integration"
+            ],
+            "has_daily_double": true,
+            "has_final_jeopardy": true
+          },
+          {
+            "id": "family-forge",
+            "name": "Family Forge Edition",
+            "phase": "Special - Family Building",
+            "format": "Mixed game show formats",
+            "description": "For couples forging families after betrayal.",
+            "max_score": 1800,
+            "sub_games": [
+              "Family Feud: Our New Reality",
+              "The Newlywed Game: Heart-to-Heart",
+              "Chopped: Family Kitchen",
+              "The Amazing Race: Legacy Dash"
+            ]
+          },
+          {
+            "id": "harbor-storm",
+            "name": "Harbor & Storm Edition",
+            "phase": "Special - BPD/Emotional Regulation",
+            "format": "Cooperative challenges",
+            "description": "Build a better boat. Learn to sail as a crew.",
+            "max_score": 1900,
+            "sub_games": [
+              "BPD Pattern Detective",
+              "Validation Game Show",
+              "Connection Constructor",
+              "Harbor Master's Challenge"
+            ]
+          }
+        ]
+      },
+      "timestamp": "2026-01-31T05:44:08.094612"
+    },
+    {
+      "test_name": "Arcade Games Count",
+      "success": true,
+      "details": "Found 6 arcade games",
+      "response_data": null,
+      "timestamp": "2026-01-31T05:44:08.094661"
+    },
+    {
+      "test_name": "Arcade Game Structure",
+      "success": true,
+      "details": "Game objects have required properties",
+      "response_data": null,
+      "timestamp": "2026-01-31T05:44:08.094672"
     },
     {
       "test_name": "Create User",
-      "success": false,
-      "details": "Status: 404 (expected 200)",
-      "response_data": "Not Found\n",
-      "timestamp": "2026-01-31T05:43:21.311568"
+      "success": true,
+      "details": "Status: 200",
+      "response_data": {
+        "id": "844db21f-a168-425c-a8c5-c5d124462b26",
+        "email": "test_054408@example.com",
+        "display_name": "Test User",
+        "partner_id": null,
+        "couple_code": "A3E6643D",
+        "sarcasm_level": 1,
+        "trust_level": 0.5,
+        "vulnerability_level": 0.5,
+        "points": 0,
+        "plan": "free",
+        "created_at": "2026-01-31T05:44:08.144515+00:00"
+      },
+      "timestamp": "2026-01-31T05:44:08.146964"
     },
     {
-      "test_name": "Marcie Chat",
-      "success": false,
-      "details": "No user ID available for testing",
+      "test_name": "User ID Generated",
+      "success": true,
+      "details": "User ID: 844db21f-a168-425c-a8c5-c5d124462b26",
       "response_data": null,
-      "timestamp": "2026-01-31T05:43:21.312384"
+      "timestamp": "2026-01-31T05:44:08.147054"
     },
     {
-      "test_name": "SOS Session",
-      "success": false,
-      "details": "No user ID available for testing",
+      "test_name": "Dr. Marcie Chat",
+      "success": true,
+      "details": "Status: 200",
+      "response_data": {
+        "response": "Oh, hello there, intrepid seekers of emotional rescue! I assume by \u201chelp us,\u201d you\u2019re not referring to bungee jumping without a cord or attempting to assemble Swedish furniture sans manual. If it\u2019s a relationship quagmire, I'm your lifeline. Let's unravel this ball of tangled attachment styles, shall we? Your distress signal has been received loud and clear, and I'm ready to parachute in with all my psychoanalytical sarcasm and razor-sharp insights. Remember, honesty's less painful than jumping into a cactus bush. Now, tell me, is it communication calamities, boundary demolitions, or perhaps the perilous land of incompatible expectations that\u2019s got you waving the white flag?",
+        "animation": "marcie-laugh",
+        "sarcasm_level": 2
+      },
+      "timestamp": "2026-01-31T05:44:17.730496"
+    },
+    {
+      "test_name": "Marcie Response Structure",
+      "success": true,
+      "details": "Response has required fields",
       "response_data": null,
-      "timestamp": "2026-01-31T05:43:21.312510"
+      "timestamp": "2026-01-31T05:44:17.730584"
+    },
+    {
+      "test_name": "Create SOS Session",
+      "success": true,
+      "details": "Status: 200",
+      "response_data": {
+        "id": "e0ff9c5c-2ed6-45c2-a7ba-72a3da3c8a03",
+        "initiator_id": "844db21f-a168-425c-a8c5-c5d124462b26",
+        "couple_id": "test-couple-id",
+        "status": "waiting_for_partner",
+        "started_at": "2026-01-31T05:44:17.732585+00:00",
+        "submissions": {},
+        "verdict": null
+      },
+      "timestamp": "2026-01-31T05:44:17.732972"
+    },
+    {
+      "test_name": "SOS Session ID Generated",
+      "success": true,
+      "details": "Session ID: e0ff9c5c-2ed6-45c2-a7ba-72a3da3c8a03",
+      "response_data": null,
+      "timestamp": "2026-01-31T05:44:17.733030"
     }
   ],
-  "timestamp": "2026-01-31T05:43:21.312703"
+  "timestamp": "2026-01-31T05:44:17.733047"
 }
