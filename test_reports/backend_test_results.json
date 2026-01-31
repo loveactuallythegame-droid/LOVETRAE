@@ -1,0 +1,49 @@
+{
+  "summary": "0/6 tests passed",
+  "success_rate": 0.0,
+  "tests": [
+    {
+      "test_name": "Health Check",
+      "success": false,
+      "details": "Status: 404 (expected 200)",
+      "response_data": "Not Found\n",
+      "timestamp": "2026-01-31T05:43:20.630358"
+    },
+    {
+      "test_name": "Get Game Categories",
+      "success": false,
+      "details": "Status: 404 (expected 200)",
+      "response_data": "Not Found\n",
+      "timestamp": "2026-01-31T05:43:20.992790"
+    },
+    {
+      "test_name": "Get Love Arcade Games",
+      "success": false,
+      "details": "Status: 404 (expected 200)",
+      "response_data": "Not Found\n",
+      "timestamp": "2026-01-31T05:43:21.154878"
+    },
+    {
+      "test_name": "Create User",
+      "success": false,
+      "details": "Status: 404 (expected 200)",
+      "response_data": "Not Found\n",
+      "timestamp": "2026-01-31T05:43:21.311568"
+    },
+    {
+      "test_name": "Marcie Chat",
+      "success": false,
+      "details": "No user ID available for testing",
+      "response_data": null,
+      "timestamp": "2026-01-31T05:43:21.312384"
+    },
+    {
+      "test_name": "SOS Session",
+      "success": false,
+      "details": "No user ID available for testing",
+      "response_data": null,
+      "timestamp": "2026-01-31T05:43:21.312510"
+    }
+  ],
+  "timestamp": "2026-01-31T05:43:21.312703"
+}
