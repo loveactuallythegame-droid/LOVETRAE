@@ -530,7 +530,6 @@ export const EchoChamberEscapeGame: React.FC<GameProps> = ({ onBack, onComplete 
 // INTIMACY FEUD GAME
 export const IntimacyFeudGame: React.FC<GameProps> = ({ onBack, onComplete }) => {
   const [roundIndex, setRoundIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [revealed, setRevealed] = useState<boolean[]>([false, false, false, false]);
   const [score, setScore] = useState(0);
   const [showRoundEnd, setShowRoundEnd] = useState(false);
@@ -540,7 +539,6 @@ export const IntimacyFeudGame: React.FC<GameProps> = ({ onBack, onComplete }) =>
 
   const buzzIn = (index: number) => {
     if (revealed[index]) return;
-    setSelectedAnswer(index);
     
     const newRevealed = [...revealed];
     newRevealed[index] = true;
