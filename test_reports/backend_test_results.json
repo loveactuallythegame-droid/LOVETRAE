@@ -11,14 +11,14 @@
         "app": "Love Actually - The Game",
         "version": "1.0.0"
       },
-      "timestamp": "2026-01-31T05:44:08.091785"
+      "timestamp": "2026-01-31T06:12:53.523546"
     },
     {
       "test_name": "Health Status Validation",
       "success": true,
       "details": "Status is healthy",
       "response_data": null,
-      "timestamp": "2026-01-31T05:44:08.091869"
+      "timestamp": "2026-01-31T06:12:53.523630"
     },
     {
       "test_name": "Get Game Categories",
@@ -127,28 +127,28 @@
           }
         ]
       },
-      "timestamp": "2026-01-31T05:44:08.093286"
+      "timestamp": "2026-01-31T06:12:53.525276"
     },
     {
       "test_name": "Categories Count",
       "success": true,
       "details": "Found 7 categories",
       "response_data": null,
-      "timestamp": "2026-01-31T05:44:08.093340"
+      "timestamp": "2026-01-31T06:12:53.525426"
     },
     {
       "test_name": "Love Arcade Category Found",
       "success": true,
       "details": "Love Arcade category exists",
       "response_data": null,
-      "timestamp": "2026-01-31T05:44:08.093348"
+      "timestamp": "2026-01-31T06:12:53.525442"
     },
     {
       "test_name": "Love Arcade Properties",
       "success": true,
       "details": "All required properties present",
       "response_data": null,
-      "timestamp": "2026-01-31T05:44:08.093355"
+      "timestamp": "2026-01-31T06:12:53.525449"
     },
     {
       "test_name": "Get Love Arcade Games",
@@ -244,88 +244,88 @@
           }
         ]
       },
-      "timestamp": "2026-01-31T05:44:08.094612"
+      "timestamp": "2026-01-31T06:12:53.527210"
     },
     {
       "test_name": "Arcade Games Count",
       "success": true,
       "details": "Found 6 arcade games",
       "response_data": null,
-      "timestamp": "2026-01-31T05:44:08.094661"
+      "timestamp": "2026-01-31T06:12:53.527350"
     },
     {
       "test_name": "Arcade Game Structure",
       "success": true,
       "details": "Game objects have required properties",
       "response_data": null,
-      "timestamp": "2026-01-31T05:44:08.094672"
+      "timestamp": "2026-01-31T06:12:53.527367"
     },
     {
       "test_name": "Create User",
       "success": true,
       "details": "Status: 200",
       "response_data": {
-        "id": "844db21f-a168-425c-a8c5-c5d124462b26",
-        "email": "test_054408@example.com",
+        "id": "36fc453b-09d5-4b37-83a1-901c4c12855e",
+        "email": "test_061253@example.com",
         "display_name": "Test User",
         "partner_id": null,
-        "couple_code": "A3E6643D",
+        "couple_code": "E3ED4405",
         "sarcasm_level": 1,
         "trust_level": 0.5,
         "vulnerability_level": 0.5,
         "points": 0,
         "plan": "free",
-        "created_at": "2026-01-31T05:44:08.144515+00:00"
+        "created_at": "2026-01-31T06:12:53.528519+00:00"
       },
-      "timestamp": "2026-01-31T05:44:08.146964"
+      "timestamp": "2026-01-31T06:12:53.529215"
     },
     {
       "test_name": "User ID Generated",
       "success": true,
-      "details": "User ID: 844db21f-a168-425c-a8c5-c5d124462b26",
+      "details": "User ID: 36fc453b-09d5-4b37-83a1-901c4c12855e",
       "response_data": null,
-      "timestamp": "2026-01-31T05:44:08.147054"
+      "timestamp": "2026-01-31T06:12:53.529281"
     },
     {
       "test_name": "Dr. Marcie Chat",
       "success": true,
       "details": "Status: 200",
       "response_data": {
-        "response": "Oh, hello there, intrepid seekers of emotional rescue! I assume by \u201chelp us,\u201d you\u2019re not referring to bungee jumping without a cord or attempting to assemble Swedish furniture sans manual. If it\u2019s a relationship quagmire, I'm your lifeline. Let's unravel this ball of tangled attachment styles, shall we? Your distress signal has been received loud and clear, and I'm ready to parachute in with all my psychoanalytical sarcasm and razor-sharp insights. Remember, honesty's less painful than jumping into a cactus bush. Now, tell me, is it communication calamities, boundary demolitions, or perhaps the perilous land of incompatible expectations that\u2019s got you waving the white flag?",
+        "response": "Ah, hello there. So, you've reached out to the wit-infused guru of digital therapy, have you? Well, let\u2019s see if we can navigate through the labyrinth of emotions. If you\u2019re looking for help, I'd wager there's a storm brewing in your emotional teacup. \n\nWhat's the emergency? Miscommunication? A whiff of jealousy? Or perhaps your inner martyr complex is carrying the flag of perpetual misunderstanding? Remember, the hallmark of a true existential crisis is believing you're the only one having it. But don't worry, I've got a treasure chest of sarcasm and insight to get you through this. Unload your problem, and let's see if we can translate it from \"help me, I'm spiraling\" to something more akin to \"I'm practically thriving in this chaos.\"",
         "animation": "marcie-laugh",
         "sarcasm_level": 2
       },
-      "timestamp": "2026-01-31T05:44:17.730496"
+      "timestamp": "2026-01-31T06:12:56.712762"
     },
     {
       "test_name": "Marcie Response Structure",
       "success": true,
       "details": "Response has required fields",
       "response_data": null,
-      "timestamp": "2026-01-31T05:44:17.730584"
+      "timestamp": "2026-01-31T06:12:56.712874"
     },
     {
       "test_name": "Create SOS Session",
       "success": true,
       "details": "Status: 200",
       "response_data": {
-        "id": "e0ff9c5c-2ed6-45c2-a7ba-72a3da3c8a03",
-        "initiator_id": "844db21f-a168-425c-a8c5-c5d124462b26",
+        "id": "719655dd-552a-48f9-ad4b-08723e0efb0d",
+        "initiator_id": "36fc453b-09d5-4b37-83a1-901c4c12855e",
         "couple_id": "test-couple-id",
         "status": "waiting_for_partner",
-        "started_at": "2026-01-31T05:44:17.732585+00:00",
+        "started_at": "2026-01-31T06:12:56.714098+00:00",
         "submissions": {},
         "verdict": null
       },
-      "timestamp": "2026-01-31T05:44:17.732972"
+      "timestamp": "2026-01-31T06:12:56.714450"
     },
     {
       "test_name": "SOS Session ID Generated",
       "success": true,
-      "details": "Session ID: e0ff9c5c-2ed6-45c2-a7ba-72a3da3c8a03",
+      "details": "Session ID: 719655dd-552a-48f9-ad4b-08723e0efb0d",
       "response_data": null,
-      "timestamp": "2026-01-31T05:44:17.733030"
+      "timestamp": "2026-01-31T06:12:56.714505"
     }
   ],
-  "timestamp": "2026-01-31T05:44:17.733047"
+  "timestamp": "2026-01-31T06:12:56.714523"
 }
