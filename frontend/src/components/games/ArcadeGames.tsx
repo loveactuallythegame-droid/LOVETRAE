@@ -557,7 +557,7 @@ export const IntimacyFeudGame: React.FC<GameProps> = ({ onBack, onComplete }) =>
     if (roundIndex < FEUD_ROUNDS.length - 1) {
       setRoundIndex(i => i + 1);
       setRevealed([false, false, false, false]);
-      setSelectedAnswer(null);
+      setRevealed([false, false, false, false]);
       setShowRoundEnd(false);
     } else {
       setGameComplete(true);
