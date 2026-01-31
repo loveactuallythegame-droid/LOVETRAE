@@ -10,19 +10,20 @@ import CategorySelectionScreen from '../screens/CategorySelectionScreen';
 import GameLibraryGridView from '../screens/GameLibraryGridView';
 
 // Auth Screens
-import { SplashScreen, WebSplash, SignInScreen, LoginAndSignUp } from '../screens/auth';
+import SplashScreen from '../screens/auth/SplashScreen';
+import WebSplash from '../screens/auth/WebSplash';
+import SignInScreen from '../screens/auth/SignInScreen';
+import LoginAndSignUp from '../screens/auth/LoginAndSignUp';
 import LegalDisclaimerScreen from '../screens/auth/LegalDisclaimerScreen';
 import OriginStoryScreen from '../screens/auth/OriginStoryScreen';
 import PasswordResetScreen from '../screens/auth/PasswordResetScreen';
 
 // Onboarding Screens
-import { 
-  OnboardingMeetCute, 
-  OnboardingFirstRedFlag, 
-  OnboardingCurrentVibe, 
-  OnboardingAttachmentStyle,
-  CoupleLinkingScreen 
-} from '../screens/onboarding';
+import OnboardingMeetCute from '../screens/onboarding/OnboardingMeetCute';
+import OnboardingFirstRedFlag from '../screens/onboarding/OnboardingFirstRedFlag';
+import OnboardingCurrentVibe from '../screens/onboarding/OnboardingCurrentVibe';
+import OnboardingAttachmentStyle from '../screens/onboarding/OnboardingAttachmentStyle';
+import CoupleLinkingScreen from '../screens/onboarding/CoupleLinkingScreen';
 import CoupleLinking1 from '../screens/CoupleLinking1';
 import CoupleLinking2 from '../screens/CoupleLinking2';
 
@@ -41,59 +42,45 @@ import BoothsScreen from '../screens/sos/BoothsScreen';
 import CoolDownRoom from '../screens/sos/CoolDownRoom';
 import VerdictScreen from '../screens/sos/VerdictScreen';
 
-// Game Screens - Emotional Connection
+// Game Screens - Import all from games folder
 import TruthOrTrust from '../screens/games/TruthOrTrust';
 import GratitudeCloud from '../screens/games/GratitudeCloud';
 import EyeContactChallenge from '../screens/games/EyeContactChallenge';
 import MemoryLaneMap from '../screens/games/MemoryLaneMap';
 import VibeSync from '../screens/games/VibeSync';
 import GratitudeGraffiti from '../screens/games/GratitudeGraffiti';
-
-// Game Screens - Conflict Resolution
 import SlapOfTruth from '../screens/games/SlapOfTruth';
 import ApologyAuction from '../screens/games/ApologyAuction';
 import DefensivenessDetox from '../screens/games/DefensivenessDetox';
 import WhosRight from '../screens/games/WhosRight';
 import StressTest from '../screens/games/StressTest';
 import ApologyOlympics from '../screens/games/ApologyOlympics';
-
-// Game Screens - Creative Chaos
 import RoleSwapRoast from '../screens/games/RoleSwapRoast';
 import DrawYourFeelingsGame from '../screens/games/DrawYourFeelingsGame';
 import GifTheFeels from '../screens/games/GifTheFeels';
 import KaraokeConfessional from '../screens/games/KaraokeConfessional';
 import RansomNoteRomance from '../screens/games/RansomNoteRomance';
-
-// Game Screens - Romance Hub
 import DateNightRoulette from '../screens/games/DateNightRoulette';
 import BedroomBingoGame1 from '../screens/games/BedroomBingoGame1';
 import SixSecondKiss from '../screens/games/SixSecondKiss';
 import ForeplayForecast from '../screens/games/ForeplayForecast';
 import TouchMap from '../screens/games/TouchMap';
 import TouchMapConfiguration from '../screens/games/TouchMapConfiguration';
-
-// Game Screens - Healing Hospital
 import WindowsAndWalls from '../screens/games/WindowsAndWalls';
 import TriggerTriage from '../screens/games/TriggerTriage';
 import TrustBank from '../screens/games/TrustBank';
 import TheIceberg from '../screens/games/TheIceberg';
 import SecrecyAudit from '../screens/games/SecrecyAudit';
-
-// Game Screens - Game Shows
 import CouplesJeopardyGame from '../screens/games/CouplesJeopardyGame';
 import RelationalJeopardy from '../screens/games/RelationalJeopardy';
 import CouplesFamilyFeudGame from '../screens/games/CouplesFamilyFeudGame';
 import NewlywedGame from '../screens/games/NewlywedGame';
 import IntimacyFeud from '../screens/games/IntimacyFeud';
-
-// Game Screens - Love Arcade
 import EscapeEchoChamber from '../screens/games/EscapeEchoChamber';
 import ChoppedFamily from '../screens/games/ChoppedFamily';
 import HarborMasterChallenge from '../screens/games/HarborMasterChallenge';
 import ValidationGameShow from '../screens/games/ValidationGameShow';
 import ConnectionConstructor from '../screens/games/ConnectionConstructor';
-
-// Additional Game Screens
 import AdmirationAim from '../screens/games/AdmirationAim';
 import AmazingRaceCrossroads from '../screens/games/AmazingRaceCrossroads';
 import AntidoteArena from '../screens/games/AntidoteArena';
@@ -103,26 +90,20 @@ import DreamDecoder from '../screens/games/DreamDecoder';
 import EmpathyEcho from '../screens/games/EmpathyEcho';
 import VowRemix from '../screens/games/VowRemix';
 import TrustBingo from '../screens/games/TrustBingo';
+import TruthTellerTower from '../screens/games/TruthTellerTower';
+import BPDPatternDetective from '../screens/games/BPDPatternDetective';
 
-// Translator Screens
+// Additional screens
 import TranslationReveal from '../screens/TranslationReveal';
 import TranslatorActionPlan from '../screens/TranslatorActionPlan';
-
-// Support Screens
 import CrisisResources from '../screens/CrisisResources';
 import PrivacyPolicy from '../screens/PrivacyPolicy';
 import HelpAndFaqScreen from '../screens/HelpAndFaqScreen';
-
-// Special Screens
 import OfflineMode from '../screens/OfflineMode';
 import UpdateRequired from '../screens/UpdateRequired';
 import LoadingMarcieIsThinking from '../screens/LoadingMarcieIsThinking';
 import RelationshipDiagnosisCard from '../screens/RelationshipDiagnosisCard';
 import IntimacyLevelSettings from '../screens/IntimacyLevelSettings';
-
-// Admin Screens
-import AdminUserManagementList from '../screens/admin/AdminUserManagementList';
-import { AdminNavigator } from '../screens/admin-portal';
 
 const Stack = createNativeStackNavigator();
 
@@ -223,11 +204,13 @@ const AppNavigator = () => {
         <Stack.Screen name="IntimacyFeud" component={IntimacyFeud} />
 
         {/* Love Arcade Games */}
-        <Stack.Screen name="TruthTellerTower" component={ValidationGameShow} />
+        <Stack.Screen name="TruthTellerTower" component={TruthTellerTower} />
         <Stack.Screen name="EscapeEchoChamber" component={EscapeEchoChamber} />
         <Stack.Screen name="ChoppedFamily" component={ChoppedFamily} />
         <Stack.Screen name="HarborMasterChallenge" component={HarborMasterChallenge} />
         <Stack.Screen name="ConnectionConstructor" component={ConnectionConstructor} />
+        <Stack.Screen name="ValidationGameShow" component={ValidationGameShow} />
+        <Stack.Screen name="BPDPatternDetective" component={BPDPatternDetective} />
 
         {/* Additional Games */}
         <Stack.Screen name="AdmirationAim" component={AdmirationAim} />
@@ -254,10 +237,6 @@ const AppNavigator = () => {
         <Stack.Screen name="UpdateRequired" component={UpdateRequired} />
         <Stack.Screen name="Loading" component={LoadingMarcieIsThinking} />
         <Stack.Screen name="RelationshipDiagnosis" component={RelationshipDiagnosisCard} />
-
-        {/* Admin */}
-        <Stack.Screen name="AdminUserManagementList" component={AdminUserManagementList} />
-        <Stack.Screen name="AdminPortal" component={AdminNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
