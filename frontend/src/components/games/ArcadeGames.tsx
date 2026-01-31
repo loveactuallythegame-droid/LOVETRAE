@@ -677,7 +677,11 @@ export const RelationalJeopardyGame: React.FC<GameProps> = ({ onBack, onComplete
     }
     
     const key = `${selectedCategory}-${selectedQuestion}`;
-    setUsedQuestions(prev => new Set([...prev, key]));
+    setUsedQuestions(prev => {
+      const newSet = new Set(prev);
+      newSet.add(key);
+      return newSet;
+    });
     setShowAnswer(true);
   };
 
