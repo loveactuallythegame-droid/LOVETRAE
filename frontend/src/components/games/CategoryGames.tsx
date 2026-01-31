@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Heart, MessageCircle, Eye, Clock, Check, Send, Volume2 } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Eye, Send } from 'lucide-react';
 
 interface GameProps {
   gameId: string;
