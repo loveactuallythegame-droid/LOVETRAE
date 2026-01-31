@@ -1,58 +1,266 @@
-
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+// Main Screens
+import MainGameLibrary from '../screens/MainGameLibrary';
+import LoveArcadeHub from '../screens/LoveArcadeHub';
 import HomeScreen from '../screens/HomeScreen';
+import CategorySelectionScreen from '../screens/CategorySelectionScreen';
+import GameLibraryGridView from '../screens/GameLibraryGridView';
+
+// Auth Screens
+import { SplashScreen, WebSplash, SignInScreen, LoginAndSignUp } from '../screens/auth';
+import LegalDisclaimerScreen from '../screens/auth/LegalDisclaimerScreen';
+import OriginStoryScreen from '../screens/auth/OriginStoryScreen';
+import PasswordResetScreen from '../screens/auth/PasswordResetScreen';
+
+// Onboarding Screens
+import { 
+  OnboardingMeetCute, 
+  OnboardingFirstRedFlag, 
+  OnboardingCurrentVibe, 
+  OnboardingAttachmentStyle,
+  CoupleLinkingScreen 
+} from '../screens/onboarding';
+import CoupleLinking1 from '../screens/CoupleLinking1';
+import CoupleLinking2 from '../screens/CoupleLinking2';
+
+// Dashboard Screens
+import DashboardHome from '../screens/dashboard/DashboardHome';
+import PartnerDashboard from '../screens/dashboard/PartnerDashboard';
+import PartnerTranslator from '../screens/dashboard/PartnerTranslator';
+import ProfileScreen from '../screens/dashboard/ProfileScreen';
+import SettingsScreen from '../screens/dashboard/SettingsScreen';
+import AchievementsScreen from '../screens/dashboard/AchievementsScreen';
+import LeaderboardScreen from '../screens/dashboard/LeaderboardScreen';
+
+// SOS Screens
+import SOSModal from '../screens/sos/SOSModal';
+import BoothsScreen from '../screens/sos/BoothsScreen';
+import CoolDownRoom from '../screens/sos/CoolDownRoom';
+import VerdictScreen from '../screens/sos/VerdictScreen';
+
+// Game Screens - Emotional Connection
+import TruthOrTrust from '../screens/games/TruthOrTrust';
+import GratitudeCloud from '../screens/games/GratitudeCloud';
+import EyeContactChallenge from '../screens/games/EyeContactChallenge';
+import MemoryLaneMap from '../screens/games/MemoryLaneMap';
+import VibeSync from '../screens/games/VibeSync';
+import GratitudeGraffiti from '../screens/games/GratitudeGraffiti';
+
+// Game Screens - Conflict Resolution
+import SlapOfTruth from '../screens/games/SlapOfTruth';
+import ApologyAuction from '../screens/games/ApologyAuction';
+import DefensivenessDetox from '../screens/games/DefensivenessDetox';
+import WhosRight from '../screens/games/WhosRight';
+import StressTest from '../screens/games/StressTest';
+import ApologyOlympics from '../screens/games/ApologyOlympics';
+
+// Game Screens - Creative Chaos
+import RoleSwapRoast from '../screens/games/RoleSwapRoast';
+import DrawYourFeelingsGame from '../screens/games/DrawYourFeelingsGame';
+import GifTheFeels from '../screens/games/GifTheFeels';
+import KaraokeConfessional from '../screens/games/KaraokeConfessional';
+import RansomNoteRomance from '../screens/games/RansomNoteRomance';
+
+// Game Screens - Romance Hub
+import DateNightRoulette from '../screens/games/DateNightRoulette';
+import BedroomBingoGame1 from '../screens/games/BedroomBingoGame1';
+import SixSecondKiss from '../screens/games/SixSecondKiss';
+import ForeplayForecast from '../screens/games/ForeplayForecast';
+import TouchMap from '../screens/games/TouchMap';
 import TouchMapConfiguration from '../screens/games/TouchMapConfiguration';
-import SixSecondKiss from "../screens/games/SixSecondKiss";
-import AchievementsScreen from "../screens/dashboard/AchievementsScreen";
-import AdmirationAim from "../screens/games/AdmirationAim";
-import AmazingRaceCrossroads from "../screens/games/AmazingRaceCrossroads";
-import AntidoteArena from "../screens/games/AntidoteArena";
-import AdminUserManagementList from "../screens/admin/AdminUserManagementList";
-import CategorySelectionScreen from "../screens/CategorySelectionScreen";
-import CoupleLinking1 from "../screens/CoupleLinking1";
-import CoupleLinking2 from "../screens/CoupleLinking2";
-import CrisisResources from "../screens/CrisisResources";
-import GameLibraryGridView from "../screens/GameLibraryGridView";
-import TouchMapLiteGame from "../screens/games/TouchMapLiteGame";
-import TouchMapPreferenceGame1 from "../screens/games/TouchMapPreferenceGame1";
-import TouchMapPreferenceGame2 from "../screens/games/TouchMapPreferenceGame2";
-import TranslationReveal from "../screens/TranslationReveal";
-import TranslatorActionPlan from "../screens/TranslatorActionPlan";
-import TranslatorActionPlan9 from "../screens/TranslatorActionPlan9";
-import TranslatorActionPlan10 from "../screens/TranslatorActionPlan10";
+
+// Game Screens - Healing Hospital
+import WindowsAndWalls from '../screens/games/WindowsAndWalls';
+import TriggerTriage from '../screens/games/TriggerTriage';
+import TrustBank from '../screens/games/TrustBank';
+import TheIceberg from '../screens/games/TheIceberg';
+import SecrecyAudit from '../screens/games/SecrecyAudit';
+
+// Game Screens - Game Shows
+import CouplesJeopardyGame from '../screens/games/CouplesJeopardyGame';
+import RelationalJeopardy from '../screens/games/RelationalJeopardy';
+import CouplesFamilyFeudGame from '../screens/games/CouplesFamilyFeudGame';
+import NewlywedGame from '../screens/games/NewlywedGame';
+import IntimacyFeud from '../screens/games/IntimacyFeud';
+
+// Game Screens - Love Arcade
+import EscapeEchoChamber from '../screens/games/EscapeEchoChamber';
+import ChoppedFamily from '../screens/games/ChoppedFamily';
+import HarborMasterChallenge from '../screens/games/HarborMasterChallenge';
+import ValidationGameShow from '../screens/games/ValidationGameShow';
+import ConnectionConstructor from '../screens/games/ConnectionConstructor';
+
+// Additional Game Screens
+import AdmirationAim from '../screens/games/AdmirationAim';
+import AmazingRaceCrossroads from '../screens/games/AmazingRaceCrossroads';
+import AntidoteArena from '../screens/games/AntidoteArena';
+import BidRadar from '../screens/games/BidRadar';
+import CycleBreaker from '../screens/games/CycleBreaker';
+import DreamDecoder from '../screens/games/DreamDecoder';
+import EmpathyEcho from '../screens/games/EmpathyEcho';
+import VowRemix from '../screens/games/VowRemix';
+import TrustBingo from '../screens/games/TrustBingo';
+
+// Translator Screens
+import TranslationReveal from '../screens/TranslationReveal';
+import TranslatorActionPlan from '../screens/TranslatorActionPlan';
+
+// Support Screens
+import CrisisResources from '../screens/CrisisResources';
+import PrivacyPolicy from '../screens/PrivacyPolicy';
+import HelpAndFaqScreen from '../screens/HelpAndFaqScreen';
+
+// Special Screens
+import OfflineMode from '../screens/OfflineMode';
+import UpdateRequired from '../screens/UpdateRequired';
+import LoadingMarcieIsThinking from '../screens/LoadingMarcieIsThinking';
+import RelationshipDiagnosisCard from '../screens/RelationshipDiagnosisCard';
+import IntimacyLevelSettings from '../screens/IntimacyLevelSettings';
+
+// Admin Screens
+import AdminUserManagementList from '../screens/admin/AdminUserManagementList';
+import { AdminNavigator } from '../screens/admin-portal';
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="GameLibraryGridView" screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name="TouchMapConfiguration" component={TouchMapConfiguration} />
-                <Stack.Screen name="SixSecondKiss" component={SixSecondKiss} />
-                <Stack.Screen name="Achievements" component={AchievementsScreen} />
-                <Stack.Screen name="AdmirationAim" component={AdmirationAim} />
-                <Stack.Screen name="AmazingRaceCrossroads" component={AmazingRaceCrossroads} />
-                <Stack.Screen name="AntidoteArena" component={AntidoteArena} />
-                <Stack.Screen name="AdminUserManagementList" component={AdminUserManagementList} />
-                <Stack.Screen name="CategorySelectionScreen" component={CategorySelectionScreen} />
-                <Stack.Screen name="CoupleLinking1" component={CoupleLinking1} />
-                <Stack.Screen name="CoupleLinking2" component={CoupleLinking2} />
-                <Stack.Screen name="CrisisResources" component={CrisisResources} />
-                <Stack.Screen name="GameLibraryGridView" component={GameLibraryGridView} />
-                <Stack.Screen name="TouchMapLiteGame" component={TouchMapLiteGame} />
-                <Stack.Screen name="TouchMapPreferenceGame1" component={TouchMapPreferenceGame1} />
-                <Stack.Screen name="TouchMapPreferenceGame2" component={TouchMapPreferenceGame2} />
-                <Stack.Screen name="TranslationReveal" component={TranslationReveal} />
-                <Stack.Screen name="TranslatorActionPlan" component={TranslatorActionPlan} />
-                <Stack.Screen name="TranslatorActionPlan9" component={TranslatorActionPlan9} />
-                <Stack.Screen name="TranslatorActionPlan10" component={TranslatorActionPlan10} />
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+  return (
+    <NavigationContainer>
+      <Stack.Navigator 
+        initialRouteName="MainGameLibrary" 
+        screenOptions={{ 
+          headerShown: false,
+          animation: 'slide_from_right',
+        }}
+      >
+        {/* Main Entry Points */}
+        <Stack.Screen name="MainGameLibrary" component={MainGameLibrary} />
+        <Stack.Screen name="LoveArcadeHub" component={LoveArcadeHub} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="DashboardHome" component={DashboardHome} />
+        <Stack.Screen name="CategorySelectionScreen" component={CategorySelectionScreen} />
+        <Stack.Screen name="GameLibraryGridView" component={GameLibraryGridView} />
+
+        {/* Auth Flow */}
+        <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen name="WebSplash" component={WebSplash} />
+        <Stack.Screen name="SignIn" component={SignInScreen} />
+        <Stack.Screen name="LoginAndSignUp" component={LoginAndSignUp} />
+        <Stack.Screen name="LegalDisclaimer" component={LegalDisclaimerScreen} />
+        <Stack.Screen name="OriginStory" component={OriginStoryScreen} />
+        <Stack.Screen name="PasswordReset" component={PasswordResetScreen} />
+
+        {/* Onboarding */}
+        <Stack.Screen name="OnboardingMeetCute" component={OnboardingMeetCute} />
+        <Stack.Screen name="OnboardingFirstRedFlag" component={OnboardingFirstRedFlag} />
+        <Stack.Screen name="OnboardingCurrentVibe" component={OnboardingCurrentVibe} />
+        <Stack.Screen name="OnboardingAttachmentStyle" component={OnboardingAttachmentStyle} />
+        <Stack.Screen name="CoupleLinking" component={CoupleLinkingScreen} />
+        <Stack.Screen name="CoupleLinking1" component={CoupleLinking1} />
+        <Stack.Screen name="CoupleLinking2" component={CoupleLinking2} />
+
+        {/* Dashboard & Profile */}
+        <Stack.Screen name="PartnerDashboard" component={PartnerDashboard} />
+        <Stack.Screen name="PartnerTranslator" component={PartnerTranslator} />
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+        <Stack.Screen name="Achievements" component={AchievementsScreen} />
+        <Stack.Screen name="Leaderboard" component={LeaderboardScreen} />
+        <Stack.Screen name="IntimacyLevelSettings" component={IntimacyLevelSettings} />
+
+        {/* SOS Fight Solver */}
+        <Stack.Screen name="SOSModal" component={SOSModal} options={{ presentation: 'modal' }} />
+        <Stack.Screen name="SOSBooths" component={BoothsScreen} />
+        <Stack.Screen name="SOSCoolDown" component={CoolDownRoom} />
+        <Stack.Screen name="SOSVerdict" component={VerdictScreen} />
+
+        {/* Emotional Connection Games */}
+        <Stack.Screen name="TruthOrTrust" component={TruthOrTrust} />
+        <Stack.Screen name="GratitudeCloud" component={GratitudeCloud} />
+        <Stack.Screen name="EyeContactChallenge" component={EyeContactChallenge} />
+        <Stack.Screen name="MemoryLaneMap" component={MemoryLaneMap} />
+        <Stack.Screen name="VibeSync" component={VibeSync} />
+        <Stack.Screen name="GratitudeGraffiti" component={GratitudeGraffiti} />
+
+        {/* Conflict Resolution Games */}
+        <Stack.Screen name="SlapOfTruth" component={SlapOfTruth} />
+        <Stack.Screen name="ApologyAuction" component={ApologyAuction} />
+        <Stack.Screen name="DefensivenessDetox" component={DefensivenessDetox} />
+        <Stack.Screen name="WhosRight" component={WhosRight} />
+        <Stack.Screen name="StressTest" component={StressTest} />
+        <Stack.Screen name="ApologyOlympics" component={ApologyOlympics} />
+
+        {/* Creative Chaos Games */}
+        <Stack.Screen name="RoleSwapRoast" component={RoleSwapRoast} />
+        <Stack.Screen name="DrawYourFeelingsGame" component={DrawYourFeelingsGame} />
+        <Stack.Screen name="GifTheFeels" component={GifTheFeels} />
+        <Stack.Screen name="KaraokeConfessional" component={KaraokeConfessional} />
+        <Stack.Screen name="RansomNoteRomance" component={RansomNoteRomance} />
+
+        {/* Romance Hub Games */}
+        <Stack.Screen name="DateNightRoulette" component={DateNightRoulette} />
+        <Stack.Screen name="BedroomBingoGame1" component={BedroomBingoGame1} />
+        <Stack.Screen name="SixSecondKiss" component={SixSecondKiss} />
+        <Stack.Screen name="ForeplayForecast" component={ForeplayForecast} />
+        <Stack.Screen name="TouchMap" component={TouchMap} />
+        <Stack.Screen name="TouchMapConfiguration" component={TouchMapConfiguration} />
+
+        {/* Healing Hospital Games */}
+        <Stack.Screen name="WindowsAndWalls" component={WindowsAndWalls} />
+        <Stack.Screen name="TriggerTriage" component={TriggerTriage} />
+        <Stack.Screen name="TrustBank" component={TrustBank} />
+        <Stack.Screen name="TheIceberg" component={TheIceberg} />
+        <Stack.Screen name="SecrecyAudit" component={SecrecyAudit} />
+
+        {/* Game Show Games */}
+        <Stack.Screen name="CouplesJeopardyGame" component={CouplesJeopardyGame} />
+        <Stack.Screen name="RelationalJeopardy" component={RelationalJeopardy} />
+        <Stack.Screen name="CouplesFamilyFeudGame" component={CouplesFamilyFeudGame} />
+        <Stack.Screen name="NewlywedGame" component={NewlywedGame} />
+        <Stack.Screen name="IntimacyFeud" component={IntimacyFeud} />
+
+        {/* Love Arcade Games */}
+        <Stack.Screen name="TruthTellerTower" component={ValidationGameShow} />
+        <Stack.Screen name="EscapeEchoChamber" component={EscapeEchoChamber} />
+        <Stack.Screen name="ChoppedFamily" component={ChoppedFamily} />
+        <Stack.Screen name="HarborMasterChallenge" component={HarborMasterChallenge} />
+        <Stack.Screen name="ConnectionConstructor" component={ConnectionConstructor} />
+
+        {/* Additional Games */}
+        <Stack.Screen name="AdmirationAim" component={AdmirationAim} />
+        <Stack.Screen name="AmazingRaceCrossroads" component={AmazingRaceCrossroads} />
+        <Stack.Screen name="AntidoteArena" component={AntidoteArena} />
+        <Stack.Screen name="BidRadar" component={BidRadar} />
+        <Stack.Screen name="CycleBreaker" component={CycleBreaker} />
+        <Stack.Screen name="DreamDecoder" component={DreamDecoder} />
+        <Stack.Screen name="EmpathyEcho" component={EmpathyEcho} />
+        <Stack.Screen name="VowRemix" component={VowRemix} />
+        <Stack.Screen name="TrustBingo" component={TrustBingo} />
+
+        {/* Translator */}
+        <Stack.Screen name="TranslationReveal" component={TranslationReveal} />
+        <Stack.Screen name="TranslatorActionPlan" component={TranslatorActionPlan} />
+
+        {/* Support & Legal */}
+        <Stack.Screen name="CrisisResources" component={CrisisResources} />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+        <Stack.Screen name="HelpAndFaq" component={HelpAndFaqScreen} />
+
+        {/* Special Screens */}
+        <Stack.Screen name="OfflineMode" component={OfflineMode} />
+        <Stack.Screen name="UpdateRequired" component={UpdateRequired} />
+        <Stack.Screen name="Loading" component={LoadingMarcieIsThinking} />
+        <Stack.Screen name="RelationshipDiagnosis" component={RelationshipDiagnosisCard} />
+
+        {/* Admin */}
+        <Stack.Screen name="AdminUserManagementList" component={AdminUserManagementList} />
+        <Stack.Screen name="AdminPortal" component={AdminNavigator} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default AppNavigator;
