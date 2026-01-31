@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Check, X, Trophy, Star, Zap, Heart, Clock, Users } from 'lucide-react';
-import { marcieApi } from '../lib/api';
+import { ArrowLeft, Check, X, Trophy, Clock } from 'lucide-react';
 
 // TRUTH TELLER TOWER - Phase 1: Foundation
 const TRUTH_TOWER_QUESTIONS = [
