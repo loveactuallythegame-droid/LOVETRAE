@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Love Actually</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0a0c 0%, #392830 50%, #0f0a0c 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(252, 199, 56, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(234, 3, 31, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(198, 10, 179, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, #db147c, #f05d68);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(219, 20, 124, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        .glass-card {
+            background: rgba(26, 10, 31, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                #fcc738, #ea031f, #c60ab3, 
+                #ef1b6e, #c41e77, #a22ac4, #9056ef);
+            border-radius: 22px;
+            z-index: -1;
+            background-size: 400% 400%;
+            animation: gradientShift 6s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .section-title {
+            color: #ffef1f;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .setting-label {
+            color: white;
+            font-size: 1rem;
+        }
+
+        .picker-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .picker-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .picker-option.selected {
+            background: linear-gradient(45deg, #db147c, #f05d68);
+            border-color: #db147c;
+            color: white;
+        }
+
+        .picker-option:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(45deg, #33DEA5, #33DEA5);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider-container {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .slider-value {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .slider {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            position: relative;
+            margin: 0 15px;
+        }
+
+        .slider-track {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, #db147c, #f05d68);
+            border-radius: 2px;
+        }
+
+        .slider-thumb {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #db147c;
+            top: -8px;
+            transform: translateX(-50%);
+            cursor: pointer;
+        }
+
+        .button {
+            background: linear-gradient(45deg, #E11637, #E11637);
+            border: none;
+            border-radius: 15px;
+            padding: 20px 30px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(225, 22, 55, 0.4);
+        }
+
+        .button:hover {
+            transform: scale(0.98);
+            box-shadow: 0 8px 25px rgba(225, 22, 55, 0.6);
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        .marcie-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(252, 199, 56, 0.3);
+        }
+
+        .marcie-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #fcc738, #ea031f, #c60ab3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 3px solid #ffef1f;
+            box-shadow: 0 0 20px rgba(252, 199, 56, 0.5);
+        }
+
+        .marcie-quote {
+            flex: 1;
+            font-style: italic;
+            color: #ffef1f;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .picker-container {
+                align-self: flex-end;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .picker-container {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            
+            .button {
+                padding: 18px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Settings</h1>
+            <p>Customize your experience</p>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="section-title">Appearance</h2>
+            
+            <div class="setting-item">
+                <span class="setting-label">Theme</span>
+                <div class="picker-container">
+                    <div class="picker-option selected" onclick="selectTheme('dark', this)">Dark</div>
+                    <div class="picker-option" onclick="selectTheme('light', this)">Light</div>
+                    <div class="picker-option" onclick="selectTheme('noir', this)">Noir</div>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <span class="setting-label">High Contrast</span>
+                <label class="switch">
+                    <input type="checkbox" id="highContrastToggle" onchange="toggleSetting('highContrast')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <span class="setting-label">Reduce Motion</span>
+                <label class="switch">
+                    <input type="checkbox" id="reduceMotionToggle" onchange="toggleSetting('reduceMotion')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="slider-container">
+                <div class="setting-label">Animation Speed</div>
+                <div class="slider-row">
+                    <span class="slider-value">Slow</span>
+                    <div class="slider">
+                        <div class="slider-track" style="width: 60%;"></div>
+                        <div class="slider-thumb" style="left: 60%;"></div>
+                    </div>
+                    <span class="slider-value">Fast</span>
+                </div>
+            </div>
+            
+            <div class="slider-container">
+                <div class="setting-label">Font Size</div>
+                <div class="slider-row">
+                    <span class="slider-value">Small</span>
+                    <div class="slider">
+                        <div class="slider-track" style="width: 50%;"></div>
+                        <div class="slider-thumb" style="left: 50%;"></div>
+                    </div>
+                    <span class="slider-value">Large</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="section-title">Dr. Marcie Settings</h2>
+            
+            <div class="setting-item">
+                <span class="setting-label">Sarcasm Level</span>
+                <div class="picker-container">
+                    <div class="picker-option" onclick="selectSarcasm(1, this)">Rookie</div>
+                    <div class="picker-option selected" onclick="selectSarcasm(2, this)">Specialist</div>
+                    <div class="picker-option" onclick="selectSarcasm(3, this)">Wizard</div>
+                    <div class="picker-option" onclick="selectSarcasm(4, this)">Oracle</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2 class="section-title">Account</h2>
+            
+            <button class="button" onclick="logout()">
+                Log Out
+            </button>
+        </div>
+
+        <div class="marcie-section">
+            <div class="marcie-avatar">👩‍⚕️</div>
+            <div class="marcie-quote">
+                "Settings? Already adjusting the parameters of your relationship, I see. 
+                Just remember, the most important setting is your willingness to be vulnerable."
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectTheme(theme, element) {
+            // Remove selected class from all options
+            document.querySelectorAll('.picker-option:nth-child(-n+3)').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+        }
+
+        function selectSarcasm(level, element) {
+            // Remove selected class from all sarcasm options
+            document.querySelectorAll('.picker-option:nth-last-child(-n+4)').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+        }
+
+        function toggleSetting(setting) {
+            // In a real app, this would update the setting in the app's state
+            console.log(`${setting} setting toggled`);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to log out?')) {
+                alert('Logging out...');
+                // In a real app, this would handle the logout process
+                // window.location.href = 'LoginAndSignUp.html';
+            }
+        }
+    </script>
+</body>
+</html>

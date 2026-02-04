@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   View,
@@ -10,12 +9,16 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
+  Dimensions
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../lib/firebaseClient';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import theme from '../../theme';
+
+const { width, height } = Dimensions.get('window');
 
 const LoginAndSignUpScreen = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -45,7 +48,7 @@ const LoginAndSignUpScreen = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <LinearGradient
-        colors={['#0f0a0c', '#392830', '#0f0a0c']}
+        colors={[theme.COLORS.background, '#392830', theme.COLORS.background]}
         style={styles.container}
       >
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -106,28 +109,28 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    padding: theme.SPACING.lg,
   },
   mainTitle: {
-    fontFamily: 'BarbieDream-Regular',
-    color: '#ffffff',
-    fontSize: 48,
-    fontWeight: 'bold',
+    fontFamily: theme.TYPOGRAPHY.header.fontFamily || 'BarbieDream-Regular',
+    color: theme.COLORS.textPrimary,
+    fontSize: theme.TYPOGRAPHY.header.fontSize,
+    fontWeight: theme.TYPOGRAPHY.header.fontWeight,
     textAlign: 'center',
-    marginBottom: 8,
-    paddingHorizontal: 20,
+    marginBottom: theme.SPACING.sm,
+    paddingHorizontal: theme.SPACING.md,
   },
   subtitle: {
-    color: 'rgba(255, 255, 255, 0.6)',
-    fontSize: 18,
+    color: theme.COLORS.textSecondary,
+    fontSize: theme.TYPOGRAPHY.body.fontSize,
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: theme.SPACING.xxl,
   },
   glassPanel: {
     width: '100%',
     maxWidth: 480,
-    borderRadius: 24,
-    padding: 32,
+    borderRadius: theme.SIZES.borderRadius * 1.5,
+    padding: theme.SPACING.xl,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
     overflow: 'hidden',
@@ -135,65 +138,65 @@ const styles = StyleSheet.create({
   toggleContainer: {
     flexDirection: 'row',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    borderRadius: 12,
+    borderRadius: theme.SIZES.borderRadius,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.05)',
-    marginBottom: 32,
+    marginBottom: theme.SPACING.xl,
   },
   toggleButton: {
     flex: 1,
-    paddingVertical: 12,
-    borderRadius: 10,
+    paddingVertical: theme.SPACING.md,
+    borderRadius: theme.SIZES.borderRadius - 2,
     alignItems: 'center',
   },
   activeToggleButton: {
-    backgroundColor: '#fc0c84',
+    backgroundColor: theme.COLORS.accentPink,
   },
   toggleButtonText: {
     color: 'rgba(255, 255, 255, 0.5)',
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: theme.TYPOGRAPHY.small.fontSize,
   },
   activeToggleButtonText: {
-    color: '#ffffff',
+    color: theme.COLORS.textPrimary,
   },
   inputLabel: {
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: 10,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    marginBottom: 8,
+    color: theme.COLORS.textSecondary,
+    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
+    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
+    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
+    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
+    marginBottom: theme.SPACING.sm,
   },
   input: {
-    height: 56,
+    height: theme.SIZES.inputHeight,
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: 8,
+    borderRadius: theme.SIZES.borderRadius,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: 16,
-    color: '#ffffff',
-    fontSize: 16,
-    marginBottom: 24,
+    paddingHorizontal: theme.SPACING.md,
+    color: theme.COLORS.textPrimary,
+    fontSize: theme.TYPOGRAPHY.body.fontSize,
+    marginBottom: theme.SPACING.lg,
   },
   authButton: {
-    backgroundColor: '#fc0c84',
-    borderRadius: 12,
-    paddingVertical: 20,
+    backgroundColor: theme.COLORS.accentPink,
+    borderRadius: theme.SIZES.buttonBorderRadius,
+    paddingVertical: theme.SPACING.lg,
     alignItems: 'center',
-    marginTop: 16,
-    shadowColor: '#fc0c84',
+    marginTop: theme.SPACING.md,
+    shadowColor: theme.COLORS.accentPink,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.4,
     shadowRadius: 20,
     elevation: 10, // for Android
   },
   authButtonText: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
+    color: theme.COLORS.textPrimary,
+    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
+    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
+    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
+    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
   },
 });
 

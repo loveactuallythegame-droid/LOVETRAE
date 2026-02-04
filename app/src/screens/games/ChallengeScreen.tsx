@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, TextInput, AppState } from 'react-native';
+import { View, StyleSheet, TextInput, AppState, Image } from 'react-native';
 import { GlassCard, Text, SquishyButton } from '../../components/ui';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -88,8 +88,8 @@ export default function ChallengeScreen({ route, navigation }: any) {
     if (time < 120) return sarcasm > 1 ? "Tick-tock honesty o'clock. Use words, not dramatic sighs." : "Two minutes left — be clear and kind.";
     if (len < 50) return sarcasm > 1 ? "Vibes aren't details. Try sentences." : "Add a bit more detail for clarity.";
     const s = calcHonestyScore(text);
-    if (s > 75) return sarcasm > 1 ? "That’s almost mature. Keep going." : "Solid depth and honesty — nice work.";
-    if (s > 50) return sarcasm > 1 ? "We’re approaching real growth. Shocking." : "Good direction — add specifics.";
+    if (s > 75) return sarcasm > 1 ? "That's almost mature. Keep going." : "Solid depth and honesty — nice work.";
+    if (s > 50) return sarcasm > 1 ? "We're approaching real growth. Shocking." : "Good direction — add specifics.";
     return sarcasm > 1 ? "Honesty-lite: great taste, less substance." : "Try naming feelings and actions.";
   }
 
@@ -134,13 +134,27 @@ export default function ChallengeScreen({ route, navigation }: any) {
   return (
     <View style={{ flex: 1, padding: 16, gap: 12 }}>
       <GlassCard>
+        {/* Dr. Marcie Section */}
+        <View style={styles.drMarcieSection}>
+          <View style={styles.avatarContainer}>
+            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+          </View>
+          <View style={styles.quoteBox}>
+            <Text style={styles.quoteText} variant="sass">Deepen your connection through honest reflection! Share vulnerably and authentically.</Text>
+          </View>
+        </View>
+
         <View style={styles.header}>
-          <SquishyButton onPress={() => navigation.goBack()} style={styles.back}><Text variant="header">Back</Text></SquishyButton>
+          <SquishyButton onPress={() => navigation.goBack()} style={styles.back}>
+            <Text variant="header">Back</Text>
+          </SquishyButton>
           <Text variant="header">{title}</Text>
           <Text variant="keyword" accessibilityLiveRegion="polite" style={{ color: warn ? '#E11637' : '#33DEA5' }}>{mm}:{ss}</Text>
         </View>
         <View style={styles.progress}>
-          <View style={[styles.progressFill, { width: `${barProgress}%` }]} />
+          <LinearGradient colors={['#db147c', '#f05d68']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.progressFill}>
+            <View style={{ width: `${barProgress}%`, height: '100%' }} />
+          </LinearGradient>
           <Text variant="body">Question {questionIndex + 1} of 3</Text>
         </View>
         <View style={{ marginTop: 8 }}>
@@ -163,7 +177,7 @@ export default function ChallengeScreen({ route, navigation }: any) {
         {!!score && (
           <View style={{ marginTop: 8 }}>
             <Text variant="header">Honesty Score</Text>
-            <Text variant="body" style={{ color: score > 75 ? '#33DEA5' : score > 50 ? '#E4E831' : '#E11637' }}>{score}</Text>
+            <Text variant="body" style={{ color: score > 75 ? '#37cf97' : score > 50 ? '#ffef1f' : '#E11637' }}>{score}</Text>
           </View>
         )}
         {!!commentary && (
@@ -172,9 +186,9 @@ export default function ChallengeScreen({ route, navigation }: any) {
           </View>
         )}
         <View style={{ marginTop: 12 }}>
-          <LinearGradient colors={['#FA1F63', '#BE1980']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.primaryBtn}>
+          <LinearGradient colors={['#db147c', '#f05d68']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.primaryBtn}>
             <SquishyButton onPress={nextQuestion} style={{ backgroundColor: 'transparent' }}>
-              <Text variant="header">{questionIndex < 2 ? 'Next' : 'Submit'}</Text>
+              <Text variant="header" style={{ color: '#ffffff' }}>{questionIndex < 2 ? 'Next' : 'Submit'}</Text>
             </SquishyButton>
           </LinearGradient>
         </View>
@@ -186,10 +200,75 @@ export default function ChallengeScreen({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  back: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: '#5C1459', borderRadius: 12 },
-  progress: { height: 16, backgroundColor: '#120016', borderRadius: 8, overflow: 'hidden', marginTop: 8, justifyContent: 'center' },
-  progressFill: { position: 'absolute', left: 0, top: 0, bottom: 0, backgroundColor: 'rgba(250,31,99,0.35)' },
-  input: { minHeight: 128, backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 10, color: '#fff', textAlignVertical: 'top' },
-  inputFocus: { borderColor: '#FA1F63' },
+  back: { 
+    paddingHorizontal: 12, 
+    paddingVertical: 8, 
+    backgroundColor: 'rgba(219, 20, 124, 0.3)', 
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(219, 20, 124, 0.5)',
+  },
+  progress: { 
+    height: 16, 
+    backgroundColor: 'rgba(18, 0, 22, 0.5)', 
+    borderRadius: 8, 
+    overflow: 'hidden', 
+    marginTop: 8, 
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(219, 20, 124, 0.3)',
+  },
+  progressFill: { 
+    position: 'absolute', 
+    left: 0, 
+    top: 0, 
+    bottom: 0,
+    width: '100%',
+  },
+  input: { 
+    minHeight: 128, 
+    backgroundColor: 'rgba(26, 10, 31, 0.5)', 
+    borderWidth: 1, 
+    borderColor: 'rgba(219, 20, 124, 0.3)', 
+    borderRadius: 10, 
+    padding: 10, 
+    color: '#fff', 
+    textAlignVertical: 'top',
+  },
+  inputFocus: { borderColor: '#db147c' },
   primaryBtn: { borderRadius: 20, overflow: 'hidden' },
+  drMarcieSection: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 16
+  },
+  avatarContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#fcc738',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: 'cover'
+  },
+  quoteBox: {
+    flex: 1,
+    backgroundColor: 'rgba(252, 199, 56, 0.2)',
+    borderRadius: 12,
+    padding: 12
+  },
+  quoteText: {
+    color: '#ffffff',
+    fontSize: 14,
+    lineHeight: 20
+  }
 });

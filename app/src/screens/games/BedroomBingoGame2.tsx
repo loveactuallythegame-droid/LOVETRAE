@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Header } from '../../components/ui/Header';
@@ -14,14 +13,21 @@ const bingoTilesData = [
 ];
 
 const BingoTile = ({ icon, text, isActive, isFree, onPress }: { icon?: string, text: string, isActive: boolean, isFree?: boolean, onPress: () => void }) => (
-    <TouchableOpacity 
+    <LinearGradient
+        colors={['#db147c', '#f05d68']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
         style={[styles.bingoTile, isActive && styles.activeTile, isFree && styles.freeSpace]}
-        onPress={onPress}
-        disabled={isFree}
     >
-        {icon && <Text style={styles.bingoIcon}>{icon}</Text>}
-        <Text style={[styles.bingoText, isFree && styles.freeSpaceText]}>{text}</Text>
-    </TouchableOpacity>
+        <TouchableOpacity 
+            style={styles.tileButton}
+            onPress={onPress}
+            disabled={isFree}
+        >
+            {icon && <Text style={styles.bingoIcon}>{icon}</Text>}
+            <Text style={[styles.bingoText, isFree && styles.freeSpaceText]}>{text}</Text>
+        </TouchableOpacity>
+    </LinearGradient>
 );
 
 const BedroomBingoGame2Screen = () => {
@@ -40,6 +46,17 @@ const BedroomBingoGame2Screen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <LinearGradient colors={['#181118', '#230f23', '#120a12']} style={styles.background} />
+            
+            {/* Dr. Marcie Section */}
+            <View style={styles.drMarcieSection}>
+                <View style={styles.avatarContainer}>
+                    <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+                </View>
+                <View style={styles.quoteBox}>
+                    <Text style={styles.quoteText}>Connect intimately through shared experiences! Each tile represents a new way to deepen your bond.</Text>
+                </View>
+            </View>
+            
             <Header title="Bedroom Bingo" />
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.bingoGridContainer}>
@@ -56,17 +73,34 @@ const BedroomBingoGame2Screen = () => {
                     </View>
                 </View>
 
-                <View style={styles.footerContainer}>
+                <LinearGradient
+                    colors={['#a22ac4', '#9056ef']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.footerContainer}
+                >
                      <Text style={styles.progressText}>{completedCount} / 24 Acts Completed</Text>
                     <TouchableOpacity style={styles.nextChallengeButton}>
-                        <Text style={styles.nextChallengeButtonText}>Next Challenge</Text>
+                        <LinearGradient
+                            colors={['#ffffff', '#ffffff']}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.gradientButton}
+                        >
+                            <Text style={styles.nextChallengeButtonText}>Next Challenge</Text>
+                        </LinearGradient>
                     </TouchableOpacity>
-                </View>
+                </LinearGradient>
 
-                 <View style={styles.hostContainer}>
+                <LinearGradient
+                    colors={['#37cf97', '#b37dec']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.hostContainer}
+                >
                     <Text style={styles.hostQuote}>"Keep going, darling... you're almost there. I can feel the tension from here."</Text>
                     <Text style={styles.hostName}>Dr. Marcie Liss</Text>
-                </View>
+                </LinearGradient>
             </ScrollView>
         </SafeAreaView>
     );
@@ -75,58 +109,194 @@ const BedroomBingoGame2Screen = () => {
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#181118' },
     background: { ...StyleSheet.absoluteFillObject },
+    drMarcieSection: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 20,
+        padding: 16,
+        margin: 16,
+        marginBottom: 8
+    },
+    avatarContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#fcc738',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12
+    },
+    avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        resizeMode: 'cover'
+    },
+    quoteBox: {
+        flex: 1,
+        backgroundColor: 'rgba(252, 199, 56, 0.2)',
+        borderRadius: 12,
+        padding: 12
+    },
+    quoteText: {
+        color: '#ffffff',
+        fontSize: 14,
+        lineHeight: 20
+    },
     content: { padding: 20 },
     bingoGridContainer: {
         backgroundColor: 'rgba(39, 27, 39, 0.3)',
         borderRadius: 24,
         padding: 15,
+        borderWidth: 2,
+        borderColor: 'rgba(255, 255, 255, 0.2)',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
     },
     bingoGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
-    gridHeader: { width: '20%', textAlign: 'center', fontFamily: 'BarbieDream-Regular', fontSize: 28, color: 'rgba(255,0,72,0.5)', marginBottom: 10 },
+    gridHeader: { 
+        width: '20%', 
+        textAlign: 'center', 
+        fontFamily: 'BarbieDream-Regular', 
+        fontSize: 28, 
+        color: '#db147c', 
+        marginBottom: 10,
+        backgroundColor: 'rgba(219, 20, 124, 0.2)',
+        padding: 4,
+        borderRadius: 8,
+    },
     bingoTile: {
         width: '18%', 
         aspectRatio: 1,
         margin: '1%',
-        backgroundColor: '#271b27',
         borderRadius: 12,
+        borderWidth: 2,
+        borderColor: 'rgba(255, 255, 255, 0.2)',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+        elevation: 3,
+    },
+    tileButton: {
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 5,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.1)',
     },
     activeTile: {
-        borderColor: '#f906f9',
-        shadowColor: '#f906f9',
+        borderColor: '#db147c',
+        shadowColor: '#db147c',
         shadowRadius: 8,
-        shadowOpacity: 1
+        shadowOpacity: 0.5
     },
     freeSpace: { 
-        backgroundColor: '#ff0048',
+        backgroundColor: 'rgba(219, 20, 124, 0.3)',
         borderWidth: 2, 
         borderColor: 'rgba(255,255,255,0.2)'
     },
-    bingoIcon: { fontSize: 28, color: '#ff0048', marginBottom: 5 },
-    bingoText: { fontFamily: 'SweetPink-Regular', fontSize: 10, color: 'rgba(255,255,255,0.4)', textAlign: 'center', textTransform: 'uppercase' },
-    freeSpaceText: { color: '#FFF', fontSize: 12, fontFamily: 'BarbieDream-Regular' },
+    bingoIcon: { 
+        fontSize: 28, 
+        color: '#ffffff', 
+        marginBottom: 5 
+    },
+    bingoText: { 
+        fontFamily: 'SweetPink-Regular', 
+        fontSize: 10, 
+        color: '#ffffff', 
+        textAlign: 'center', 
+        textTransform: 'uppercase' 
+    },
+    freeSpaceText: { 
+        color: '#ffffff', 
+        fontSize: 12, 
+        fontFamily: 'BarbieDream-Regular' 
+    },
     footerContainer: { 
         flexDirection: 'row', 
         justifyContent: 'space-between', 
         alignItems: 'center', 
         marginTop: 20, 
         padding: 15,
-        backgroundColor: 'rgba(39, 27, 39, 0.4)',
         borderRadius: 16,
+        borderWidth: 2,
+        borderColor: 'rgba(255, 255, 255, 0.2)',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
     },
-    progressText: { fontFamily: 'WonderfulSometimes-Regular', color: '#FFF', fontSize: 18 },
-    nextChallengeButton: { backgroundColor: '#ff0048', paddingHorizontal: 20, paddingVertical: 12, borderRadius: 12 },
-    nextChallengeButtonText: { fontFamily: 'BarbieDream-Regular', color: '#FFF', fontSize: 16 },
-    hostContainer: { position: 'absolute', bottom: 20, right: 20, width: '40%' },
-    hostQuote: { backgroundColor: 'rgba(255,0,72,0.9)', color: '#FFF', padding: 10, borderRadius: 12, fontStyle: 'italic' },
-    hostName: { fontFamily: 'SweetPink-Regular', color: '#ff0048', textAlign: 'right', marginTop: 5 },
+    progressText: { 
+        fontFamily: 'WonderfulSometimes-Regular', 
+        color: '#ffffff', 
+        fontSize: 18,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 12,
+    },
+    nextChallengeButton: { 
+        paddingHorizontal: 20, 
+        paddingVertical: 12, 
+        borderRadius: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    gradientButton: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 12,
+        paddingVertical: 12,
+    },
+    nextChallengeButtonText: { 
+        fontFamily: 'BarbieDream-Regular', 
+        color: '#db147c', 
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    hostContainer: { 
+        position: 'absolute', 
+        bottom: 20, 
+        right: 20, 
+        width: '40%',
+        borderRadius: 16,
+        borderWidth: 2,
+        borderColor: 'rgba(255, 255, 255, 0.2)',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    hostQuote: { 
+        color: '#ffffff', 
+        padding: 10, 
+        borderRadius: 12, 
+        fontStyle: 'italic',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    },
+    hostName: { 
+        fontFamily: 'SweetPink-Regular', 
+        color: '#ffffff', 
+        textAlign: 'right', 
+        marginTop: 5,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        paddingHorizontal: 6,
+        paddingVertical: 2,
+        borderRadius: 8,
+    },
 });
 
 export default BedroomBingoGame2Screen;

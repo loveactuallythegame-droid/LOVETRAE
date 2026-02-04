@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { View, StyleSheet, TextInput, Alert } from 'react-native';
+import { View, StyleSheet, TextInput, Alert, Image } from 'react-native';
 import { GlassCard, Text, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function BidRadar({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -51,6 +52,16 @@ export default function BidRadar({ route, navigation }: any) {
   const inputArea = (
     <View style={{ gap: 12 }}>
       <GlassCard>
+        {/* Dr. Marcie Section */}
+        <View style={styles.drMarcieSection}>
+          <View style={styles.avatarContainer}>
+            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+          </View>
+          <View style={styles.quoteBox}>
+            <Text style={styles.quoteText} variant="sass">Log emotional bids to track connection attempts! Recognize when you make or receive bids for attention.</Text>
+          </View>
+        </View>
+
         <Text variant="header">Log a Bid</Text>
         <Text variant="body">What was the bid?</Text>
         <TextInput
@@ -76,7 +87,14 @@ export default function BidRadar({ route, navigation }: any) {
             </SquishyButton>
         </View>
         <SquishyButton onPress={submit} style={styles.submitBtn}>
-            <Text variant="header">Submit to Marcie</Text>
+          <LinearGradient
+            colors={['#db147c', '#f05d68']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientButton}
+          >
+            <Text variant="header" style={{ color: '#ffffff' }}>Submit to Marcie</Text>
+          </LinearGradient>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -106,7 +124,9 @@ const styles = StyleSheet.create({
     minHeight: 80,
     textAlignVertical: 'top',
     marginTop: 8,
-    fontFamily: 'Inter_400Regular', // Assuming font exists based on other files
+    fontFamily: 'Inter_400Regular',
+    borderWidth: 1,
+    borderColor: 'rgba(219, 20, 124, 0.3)',
   },
   toggleRow: {
     flexDirection: 'row',
@@ -119,15 +139,62 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.1)',
     borderRadius: 8,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   activeBtn: {
-    backgroundColor: '#33DEA5',
+    backgroundColor: '#37cf97',
   },
   submitBtn: {
     marginTop: 16,
-    backgroundColor: '#FA1F63',
     padding: 16,
     borderRadius: 12,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
   },
+  gradientButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
+    paddingVertical: 16,
+  },
+  drMarcieSection: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 16
+  },
+  avatarContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#fcc738',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: 'cover'
+  },
+  quoteBox: {
+    flex: 1,
+    backgroundColor: 'rgba(252, 199, 56, 0.2)',
+    borderRadius: 12,
+    padding: 12
+  },
+  quoteText: {
+    color: '#ffffff',
+    fontSize: 14,
+    lineHeight: 20
+  }
 });

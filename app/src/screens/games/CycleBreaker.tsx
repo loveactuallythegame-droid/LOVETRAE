@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { View, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
 import { GlassCard, Text, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function CycleBreaker({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -54,6 +55,16 @@ export default function CycleBreaker({ route, navigation }: any) {
     const inputArea = (
         <ScrollView style={{ gap: 12 }}>
             <GlassCard>
+                {/* Dr. Marcie Section */}
+                <View style={styles.drMarcieSection}>
+                    <View style={styles.avatarContainer}>
+                        <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+                    </View>
+                    <View style={styles.quoteBox}>
+                        <Text style={styles.quoteText} variant="sass">Break free from destructive cycles! Identify triggers and rewrite reactions.</Text>
+                    </View>
+                </View>
+
                 <Text variant="header">Current Space: {pos}</Text>
 
                 {pos === 0 && <Text variant="body">Start. Roll to move.</Text>}
@@ -78,7 +89,14 @@ export default function CycleBreaker({ route, navigation }: any) {
 
                 {pos === 0 && (
                     <SquishyButton onPress={roll} style={styles.rollBtn}>
-                        <Text variant="header">Roll Die</Text>
+                        <LinearGradient
+                            colors={['#db147c', '#f05d68']}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.gradientButton}
+                        >
+                            <Text variant="header" style={{ color: '#ffffff' }}>Roll Die</Text>
+                        </LinearGradient>
                     </SquishyButton>
                 )}
 
@@ -103,7 +121,6 @@ export default function CycleBreaker({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
     rollBtn: {
-        backgroundColor: '#FA1F63',
         padding: 20,
         alignItems: 'center',
         borderRadius: 50,
@@ -111,14 +128,65 @@ const styles = StyleSheet.create({
         height: 100,
         justifyContent: 'center',
         alignSelf: 'center',
-        marginTop: 20
+        marginTop: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    gradientButton: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 50,
+        paddingVertical: 20,
     },
     actionBtn: {
         marginTop: 20,
-        backgroundColor: '#33DEA5',
+        backgroundColor: '#37cf97',
         padding: 16,
         borderRadius: 12,
         alignItems: 'center',
-        marginBottom: 20
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    drMarcieSection: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 20,
+        padding: 16,
+        marginBottom: 16
+    },
+    avatarContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#fcc738',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12
+    },
+    avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        resizeMode: 'cover'
+    },
+    quoteBox: {
+        flex: 1,
+        backgroundColor: 'rgba(252, 199, 56, 0.2)',
+        borderRadius: 12,
+        padding: 12
+    },
+    quoteText: {
+        color: '#ffffff',
+        fontSize: 14,
+        lineHeight: 20
     }
 });

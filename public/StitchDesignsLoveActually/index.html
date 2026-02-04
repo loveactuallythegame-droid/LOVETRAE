@@ -1,270 +1,359 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>LoveActually</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      grid-gap: 10px;
-    }
-    li {
-      background-color: #fff;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    a {
-      display: block;
-      padding: 15px;
-      text-decoration: none;
-      color: #333;
-      transition: background-color 0.3s;
-    }
-    a:hover {
-      background-color: #eee;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Actually - The Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0a0c 0%, #392830 50%, #0f0a0c 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(252, 199, 56, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(234, 3, 31, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(198, 10, 179, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(to right, #db147c, #f05d68);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(219, 20, 124, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .category-card {
+            background: rgba(26, 10, 31, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                #fcc738, #ea031f, #c60ab3, 
+                #ef1b6e, #c41e77, #a22ac4, #9056ef);
+            border-radius: 22px;
+            z-index: -1;
+            background-size: 400% 400%;
+            animation: gradientShift 6s ease infinite;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .featured-category {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+        }
+
+        .featured-category::before {
+            animation-duration: 3s;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+        }
+
+        .featured-badge {
+            background: linear-gradient(45deg, #ff7600, #ffef1f);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #0f0a0c;
+        }
+
+        .category-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .game-count {
+            color: #37cf97;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .marcie-section {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-top: 40px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(252, 199, 56, 0.3);
+        }
+
+        .marcie-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #fcc738, #ea031f, #c60ab3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border: 4px solid #ffef1f;
+            box-shadow: 0 0 30px rgba(252, 199, 56, 0.5);
+        }
+
+        .marcie-info {
+            flex: 1;
+        }
+
+        .marcie-name {
+            font-size: 1.5rem;
+            color: #ffef1f;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .marcie-quote {
+            font-style: italic;
+            color: #e16ba9;
+            font-size: 1.1rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .nav-button {
+            background: linear-gradient(45deg, #db147c, #f05d68);
+            border: none;
+            border-radius: 15px;
+            padding: 18px 35px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(219, 20, 124, 0.4);
+        }
+
+        .nav-button:hover {
+            transform: scale(0.98);
+            box-shadow: 0 8px 25px rgba(219, 20, 124, 0.6);
+        }
+
+        .nav-button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .marcie-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .category-title {
+                font-size: 1.3rem;
+            }
+            
+            .category-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>LoveActually Screens</h1>
-  <ul>
-    <li><a href="6SecondKissChallenge1.html">6SecondKissChallenge1.html</a></li>
-    <li><a href="6SecondKissChallenge2.html">6SecondKissChallenge2.html</a></li>
-    <li><a href="AchievementsAndBadges.html">AchievementsAndBadges.html</a></li>
-    <li><a href="AchievementsBadges.html">AchievementsBadges.html</a></li>
-    <li><a href="AdminAnalyticsDashboard.html">AdminAnalyticsDashboard.html</a></li>
-    <li><a href="AdminDashboardOverview.html">AdminDashboardOverview.html</a></li>
-    <li><a href="AdminFightModerationQueue.html">AdminFightModerationQueue.html</a></li>
-    <li><a href="AdminGlobalConfiguration.html">AdminGlobalConfiguration.html</a></li>
-    <li><a href="AdminLoginScreen.html">AdminLoginScreen.html</a></li>
-    <li><a href="AdminPromptEngineeringConsole.html">AdminPromptEngineeringConsole.html</a></li>
-    <li><a href="AdminPushNotificationComposer.html">AdminPushNotificationComposer.html</a></li>
-    <li><a href="AdminSubscriptionManagement.html">AdminSubscriptionManagement.html</a></li>
-    <li><a href="AdminUserDetailView.html">AdminUserDetailView.html</a></li>
-    <li><a href="AdminUserManagementList.html">AdminUserManagementList.html</a></li>
-    <li><a href="AdmirationAimArGame.html">AdmirationAimArGame.html</a></li>
-    <li><a href="AmazingRaceCrossroads.html">AmazingRaceCrossroads.html</a></li>
-    <li><a href="AmazingRaceLegacyDash.html">AmazingRaceLegacyDash.html</a></li>
-    <li><a href="AntidoteArenaGame.html">AntidoteArenaGame.html</a></li>
-    <li><a href="ApologyAndReleaseWorkshop.html">ApologyAndReleaseWorkshop.html</a></li>
-    <li><a href="ApologyAuctionGame.html">ApologyAuctionGame.html</a></li>
-    <li><a href="ApologyReleaseWorkshop.html">ApologyReleaseWorkshop.html</a></li>
-    <li><a href="AppSettingsAndPersonality.html">AppSettingsAndPersonality.html</a></li>
-    <li><a href="AppSettingsPersonality.html">AppSettingsPersonality.html</a></li>
-    <li><a href="AppreciationAuctionGame.html">AppreciationAuctionGame.html</a></li>
-    <li><a href="AvoidanceArcadeGame.html">AvoidanceArcadeGame.html</a></li>
-    <li><a href="BedroomBingoCard.html">BedroomBingoCard.html</a></li>
-    <li><a href="BedroomBingoGame1.html">BedroomBingoGame1.html</a></li>
-    <li><a href="BedroomBingoGame2.html">BedroomBingoGame2.html</a></li>
-    <li><a href="BidRadarGame.html">BidRadarGame.html</a></li>
-    <li><a href="BoundaryBingoGrid.html">BoundaryBingoGrid.html</a></li>
-    <li><a href="BpdPatternDetective.html">BpdPatternDetective.html</a></li>
-    <li><a href="CategorySelectionScreen.html">CategorySelectionScreen.html</a></li>
-    <li><a href="CommitmentDiceGame.html">CommitmentDiceGame.html</a></li>
-    <li><a href="CompromiseJengaGame.html">CompromiseJengaGame.html</a></li>
-    <li><a href="ConflictDiceGame.html">ConflictDiceGame.html</a></li>
-    <li><a href="ConnectionConstructor.html">ConnectionConstructor.html</a></li>
-    <li><a href="ContactSupportScreen.html">ContactSupportScreen.html</a></li>
-    <li><a href="CoupleLinking1.html">CoupleLinking1.html</a></li>
-    <li><a href="CoupleLinking2.html">CoupleLinking2.html</a></li>
-    <li><a href="CouplesFamilyFeudGame.html">CouplesFamilyFeudGame.html</a></li>
-    <li><a href="CouplesJeopardyGame.html">CouplesJeopardyGame.html</a></li>
-    <li><a href="CrisisResources.html">CrisisResources.html</a></li>
-    <li><a href="CycleBreakerBoardGame.html">CycleBreakerBoardGame.html</a></li>
-    <li><a href="DailyDuelCardDetail.html">DailyDuelCardDetail.html</a></li>
-    <li><a href="DateDetailsAndPlanning.html">DateDetailsAndPlanning.html</a></li>
-    <li><a href="DateDetailsPlanning.html">DateDetailsPlanning.html</a></li>
-    <li><a href="DateNightRouletteGame1.html">DateNightRouletteGame1.html</a></li>
-    <li><a href="DateNightRouletteGame2.html">DateNightRouletteGame2.html</a></li>
-    <li><a href="DateNightRouletteWheel.html">DateNightRouletteWheel.html</a></li>
-    <li><a href="DefensivenessDetoxGame.html">DefensivenessDetoxGame.html</a></li>
-    <li><a href="DrawYourFeelingsGame.html">DrawYourFeelingsGame.html</a></li>
-    <li><a href="DreamDecoderGame.html">DreamDecoderGame.html</a></li>
-    <li><a href="DreamSupportSprintGame1.html">DreamSupportSprintGame1.html</a></li>
-    <li><a href="DreamSupportSprintGame2.html">DreamSupportSprintGame2.html</a></li>
-    <li><a href="EchoChamberEscape.html">EchoChamberEscape.html</a></li>
-    <li><a href="EmpathyEchoGame.html">EmpathyEchoGame.html</a></li>
-    <li><a href="EscapismEscapeRoomGame.html">EscapismEscapeRoomGame.html</a></li>
-    <li><a href="EyeContactChallengeGame.html">EyeContactChallengeGame.html</a></li>
-    <li><a href="FamilyKitchenChallenge.html">FamilyKitchenChallenge.html</a></li>
-    <li><a href="FlashbackFrenzyGame.html">FlashbackFrenzyGame.html</a></li>
-    <li><a href="FloodingForecastGame1.html">FloodingForecastGame1.html</a></li>
-    <li><a href="FloodingForecastGame2.html">FloodingForecastGame2.html</a></li>
-    <li><a href="ForeplaySliderGame1.html">ForeplaySliderGame1.html</a></li>
-    <li><a href="ForeplaySliderGame2.html">ForeplaySliderGame2.html</a></li>
-    <li><a href="GameCategoryDetail.html">GameCategoryDetail.html</a></li>
-    <li><a href="GameCmsListView.html">GameCmsListView.html</a></li>
-    <li><a href="GameEditorScreen.html">GameEditorScreen.html</a></li>
-    <li><a href="GameHistoryLog.html">GameHistoryLog.html</a></li>
-    <li><a href="GameLibraryGridView.html">GameLibraryGridView.html</a></li>
-    <li><a href="GameLobbyScreen.html">GameLobbyScreen.html</a></li>
-    <li><a href="GamePlayScreen.html">GamePlayScreen.html</a></li>
-    <li><a href="GameResultsScreen.html">GameResultsScreen.html</a></li>
-    <li><a href="GentleStartUpGauntlet.html">GentleStartUpGauntlet.html</a></li>
-    <li><a href="GifBattleGame.html">GifBattleGame.html</a></li>
-    <li><a href="GratitudeCloudGame.html">GratitudeCloudGame.html</a></li>
-    <li><a href="GratitudeGraffitiMural.html">GratitudeGraffitiMural.html</a></li>
-    <li><a href="GuiltVsShameSort.html">GuiltVsShameSort.html</a></li>
-    <li><a href="HarborMastersChallenge.html">HarborMastersChallenge.html</a></li>
-    <li><a href="HeartOfTheMatterGame.html">HeartOfTheMatterGame.html</a></li>
-    <li><a href="HeartToHeartNewlywedGame.html">HeartToHeartNewlywedGame.html</a></li>
-    <li><a href="HelpAndFaqScreen.html">HelpAndFaqScreen.html</a></li>
-    <li><a href="HelpFaqScreen.html">HelpFaqScreen.html</a></li>
-    <li><a href="IntimacyLevelSettings.html">IntimacyLevelSettings.html</a></li>
-    <li><a href="JeopardyRebuildingRound.html">JeopardyRebuildingRound.html</a></li>
-    <li><a href="KaraokeConfessionalGame.html">KaraokeConfessionalGame.html</a></li>
-    <li><a href="LayersOfHurtEscapeRoom.html">LayersOfHurtEscapeRoom.html</a></li>
-    <li><a href="LeaderboardDetail1.html">LeaderboardDetail1.html</a></li>
-    <li><a href="LeaderboardDetail2.html">LeaderboardDetail2.html</a></li>
-    <li><a href="LeaderboardDetail3.html">LeaderboardDetail3.html</a></li>
-    <li><a href="LeaderboardDetail4.html">LeaderboardDetail4.html</a></li>
-    <li><a href="LeaderboardDetail5.html">LeaderboardDetail5.html</a></li>
-    <li><a href="LeaderboardDetail6.html">LeaderboardDetail6.html</a></li>
-    <li><a href="LeaderboardDetail7.html">LeaderboardDetail7.html</a></li>
-    <li><a href="LeaderboardDetail8.html">LeaderboardDetail8.html</a></li>
-    <li><a href="LegacyDiceGame.html">LegacyDiceGame.html</a></li>
-    <li><a href="LieDetectorLite.html">LieDetectorLite.html</a></li>
-    <li><a href="LoadingMarcieIsThinking.html">LoadingMarcieIsThinking.html</a></li>
-    <li><a href="LoginAndSignUp.html">LoginAndSignUp.html</a></li>
-    <li><a href="LoginSignUp.html">LoginSignUp.html</a></li>
-    <li><a href="LoveActuallyTheGamePrototype.html">LoveActuallyTheGamePrototype.html</a></li>
-    <li><a href="LoveMapGapQuest1.html">LoveMapGapQuest1.html</a></li>
-    <li><a href="LoveMapGapQuest2.html">LoveMapGapQuest2.html</a></li>
-    <li><a href="LoveMapSpeedrunGame.html">LoveMapSpeedrunGame.html</a></li>
-    <li><a href="MaintenanceMode.html">MaintenanceMode.html</a></li>
-    <li><a href="MemoryLaneDashGame.html">MemoryLaneDashGame.html</a></li>
-    <li><a href="MemoryLaneGpsGame.html">MemoryLaneGpsGame.html</a></li>
-    <li><a href="MemoryLaneMapGame.html">MemoryLaneMapGame.html</a></li>
-    <li><a href="MicroBetrayalMiniGolfGame.html">MicroBetrayalMiniGolfGame.html</a></li>
-    <li><a href="MicroMomentMuseumGame1.html">MicroMomentMuseumGame1.html</a></li>
-    <li><a href="MicroMomentMuseumGame2.html">MicroMomentMuseumGame2.html</a></li>
-    <li><a href="MirrorModeVideoGame.html">MirrorModeVideoGame.html</a></li>
-    <li><a href="NewlywedSyncCheckGame.html">NewlywedSyncCheckGame.html</a></li>
-    <li><a href="OfflineMode.html">OfflineMode.html</a></li>
-    <li><a href="OnboardingAttachmentStyle.html">OnboardingAttachmentStyle.html</a></li>
-    <li><a href="OnboardingCurrentVibe.html">OnboardingCurrentVibe.html</a></li>
-    <li><a href="OnboardingFirstRedFlag.html">OnboardingFirstRedFlag.html</a></li>
-    <li><a href="OnboardingMeetCute.html">OnboardingMeetCute.html</a></li>
-    <li><a href="OurNewRealityFeud.html">OurNewRealityFeud.html</a></li>
-    <li><a href="PartnerComparisonProfile.html">PartnerComparisonProfile.html</a></li>
-    <li><a href="PartnerTranslatorInput.html">PartnerTranslatorInput.html</a></li>
-    <li><a href="PrivacyPolicy.html">PrivacyPolicy.html</a></li>
-    <li><a href="RateTheExperience.html">RateTheExperience.html</a></li>
-    <li><a href="RelationalJeopardy.html">RelationalJeopardy.html</a></li>
-    <li><a href="RelationshipDiagnosisCard.html">RelationshipDiagnosisCard.html</a></li>
-    <li><a href="RelationshipDiagnosisCard1.html">RelationshipDiagnosisCard1.html</a></li>
-    <li><a href="RelationshipDiagnosisCard2.html">RelationshipDiagnosisCard2.html</a></li>
-    <li><a href="RelationshipDiagnosisCard3.html">RelationshipDiagnosisCard3.html</a></li>
-    <li><a href="RelationshipDiagnosisCard4.html">RelationshipDiagnosisCard4.html</a></li>
-    <li><a href="RelationshipDiagnosisCard5.html">RelationshipDiagnosisCard5.html</a></li>
-    <li><a href="RelationshipDiagnosisSummary.html">RelationshipDiagnosisSummary.html</a></li>
-    <li><a href="RelationshipMillionaireGame.html">RelationshipMillionaireGame.html</a></li>
-    <li><a href="RepairRelayGame1.html">RepairRelayGame1.html</a></li>
-    <li><a href="RepairRelayGame2.html">RepairRelayGame2.html</a></li>
-    <li><a href="RewriteTheMemoryCanvas.html">RewriteTheMemoryCanvas.html</a></li>
-    <li><a href="RitualBuilderGame.html">RitualBuilderGame.html</a></li>
-    <li><a href="RitualRouletteGame.html">RitualRouletteGame.html</a></li>
-    <li><a href="RoleSwapGame.html">RoleSwapGame.html</a></li>
-    <li><a href="RoleSwapRoastArGame.html">RoleSwapRoastArGame.html</a></li>
-    <li><a href="SafetyAndEmpathyFeud.html">SafetyAndEmpathyFeud.html</a></li>
-    <li><a href="SafetyEmpathyFeud.html">SafetyEmpathyFeud.html</a></li>
-    <li><a href="SecrecyAuditQuizGame1.html">SecrecyAuditQuizGame1.html</a></li>
-    <li><a href="SecrecyAuditQuizGame2.html">SecrecyAuditQuizGame2.html</a></li>
-    <li><a href="SharedMeaningMuralGame1.html">SharedMeaningMuralGame1.html</a></li>
-    <li><a href="SharedMeaningMuralGame2.html">SharedMeaningMuralGame2.html</a></li>
-    <li><a href="SixSecondStareDownGame.html">SixSecondStareDownGame.html</a></li>
-    <li><a href="SosHistoryScreen.html">SosHistoryScreen.html</a></li>
-    <li><a href="SoundtrackSyncGame1.html">SoundtrackSyncGame1.html</a></li>
-    <li><a href="SoundtrackSyncGame2.html">SoundtrackSyncGame2.html</a></li>
-    <li><a href="SplashScreen.html">SplashScreen.html</a></li>
-    <li><a href="StressSynergyLabGame1.html">StressSynergyLabGame1.html</a></li>
-    <li><a href="StressSynergyLabGame2.html">StressSynergyLabGame2.html</a></li>
-    <li><a href="StressTestAssessment.html">StressTestAssessment.html</a></li>
-    <li><a href="SubscriptionTerms.html">SubscriptionTerms.html</a></li>
-    <li><a href="SystemError.html">SystemError.html</a></li>
-    <li><a href="TermsOfService.html">TermsOfService.html</a></li>
-    <li><a href="TextToneTranslatorGame1.html">TextToneTranslatorGame1.html</a></li>
-    <li><a href="TextToneTranslatorGame2.html">TextToneTranslatorGame2.html</a></li>
-    <li><a href="TheAccountabilityBriefcase.html">TheAccountabilityBriefcase.html</a></li>
-    <li><a href="TheApologyOlympics.html">TheApologyOlympics.html</a></li>
-    <li><a href="TheBlameFlipGame.html">TheBlameFlipGame.html</a></li>
-    <li><a href="TheDeEscalationLab.html">TheDeEscalationLab.html</a></li>
-    <li><a href="TheDenialDetector.html">TheDenialDetector.html</a></li>
-    <li><a href="TheFamilyForgeChallenge.html">TheFamilyForgeChallenge.html</a></li>
-    <li><a href="TheFutureCouncil.html">TheFutureCouncil.html</a></li>
-    <li><a href="TheGrandFinaleGame.html">TheGrandFinaleGame.html</a></li>
-    <li><a href="TheHarborAndStormGuide.html">TheHarborAndStormGuide.html</a></li>
-    <li><a href="TheHarborStormGuide.html">TheHarborStormGuide.html</a></li>
-    <li><a href="TheIcebergEmotionalGame1.html">TheIcebergEmotionalGame1.html</a></li>
-    <li><a href="TheIcebergEmotionalGame2.html">TheIcebergEmotionalGame2.html</a></li>
-    <li><a href="TheIntimacyFeud.html">TheIntimacyFeud.html</a></li>
-    <li><a href="TheLoveScriptDebacle.html">TheLoveScriptDebacle.html</a></li>
-    <li><a href="TheNeedsDecoderGame.html">TheNeedsDecoderGame.html</a></li>
-    <li><a href="TheRansomNoteGame.html">TheRansomNoteGame.html</a></li>
-    <li><a href="TheRelationshipCouncil.html">TheRelationshipCouncil.html</a></li>
-    <li><a href="TheSlapOfTruthGame.html">TheSlapOfTruthGame.html</a></li>
-    <li><a href="TheTrustRenovationProject.html">TheTrustRenovationProject.html</a></li>
-    <li><a href="TheValidationGameShow.html">TheValidationGameShow.html</a></li>
-    <li><a href="TheVibeCheckGame.html">TheVibeCheckGame.html</a></li>
-    <li><a href="TheWordWoundProtocol.html">TheWordWoundProtocol.html</a></li>
-    <li><a href="TimelineDetective.html">TimelineDetective.html</a></li>
-    <li><a href="ToneShiftChallengeGame.html">ToneShiftChallengeGame.html</a></li>
-    <li><a href="TouchMapConfiguration.html">TouchMapConfiguration.html</a></li>
-    <li><a href="TouchMapLiteGame.html">TouchMapLiteGame.html</a></li>
-    <li><a href="TouchMapPreferenceGame1.html">TouchMapPreferenceGame1.html</a></li>
-    <li><a href="TouchMapPreferenceGame2.html">TouchMapPreferenceGame2.html</a></li>
-    <li><a href="TranslationReveal.html">TranslationReveal.html</a></li>
-    <li><a href="TranslatorActionPlan.html">TranslatorActionPlan.html</a></li>
-    <li><a href="TranslatorActionPlan1.html">TranslatorActionPlan1.html</a></li>
-    <li><a href="TranslatorActionPlan10.html">TranslatorActionPlan10.html</a></li>
-    <li><a href="TranslatorActionPlan2.html">TranslatorActionPlan2.html</a></li>
-    <li><a href="TranslatorActionPlan3.html">TranslatorActionPlan3.html</a></li>
-    <li><a href="TranslatorActionPlan4.html">TranslatorActionPlan4.html</a></li>
-    <li><a href="TranslatorActionPlan5.html">TranslatorActionPlan5.html</a></li>
-    <li><a href="TranslatorActionPlan6.html">TranslatorActionPlan6.html</a></li>
-    <li><a href="TranslatorActionPlan7.html">TranslatorActionPlan7.html</a></li>
-    <li><a href="TranslatorActionPlan8.html">TranslatorActionPlan8.html</a></li>
-    <li><a href="TranslatorActionPlan9.html">TranslatorActionPlan9.html</a></li>
-    <li><a href="TranslatorCheckIn.html">TranslatorCheckIn.html</a></li>
-    <li><a href="TranslatorInterrogation.html">TranslatorInterrogation.html</a></li>
-    <li><a href="TransparencyGauntlet.html">TransparencyGauntlet.html</a></li>
-    <li><a href="TransparencyTossGame.html">TransparencyTossGame.html</a></li>
-    <li><a href="TriggerTakedownAr.html">TriggerTakedownAr.html</a></li>
-    <li><a href="TriggerTriageRepairGame1.html">TriggerTriageRepairGame1.html</a></li>
-    <li><a href="TriggerTriageRepairGame2.html">TriggerTriageRepairGame2.html</a></li>
-    <li><a href="TrustBankLedgerGame1.html">TrustBankLedgerGame1.html</a></li>
-    <li><a href="TrustBankLedgerGame2.html">TrustBankLedgerGame2.html</a></li>
-    <li><a href="TrustBuildingBingo.html">TrustBuildingBingo.html</a></li>
-    <li><a href="TrustWiringSimulator.html">TrustWiringSimulator.html</a></li>
-    <li><a href="TruthOrTrustAudioGame.html">TruthOrTrustAudioGame.html</a></li>
-    <li><a href="TruthTellerTower.html">TruthTellerTower.html</a></li>
-    <li><a href="TurningTowardTallyGame1.html">TurningTowardTallyGame1.html</a></li>
-    <li><a href="TurningTowardTallyGame2.html">TurningTowardTallyGame2.html</a></li>
-    <li><a href="UpdateRequired.html">UpdateRequired.html</a></li>
-    <li><a href="UserProfileScreen.html">UserProfileScreen.html</a></li>
-    <li><a href="VibeSyncSlider.html">VibeSyncSlider.html</a></li>
-    <li><a href="VowRemixGame.html">VowRemixGame.html</a></li>
-    <li><a href="VulnerabilityVolleyGame.html">VulnerabilityVolleyGame.html</a></li>
-    <li><a href="WelcomeAndDisclaimer.html">WelcomeAndDisclaimer.html</a></li>
-    <li><a href="WelcomeDisclaimer.html">WelcomeDisclaimer.html</a></li>
-    <li><a href="WheelOfIntimacyGame.html">WheelOfIntimacyGame.html</a></li>
-    <li><a href="WindowsAndWallsGame1.html">WindowsAndWallsGame1.html</a></li>
-    <li><a href="WindowsAndWallsGame2.html">WindowsAndWallsGame2.html</a></li>
-    <li><a href="WindowsWallsGame1.html">WindowsWallsGame1.html</a></li>
-    <li><a href="WindowsWallsGame2.html">WindowsWallsGame2.html</a></li>
-  </ul>
+    <div class="container">
+        <div class="header">
+            <h1>The Love Arcade</h1>
+            <p>Couples therapy disguised as a game, hosted by Dr. Marcie Liss</p>
+        </div>
+
+        <div class="categories-grid">
+            <div class="category-card" onclick="navigateToCategory('emotional-connection')">
+                <div class="category-header">
+                    <h3 class="category-title">Emotional Connection</h3>
+                </div>
+                <p class="category-description">SEEN Method focused games to deepen your bond</p>
+                <div class="game-count">5 games</div>
+            </div>
+
+            <div class="category-card" onclick="navigateToCategory('conflict-resolution')">
+                <div class="category-header">
+                    <h3 class="category-title">Conflict Resolution</h3>
+                </div>
+                <p class="category-description">Gottman-inspired games for healing and growth</p>
+                <div class="game-count">5 games</div>
+            </div>
+
+            <div class="category-card" onclick="navigateToCategory('creative-chaos')">
+                <div class="category-header">
+                    <h3 class="category-title">Creative Chaos</h3>
+                </div>
+                <p class="category-description">Playful, creative challenges to spark joy</p>
+                <div class="game-count">5 games</div>
+            </div>
+
+            <div class="category-card" onclick="navigateToCategory('romance-hub')">
+                <div class="category-header">
+                    <h3 class="category-title">Romance Hub</h3>
+                </div>
+                <p class="category-description">Spicy & sweet connections to reignite passion</p>
+                <div class="game-count">5 games</div>
+            </div>
+
+            <div class="category-card" onclick="navigateToCategory('healing-hospital')">
+                <div class="category-header">
+                    <h3 class="category-title">Healing Hospital</h3>
+                </div>
+                <p class="category-description">Deep repair & recovery for challenged relationships</p>
+                <div class="game-count">5 games</div>
+            </div>
+
+            <div class="category-card" onclick="navigateToCategory('game-show')">
+                <div class="category-header">
+                    <h3 class="category-title">Game Show</h3>
+                </div>
+                <p class="category-description">Classic formats with a relationship twist</p>
+                <div class="game-count">5 games</div>
+            </div>
+
+            <div class="category-card featured-category" onclick="navigateToCategory('love-arcade')">
+                <div class="category-header">
+                    <h3 class="category-title">The Love Arcade</h3>
+                    <div class="featured-badge">FEATURED</div>
+                </div>
+                <p class="category-description">Championship matches of honesty, wit, and emotional parkour</p>
+                <div class="game-count">6 games</div>
+            </div>
+        </div>
+
+        <div class="marcie-section">
+            <div class="marcie-avatar">👩‍⚕️</div>
+            <div class="marcie-info">
+                <div class="marcie-name">Dr. Marcie Liss</div>
+                <div class="marcie-quote">
+                    "Welcome to the Love Arcade! I'm your brutally honest AI therapist with charm, wit, and zero tolerance for BS. 
+                    Together, we'll transform your relationship challenges into playful victories."
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="LoginAndSignUp.html" class="nav-button">Sign In / Sign Up</a>
+            <a href="LoveArcadeHub.html" class="nav-button">Visit The Love Arcade</a>
+        </div>
+    </div>
+
+    <script>
+        function navigateToCategory(categoryId) {
+            // In a real app, this would navigate to the specific category page
+            alert(`Navigating to ${categoryId.replace('-', ' ')} category`);
+        }
+    </script>
 </body>
 </html>

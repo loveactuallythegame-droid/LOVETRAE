@@ -9,7 +9,8 @@ import DrMarcieCommentary from './DrMarcieCommentary';
 import { selection, warning, success } from './HapticFeedbackSystem';
 import { speakMarcie } from '../../../lib/voice-engine';
 import { enforceSkipPenalty } from '../../../lib/consequence-engine';
-import { updateGameSession, subscribeGameSession } from '../../../lib/supabase';
+import { auth, db } from '../../../lib/firebaseClient';
+import { doc, onSnapshot, updateDoc, serverTimestamp } from 'firebase/firestore';
 
 type Props = {
   state: GameState;
@@ -25,25 +26,39 @@ export default function GameContainer({ state, inputs, onComplete, onSkip, input
   const [remaining, setRemaining] = useState(state.totalTime);
   const [value, setValue] = useState<any>('');
   const float = useSharedValue(0);
+  const unsubscribeRef = useRef<() => void | null>(null);
 
   useEffect(() => { float.value = withRepeat(withTiming(1, { duration: 3000, easing: Easing.inOut(Easing.ease) }), -1, true); }, []);
   useEffect(() => { const t = setInterval(() => setRemaining((r) => Math.max(0, r - 1)), 1000); return () => clearInterval(t); }, [state.totalTime]);
 
-  // Real-time Sync
+  // Real-time Sync with Firebase
   useEffect(() => {
     if (!sessionId) return;
-    const sub = subscribeGameSession(sessionId, (payload) => {
-      if (payload.eventType === 'UPDATE' && payload.new.state) {
-        try {
-          const remote = JSON.parse(payload.new.state);
-          // Basic sync: if remote phase advanced, sync it
-          // This logic depends on what we store in 'state'. 
-          // For now, assume remote overrides local if 'timestamp' is newer? 
-          // Or just listen for 'finished' status.
-        } catch (e) { }
+    
+    const sessionRef = doc(db, 'game_sessions', sessionId);
+    unsubscribeRef.current = onSnapshot(sessionRef, (doc) => {
+      if (doc.exists()) {
+        const data = doc.data();
+        // Handle real-time updates from partner
+        // This would include updates to game state, partner responses, etc.
+        if (data.state) {
+          try {
+            const remoteState = typeof data.state === 'string' ? JSON.parse(data.state) : data.state;
+            // Basic sync: if remote phase advanced, sync it
+            // For now, just log the update - actual implementation would depend on game type
+            console.log('Remote game state update:', remoteState);
+          } catch (e) {
+            console.error('Error parsing remote state:', e);
+          }
+        }
       }
     });
-    return () => { sub.unsubscribe(); };
+
+    return () => {
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+      }
+    };
   }, [sessionId]);
 
   const mm = Math.floor(remaining / 60).toString().padStart(2, '0');
@@ -58,9 +73,26 @@ export default function GameContainer({ state, inputs, onComplete, onSkip, input
     speakMarcie('Begin');
   }
 
-  function finish() {
+  async function finish() {
     const result: GameResult = { score, xpEarned: xp, details: { value } };
     success();
+    
+    // Update session in Firebase if we have a session ID
+    if (sessionId) {
+      try {
+        const sessionRef = doc(db, 'game_sessions', sessionId);
+        await updateDoc(sessionRef, {
+          completed: true,
+          finished_at: serverTimestamp(),
+          score: result.score,
+          xp_earned: result.xpEarned,
+          updated_at: serverTimestamp()
+        });
+      } catch (error) {
+        console.error('Error updating game session:', error);
+      }
+    }
+    
     onComplete(result);
     setPhase('results');
   }

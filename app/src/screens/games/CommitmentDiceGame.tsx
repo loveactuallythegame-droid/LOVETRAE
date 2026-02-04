@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Header } from '../../components/ui/Header';
@@ -10,10 +9,15 @@ const subjects = [{icon: 'kitchen', text: 'FOR KITCHEN'}, {icon: 'weekend', text
 const reasons = ['"Because you tolerate my snoring"', '"Because you are my everything"', '"Because I love you"' ];
 
 const Dice = ({ result }: { result: {icon: string, text: string} }) => (
-    <View style={styles.dice}>
+    <LinearGradient
+        colors={['#db147c', '#f05d68']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.dice}
+    >
         <Text style={styles.diceIcon}>{result.icon}</Text>
         <Text style={styles.diceText}>{result.text}</Text>
-    </View>
+    </LinearGradient>
 );
 
 const CommitmentDiceGameScreen = () => {
@@ -40,6 +44,17 @@ const CommitmentDiceGameScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <LinearGradient colors={['#0a0c16', '#1a1e3a']} style={styles.background} />
+            
+            {/* Dr. Marcie Section */}
+            <View style={styles.drMarcieSection}>
+                <View style={styles.avatarContainer}>
+                    <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+                </View>
+                <View style={styles.quoteBox}>
+                    <Text style={styles.quoteText}>Roll the dice for random acts of commitment! Small gestures build lasting bonds.</Text>
+                </View>
+            </View>
+            
             <Header title="Commitment Dice" />
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.diceContainer}>
@@ -48,18 +63,35 @@ const CommitmentDiceGameScreen = () => {
                     <Dice result={subject} />
                 </View>
 
-                <View style={styles.reasonCard}>
+                <LinearGradient
+                    colors={['#a22ac4', '#9056ef']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.reasonCard}
+                >
                     <Text style={styles.reasonLabel}>The Reason</Text>
                     <Text style={styles.reasonText}>{reason}</Text>
                     <TouchableOpacity style={styles.rollButton} onPress={rollDice} disabled={isRolling}>
-                        <Text style={styles.rollButtonText}>{isRolling ? 'ROLLING...' : 'ROLL AGAIN'}</Text>
+                        <LinearGradient
+                            colors={['#ffffff', '#ffffff']}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.gradientButton}
+                        >
+                            <Text style={styles.rollButtonText}>{isRolling ? 'ROLLING...' : 'ROLL AGAIN'}</Text>
+                        </LinearGradient>
                     </TouchableOpacity>
-                </View>
+                </LinearGradient>
                 
-                 <View style={styles.hostContainer}>
+                <LinearGradient
+                    colors={['#37cf97', '#b37dec']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.hostContainer}
+                >
                     <Text style={styles.hostQuote}>"Try to make it look like you mean it, darling!"</Text>
                     <Text style={styles.hostName}>Dr. Marcie Liss</Text>
-                </View>
+                </LinearGradient>
 
                 <View style={styles.logContainer}>
                      <Text style={styles.logTitle}>Recent Commitments</Text>
@@ -74,22 +106,171 @@ const CommitmentDiceGameScreen = () => {
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#0a0c16' },
     background: { ...StyleSheet.absoluteFillObject },
+    drMarcieSection: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 20,
+        padding: 16,
+        margin: 16,
+        marginBottom: 8
+    },
+    avatarContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#fcc738',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12
+    },
+    avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        resizeMode: 'cover'
+    },
+    quoteBox: {
+        flex: 1,
+        backgroundColor: 'rgba(252, 199, 56, 0.2)',
+        borderRadius: 12,
+        padding: 12
+    },
+    quoteText: {
+        color: '#ffffff',
+        fontSize: 14,
+        lineHeight: 20
+    },
     content: { padding: 20, alignItems: 'center' },
     diceContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 30 },
-    dice: { width: 140, height: 140, backgroundColor: '#232948', borderRadius: 24, justifyContent: 'center', alignItems: 'center', marginHorizontal: 15, borderWidth: 2, borderColor: 'rgba(212, 17, 157, 0.5)' },
-    diceIcon: { fontSize: 40, color: '#d4119d' },
-    diceText: { fontFamily: 'WonderfulSometimes-Regular', fontSize: 14, color: '#FFF', marginTop: 10, textAlign: 'center', textTransform: 'uppercase' },
+    dice: { 
+        width: 140, 
+        height: 140, 
+        borderRadius: 24, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginHorizontal: 15, 
+        borderWidth: 2, 
+        borderColor: 'rgba(255, 255, 255, 0.2)',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    diceIcon: { fontSize: 40, color: '#ffffff' },
+    diceText: { 
+        fontFamily: 'WonderfulSometimes-Regular', 
+        fontSize: 14, 
+        color: '#ffffff', 
+        marginTop: 10, 
+        textAlign: 'center', 
+        textTransform: 'uppercase' 
+    },
     plus: { fontSize: 30, color: 'rgba(255,255,255,0.2)' },
-    reasonCard: { backgroundColor: 'rgba(25, 30, 51, 0.7)', padding: 20, borderRadius: 16, width: '100%', alignItems: 'center', marginBottom: 30 },
-    reasonLabel: { fontFamily: 'SweetPink-Regular', color: '#d4119d', textTransform: 'uppercase', letterSpacing: 2 },
-    reasonText: { fontFamily: 'WonderfulSometimes-Regular', color: '#FFF', fontSize: 22, fontStyle: 'italic', marginVertical: 15, textAlign: 'center' },
-    rollButton: { backgroundColor: '#f40b61', paddingVertical: 12, paddingHorizontal: 30, borderRadius: 12 },
-    rollButtonText: { fontFamily: 'BarbieDream-Regular', color: '#FFF', fontSize: 16 },
-    hostContainer: { alignItems: 'center', marginBottom: 30 },
-    hostQuote: { backgroundColor: '#FFF', color: '#221017', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center', marginBottom: 5 },
-    hostName: { fontFamily: 'SweetPink-Regular', color: '#d4119d' },
+    reasonCard: { 
+        padding: 20, 
+        borderRadius: 16, 
+        width: '100%', 
+        alignItems: 'center', 
+        marginBottom: 30,
+        borderWidth: 2,
+        borderColor: 'rgba(255, 255, 255, 0.2)',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    reasonLabel: { 
+        fontFamily: 'SweetPink-Regular', 
+        color: '#ffffff', 
+        textTransform: 'uppercase', 
+        letterSpacing: 2,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 12,
+    },
+    reasonText: { 
+        fontFamily: 'WonderfulSometimes-Regular', 
+        color: '#ffffff', 
+        fontSize: 22, 
+        fontStyle: 'italic', 
+        marginVertical: 15, 
+        textAlign: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        padding: 12,
+        borderRadius: 8,
+    },
+    rollButton: { 
+        paddingVertical: 12, 
+        paddingHorizontal: 30, 
+        borderRadius: 12,
+        marginTop: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    gradientButton: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 12,
+        paddingVertical: 12,
+    },
+    rollButtonText: { 
+        fontFamily: 'BarbieDream-Regular', 
+        color: '#db147c', 
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    hostContainer: { 
+        alignItems: 'center', 
+        marginBottom: 30,
+        borderRadius: 16,
+        padding: 20,
+        borderWidth: 2,
+        borderColor: 'rgba(255, 255, 255, 0.2)',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
+    },
+    hostQuote: { 
+        color: '#ffffff', 
+        padding: 10, 
+        borderRadius: 10, 
+        fontWeight: 'bold', 
+        textAlign: 'center', 
+        marginBottom: 5,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        borderRadius: 12,
+    },
+    hostName: { 
+        fontFamily: 'SweetPink-Regular', 
+        color: '#ffffff',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 12,
+    },
     logContainer: { width: '100%' },
-    logTitle: { fontFamily: 'BarbieDream-Regular', fontSize: 20, color: '#FFF', marginBottom: 10 },
+    logTitle: { 
+        fontFamily: 'BarbieDream-Regular', 
+        fontSize: 20, 
+        color: '#ffffff', 
+        marginBottom: 10,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 12,
+    },
 });
 
 export default CommitmentDiceGameScreen;

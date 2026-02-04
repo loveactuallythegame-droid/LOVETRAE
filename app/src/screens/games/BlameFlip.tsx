@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { GlassCard, Text, SquishyButton } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -28,6 +28,16 @@ export default function BlameFlip({ navigation }: any) {
           <Text variant="header">The Blame Flip</Text>
         </View>
 
+        {/* Dr. Marcie Section */}
+        <View style={styles.drMarcieSection}>
+          <View style={styles.avatarContainer}>
+            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+          </View>
+          <View style={styles.quoteBox}>
+            <Text style={styles.quoteText} variant="sass">Transform blame into ownership! Change "you" statements to "I" statements for better communication.</Text>
+          </View>
+        </View>
+
         <GlassCard style={styles.card}>
           <Text variant="header">Fix the Sentence</Text>
           <Text variant="body" style={{ textAlign: 'center', marginBottom: 20 }}>
@@ -44,11 +54,18 @@ export default function BlameFlip({ navigation }: any) {
 
           {!success ? (
             <SquishyButton onPress={swapToI} style={styles.btn}>
-              <Text variant="header">Flip It</Text>
+              <LinearGradient
+                colors={['#db147c', '#f05d68']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.gradientButton}
+              >
+                <Text variant="header" style={{ color: '#ffffff' }}>Flip It</Text>
+              </LinearGradient>
             </SquishyButton>
           ) : (
              <View style={{ marginTop: 20 }}>
-               <Text variant="header" style={{ color: '#33DEA5', textAlign: 'center' }}>Nice Flip! (+10 XP)</Text>
+               <Text variant="header" style={{ color: '#37cf97', textAlign: 'center' }}>Nice Flip! (+10 XP)</Text>
                <Text variant="body" style={{ textAlign: 'center', marginTop: 10 }}>
                  Marcie: "‘You never listen’ → ‘I feel unheard when…’—YES. Now say it without an eye roll."
                </Text>
@@ -65,9 +82,78 @@ const styles = StyleSheet.create({
   content: { padding: 20, gap: 20 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-  card: { padding: 20, gap: 20, alignItems: 'center' },
+  drMarcieSection: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 20
+  },
+  avatarContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#fcc738',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: 'cover'
+  },
+  quoteBox: {
+    flex: 1,
+    backgroundColor: 'rgba(252, 199, 56, 0.2)',
+    borderRadius: 12,
+    padding: 12
+  },
+  quoteText: {
+    color: '#ffffff',
+    fontSize: 14,
+    lineHeight: 20
+  },
+  card: { 
+    padding: 20, 
+    gap: 20, 
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(219, 20, 124, 0.3)',
+  },
   wordRow: { flexDirection: 'row', gap: 10, flexWrap: 'wrap', justifyContent: 'center' },
-  wordBox: { padding: 10, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 8 },
-  wordText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-  btn: { backgroundColor: '#FA1F63', padding: 15, borderRadius: 12, alignItems: 'center', width: 200 }
+  wordBox: { 
+    padding: 10, 
+    backgroundColor: 'rgba(255,255,255,0.1)', 
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  wordText: { color: '#ffffff', fontSize: 18, fontWeight: 'bold' },
+  btn: { 
+    padding: 15, 
+    borderRadius: 12, 
+    alignItems: 'center', 
+    width: 200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  gradientButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
+    paddingVertical: 15,
+  }
 });

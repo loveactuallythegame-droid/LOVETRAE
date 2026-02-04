@@ -1,7 +1,6 @@
-
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, FirebaseApp, getApp, getApps } from "firebase/app";
+import { getAuth, Auth } from "firebase/auth";
+import { getFirestore, Firestore } from "firebase/firestore";
 import { ENV } from './env';
 
 const firebaseConfig = {
@@ -13,16 +12,40 @@ const firebaseConfig = {
   appId: ENV.FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-let app;
-let auth;
-let db;
+let app: FirebaseApp;
+let auth: Auth;
+let db: Firestore;
 
-// Add a check to ensure Firebase is only initialized if the config is provided
-if (firebaseConfig.apiKey) {
+// Check if Firebase is properly configured
+const isFirebaseConfigured = firebaseConfig.apiKey && firebaseConfig.apiKey.length > 0;
+
+if (isFirebaseConfigured) {
+  // Initialize Firebase only if config is present
+  if (getApps().length === 0) {
     app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
+  } else {
+    app = getApp();
+  }
+  auth = getAuth(app);
+  db = getFirestore(app);
+} else {
+  // Create mock objects when Firebase is not configured
+  console.warn("Firebase not configured. Using mock objects for development.");
+  
+  // Create mock implementations
+  app = {
+    name: '[DEFAULT]',
+    options: firebaseConfig,
+    delete: async () => Promise.resolve()
+  } as FirebaseApp;
+  
+  auth = {
+    // Minimal mock implementation
+  } as Auth;
+  
+  db = {
+    // Minimal mock implementation
+  } as Firestore;
 }
 
-export { app, auth, db };
+export { app, auth, db, isFirebaseConfigured };

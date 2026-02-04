@@ -115,6 +115,14 @@ const AppNavigator = () => {
         screenOptions={{ 
           headerShown: false,
           animation: 'slide_from_right',
+          orientation: 'portrait', // Mobile-specific orientation
+          statusBarStyle: 'light',
+          statusBarBackgroundColor: '#0f0a0c',
+          statusBarTranslucent: false,
+          // Mobile-specific gesture handling
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
+          fullScreenGestureEnabled: true,
         }}
       >
         {/* Main Entry Points */}
@@ -126,8 +134,16 @@ const AppNavigator = () => {
         <Stack.Screen name="GameLibraryGridView" component={GameLibraryGridView} />
 
         {/* Auth Flow */}
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="WebSplash" component={WebSplash} />
+        <Stack.Screen name="Splash" component={SplashScreen} options={{ 
+          statusBarStyle: 'dark',
+          statusBarBackgroundColor: '#ffffff',
+          animation: 'fade'
+        }} />
+        <Stack.Screen name="WebSplash" component={WebSplash} options={{ 
+          statusBarStyle: 'dark',
+          statusBarBackgroundColor: '#ffffff',
+          animation: 'fade'
+        }} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="LoginAndSignUp" component={LoginAndSignUp} />
         <Stack.Screen name="LegalDisclaimer" component={LegalDisclaimerScreen} />
@@ -153,90 +169,276 @@ const AppNavigator = () => {
         <Stack.Screen name="IntimacyLevelSettings" component={IntimacyLevelSettings} />
 
         {/* SOS Fight Solver */}
-        <Stack.Screen name="SOSModal" component={SOSModal} options={{ presentation: 'modal' }} />
-        <Stack.Screen name="SOSBooths" component={BoothsScreen} />
-        <Stack.Screen name="SOSCoolDown" component={CoolDownRoom} />
-        <Stack.Screen name="SOSVerdict" component={VerdictScreen} />
+        <Stack.Screen name="SOSModal" component={SOSModal} options={{ 
+          presentation: 'modal',
+          animation: 'slide_from_bottom'
+        }} />
+        <Stack.Screen name="SOSBooths" component={BoothsScreen} options={{ 
+          presentation: 'modal',
+          animation: 'slide_from_bottom'
+        }} />
+        <Stack.Screen name="SOSCoolDown" component={CoolDownRoom} options={{ 
+          presentation: 'modal',
+          animation: 'slide_from_bottom'
+        }} />
+        <Stack.Screen name="SOSVerdict" component={VerdictScreen} options={{ 
+          presentation: 'modal',
+          animation: 'slide_from_bottom'
+        }} />
 
         {/* Emotional Connection Games */}
-        <Stack.Screen name="TruthOrTrust" component={TruthOrTrust} />
-        <Stack.Screen name="GratitudeCloud" component={GratitudeCloud} />
-        <Stack.Screen name="EyeContactChallenge" component={EyeContactChallenge} />
-        <Stack.Screen name="MemoryLaneMap" component={MemoryLaneMap} />
-        <Stack.Screen name="VibeSync" component={VibeSync} />
-        <Stack.Screen name="GratitudeGraffiti" component={GratitudeGraffiti} />
+        <Stack.Screen name="TruthOrTrust" component={TruthOrTrust} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="GratitudeCloud" component={GratitudeCloud} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="EyeContactChallenge" component={EyeContactChallenge} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="MemoryLaneMap" component={MemoryLaneMap} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="VibeSync" component={VibeSync} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="GratitudeGraffiti" component={GratitudeGraffiti} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Conflict Resolution Games */}
-        <Stack.Screen name="SlapOfTruth" component={SlapOfTruth} />
-        <Stack.Screen name="ApologyAuction" component={ApologyAuction} />
-        <Stack.Screen name="DefensivenessDetox" component={DefensivenessDetox} />
-        <Stack.Screen name="WhosRight" component={WhosRight} />
-        <Stack.Screen name="StressTest" component={StressTest} />
-        <Stack.Screen name="ApologyOlympics" component={ApologyOlympics} />
+        <Stack.Screen name="SlapOfTruth" component={SlapOfTruth} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="ApologyAuction" component={ApologyAuction} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="DefensivenessDetox" component={DefensivenessDetox} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="WhosRight" component={WhosRight} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="StressTest" component={StressTest} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="ApologyOlympics" component={ApologyOlympics} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Creative Chaos Games */}
-        <Stack.Screen name="RoleSwapRoast" component={RoleSwapRoast} />
-        <Stack.Screen name="DrawYourFeelingsGame" component={DrawYourFeelingsGame} />
-        <Stack.Screen name="GifTheFeels" component={GifTheFeels} />
-        <Stack.Screen name="KaraokeConfessional" component={KaraokeConfessional} />
-        <Stack.Screen name="RansomNoteRomance" component={RansomNoteRomance} />
+        <Stack.Screen name="RoleSwapRoast" component={RoleSwapRoast} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="DrawYourFeelingsGame" component={DrawYourFeelingsGame} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="GifTheFeels" component={GifTheFeels} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="KaraokeConfessional" component={KaraokeConfessional} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="RansomNoteRomance" component={RansomNoteRomance} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Romance Hub Games */}
-        <Stack.Screen name="DateNightRoulette" component={DateNightRoulette} />
-        <Stack.Screen name="BedroomBingoGame1" component={BedroomBingoGame1} />
-        <Stack.Screen name="SixSecondKiss" component={SixSecondKiss} />
-        <Stack.Screen name="ForeplayForecast" component={ForeplayForecast} />
-        <Stack.Screen name="TouchMap" component={TouchMap} />
-        <Stack.Screen name="TouchMapConfiguration" component={TouchMapConfiguration} />
+        <Stack.Screen name="DateNightRoulette" component={DateNightRoulette} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="BedroomBingoGame1" component={BedroomBingoGame1} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="SixSecondKiss" component={SixSecondKiss} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="ForeplayForecast" component={ForeplayForecast} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="TouchMap" component={TouchMap} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="TouchMapConfiguration" component={TouchMapConfiguration} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Healing Hospital Games */}
-        <Stack.Screen name="WindowsAndWalls" component={WindowsAndWalls} />
-        <Stack.Screen name="TriggerTriage" component={TriggerTriage} />
-        <Stack.Screen name="TrustBank" component={TrustBank} />
-        <Stack.Screen name="TheIceberg" component={TheIceberg} />
-        <Stack.Screen name="SecrecyAudit" component={SecrecyAudit} />
+        <Stack.Screen name="WindowsAndWalls" component={WindowsAndWalls} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="TriggerTriage" component={TriggerTriage} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="TrustBank" component={TrustBank} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="TheIceberg" component={TheIceberg} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="SecrecyAudit" component={SecrecyAudit} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Game Show Games */}
-        <Stack.Screen name="CouplesJeopardyGame" component={CouplesJeopardyGame} />
-        <Stack.Screen name="RelationalJeopardy" component={RelationalJeopardy} />
-        <Stack.Screen name="CouplesFamilyFeudGame" component={CouplesFamilyFeudGame} />
-        <Stack.Screen name="NewlywedGame" component={NewlywedGame} />
-        <Stack.Screen name="IntimacyFeud" component={IntimacyFeud} />
+        <Stack.Screen name="CouplesJeopardyGame" component={CouplesJeopardyGame} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="RelationalJeopardy" component={RelationalJeopardy} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="CouplesFamilyFeudGame" component={CouplesFamilyFeudGame} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="NewlywedGame" component={NewlywedGame} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="IntimacyFeud" component={IntimacyFeud} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Love Arcade Games */}
-        <Stack.Screen name="TruthTellerTower" component={TruthTellerTower} />
-        <Stack.Screen name="EscapeEchoChamber" component={EscapeEchoChamber} />
-        <Stack.Screen name="ChoppedFamily" component={ChoppedFamily} />
-        <Stack.Screen name="HarborMasterChallenge" component={HarborMasterChallenge} />
-        <Stack.Screen name="ConnectionConstructor" component={ConnectionConstructor} />
-        <Stack.Screen name="ValidationGameShow" component={ValidationGameShow} />
-        <Stack.Screen name="BPDPatternDetective" component={BPDPatternDetective} />
+        <Stack.Screen name="TruthTellerTower" component={TruthTellerTower} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="EscapeEchoChamber" component={EscapeEchoChamber} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="ChoppedFamily" component={ChoppedFamily} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="HarborMasterChallenge" component={HarborMasterChallenge} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="ConnectionConstructor" component={ConnectionConstructor} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="ValidationGameShow" component={ValidationGameShow} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="BPDPatternDetective" component={BPDPatternDetective} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Additional Games */}
-        <Stack.Screen name="AdmirationAim" component={AdmirationAim} />
-        <Stack.Screen name="AmazingRaceCrossroads" component={AmazingRaceCrossroads} />
-        <Stack.Screen name="AntidoteArena" component={AntidoteArena} />
-        <Stack.Screen name="BidRadar" component={BidRadar} />
-        <Stack.Screen name="CycleBreaker" component={CycleBreaker} />
-        <Stack.Screen name="DreamDecoder" component={DreamDecoder} />
-        <Stack.Screen name="EmpathyEcho" component={EmpathyEcho} />
-        <Stack.Screen name="VowRemix" component={VowRemix} />
-        <Stack.Screen name="TrustBingo" component={TrustBingo} />
+        <Stack.Screen name="AdmirationAim" component={AdmirationAim} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="AmazingRaceCrossroads" component={AmazingRaceCrossroads} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="AntidoteArena" component={AntidoteArena} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="BidRadar" component={BidRadar} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="CycleBreaker" component={CycleBreaker} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="DreamDecoder" component={DreamDecoder} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="EmpathyEcho" component={EmpathyEcho} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="VowRemix" component={VowRemix} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="TrustBingo" component={TrustBingo} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Translator */}
-        <Stack.Screen name="TranslationReveal" component={TranslationReveal} />
-        <Stack.Screen name="TranslatorActionPlan" component={TranslatorActionPlan} />
+        <Stack.Screen name="TranslationReveal" component={TranslationReveal} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="TranslatorActionPlan" component={TranslatorActionPlan} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Support & Legal */}
-        <Stack.Screen name="CrisisResources" component={CrisisResources} />
-        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
-        <Stack.Screen name="HelpAndFaq" component={HelpAndFaqScreen} />
+        <Stack.Screen name="CrisisResources" component={CrisisResources} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="HelpAndFaq" component={HelpAndFaqScreen} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
 
         {/* Special Screens */}
-        <Stack.Screen name="OfflineMode" component={OfflineMode} />
-        <Stack.Screen name="UpdateRequired" component={UpdateRequired} />
-        <Stack.Screen name="Loading" component={LoadingMarcieIsThinking} />
-        <Stack.Screen name="RelationshipDiagnosis" component={RelationshipDiagnosisCard} />
+        <Stack.Screen name="OfflineMode" component={OfflineMode} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="UpdateRequired" component={UpdateRequired} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="Loading" component={LoadingMarcieIsThinking} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
+        <Stack.Screen name="RelationshipDiagnosis" component={RelationshipDiagnosisCard} options={{
+          presentation: 'card',
+          animation: 'slide_from_right'
+        }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

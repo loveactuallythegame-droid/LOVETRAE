@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: lovetrae-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.5
+      - key: EMERGENT_LLM_KEY
+        sync: false  # Will be set in Render dashboard
+    autoDeploy: false
+    env: python
+    region: oregon
+    plan: free
+    numInstances: 1
+    disk: 1024
+    buildFilter:
+      ignore:
+        - "*/node_modules/*"
+        - "*.md"
+        - ".git/*"
+        - "*/tests/*"
+        - "*/__pycache__/*"
+        - "*.env"

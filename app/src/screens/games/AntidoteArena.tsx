@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -64,12 +63,23 @@ const AntidoteArena = ({ route }) => {
           title="Antidote Arena"
           logo={require("../../../assets/logo/mainlogoone.png")}
         />
+        
+        {/* Dr. Marcie Section */}
+        <View style={styles.drMarcieSection}>
+          <View style={styles.avatarContainer}>
+            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+          </View>
+          <View style={styles.quoteBox}>
+            <Text style={styles.quoteText}>Fight the four horsemen of relationship apocalypse! Each antidote represents a positive communication strategy.</Text>
+          </View>
+        </View>
+        
         <View className="flex-1 p-4">
           <MarcieHost quote={gameState.quote} />
 
           <View className="my-8 items-center">
-            <MaterialCommunityIcons name="sword-cross" size={64} color="#ff006d" />
-            <Text className="text-white font-barbie text-2xl text-center mt-4">
+            <MaterialCommunityIcons name="sword-cross" size={64} color="#db147c" />
+            <Text className="text-white font-barbie text-2xl text-center mt-4 bg-[#db147c]/20 px-4 py-2 rounded-full">
               The Horseman of {gameState.horseman} is attacking!
             </Text>
           </View>
@@ -78,7 +88,7 @@ const AntidoteArena = ({ route }) => {
             {gameState.antidotes.map((antidote) => (
               <Pressable
                 key={antidote.name}
-                className="w-2/5 bg-primary p-4 rounded-lg m-2 items-center"
+                className="w-2/5 bg-gradient-to-br from-[#db147c] to-[#f05d68] p-4 rounded-xl m-2 items-center shadow-lg"
                 onPress={() => handleAntidoteSelection(antidote.name)}
               >
                 <MaterialCommunityIcons name={antidote.icon} size={32} color="white" />
@@ -90,6 +100,44 @@ const AntidoteArena = ({ route }) => {
       </RadialGradientBackground>
     </SafeAreaView>
   );
+};
+
+const styles = {
+  drMarcieSection: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 20,
+    padding: 16,
+    margin: 16,
+    marginBottom: 8
+  },
+  avatarContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#fcc738',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: 'cover'
+  },
+  quoteBox: {
+    flex: 1,
+    backgroundColor: 'rgba(252, 199, 56, 0.2)',
+    borderRadius: 12,
+    padding: 12
+  },
+  quoteText: {
+    color: '#ffffff',
+    fontSize: 14,
+    lineHeight: 20
+  }
 };
 
 export default AntidoteArena;

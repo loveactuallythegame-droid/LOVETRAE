@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { View, StyleSheet, Alert, ScrollView } from 'react-native';
+import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
 import { GlassCard, Text, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const SCENARIOS = [
     {
@@ -70,6 +71,16 @@ export default function DeEscalationLab({ route, navigation }: any) {
     const inputArea = (
         <ScrollView style={{ gap: 12 }}>
             <GlassCard>
+                {/* Dr. Marcie Section */}
+                <View style={styles.drMarcieSection}>
+                    <View style={styles.avatarContainer}>
+                        <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+                    </View>
+                    <View style={styles.quoteBox}>
+                        <Text style={styles.quoteText} variant="sass">Learn to de-escalate conflicts! Practice naming emotions instead of reacting.</Text>
+                    </View>
+                </View>
+
                 <Text variant="header">Scenario {round + 1}</Text>
                 <Text variant="body">{current.event}</Text>
                 <View style={{ flexDirection: 'row', gap: 10, marginVertical: 10 }}>
@@ -94,7 +105,14 @@ export default function DeEscalationLab({ route, navigation }: any) {
                 ))}
 
                 <SquishyButton onPress={submit} style={styles.submitBtn}>
-                    <Text variant="header">De-Escalate</Text>
+                    <LinearGradient
+                        colors={['#db147c', '#f05d68']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={styles.gradientButton}
+                    >
+                        <Text variant="header" style={{ color: '#ffffff' }}>De-Escalate</Text>
+                    </LinearGradient>
                 </SquishyButton>
             </GlassCard>
         </ScrollView>
@@ -125,15 +143,60 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(255,255,255,0.2)'
     },
     selected: {
-        backgroundColor: '#33DEA5',
-        borderColor: '#33DEA5'
+        backgroundColor: '#37cf97',
+        borderColor: '#37cf97'
     },
     submitBtn: {
         marginTop: 20,
-        backgroundColor: '#00BFFF',
         padding: 16,
         borderRadius: 12,
         alignItems: 'center',
-        marginBottom: 20
+        marginBottom: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
     },
+    gradientButton: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 12,
+        paddingVertical: 16,
+    },
+    drMarcieSection: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 20,
+        padding: 16,
+        marginBottom: 16
+    },
+    avatarContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#fcc738',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12
+    },
+    avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        resizeMode: 'cover'
+    },
+    quoteBox: {
+        flex: 1,
+        backgroundColor: 'rgba(252, 199, 56, 0.2)',
+        borderRadius: 12,
+        padding: 12
+    },
+    quoteText: {
+        color: '#ffffff',
+        fontSize: 14,
+        lineHeight: 20
+    }
 });

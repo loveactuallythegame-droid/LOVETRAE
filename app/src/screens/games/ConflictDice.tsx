@@ -1,9 +1,10 @@
 import { useMemo, useState, useEffect } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, Image } from 'react-native';
 import { GlassCard, Text, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
 import { supabase, createGameSession, updateGameSession } from '../../lib/supabase';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const SCENARIOS = ["Argue about thermostat", "Who does dishes?", "In-laws visiting", "Money stress"];
 const CONSTRAINTS = ["No 'You' statements", "Whisper only", "Hold hands", "Rhyme every sentence"];
@@ -54,22 +55,50 @@ export default function ConflictDice({ route, navigation }: any) {
   const inputArea = (
     <View style={{ gap: 12 }}>
       <GlassCard>
+        {/* Dr. Marcie Section */}
+        <View style={styles.drMarcieSection}>
+          <View style={styles.avatarContainer}>
+            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+          </View>
+          <View style={styles.quoteBox}>
+            <Text style={styles.quoteText} variant="sass">Practice conflict resolution with random scenarios! Constraints make communication more creative.</Text>
+          </View>
+        </View>
+
         {!rolled ? (
           <View style={{ alignItems: 'center', padding: 20 }}>
             <Text variant="header" style={{ fontSize: 60 }}>🎲</Text>
-            <SquishyButton onPress={roll} style={styles.rollBtn}><Text variant="header">Roll Dice</Text></SquishyButton>
+            <SquishyButton onPress={roll} style={styles.rollBtn}>
+              <LinearGradient
+                colors={['#db147c', '#f05d68']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.gradientButton}
+              >
+                <Text variant="header" style={{ color: '#ffffff' }}>Roll Dice</Text>
+              </LinearGradient>
+            </SquishyButton>
           </View>
         ) : (
           <View style={{ gap: 16 }}>
             <View>
               <Text variant="body">Scenario:</Text>
-              <Text variant="header" style={{ color: '#FA1F63' }}>{scenario}</Text>
+              <Text variant="header" style={{ color: '#db147c' }}>{scenario}</Text>
             </View>
             <View>
               <Text variant="body">Constraint:</Text>
-              <Text variant="header" style={{ color: '#33DEA5' }}>{constraint}</Text>
+              <Text variant="header" style={{ color: '#37cf97' }}>{constraint}</Text>
             </View>
-            <SquishyButton onPress={finish} style={styles.doneBtn}><Text variant="header">We Did It</Text></SquishyButton>
+            <SquishyButton onPress={finish} style={styles.doneBtn}>
+              <LinearGradient
+                colors={['#37cf97', '#b37dec']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.gradientButton}
+              >
+                <Text variant="header" style={{ color: '#ffffff' }}>We Did It</Text>
+              </LinearGradient>
+            </SquishyButton>
           </View>
         )}
       </GlassCard>
@@ -92,6 +121,68 @@ export default function ConflictDice({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  rollBtn: { marginTop: 20, backgroundColor: '#5C1459', padding: 16, borderRadius: 12, width: '100%', alignItems: 'center' },
-  doneBtn: { marginTop: 20, backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
+  rollBtn: { 
+    marginTop: 20, 
+    padding: 16, 
+    borderRadius: 12, 
+    width: '100%', 
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  doneBtn: { 
+    marginTop: 20, 
+    padding: 16, 
+    borderRadius: 12, 
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  gradientButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
+    paddingVertical: 16,
+  },
+  drMarcieSection: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 16
+  },
+  avatarContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#fcc738',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: 'cover'
+  },
+  quoteBox: {
+    flex: 1,
+    backgroundColor: 'rgba(252, 199, 56, 0.2)',
+    borderRadius: 12,
+    padding: 12
+  },
+  quoteText: {
+    color: '#ffffff',
+    fontSize: 14,
+    lineHeight: 20
+  }
 });

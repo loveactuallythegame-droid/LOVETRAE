@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { GlassCard, Text, SquishyButton } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -60,9 +60,19 @@ export default function AvoidanceArcade({ navigation }: any) {
           <Text variant="header">Avoidance Arcade</Text>
         </View>
 
+        {/* Dr. Marcie Section */}
+        <View style={styles.drMarcieSection}>
+          <View style={styles.avatarContainer}>
+            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+          </View>
+          <View style={styles.quoteBox}>
+            <Text style={styles.quoteText} variant="sass">Face your avoidance patterns! Confrontation now prevents bigger issues later.</Text>
+          </View>
+        </View>
+
         <GlassCard style={styles.scoreboard}>
           <Text variant="header">Score: {score}</Text>
-          <Text variant="header" style={{ color: timeLeft < 10 ? '#FA1F63' : '#33DEA5' }}>{timeLeft}s</Text>
+          <Text variant="header" style={{ color: timeLeft < 10 ? '#db147c' : '#37cf97' }}>{timeLeft}s</Text>
         </GlassCard>
 
         {!active ? (
@@ -72,10 +82,17 @@ export default function AvoidanceArcade({ navigation }: any) {
               Tap the avoidance phrases before they disappear!
             </Text>
             <SquishyButton onPress={startGame} style={styles.btn}>
-              <Text variant="header">Start</Text>
+              <LinearGradient
+                colors={['#db147c', '#f05d68']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.gradientButton}
+              >
+                <Text variant="header" style={{ color: '#ffffff' }}>Start</Text>
+              </LinearGradient>
             </SquishyButton>
             {timeLeft === 0 && (
-                <Text variant="body" style={{ marginTop: 10, fontStyle: 'italic', color: '#FA1F63' }}>
+                <Text variant="body" style={{ marginTop: 10, fontStyle: 'italic', color: '#db147c' }}>
                     Marcie: "Game over. Don't avoid real life now."
                 </Text>
             )}
@@ -103,11 +120,90 @@ const styles = StyleSheet.create({
   content: { padding: 20, gap: 20 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-  scoreboard: { padding: 20, flexDirection: 'row', justifyContent: 'space-between' },
+  drMarcieSection: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 20
+  },
+  avatarContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#fcc738',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    resizeMode: 'cover'
+  },
+  quoteBox: {
+    flex: 1,
+    backgroundColor: 'rgba(252, 199, 56, 0.2)',
+    borderRadius: 12,
+    padding: 12
+  },
+  quoteText: {
+    color: '#ffffff',
+    fontSize: 14,
+    lineHeight: 20
+  },
+  scoreboard: { 
+    padding: 20, 
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(219, 20, 124, 0.3)',
+  },
   grid: { gap: 10 },
-  mole: { height: 60, borderRadius: 12, justifyContent: 'center', alignItems: 'center', padding: 10 },
-  moleActive: { backgroundColor: '#FA1F63' },
-  moleInactive: { backgroundColor: 'rgba(255,255,255,0.1)' },
-  moleText: { color: '#fff', fontWeight: 'bold' },
-  btn: { backgroundColor: '#33DEA5', padding: 15, borderRadius: 12, width: 200, alignItems: 'center' }
+  mole: { 
+    height: 60, 
+    borderRadius: 12, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  moleActive: { 
+    backgroundColor: '#db147c',
+  },
+  moleInactive: { 
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  moleText: { 
+    color: '#ffffff', 
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  btn: { 
+    padding: 15, 
+    borderRadius: 12, 
+    width: 200, 
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  gradientButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
+    paddingVertical: 15,
+  }
 });

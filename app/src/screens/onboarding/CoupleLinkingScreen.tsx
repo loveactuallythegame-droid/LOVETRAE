@@ -1,133 +1,250 @@
-
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+  Dimensions
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { auth, db } from '../../lib/firebaseClient';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
-import { Header } from '../../components/ui/Header';
+import theme from '../../theme';
 
-// This is a placeholder for the actual line chart component
-const LineChart = () => <View style={{ height: 100, backgroundColor: '#333' }} />;
+const { width, height } = Dimensions.get('window');
 
-const TrustThermometerScreen = () => {
-  // Placeholder for the calculateGameResults function call
-  useEffect(() => {
-    // calculateGameResults();
-  }, []);
+const CoupleLinkingScreen = () => {
+  const [partnerCode, setPartnerCode] = useState('');
+  const navigation = useNavigation();
+
+  const handleLinkCouple = async () => {
+    if (!partnerCode.trim()) {
+      Alert.alert('Error', 'Please enter a partner code');
+      return;
+    }
+
+    try {
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        Alert.alert('Error', 'You must be logged in to link with a partner');
+        return;
+      }
+
+      // Find partner by couple code
+      const partnerProfileRef = doc(db, 'profiles', partnerCode.toUpperCase());
+      const partnerProfileSnap = await getDoc(partnerProfileRef);
+
+      if (!partnerProfileSnap.exists()) {
+        Alert.alert('Error', 'Invalid partner code. Please try again.');
+        return;
+      }
+
+      const partnerData = partnerProfileSnap.data();
+      const partnerUserId = partnerData.userId;
+
+      if (partnerUserId === currentUser.uid) {
+        Alert.alert('Error', 'You cannot link with yourself!');
+        return;
+      }
+
+      // Check if partner is already linked to someone else
+      if (partnerData.partnerId) {
+        Alert.alert('Error', 'This partner is already linked to someone else.');
+        return;
+      }
+
+      // Create/update couple relationship
+      const coupleId = `${currentUser.uid}_${partnerUserId}`.split('').sort().join(''); // deterministic id
+      
+      // Update both user profiles
+      const currentUserProfileRef = doc(db, 'profiles', currentUser.uid);
+      await updateDoc(currentUserProfileRef, {
+        partnerId: partnerUserId,
+        coupleId: coupleId,
+        updatedAt: serverTimestamp()
+      });
+
+      const partnerProfileUpdateRef = doc(db, 'profiles', partnerUserId);
+      await updateDoc(partnerProfileUpdateRef, {
+        partnerId: currentUser.uid,
+        coupleId: coupleId,
+        updatedAt: serverTimestamp()
+      });
+
+      // Create/update couple document
+      const coupleRef = doc(db, 'couples', coupleId);
+      const coupleExists = await getDoc(coupleRef);
+      
+      if (!coupleExists.exists()) {
+        await setDoc(coupleRef, {
+          id: coupleId,
+          user1_id: currentUser.uid,
+          user2_id: partnerUserId,
+          created_at: serverTimestamp(),
+          trust_meter: 0.5,
+          vulnerability_meter: 0.5,
+          romance_meter: 0.5,
+          connection_meter: 0.5,
+          total_points: 0,
+          streak_days: 0,
+          last_interaction: serverTimestamp()
+        });
+      } else {
+        await updateDoc(coupleRef, {
+          last_interaction: serverTimestamp()
+        });
+      }
+
+      Alert.alert(
+        'Success!', 
+        'You are now linked with your partner!', 
+        [
+          { text: 'Continue', onPress: () => navigation.navigate('DashboardHome' as never) }
+        ]
+      );
+    } catch (error) {
+      console.error('Error linking couple:', error);
+      Alert.alert('Error', 'Failed to link with partner. Please try again.');
+    }
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#2A1120', '#120810']} style={styles.background} />
-      <Header title="Trust Thermometer" logo={require('../../../assets/logo/mainlogoone.png')} />
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.grid}>
-          {/* Left Column */}
-          <View style={styles.columnLeft}>
-            <GlassPanel>
-              <Text style={styles.panelTitle}>Historical Data</Text>
-              <View style={styles.chartContainer}>
-                <Text style={styles.chartLabel}>Partner A</Text>
-                <LineChart />
-              </View>
-              <View style={styles.chartContainer}>
-                <Text style={styles.chartLabel}>Partner B</Text>
-                <LineChart />
-              </View>
-            </GlassPanel>
-          </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <LinearGradient
+        colors={[theme.COLORS.background, '#392830', theme.COLORS.background]}
+        style={styles.container}
+      >
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <Text style={styles.mainTitle}>Link Your Cosmic Connection</Text>
+          <Text style={styles.subtitle}>Enter your partner's cosmic code to sync your journey.</Text>
 
-          {/* Center Column (Thermometer) */}
-          <View style={styles.columnCenter}>
-            <View style={styles.thermometerContainer}>
-                <View style={styles.thermometerTrack}>
-                    <LinearGradient colors={['#ee2b8c', '#f093fb', '#4facfe', '#00f2fe']} style={styles.thermometerFill} />
-                </View>
-            </View>
-          </View>
+          <BlurView intensity={20} tint="dark" style={styles.glassPanel}>
+            <Text style={styles.inputLabel}>Partner's Cosmic Code</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="XXXX-XXXX"
+              placeholderTextColor="rgba(255, 255, 255, 0.2)"
+              value={partnerCode}
+              onChangeText={setPartnerCode}
+              autoCapitalize="characters"
+              maxLength={9} // XXXX-XXXX
+            />
 
-          {/* Right Column */}
-          <View style={styles.columnRight}>
-            <GlassPanel>
-                <Text style={styles.panelTitle}>ANALYTICS</Text>
-                <View style={styles.analyticsItem}>
-                    <Text style={styles.analyticsTitle}>Stability Boost</Text>
-                    <Text style={styles.analyticsBody}>Your trust levels have shown exceptional stability over the last 48 hours.</Text>
-                </View>
-                <View style={styles.analyticsItem}>
-                    <Text style={styles.analyticsTitle}>Synchronization</Text>
-                    <Text style={styles.analyticsBody}>Partner B's sentiment is aligning more closely with Partner A.</Text>
-                </View>
-            </GlassPanel>
-          </View>
-        </View>
-      </ScrollView>
-      <GlobalMarcieOverlay quote="Let's see where your trust levels are today, darlings." />
-    </SafeAreaView>
+            <TouchableOpacity style={styles.authButton} onPress={handleLinkCouple}>
+              <Text style={styles.authButtonText}>Link Cosmic Connection</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={[styles.secondaryButton]}
+              onPress={() => navigation.navigate('OnboardingCurrentVibe' as never)}>
+              <Text style={[styles.secondaryButtonText]}>Generate My Code</Text>
+            </TouchableOpacity>
+          </BlurView>
+        </ScrollView>
+      </LinearGradient>
+    </KeyboardAvoidingView>
   );
 };
 
-const GlassPanel = ({ children }: { children: React.ReactNode }) => (
-    <View style={styles.glassPanel}>{children}</View>
-);
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#120810' },
-  background: { ...StyleSheet.absoluteFillObject },
-  content: { padding: 20 },
-  grid: { flexDirection: 'row', gap: 20 },
-  columnLeft: { flex: 1 },
-  columnCenter: { flex: 0.5, alignItems: 'center' },
-  columnRight: { flex: 1 },
-  panelTitle: {
-    fontFamily: 'BarbieDream-Regular',
-    color: '#33DEA5',
-    fontSize: 16,
-    textTransform: 'uppercase',
-    marginBottom: 20,
+  container: {
+    flex: 1,
   },
-  chartContainer: { marginBottom: 20 },
-  chartLabel: {
-    fontFamily: 'HolidayChristmas-Regular',
-    color: '#FFF',
-    fontSize: 14,
-    marginBottom: 10,
+  scrollContainer: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.SPACING.lg,
   },
-  thermometerContainer: {
-      height: '80%',
-      width: 40,
-      justifyContent: 'flex-end',
+  mainTitle: {
+    fontFamily: theme.TYPOGRAPHY.header.fontFamily || 'BarbieDream-Regular',
+    color: theme.COLORS.textPrimary,
+    fontSize: theme.TYPOGRAPHY.title.fontSize,
+    fontWeight: theme.TYPOGRAPHY.header.fontWeight,
+    textAlign: 'center',
+    marginBottom: theme.SPACING.sm,
+    paddingHorizontal: theme.SPACING.md,
   },
-  thermometerTrack: {
-    height: '100%',
-    width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  thermometerFill: {
-      height: '80%', // This will be dynamic based on the trust_thermometer value
-      width: '100%',
-  },
-  analyticsItem: { marginBottom: 20 },
-  analyticsTitle: {
-    fontFamily: 'WonderfulSometimes-Regular',
-    color: '#FA1F63',
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  analyticsBody: {
-    fontFamily: 'SweetPink-Regular',
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 14,
+  subtitle: {
+    color: theme.COLORS.textSecondary,
+    fontSize: theme.TYPOGRAPHY.body.fontSize,
+    textAlign: 'center',
+    marginBottom: theme.SPACING.xxl,
   },
   glassPanel: {
-    backgroundColor: 'rgba(92, 20, 89, 0.2)', // #5C1459 with opacity
-    borderColor: 'rgba(250, 31, 99, 0.3)', // #FA1F63 with opacity
+    width: '100%',
+    maxWidth: 480,
+    borderRadius: theme.SIZES.borderRadius * 1.5,
+    padding: theme.SPACING.xl,
     borderWidth: 1,
-    borderRadius: 16,
-    padding: 20,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    overflow: 'hidden',
+  },
+  inputLabel: {
+    color: theme.COLORS.textSecondary,
+    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
+    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
+    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
+    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
+    marginBottom: theme.SPACING.sm,
+  },
+  input: {
+    height: theme.SIZES.inputHeight,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    borderRadius: theme.SIZES.borderRadius,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    paddingHorizontal: theme.SPACING.md,
+    color: theme.COLORS.textPrimary,
+    fontSize: theme.TYPOGRAPHY.body.fontSize,
+    marginBottom: theme.SPACING.lg,
+    textAlign: 'center',
+  },
+  authButton: {
+    backgroundColor: theme.COLORS.accentPink,
+    borderRadius: theme.SIZES.buttonBorderRadius,
+    paddingVertical: theme.SPACING.lg,
+    alignItems: 'center',
+    marginTop: theme.SPACING.md,
+    shadowColor: theme.COLORS.accentPink,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+    elevation: 10, // for Android
+  },
+  secondaryButton: {
+    backgroundColor: 'transparent',
+    borderRadius: theme.SIZES.buttonBorderRadius,
+    paddingVertical: theme.SPACING.lg,
+    alignItems: 'center',
+    marginTop: theme.SPACING.md,
+    borderWidth: 1,
+    borderColor: theme.COLORS.accentPink,
+  },
+  authButtonText: {
+    color: theme.COLORS.textPrimary,
+    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
+    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
+    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
+    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
+  },
+  secondaryButtonText: {
+    color: theme.COLORS.accentPink,
+    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
+    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
+    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
+    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
   },
 });
 
-export default TrustThermometerScreen;
+export default CoupleLinkingScreen;

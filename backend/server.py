@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
@@ -7,25 +7,49 @@ import uuid
 import asyncio
 from datetime import datetime, timezone
 from dotenv import load_dotenv
+import json
+from contextlib import asynccontextmanager
 
 load_dotenv()
-
-app = FastAPI(title="Love Actually - The Game API")
-
-# CORS for Expo web
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # In-memory stores (will migrate to Firebase)
 users_db: Dict[str, Any] = {}
 couples_db: Dict[str, Any] = {}
 game_sessions_db: Dict[str, Any] = {}
 sos_sessions_db: Dict[str, Any] = {}
+
+# WebSocket connections for real-time sync
+connections: Dict[str, List[WebSocket]] = {}
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    print("Starting up Love Actually - The Game API...")
+    yield
+    # Shutdown
+    print("Shutting down Love Actually - The Game API...")
+
+app = FastAPI(title="Love Actually - The Game API", lifespan=lifespan)
+
+# CORS for web and mobile clients
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:19006",  # Expo dev client
+        "http://localhost:19000",  # Expo web
+        "https://lovetrae.web.app",
+        "https://lovetrae.firebaseapp.com",
+        "exp://127.0.0.1:19000",   # Expo local development
+        "exp://localhost:19000",   # Expo local development
+        "*.ngrok.io",              # For development tunnels
+        "https://*.vercel.app",    # If deployed to Vercel
+        "https://*.onrender.com"   # If deployed to Render
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dr. Marcie Sarcasm Levels
 SARCASM_LEVELS = {
@@ -179,10 +203,36 @@ class MarcieResponse(BaseModel):
     animation: str
     sarcasm_level: int
 
+# WebSocket endpoint for real-time couple sync
+@app.websocket("/ws/{couple_id}")
+async def websocket_endpoint(websocket: WebSocket, couple_id: str):
+    await websocket.accept()
+    
+    if couple_id not in connections:
+        connections[couple_id] = []
+    connections[couple_id].append(websocket)
+    
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # Broadcast message to all connected partners
+            for connection in connections[couple_id]:
+                if connection != websocket:  # Don't send back to sender
+                    try:
+                        await connection.send_text(data)
+                    except:
+                        # Remove closed connections
+                        if connection in connections[couple_id]:
+                            connections[couple_id].remove(connection)
+    except WebSocketDisconnect:
+        # Remove the connection when disconnected
+        if couple_id in connections and websocket in connections[couple_id]:
+            connections[couple_id].remove(websocket)
+
 # Health check
 @app.get("/api/health")
 async def health_check():
-    return {"status": "healthy", "app": "Love Actually - The Game", "version": "1.0.0"}
+    return {"status": "healthy", "app": "Love Actually - The Game", "version": "1.0.0", "timestamp": datetime.now(timezone.utc).isoformat()}
 
 # User endpoints
 @app.post("/api/users", response_model=UserResponse)
@@ -273,6 +323,25 @@ async def get_couple(couple_id: str):
         raise HTTPException(status_code=404, detail="Couple not found")
     return couples_db[couple_id]
 
+# Couple Presence Check (for real-time status)
+@app.get("/api/couples/{couple_id}/presence")
+async def get_couple_presence(couple_id: str):
+    if couple_id not in couples_db:
+        raise HTTPException(status_code=404, detail="Couple not found")
+    
+    couple = couples_db[couple_id]
+    
+    # Check if either user is connected via WebSocket
+    user1_connected = couple["user1_id"] in [uid for cid in connections for ws in connections[cid] for uid in [ws.__dict__.get('path', {}).get('user_id', '')]]
+    user2_connected = couple["user2_id"] in [uid for cid in connections for ws in connections[cid] for uid in [ws.__dict__.get('path', {}).get('user_id', '')]]
+    
+    return {
+        "couple_id": couple_id,
+        "user1_online": user1_connected,
+        "user2_online": user2_connected,
+        "total_connections": len(connections.get(couple_id, []))
+    }
+
 # Game Categories
 @app.get("/api/games/categories")
 async def get_game_categories():
@@ -344,7 +413,7 @@ async def submit_sos_booth(session_id: str, submission: SOSBoothSubmission):
     session["submissions"][submission.user_id] = {
         "i_feel": submission.i_feel,
         "when_partner": submission.when_partner,
-        "because_i_tell_myself": submission.because_i_tell_myself,
+        "because_i_tell_my_self": submission.because_i_tell_myself,
         "what_i_need": submission.what_i_need,
         "submitted_at": datetime.now(timezone.utc).isoformat()
     }
@@ -504,4 +573,5 @@ async def get_love_arcade_games():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    port = int(os.getenv("PORT", 8001))
+    uvicorn.run(app, host="0.0.0.0", port=port)

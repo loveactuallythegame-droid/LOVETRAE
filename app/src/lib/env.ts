@@ -32,4 +32,7 @@ export const ENV = {
   // Internal App Config
   ENCRYPTION_PEPPER: getEnv('EXPO_PUBLIC_ENCRYPTION_PEPPER'),
   ADMIN_BASE_URL: getEnv('EXPO_PUBLIC_ADMIN_BASE_URL'),
+  
+  // Backend API
+  BACKEND_URL: getEnv('EXPO_PUBLIC_API_URL') || getEnv('REACT_APP_BACKEND_URL') || 'http://localhost:8001',
 };

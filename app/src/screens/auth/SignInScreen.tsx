@@ -1,419 +1,283 @@
 
-import { useState } from 'react';
-import {
-  View, StyleSheet, TextInput, ActivityIndicator, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform
-} from 'react-native';
-import { Text } from '../../components/ui';
-import * as Haptics from 'expo-haptics';
-import { signInEmail, signUpEmail, signInWithGoogle } from '../../lib/supabase';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/ui/Header';
+import{ useState } from 'react';
+import {View, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { Text, GlassCard } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
+import theme from '../../theme';
 
-type Props = {
-  onAuthenticated: () => void;
-  onForgot: () => void;
-};
-
-export default function SignInScreen({ onAuthenticated, onForgot }: Props) {
-  const [isLogin, setIsLogin] = useState(true);
+export default function SignInScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
+ const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const toggleMode = (login: boolean) => {
-    Haptics.selectionAsync();
-    setIsLogin(login);
-    setError(null);
+  const handleSignIn = () => {
+    // Handle sign in logic
+    console.log('Signing in with:', { email, password });
+    // Navigate to main app
+    navigation.navigate('MainGameLibrary');
   };
 
-  async function handleSubmit() {
-    setLoading(true);
-    setError(null);
-    try {
-      if (!email.includes('@') || password.length < 6) {
-        setError('Please enter a valid cosmic handle and a secret frequency of at least 6 characters.');
-        setLoading(false);
-        return;
-      }
-
-      if (isLogin) {
-        await signInEmail(email, password);
-      } else {
-        await signUpEmail(email, password);
-      }
-
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      onAuthenticated();
-    } catch (e: any) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      setError(e?.message || (isLogin ? 'Login failed.' : 'Sign up failed.'));
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function doGoogle() {
-    setLoading(true);
-    setError(null);
-    try {
-      await signInWithGoogle(typeof window !== 'undefined' ? window.location.origin : undefined);
-    } catch (e: any) {
-      setError(e?.message || 'Google sign-in failed. Try again.');
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.root}
+    <LinearGradient
+      colors={[theme.COLORS.background, '#392830', theme.COLORS.background]}
+      style={styles.container}
     >
-      <LinearGradient
-        colors={['#0f0a0c', '#230f19', '#392830']}
-        style={styles.nebulaBg}
-      />
-      <SafeAreaView style={{ flex: 1 }}>
-        <Header />
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.heroContainer}>
-            <Text variant='header' style={styles.heroTitle}>Navigate the stars of your relationship.</Text>
-            <Text variant='body' style={styles.heroSubtitle}>Sync your frequencies to begin the journey.</Text>
-          </View>
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.header}>
+          <Text variant="header"style={styles.title}>Welcome Back</Text>
+          <Text variant="body" style={styles.subtitle}>Sign in to continue your journey</Text>
+        </View>
 
-          <View style={styles.glassPanel}>
-            <View style={styles.toggleContainer}>
-              <TouchableOpacity
-                style={[styles.toggleBtn, isLogin && styles.toggleActive]}
-                onPress={() => toggleMode(true)}
+        <GlassCard style={styles.formCard}>
+          <LinearGradient
+            colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientContainer}
+          >
+<View style={styles.inputGroup}>
+              <Text variant="small" style={styles.inputLabel}>
+                EMAIL ADDRESS
+              </Text>
+              <TextInput
+                style={styles.textInput}
+                placeholder="commander@nebula.space"
+                placeholderTextColor={theme.COLORS.textHint}
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text variant="small" style={styles.inputLabel}>
+                PASSWORD
+              </Text>
+              <TextInputstyle={styles.textInput}
+                placeholder="••••••••••••"
+                placeholderTextColor={theme.COLORS.textHint}
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+              />
+            </View>
+
+            <View style={styles.rememberContainer}>
+              <TouchableOpacity 
+                style={styles.checkboxContainer}
+                onPress={() => setRememberMe(!rememberMe)}
               >
-                <Text style={[styles.toggleText, isLogin && { color: 'white' }]}>Login</Text>
+                <LinearGradient
+                  colors={
+                    rememberMe 
+                      ? [theme.COLORS.primaryGradientStart, theme.COLORS.primaryGradientEnd]
+                      : ['#666', '#666']
+                  }
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.checkboxGradient}
+                >
+                  {rememberMe && (
+                    <Text style={{ color: theme.COLORS.background, fontSize: 16, fontWeight: 'bold' }}>✓</Text>
+                  )}
+                </LinearGradient>
+                <Text variant="small" style={styles.checkboxLabel}>
+                  Remember me
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.toggleBtn, !isLogin && styles.toggleActive]}
-                onPress={() => toggleMode(false)}
-              >
-                <Text style={[styles.toggleText, !isLogin && { color: 'white' }]}>Sign Up</Text>
+              
+              <TouchableOpacity onPress={() => navigation.navigate('PasswordReset')}>
+                <Text variant="small" style={styles.forgotPassword}>
+                  Forgot Password?
+                </Text>
               </TouchableOpacity>
             </View>
 
-            <View style={styles.form}>
-              <View style={styles.inputGroup}>
-                <View style={styles.labelRow}>
-                  <Text style={styles.labelText}>Your Cosmic Handle</Text>
-                  <View style={styles.statusDotRow}>
-                    <Text style={styles.statusText}>Connection Live</Text>
-                    <View style={[styles.statusDot, { backgroundColor: '#FBBF24', shadowColor: '#FBBF24' }]} />
-                  </View>
-                </View>
-                <TextInput
-                  style={styles.input}
-                  value={email}
-                  onChangeText={setEmail}
-                  placeholder="commander@nebula.space"
-                  placeholderTextColor="rgba(255,255,255,0.2)"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-              </View>
-
-              <View style={styles.inputGroup}>
-                <View style={styles.labelRow}>
-                  <Text style={styles.labelText}>Secret Frequency</Text>
-                  <View style={styles.statusDotRow}>
-                    <Text style={styles.statusText}>Secure</Text>
-                    <View style={[styles.statusDot, { backgroundColor: '#F97316', shadowColor: '#F97316' }]} />
-                  </View>
-                </View>
-                <View style={styles.passwordInputContainer}>
-                  <TextInput
-                    style={styles.passwordInput}
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="••••••••••••"
-                    placeholderTextColor="rgba(255,255,255,0.2)"
-                    secureTextEntry={!showPassword}
-                  />
-                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                    <MaterialIcons name={showPassword ? "visibility-off" : "visibility"} size={24} color="rgba(255,255,255,0.4)" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <View style={styles.formActions}>
-                  <TouchableOpacity style={styles.rememberMe} >
-                      <MaterialCommunityIcons name="checkbox-blank-outline" size={20} color="rgba(255,255,255,0.6)" />
-                      <Text style={styles.rememberMeText}>Remember Frequency</Text>
-                  </TouchableOpacity>
-                <TouchableOpacity onPress={onForgot}>
-                  <Text style={styles.forgotLink}>Lost in Space?</Text>
-                </TouchableOpacity>
-              </View>
-
-              {error && <Text style={styles.errorText}>{error}</Text>}
-
-              <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit} disabled={loading}>
-                {loading ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <Text style={styles.submitBtnText}>Initiate Connection</Text>
-                )}
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity 
+              style={styles.signInButton} 
+              onPress={handleSignIn}
+              disabled={!email || !password}
+            >
+              <LinearGradient
+                colors={[
+                  email && password ? theme.COLORS.primaryGradientStart :'#666',
+                  email && password ? theme.COLORS.primaryGradientEnd : '#666'
+                ]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.signInGradient}
+              >
+                <Text 
+                  variant="header" 
+                  style={{ 
+                    color: email && password ? theme.COLORS.background : theme.COLORS.textHint,
+                    textAlign: 'center'
+                  }}
+                >
+                  Sign In
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
 
             <View style={styles.dividerContainer}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>or bridge via</Text>
-              <View style={styles.dividerLine} />
+              <View style={styles.dividerLine}></View>
+              <Text variant="small" style={styles.dividerText}>OR</Text>
+              <View style={styles.dividerLine}></View>
             </View>
 
-            <View style={styles.socialLoginContainer}>
-                <TouchableOpacity style={[styles.socialBtn, {backgroundColor: 'rgba(255, 149, 0, 0.2)'}]}>
-                    <MaterialIcons name="phone-iphone" size={24} color="white" />
-                    <Text style={styles.socialBtnText}>Apple</Text>
-                </TouchableOpacity>
-                 <TouchableOpacity style={[styles.socialBtn, {backgroundColor: 'rgba(0, 128, 128, 0.2)'}]} onPress={doGoogle}>
-                    <MaterialCommunityIcons name="google" size={24} color="white" />
-                    <Text style={styles.socialBtnText}>Google</Text>
-                </TouchableOpacity>
-                 <TouchableOpacity style={[styles.socialBtn, {backgroundColor: 'rgba(238, 43, 140, 0.2)'}]}>
-                    <MaterialIcons name="email" size={24} color="white" />
-                    <Text style={styles.socialBtnText}>Email</Text>
-                </TouchableOpacity>
-            </View>
-          </View>
+            <TouchableOpacity 
+              style={styles.signUpButton} 
+              onPress={() => navigation.navigate('LoginAndSignUp')}
+            >
+              <LinearGradient
+                colors={['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.1)']}
+                start={{ x: 0,y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.signUpGradient}
+              >
+                <Text 
+                  variant="header" 
+                  style={{ 
+                    color: theme.COLORS.textPrimary,
+                    textAlign: 'center'
+                  }}
+                >
+                  Create Account
+</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </LinearGradient>
+        </GlassCard>
 
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>© 2024 Love Actually... The Game. All Rights Reserved.</Text>
-            <View style={styles.footerLinks}>
-              <TouchableOpacity><Text style={styles.footerLink}>Privacy Nebula</Text></TouchableOpacity>
-              <Text style={styles.footerSeparator}>•</Text>
-              <TouchableOpacity><Text style={styles.footerLink}>Safety Protocol</Text></TouchableOpacity>
-              <Text style={styles.footerSeparator}>•</Text>
-              <TouchableOpacity><Text style={styles.footerLink}>Contact Ground Control</Text></TouchableOpacity>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+        <View style={styles.footer}>
+          <TouchableOpacity onPress={() => navigation.navigate('LegalDisclaimer')}>
+            <Text variant="small" style={styles.footerLink}>Legal Disclaimer</Text>
+          </TouchableOpacity>
+<Text variant="small" style={styles.footerText}>© 2026 Love Actually</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('HelpAndFaq')}>
+            <Text variant="small" style={styles.footerLink}>Help & FAQ</Text>
+          </TouchableOpacity>
+        </View>
+</ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
-  nebulaBg: { ...StyleSheet.absoluteFillObject },
-  scrollContent: { 
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-  },
-  heroContainer: {
-    alignItems: 'center',
-    marginVertical: 40,
-  },
-  heroTitle: {
-    color: 'white',
-    fontSize: 36,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    lineHeight: 44,
-  },
-  heroSubtitle: {
-    color: 'rgba(255,255,255,0.6)',
-    textAlign: 'center',
-    fontSize: 18,
-    marginTop: 8,
-  },
-  glassPanel: {
-    backgroundColor: 'rgba(39, 28, 33, 0.6)',
-    borderRadius: 16,
-    padding: 24,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.03)',
-  },
-  toggleContainer: {
-    flexDirection: 'row',
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    borderRadius: 12,
-    padding: 4,
-    marginBottom: 24
-  },
-  toggleBtn: {
+  container: {
     flex: 1,
-    paddingVertical: 10,
+  },
+  content: {
+    padding: theme.SPACING.lg,
+    paddingBottom: theme.SPACING.xxl,
+  },
+  header: {
     alignItems: 'center',
-    borderRadius: 8,
+   marginBottom: theme.SPACING.lg,
   },
-  toggleActive: { backgroundColor: '#fc0c84' },
-  toggleText: { 
-    color: 'rgba(255,255,255,0.5)', 
-    fontSize: 14, 
-    fontWeight: 'bold' 
+  title: {
+    fontSize: theme.TYPOGRAPHY.header.fontSize,
+    color: theme.COLORS.textPrimary,
+    marginBottom: theme.SPACING.sm,
   },
-  form: { gap: 24 },
-  inputGroup: { gap: 8 },
-  labelRow: {
+  subtitle: {
+    fontSize: theme.TYPOGRAPHY.body.fontSize,
+    color: theme.COLORS.textSecondary,
+  },
+  formCard: {
+    marginBottom: theme.SPACING.lg,
+  },
+  gradientContainer: {
+    padding: theme.SPACING.md,
+    borderRadius: theme.SIZES.borderRadius,
+  },
+  inputGroup: {
+    marginBottom: theme.SPACING.lg,
+  },
+  inputLabel: {
+    color: theme.COLORS.textSecondary,
+    marginBottom: theme.SPACING.sm,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  textInput: {
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderWidth: 1,
+borderColor: 'rgba(250, 31, 99, 0.3)',
+    borderRadius: theme.SIZES.borderRadius,
+    padding: theme.SPACING.md,
+    color: theme.COLORS.textPrimary,
+    fontSize: theme.TYPOGRAPHY.body.fontSize,
+  },
+  rememberContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: theme.SPACING.lg,
   },
-  labelText: {
-    color: 'rgba(255,255,255,0.8)',
-    fontSize: 10,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1.2
-  },
-  statusDotRow: {
+  checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6
   },
-  statusText: {
-    fontSize: 8,
-    color: 'rgba(255,255,255,0.4)',
-    textTransform: 'uppercase',
-    fontWeight: 'bold'
-  },
-  statusDot: {
-    width: 8,
-    height: 8,
+  checkboxGradient: {
+    width: 20,
+   height: 20,
     borderRadius: 4,
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-  },
-  input: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: theme.SPACING.sm,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    color: 'white',
-    fontSize: 16,
+    borderColor: theme.COLORS.textSecondary,
   },
-  passwordInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 12,
-    paddingHorizontal: 16,
+  checkboxLabel: {
+    color: theme.COLORS.textSecondary,
   },
-  passwordInput: {
-    flex: 1,
-    color: 'white',
-    fontSize: 16,
-    paddingVertical: 14,
+forgotPassword: {
+    color: theme.COLORS.accentTeal,
   },
-  formActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 4
+  signInButton: {
+    borderRadius: theme.SIZES.buttonBorderRadius,
+    overflow: 'hidden',
+    marginBottom: theme.SPACING.md,
   },
-  rememberMe: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8
-  },
-  rememberMeText: {
-      color: 'rgba(255,255,255,0.6)',
-      fontSize: 10,
-      fontWeight: 'bold',
-      textTransform: 'uppercase',
-  },
-  forgotLink: {
-    color: '#fc0c84',
-    fontWeight: 'bold',
-    fontSize: 10,
-    textTransform: 'uppercase',
-  },
-  submitBtn: {
-    backgroundColor: '#fc0c84',
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    shadowColor: '#fc0c84',
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
-    marginTop: 8
-  },
-  submitBtnText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1.2,
-  },
-  errorText: {
-    color: '#FBBF24',
-    textAlign: 'center',
-    marginVertical: 10
+  signInGradient: {
+    padding: theme.SPACING.lg,
+    borderRadius: theme.SIZES.buttonBorderRadius,
   },
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 32,
+    marginVertical: theme.SPACING.lg,
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   dividerText: {
-    color: 'rgba(255,255,255,0.4)',
-    marginHorizontal: 10,
-    fontSize: 10,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1.2,
+    marginHorizontal: theme.SPACING.md,
+    color: theme.COLORS.textSecondary,
   },
-  socialLoginContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 16
+  signUpButton: {
+    borderRadius: theme.SIZES.buttonBorderRadius,
+    overflow: 'hidden',
   },
-  socialBtn: {
-      flex: 1,
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 8,
-      padding: 16,
-      borderRadius: 12,
-      borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.05)',
-  },
-  socialBtnText: {
-      fontSize: 9,
-      fontWeight: 'bold',
-      color: 'white',
-      textTransform: 'uppercase',
+ signUpGradient: {
+    padding: theme.SPACING.lg,
+    borderRadius: theme.SIZES.buttonBorderRadius,
   },
   footer: {
-    marginTop: 40,
-    alignItems: 'center',
-    gap: 8,
-  },
-  footerText: {
-    color: 'rgba(255,255,255,0.4)',
-    fontSize: 10,
-  },
-  footerLinks: {
     flexDirection: 'row',
-    gap: 6,
-    alignItems: 'center'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: theme.SPACING.lg,
   },
   footerLink: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 10,
+   color: theme.COLORS.accentTeal,
   },
-  footerSeparator: {
-      color: 'rgba(255,255,255,0.2)',
-      fontSize: 10
-  }
+  footerText: {
+    color: theme.COLORS.textSecondary,
+  },
 });
