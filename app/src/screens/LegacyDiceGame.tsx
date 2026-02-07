@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const Dice = ({ title, value, icon }) => (
     <View style={styles.dice}>
-        {/* Icon would go here */}
+        <Text style={{fontSize: 40}}>{icon}</Text>
         <Text style={styles.diceValue}>{value}</Text>
         <Text style={styles.diceTitle}>{title}</Text>
     </View>
@@ -15,19 +15,19 @@ const Dice = ({ title, value, icon }) => (
 const LegacyDiceGameScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#221022', '#482348']} style={styles.background} />
+            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                <Text style={styles.title}>Legacy Dice Arena</Text>
+                <Text style={styles.title}>LEGACY DICE ARENA</Text>
                 <Text style={styles.subtitle}>Roll your future. Record your legacy.</Text>
 
                 <View style={styles.diceContainer}>
-                    <Dice title="Children" value="3" />
-                    <Dice title="Golden Retrievers" value="2" />
-                    <Dice title="Loyalty Score" value="88%" />
+                    <Dice title="CHILDREN" value="3" icon="👶"/>
+                    <Dice title="GOLDEN RETRIEVERS" value="2" icon="🐶"/>
+                    <Dice title="LOYALTY SCORE" value="88%" icon="💖"/>
                 </View>
 
                 <TouchableOpacity style={styles.recordButton}>
-                    <Text style={styles.recordButtonText}>Record Legacy</Text>
+                    <Text style={styles.recordButtonText}>RECORD LEGACY</Text>
                 </TouchableOpacity>
                 
                 {/* Waveform visualization would go here */}
@@ -38,28 +38,29 @@ const LegacyDiceGameScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#221017' },
+    container: { flex: 1, backgroundColor: '#2A002A' },
     background: { ...StyleSheet.absoluteFillObject },
     scrollContent: { alignItems: 'center', padding: 24 },
-    title: { fontSize: 48, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 8 },
-    subtitle: { color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginBottom: 32 },
-    diceContainer: { flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: 32 },
+    title: { fontSize: 48, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 8, textTransform: 'uppercase' },
+    subtitle: { color: '#D1C4E9', textAlign: 'center', marginBottom: 32 },
+    diceContainer: { flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: 32, gap: 16 },
     dice: {
-        backgroundColor: 'rgba(72, 35, 72, 0.4)',
-        borderRadius: 16,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 20,
         padding: 16,
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: 'rgba(236, 19, 236, 0.2)',
-        minWidth: 120
+        borderColor: 'rgba(255, 64, 129, 0.5)',
+        minWidth: 120,
+        flex: 1,
     },
     diceValue: { fontSize: 48, fontWeight: 'bold', color: '#FFF' },
-    diceTitle: { color: '#f40b61', textTransform: 'uppercase', fontSize: 10, marginTop: 8 },
+    diceTitle: { color: '#FF4081', textTransform: 'uppercase', fontSize: 10, marginTop: 8, fontWeight: 'bold' },
     recordButton: {
         paddingVertical: 16,
         paddingHorizontal: 48,
         borderRadius: 32,
-        backgroundColor: '#f40b61',
+        backgroundColor: '#FF4081',
     },
     recordButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase', fontSize: 16 },
 });

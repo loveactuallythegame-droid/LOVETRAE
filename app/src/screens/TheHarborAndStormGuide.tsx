@@ -2,11 +2,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons } from '@expo/vector-icons';
 
 const ToolCard = ({ icon, title, description, color }) => (
     <TouchableOpacity style={styles.toolCard}>
-        <MaterialIcons name={icon} size={24} color={color} style={{ marginBottom: 8 }} />
+        <Text style={{fontSize: 24, marginBottom: 8}}>{icon}</Text>
         <Text style={styles.toolTitle}>{title}</Text>
         <Text style={styles.toolDescription}>{description}</Text>
     </TouchableOpacity>
@@ -15,38 +14,38 @@ const ToolCard = ({ icon, title, description, color }) => (
 const TheHarborAndStormGuide = () => {
     return (
         <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#121015', '#230f16']} style={styles.container}>
+            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
                 <ScrollView contentContainerStyle={styles.scrollContent}>
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Navigate Your Connection</Text>
-                        <Text style={styles.headerSubtitle}>Dr. Marcie Liss is here to guide your journey.</Text>
+                        <Text style={styles.headerTitle}>NAVIGATE YOUR CONNECTION</Text>
+                        <Text style={styles.headerSubtitle}>DR. MARCIE LISS IS HERE TO GUIDE YOUR JOURNEY.</Text>
                     </View>
 
                     <View style={styles.dashboardContainer}>
                         {/* The Storm Section */}
                         <View style={[styles.section, styles.stormSection]}>
                             <View style={styles.sectionHeader}>
-                                <MaterialIcons name="bolt" size={32} color="#f97316" />
+                                <Text style={{fontSize: 32}}>⚡️</Text>
                                 <Text style={styles.sectionTitle}>THE STORM</Text>
                             </View>
-                            <ToolCard icon="timer" title="The 5-Minute Pause" description="Instant de-escalation protocol." color="#f97316" />
-                            <ToolCard icon="map" title="Conflict Mapping" description="Identify argument patterns." color="#ec4899" />
+                            <ToolCard icon="⏱️" title="THE 5-MINUTE PAUSE" description="Instant de-escalation protocol." />
+                            <ToolCard icon="🗺️" title="CONFLICT MAPPING" description="Identify argument patterns." />
                         </View>
 
                         {/* The Harbor Section */}
                         <View style={[styles.section, styles.harborSection]}>
                             <View style={styles.sectionHeader}>
-                                <MaterialIcons name="anchor" size={32} color="#2dd4bf" />
+                                <Text style={{fontSize: 32}}>⚓</Text>
                                 <Text style={styles.sectionTitle}>THE HARBOR</Text>
                             </View>
-                            <ToolCard icon="visibility" title="Eye-Contact Meditation" description="2-minute grounding exercise." color="#2dd4bf" />
-                            <ToolCard icon="favorite" title="Appreciation Anchor" description="Log your gratitude." color="#a78bfa" />
+                            <ToolCard icon="👁️" title="EYE-CONTACT MEDITATION" description="2-minute grounding exercise." />
+                            <ToolCard icon="💖" title="APPRECIATION ANCHOR" description="Log your gratitude." />
                         </View>
                     </View>
 
                     <View style={styles.signalFlareContainer}>
                         <TouchableOpacity style={styles.signalFlareButton}>
-                            <MaterialIcons name="flare" size={40} color="#fff" />
+                            <Text style={{fontSize: 40}}>🚨</Text>
                         </TouchableOpacity>
                         <Text style={styles.signalFlareText}>SIGNAL FLARE</Text>
                     </View>
@@ -58,12 +57,12 @@ const TheHarborAndStormGuide = () => {
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#121015' },
+    safeArea: { flex: 1, backgroundColor: '#2A002A' },
     container: { flex: 1 },
     scrollContent: { padding: 24 },
     header: { marginBottom: 24 },
-    headerTitle: { fontSize: 36, fontWeight: 'bold', color: '#fff', textAlign: 'center' },
-    headerSubtitle: { fontSize: 16, color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginTop: 8 },
+    headerTitle: { fontSize: 36, fontWeight: 'bold', color: '#fff', textAlign: 'center', textTransform: 'uppercase' },
+    headerSubtitle: { fontSize: 16, color: '#D1C4E9', textAlign: 'center', marginTop: 8, fontWeight: 'bold', textTransform: 'uppercase' },
     dashboardContainer: { flexDirection: 'row', justifyContent: 'space-around', gap: 16 },
     section: {
         flex: 1,
@@ -72,37 +71,36 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     stormSection: {
-        backgroundColor: 'rgba(249, 115, 22, 0.1)',
-        borderColor: 'rgba(249, 115, 22, 0.3)',
+        backgroundColor: 'rgba(255, 145, 0, 0.2)',
+        borderColor: 'rgba(255, 145, 0, 0.5)',
     },
     harborSection: {
-        backgroundColor: 'rgba(45, 212, 191, 0.1)',
-        borderColor: 'rgba(45, 212, 191, 0.3)',
+        backgroundColor: 'rgba(0, 255, 255, 0.2)',
+        borderColor: 'rgba(0, 255, 255, 0.5)',
     },
     sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 },
-    sectionTitle: { fontSize: 22, fontWeight: 'bold', color: '#fff' },
+    sectionTitle: { fontSize: 22, fontWeight: 'bold', color: '#fff', textTransform: 'uppercase' },
     toolCard: {
         backgroundColor: 'rgba(0,0,0,0.3)',
         padding: 12,
         borderRadius: 16,
         marginBottom: 12,
     },
-    toolTitle: { fontSize: 16, fontWeight: 'bold', color: '#fff' },
-    toolDescription: { fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 4 },
+    toolTitle: { fontSize: 16, fontWeight: 'bold', color: '#fff', textTransform: 'uppercase' },
+    toolDescription: { fontSize: 12, color: '#D1C4E9', marginTop: 4 },
     signalFlareContainer: { alignItems: 'center', marginVertical: 40 },
     signalFlareButton: {
         width: 80,
         height: 80,
         borderRadius: 40,
-        backgroundColor: '#ff0055',
+        backgroundColor: '#FF4081',
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#ff0055',
+        shadowColor: '#FF4081',
         shadowRadius: 15,
         shadowOpacity: 0.7,
     },
-    signalFlareText: { color: '#ff0055', fontWeight: 'bold', marginTop: 12, textTransform: 'uppercase' },
-    
+    signalFlareText: { color: '#FF4081', fontWeight: 'bold', marginTop: 12, textTransform: 'uppercase' },
 });
 
 export default TheHarborAndStormGuide;

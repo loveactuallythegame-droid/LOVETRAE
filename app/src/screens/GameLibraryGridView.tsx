@@ -4,7 +4,6 @@ import {
     View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, ImageBackground, TextInput 
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons } from '@expo/vector-icons';
 
 const games = [
     { id: '1', title: 'Soul Sync', category: 'Communication', time: 15, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAWIpTHvb05jkwBvDxLVC32Q-AfzgqzPLS2wjwxJ86AJ-098JAoe8owi90_hmkH39qpdXIWYtYzLTE1_xaK5Wk_JVvrE37V-WggccbdwBL1jCMF5Hrq696sJ4XGKtdeR78O_HaSFX4T9sX8OuhSbEEpXvSWd7cVSqbcAqPaJ3tfloepDNAJ4rAeiJU7HOC4E8YLmMfhjZEbemNYE7Gqzs_7X2Wx3uv2WHUnX3pU8Xk9AEf4jqD4dG2ih0leRzHov1rMMlVCc-yVnC90', status: 'New' },
@@ -15,29 +14,40 @@ const games = [
 
 const GameCard = ({ item }) => (
     <TouchableOpacity style={styles.card}>
-        <ImageBackground source={{ uri: item.image }} style={styles.cardImage} imageStyle={{ borderRadius: 12 }}>
-            <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.imageOverlay} />
-            {item.status && <View style={[styles.statusBadge, item.status === 'New' ? styles.newBadge : styles.completedBadge]}><Text style={styles.statusText}>{item.status}</Text></View>}
+        <ImageBackground source={{ uri: item.image }} style={styles.cardImage} imageStyle={{ borderRadius: 20 }}>
+            <LinearGradient colors={['transparent', 'rgba(0,0,0,0.9)']} style={styles.imageOverlay} />
+            {item.status && (
+                <View style={[styles.statusBadge, item.status === 'New' ? styles.newBadge : styles.completedBadge]}>
+                    <Text style={styles.statusText}>{item.status.toUpperCase()}</Text>
+                </View>
+            )}
+             <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>{item.title.toUpperCase()}</Text>
+                <Text style={styles.cardInfo}>{item.time} MINS • {item.category.toUpperCase()}</Text>
+            </View>
         </ImageBackground>
-        <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardInfo}>{item.time} mins • {item.category}</Text>
-        </View>
     </TouchableOpacity>
 );
 
 const GameLibraryScreen = () => {
     const [activeTab, setActiveTab] = useState('All');
+
+    const renderTab = (tabName) => (
+        <TouchableOpacity onPress={() => setActiveTab(tabName)} style={[styles.tab, activeTab === tabName && styles.activeTab]}>
+            <Text style={styles.tabText}>{tabName.toUpperCase()}</Text>
+        </TouchableOpacity>
+    );
+
     return (
         <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#1E1022', '#2A1A31']} style={styles.container}>
+            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
                 <View style={styles.header}>
-                    <TextInput placeholder="Find a mini-game..." placeholderTextColor="rgba(255,255,255,0.4)" style={styles.searchInput}/>
+                    <TextInput placeholder="FIND A MINI-GAME..." placeholderTextColor="rgba(255,255,255,0.4)" style={styles.searchInput}/>
                 </View>
                 <View style={styles.tabs}>
-                    <TouchableOpacity onPress={() => setActiveTab('All')}><Text style={[styles.tab, activeTab === 'All' && styles.activeTab]}>All</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={() => setActiveTab('Communication')}><Text style={[styles.tab, activeTab === 'Communication' && styles.activeTab]}>Communication</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={() => setActiveTab('Intimacy')}><Text style={[styles.tab, activeTab === 'Intimacy' && styles.activeTab]}>Intimacy</Text></TouchableOpacity>
+                    {renderTab('All')}
+                    {renderTab('Communication')}
+                    {renderTab('Intimacy')}
                 </View>
                 <FlatList
                     data={games}
@@ -52,24 +62,49 @@ const GameLibraryScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#1E1022' },
+    safeArea: { flex: 1, backgroundColor: '#2A002A' },
     container: { flex: 1 },
     header: { paddingHorizontal: 16, paddingTop: 16 },
-    searchInput: { backgroundColor: '#2A1A31', color: '#fff', padding: 12, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
+    searchInput: {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        color: '#fff',
+        padding: 16,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 64, 129, 0.5)',
+        fontSize: 14,
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
+    },
     tabs: { flexDirection: 'row', justifyContent: 'space-around', padding: 16 },
-    tab: { color: 'rgba(255,255,255,0.6)', paddingVertical: 8 },
-    activeTab: { color: '#fc0c84', borderBottomWidth: 2, borderBottomColor: '#fc0c84' },
+    tab: { paddingVertical: 8, paddingHorizontal: 12 },
+    activeTab: { borderBottomWidth: 2, borderBottomColor: '#FF4081' },
+    tabText: { color: '#D1C4E9', fontWeight: 'bold', textTransform: 'uppercase' },
     grid: { paddingHorizontal: 8 },
-    card: { flex: 1, margin: 8, backgroundColor: '#2A1A31', borderRadius: 12, overflow: 'hidden', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    cardImage: { height: 120, justifyContent: 'flex-end' },
-    imageOverlay: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 },
+    card: {
+        flex: 1,
+        margin: 8,
+        borderRadius: 20,
+        overflow: 'hidden',
+        borderWidth: 1,
+        borderColor: 'rgba(255, 64, 129, 0.5)'
+    },
+    cardImage: { height: 200, justifyContent: 'flex-end' },
+    imageOverlay: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, borderRadius: 20 },
     cardContent: { padding: 12 },
-    cardTitle: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-    cardInfo: { color: 'rgba(255,255,255,0.5)', fontSize: 12, marginTop: 4 },
-    statusBadge: { position: 'absolute', top: 8, right: 8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 20 },
-    newBadge: { backgroundColor: '#FFC107' },
-    completedBadge: { backgroundColor: '#fc0c84' },
-    statusText: { color: '#000', fontSize: 10, fontWeight: 'bold' },
+    cardTitle: { color: '#fff', fontWeight: 'bold', fontSize: 16, textTransform: 'uppercase' },
+    cardInfo: { color: '#D1C4E9', fontSize: 10, marginTop: 4, textTransform: 'uppercase' },
+    statusBadge: {
+        position: 'absolute',
+        top: 12,
+        right: 12,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 15
+    },
+    newBadge: { backgroundColor: '#FFD700' },
+    completedBadge: { backgroundColor: '#FF4081' },
+    statusText: { color: '#000', fontSize: 10, fontWeight: 'bold', textTransform: 'uppercase' },
 });
 
 export default GameLibraryScreen;

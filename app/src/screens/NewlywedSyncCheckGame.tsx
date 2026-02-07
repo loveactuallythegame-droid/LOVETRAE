@@ -9,7 +9,7 @@ const PlayerCard = ({ partner, name, answer, color }) => (
         <View style={styles.playerHeader}>
             <View style={[styles.avatar, { borderColor: color }]} />
             <View>
-                <Text style={[styles.partnerLabel, { color }]}>{`Partner ${partner}`}</Text>
+                <Text style={[styles.partnerLabel, { color }]}>{`PARTNER ${partner}`}</Text>
                 <Text style={styles.playerName}>{name}</Text>
             </View>
         </View>
@@ -21,31 +21,31 @@ const NewlywedSyncCheckGame = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#102220', '#230f16']} style={styles.background} />
+            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
             <ScrollView contentContainerStyle={styles.scrollContent}>
 
-                <Text style={styles.questionText}>Where is your partner's 'Happy Place'?</Text>
+                <Text style={styles.questionText}>WHERE IS YOUR PARTNER'S 'HAPPY PLACE'?</Text>
 
                 <View style={styles.syncArea}>
-                    <PlayerCard partner="A" name="Alex Chen" answer="The Beach" color="#ff005e" />
+                    <PlayerCard partner="A" name="ALEX CHEN" answer="The Beach" color="#FF4081" />
                     <View style={styles.matchIndicator}>
                         <Text style={styles.matchPercent}>94%</Text>
-                        <Text style={styles.matchLabel}>Match</Text>
+                        <Text style={styles.matchLabel}>MATCH</Text>
                     </View>
-                    <PlayerCard partner="B" name="Jordan Smith" answer="Under a palm tree" color="#a855f7" />
+                    <PlayerCard partner="B" name="JORDAN SMITH" answer="Under a palm tree" color="#E040FB" />
                 </View>
 
                 <View style={styles.critiqueContainer}>
-                    <Text style={styles.critiqueTitle}>The Expert's Take</Text>
+                    <Text style={styles.critiqueTitle}>THE EXPERT'S TAKE</Text>
                     <Text style={styles.critiqueText}>"Technically a match, but let's be real—Alex wants the mojito and Jordan just wants the shade."</Text>
                 </View>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.reviewButton}>
-                        <Text style={styles.reviewButtonText}>Review Logic</Text>
+                        <Text style={styles.reviewButtonText}>REVIEW LOGIC</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.nextButton}>
-                        <Text style={styles.nextButtonText}>Next Question</Text>
+                        <Text style={styles.nextButtonText}>NEXT QUESTION</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -55,28 +55,28 @@ const NewlywedSyncCheckGame = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#102220' },
+    container: { flex: 1, backgroundColor: '#2A002A' },
     background: { ...StyleSheet.absoluteFillObject },
     scrollContent: { padding: 16, alignItems: 'center' },
-    questionText: { color: '#FFF', fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginVertical: 24 },
+    questionText: { color: '#FFF', fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginVertical: 24, textTransform: 'uppercase' },
     syncArea: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '100%', paddingHorizontal: 8 },
-    playerCard: { flex: 1, backgroundColor: 'rgba(28,39,38,0.8)', padding: 16, borderRadius: 16, borderWidth: 1, minHeight: 180, marginHorizontal: 8 },
+    playerCard: { flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.1)', padding: 16, borderRadius: 16, borderWidth: 1, minHeight: 180, marginHorizontal: 8 },
     playerHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
-    avatar: { width: 40, height: 40, borderRadius: 20, borderWidth: 2, marginRight: 8 },
+    avatar: { width: 40, height: 40, borderRadius: 20, borderWidth: 2 },
     partnerLabel: { textTransform: 'uppercase', fontSize: 10, fontWeight: 'bold' },
-    playerName: { color: '#FFF', fontWeight: 'bold' },
-    answerText: { color: '#FFF', fontSize: 24, fontWeight: 'bold', fontStyle: 'italic', textAlign: 'center' },
-    matchIndicator: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#230f16', justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#ff005e' },
-    matchPercent: { color: '#ff005e', fontSize: 28, fontWeight: 'bold' },
-    matchLabel: { color: '#ff005e', textTransform: 'uppercase', fontSize: 10, fontWeight: 'bold' },
-    critiqueContainer: { backgroundColor: 'rgba(255,255,255,0.1)', padding: 16, borderRadius: 16, marginTop: 24, marginHorizontal: 16 },
-    critiqueTitle: { color: '#f472b6', textTransform: 'uppercase', fontSize: 10, fontWeight: 'bold', marginBottom: 8 },
-    critiqueText: { color: 'rgba(255,255,255,0.8)', fontStyle: 'italic' },
+    playerName: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' },
+    answerText: { color: '#FFF', fontSize: 24, fontWeight: 'bold', fontStyle: 'italic', textAlign: 'center', textTransform: 'uppercase' },
+    matchIndicator: { width: 100, height: 100, borderRadius: 50, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#FF4081' },
+    matchPercent: { color: '#FF4081', fontSize: 28, fontWeight: 'bold' },
+    matchLabel: { color: '#FF4081', textTransform: 'uppercase', fontSize: 10, fontWeight: 'bold' },
+    critiqueContainer: { backgroundColor: 'rgba(255,255,255,0.1)', padding: 16, borderRadius: 16, marginTop: 24, marginHorizontal: 16, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
+    critiqueTitle: { color: '#FF4081', textTransform: 'uppercase', fontSize: 10, fontWeight: 'bold', marginBottom: 8 },
+    critiqueText: { color: '#D1C4E9', fontStyle: 'italic' },
     buttonContainer: { flexDirection: 'row', marginTop: 24, width: '100%', justifyContent: 'space-around' },
-    reviewButton: { backgroundColor: 'rgba(255,255,255,0.1)', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 12 },
-    reviewButtonText: { color: '#FFF', fontWeight: 'bold' },
-    nextButton: { backgroundColor: '#ff005e', paddingVertical: 16, paddingHorizontal: 32, borderRadius: 12 },
-    nextButtonText: { color: '#102220', fontWeight: 'bold' },
+    reviewButton: { backgroundColor: 'rgba(255,255,255,0.1)', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
+    reviewButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' },
+    nextButton: { backgroundColor: '#FF4081', paddingVertical: 16, paddingHorizontal: 32, borderRadius: 20 },
+    nextButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' },
 });
 
 export default NewlywedSyncCheckGame;

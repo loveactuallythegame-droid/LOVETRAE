@@ -2,16 +2,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons } from '@expo/vector-icons';
 
 const Star = ({ filled, onPress }) => (
     <TouchableOpacity onPress={onPress}>
-        <MaterialIcons
-            name={filled ? 'star' : 'star-border'}
-            size={50}
-            color={filled ? '#FFD700' : '#rgba(255,255,255,0.2)'}
-            style={styles.star}
-        />
+        <Text style={[styles.star, {opacity: filled ? 1 : 0.2}]}>★</Text>
     </TouchableOpacity>
 );
 
@@ -21,9 +15,9 @@ const RateTheExperienceScreen = () => {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#230f19', '#1c1417']} style={styles.container}>
+            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
                 <View style={styles.contentContainer}>
-                    <Text style={styles.title}>Rate the Experience</Text>
+                    <Text style={styles.title}>RATE THE EXPERIENCE</Text>
                     <Text style={styles.subtitle}>Your feedback helps us bring more love to the universe.</Text>
 
                     <View style={styles.starContainer}>
@@ -38,8 +32,8 @@ const RateTheExperienceScreen = () => {
 
                     <TextInput
                         style={styles.textInput}
-                        placeholder="Tell us more about your session... (optional)"
-                        placeholderTextColor="rgba(255,255,255,0.3)"
+                        placeholder="TELL US MORE ABOUT YOUR SESSION... (OPTIONAL)"
+                        placeholderTextColor="#D1C4E9"
                         multiline
                         value={feedback}
                         onChangeText={setFeedback}
@@ -47,18 +41,18 @@ const RateTheExperienceScreen = () => {
 
                     <TouchableOpacity style={styles.submitButton}>
                        <LinearGradient
-                            colors={['#ee2b6c', '#8b5cf6']}
+                            colors={['#FF4081', '#E040FB']}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 0 }}
                             style={styles.buttonGradient}
                         >
-                        <Text style={styles.submitButtonText}>Submit Feedback</Text>
-                        <MaterialIcons name="send" size={20} color="#fff" />
+                        <Text style={styles.submitButtonText}>SUBMIT FEEDBACK</Text>
+                        <Text style={{fontSize: 20}}>🚀</Text>
                         </LinearGradient>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
-                        <Text style={styles.maybeLaterText}>Maybe later</Text>
+                        <Text style={styles.maybeLaterText}>MAYBE LATER</Text>
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
@@ -67,7 +61,7 @@ const RateTheExperienceScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#12080b' },
+    safeArea: { flex: 1, backgroundColor: '#2A002A' },
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -77,12 +71,12 @@ const styles = StyleSheet.create({
     contentContainer: {
         width: '100%',
         maxWidth: 640,
-        backgroundColor: 'rgba(28, 20, 23, 0.8)',
-        borderRadius: 16,
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: 20,
         padding: 24,
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: 'rgba(238, 43, 108, 0.2)',
+        borderColor: 'rgba(255, 64, 129, 0.5)',
     },
     title: {
         color: '#fff',
@@ -90,35 +84,40 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 8,
         textAlign: 'center',
+        textTransform: 'uppercase',
     },
     subtitle: {
-        color: 'rgba(255,255,255,0.7)',
+        color: '#D1C4E9',
         fontSize: 16,
         marginBottom: 24,
         textAlign: 'center',
+        fontWeight: 'bold',
     },
     starContainer: {
         flexDirection: 'row',
         marginBottom: 24,
     },
     star: {
+        fontSize: 50,
+        color: '#FFD700',
+        textShadowColor: '#FFD700',
+        textShadowRadius: 8,
         marginHorizontal: 5,
-        ...Platform.select({
-            web: { textShadow: '0 0 15px rgba(255, 215, 0, 0.8)' },
-        }),
     },
     textInput: {
         width: '100%',
         minHeight: 120,
-        backgroundColor: 'rgba(255,255,255,0.05)',
+        backgroundColor: 'rgba(0,0,0,0.3)',
         borderRadius: 16,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.1)',
+        borderColor: 'rgba(255, 64, 129, 0.5)',
         padding: 16,
         color: '#fff',
         fontSize: 16,
         textAlignVertical: 'top',
         marginBottom: 24,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
     },
     submitButton: {
         width: '100%',
@@ -138,10 +137,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginRight: 8,
+        textTransform: 'uppercase',
     },
     maybeLaterText: {
-        color: 'rgba(255,255,255,0.4)',
+        color: '#D1C4E9',
         fontSize: 14,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
     },
 });
 

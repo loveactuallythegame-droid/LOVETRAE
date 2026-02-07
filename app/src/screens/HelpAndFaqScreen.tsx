@@ -9,9 +9,9 @@ const FaqItem = ({ question, answer, icon, color }) => {
     return (
         <View style={styles.faqItemContainer}>
             <TouchableOpacity onPress={() => setIsOpen(!isOpen)} style={styles.faqQuestionRow}>
-                 <Text style={{color, marginRight: 8, fontSize: 20}}>/* Icon */</Text>
+                 <Text style={{color, marginRight: 8, fontSize: 20}}>{icon}</Text>
                 <Text style={styles.faqQuestion}>{question}</Text>
-                {/* Arrow Icon */}
+                <Text>{isOpen ? '▲' : '▼'}</Text>
             </TouchableOpacity>
             {isOpen && <Text style={styles.faqAnswer}>{answer}</Text>}
         </View>
@@ -21,79 +21,72 @@ const FaqItem = ({ question, answer, icon, color }) => {
 const HelpAndFaqScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
-             <LinearGradient colors={['#102222', '#0d1a1a']} style={styles.background} />
+             <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <Text style={styles.title}>Help & FAQ</Text>
+                <Text style={styles.title}>HELP & FAQ</Text>
                 <Text style={styles.subtitle}>Find answers in the stars. Our cosmic support guide is here to help.</Text>
 
                 <View style={styles.searchBar}>
-                    {/* Search Icon */}
-                    <TextInput 
-                        placeholder="Search for answers..."
-                        placeholderTextColor="#94a3b8"
+                    <TextInput
+                        placeholder="SEARCH FOR ANSWERS..."
+                        placeholderTextColor="#D1C4E9"
                         style={styles.searchInput}
                     />
                 </View>
 
-                <View style={styles.categoryGrid}>
-                    {/* Category buttons would be mapped here */}
-                </View>
-
                 <FaqItem 
-                    question="How to link your partner?"
+                    question="HOW TO LINK YOUR PARTNER?"
                     answer="Linking your partner is easy! Go to Settings > Profile > Link Partner. You will receive a unique cosmic code to share."
-                    icon="link"
-                    color="#fc0c84"
+                    icon="🔗"
+                    color="#FF4081"
                 />
                 <FaqItem 
-                    question="What is SOS Mode?"
+                    question="WHAT IS SOS MODE?"
                     answer="SOS Mode is a specialized de-escalation tool designed for high-tension moments. It offers communication prompts and breathing exercises."
-                    icon="warning"
-                    color="#fbbf24"
+                    icon="🆘"
+                    color="#FFD700"
                 />
                  <FaqItem 
-                    question="Why aren't our daily quests syncing?"
+                    question="WHY AREN'T OUR DAILY QUESTS SYNCING?"
                     answer="Ensure both users are on the latest app version and connected to a stable network. If the issue persists, try restarting the app."
-                    icon="sync_alt"
-                    color="#4ade80"
+                    icon="🔄"
+                    color="#00FFFF"
                 />
 
                 <View style={styles.contactSection}>
-                    <Text style={styles.contactTitle}>Still orbiting the answer?</Text>
+                    <Text style={styles.contactTitle}>STILL ORBITING THE ANSWER?</Text>
                     <Text style={styles.contactSubtitle}>Our support team is active 24/7.</Text>
                     <TouchableOpacity style={styles.contactButton}>
-                        <Text style={styles.contactButtonText}>Email Support</Text>
+                        <Text style={styles.contactButtonText}>EMAIL SUPPORT</Text>
                     </TouchableOpacity>
                 </View>
 
             </ScrollView>
-            {/* Floating chat button fixed at the bottom */}
             <TouchableOpacity style={styles.chatButton}>
-                {/* Chat Icon */}
+                <Text style={{fontSize: 30}}>💬</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#0d1a1a' },
+    container: { flex: 1, backgroundColor: '#2A002A' },
     background: { ...StyleSheet.absoluteFillObject },
     scrollContainer: { padding: 24 },
-    title: { fontSize: 36, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 8 },
-    subtitle: { color: '#94a3b8', textAlign: 'center', marginBottom: 24, maxWidth: 300, alignSelf: 'center' },
-    searchBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, paddingHorizontal: 16, marginBottom: 24 },
-    searchInput: { flex: 1, color: '#FFF', height: 50 },
-    categoryGrid: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 24 },
-    faqItemContainer: { backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)', marginBottom: 12 },
-    faqQuestionRow: { flexDirection: 'row', alignItems: 'center', padding: 16, justifyContent: 'space-between' },
-    faqQuestion: { color: '#FFF', fontWeight: '600', flex: 1 },
-    faqAnswer: { color: '#94a3b8', paddingHorizontal: 16, paddingBottom: 16 },
-    contactSection: { marginTop: 32, padding: 24, backgroundColor: 'rgba(252, 12, 132, 0.05)', borderRadius: 16, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(252, 12, 132, 0.2)' },
-    contactTitle: { fontSize: 20, fontWeight: 'bold', color: '#FFF', marginBottom: 4 },
-    contactSubtitle: { color: '#94a3b8', marginBottom: 16 },
-    contactButton: { backgroundColor: '#fc0c84', paddingVertical: 12, paddingHorizontal: 24, borderRadius: 24 },
-    contactButtonText: { color: '#0d1a1a', fontWeight: 'bold' },
-    chatButton: { position: 'absolute', bottom: 24, right: 24, width: 64, height: 64, borderRadius: 32, backgroundColor: '#fc0c84', justifyContent: 'center', alignItems: 'center' },
+    title: { fontSize: 36, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 8, textTransform: 'uppercase' },
+    subtitle: { color: '#D1C4E9', textAlign: 'center', marginBottom: 24, maxWidth: 300, alignSelf: 'center' },
+    searchBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 20, paddingHorizontal: 16, marginBottom: 24, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
+    searchInput: { flex: 1, color: '#FFF', height: 50, fontWeight: 'bold', textTransform: 'uppercase' },
+    faqItemContainer: { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', marginBottom: 12, padding: 16 },
+    faqQuestionRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    faqQuestion: { color: '#FFF', fontWeight: 'bold', flex: 1, textTransform: 'uppercase' },
+    faqAnswer: { color: '#D1C4E9', marginTop: 8 },
+    contactSection: { marginTop: 32, padding: 24, backgroundColor: 'rgba(255, 64, 129, 0.2)', borderRadius: 20, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
+    contactTitle: { fontSize: 20, fontWeight: 'bold', color: '#FFF', marginBottom: 4, textTransform: 'uppercase' },
+    contactSubtitle: { color: '#D1C4E9', marginBottom: 16 },
+    contactButton: { backgroundColor: '#FF4081', paddingVertical: 12, paddingHorizontal: 24, borderRadius: 20 },
+    contactButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' },
+    chatButton: { position: 'absolute', bottom: 24, right: 24, width: 64, height: 64, borderRadius: 32, backgroundColor: '#FF4081', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.5)' },
 });
 
 export default HelpAndFaqScreen;

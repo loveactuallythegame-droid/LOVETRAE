@@ -2,27 +2,24 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons } from '@expo/vector-icons';
-
-// A library like react-native-svg would be needed for the line charts
 
 const TrustThermometer = () => {
     const trustLevel = 80;
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#120810', '#2a1120']} style={styles.container}>
+            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
-                    <Text style={styles.headerTitle}>Trust Thermometer</Text>
+                    <Text style={styles.headerTitle}>TRUST THERMOMETER</Text>
                     <Text style={styles.headerSubtitle}>Visualizing your connection's foundation.</Text>
 
                     <View style={styles.mainContent}>
                         {/* Thermometer Display */}
                         <View style={styles.thermometerContainer}>
                             <View style={styles.thermometerGlass}>
-                                <LinearGradient colors={['#00f2fe', '#4facfe', '#f093fb', '#ee2b8c']} style={[styles.thermometerFill, { height: `${trustLevel}%` }]} />
+                                <LinearGradient colors={['#FF4081', '#E040FB']} style={[styles.thermometerFill, { height: `${trustLevel}%` }]} />
                             </View>
-                            <View style={styles.thermometerBase}><MaterialIcons name="favorite" size={24} color="#ee2b8c" /></View>
+                            <View style={styles.thermometerBase}><Text>❤️</Text></View>
                         </View>
 
                         {/* Info Cards */}
@@ -33,16 +30,16 @@ const TrustThermometer = () => {
                                 <Text style={styles.levelChange}>+5% from last week</Text>
                             </View>
                              <View style={styles.trendCard}>
-                                <Text style={styles.trendTitle}>Synchronization</Text>
+                                <Text style={styles.trendTitle}>SYNCHRONIZATION</Text>
                                 <Text style={styles.trendBody}>The gap in perception has narrowed by 12% this week.</Text>
                             </View>
                         </View>
                     </View>
 
                     <View style={styles.questCard}>
-                         <MaterialIcons name="explore" size={24} color="#ee2b8c" />
+                         <Text style={{fontSize: 24}}>🚀</Text>
                         <View style={{flex: 1}}>
-                            <Text style={styles.questTitle}>Recommended: The Deep Dive</Text>
+                            <Text style={styles.questTitle}>RECOMMENDED: THE DEEP DIVE</Text>
                             <Text style={styles.questSubtitle}>A vulnerability exercise to reach 85% trust.</Text>
                         </View>
                     </View>
@@ -53,27 +50,27 @@ const TrustThermometer = () => {
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#120810' },
+    safeArea: { flex: 1, backgroundColor: '#2A002A' },
     container: { flex: 1 },
     scrollView: { padding: 24 },
-    headerTitle: { color: '#fff', fontSize: 28, fontWeight: 'bold' },
-    headerSubtitle: { color: '#c992ad', fontSize: 16, marginBottom: 32 },
+    headerTitle: { color: '#fff', fontSize: 28, fontWeight: 'bold', textTransform: 'uppercase', textAlign: 'center' },
+    headerSubtitle: { color: '#D1C4E9', fontSize: 16, marginBottom: 32, textAlign: 'center' },
     mainContent: { flexDirection: 'row', gap: 16, alignItems: 'center', justifyContent: 'space-around', marginBottom: 32 },
     thermometerContainer: { alignItems: 'center', width: 80 },
-    thermometerGlass: { width: 50, height: 250, backgroundColor: 'rgba(0,0,0,0.2)', borderWidth: 2, borderColor: 'rgba(255,255,255,0.1)', borderRadius: 25, justifyContent: 'flex-end', overflow: 'hidden' },
+    thermometerGlass: { width: 50, height: 250, backgroundColor: 'rgba(0,0,0,0.3)', borderWidth: 2, borderColor: 'rgba(255, 64, 129, 0.5)', borderRadius: 25, justifyContent: 'flex-end', overflow: 'hidden' },
     thermometerFill: { width: '100%' },
-    thermometerBase: { width: 60, height: 60, borderRadius: 30, backgroundColor: '#1c0d15', borderWidth: 2, borderColor: 'rgba(255,255,255,0.1)', justifyContent: 'center', alignItems: 'center', marginTop: -10 },
+    thermometerBase: { width: 60, height: 60, borderRadius: 30, backgroundColor: 'rgba(255, 255, 255, 0.1)', borderWidth: 2, borderColor: 'rgba(255, 64, 129, 0.5)', justifyContent: 'center', alignItems: 'center', marginTop: -10 },
     infoContainer: { flex: 1, gap: 16 },
-    levelCard: { backgroundColor: 'rgba(28, 13, 21, 0.85)', padding: 16, borderRadius: 16, alignItems: 'center' },
-    levelLabel: { color: '#00f2fe', textTransform: 'uppercase', fontSize: 12 },
+    levelCard: { backgroundColor: 'rgba(255, 255, 255, 0.1)', padding: 16, borderRadius: 20, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
+    levelLabel: { color: '#FF4081', textTransform: 'uppercase', fontSize: 12, fontWeight: 'bold' },
     levelValue: { color: '#fff', fontSize: 40, fontWeight: 'bold' },
-    levelChange: { color: '#00f2fe', fontSize: 12 },
-    trendCard: { backgroundColor: 'rgba(28, 13, 21, 0.85)', padding: 16, borderRadius: 16 },
-    trendTitle: { color: '#fff', fontWeight: 'bold', marginBottom: 8 },
-    trendBody: { color: 'rgba(255,255,255,0.7)', fontSize: 12 },
-    questCard: { flexDirection: 'row', alignItems: 'center', gap: 16, backgroundColor: 'rgba(238, 43, 140, 0.1)', borderWidth: 1, borderColor: 'rgba(238, 43, 140, 0.2)', padding: 16, borderRadius: 16 },
-    questTitle: { color: '#fff', fontWeight: 'bold' },
-    questSubtitle: { color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 4 },
+    levelChange: { color: '#FF4081', fontSize: 12, fontWeight: 'bold' },
+    trendCard: { backgroundColor: 'rgba(255, 255, 255, 0.1)', padding: 16, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
+    trendTitle: { color: '#fff', fontWeight: 'bold', marginBottom: 8, textTransform: 'uppercase' },
+    trendBody: { color: '#D1C4E9', fontSize: 12 },
+    questCard: { flexDirection: 'row', alignItems: 'center', gap: 16, backgroundColor: 'rgba(255, 64, 129, 0.1)', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.2)', padding: 16, borderRadius: 20 },
+    questTitle: { color: '#fff', fontWeight: 'bold', textTransform: 'uppercase' },
+    questSubtitle: { color: '#D1C4E9', fontSize: 12, marginTop: 4 },
 });
 
 export default TrustThermometer;

@@ -9,9 +9,9 @@ const LoginAndSignUpScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#0f0a0c', '#230f19']} style={styles.background} />
+            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                <Text style={styles.title}>Navigate the stars of your relationship.</Text>
+                <Text style={styles.title}>NAVIGATE THE STARS OF YOUR RELATIONSHIP.</Text>
                 <Text style={styles.subtitle}>Sync your frequencies to begin the journey.</Text>
 
                 <View style={styles.glassPanel}>
@@ -20,38 +20,38 @@ const LoginAndSignUpScreen = () => {
                             style={[styles.toggleButton, authMode === 'Login' && styles.toggleButtonActive]}
                             onPress={() => setAuthMode('Login')}
                         >
-                            <Text style={[styles.toggleText, authMode === 'Login' && styles.toggleTextActive]}>Login</Text>
+                            <Text style={[styles.toggleText, authMode === 'Login' && styles.toggleTextActive]}>LOGIN</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
                             style={[styles.toggleButton, authMode === 'SignUp' && styles.toggleButtonActive]}
                              onPress={() => setAuthMode('SignUp')}
                         >
-                            <Text style={[styles.toggleText, authMode === 'SignUp' && styles.toggleTextActive]}>Sign Up</Text>
+                            <Text style={[styles.toggleText, authMode === 'SignUp' && styles.toggleTextActive]}>SIGN UP</Text>
                         </TouchableOpacity>
                     </View>
 
                     <TextInput
                         style={styles.input}
-                        placeholder="Your Cosmic Handle"
-                        placeholderTextColor="rgba(255,255,255,0.2)"
+                        placeholder="YOUR COSMIC HANDLE"
+                        placeholderTextColor="#D1C4E9"
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Secret Frequency"
-                        placeholderTextColor="rgba(255,255,255,0.2)"
+                        placeholder="SECRET FREQUENCY"
+                        placeholderTextColor="#D1C4E9"
                         secureTextEntry
                     />
 
                     <TouchableOpacity style={styles.submitButton}>
-                        <Text style={styles.submitButtonText}>Initiate Connection</Text>
+                        <Text style={styles.submitButtonText}>INITIATE CONNECTION</Text>
                     </TouchableOpacity>
 
-                    <Text style={styles.dividerText}>or bridge via</Text>
+                    <Text style={styles.dividerText}>OR BRIDGE VIA</Text>
 
                     <View style={styles.socialContainer}>
-                        <TouchableOpacity style={[styles.socialButton, {backgroundColor: '#FF9500'}]}><Text style={styles.socialButtonText}>Apple</Text></TouchableOpacity>
-                        <TouchableOpacity style={[styles.socialButton, {backgroundColor: '#008080'}]}><Text style={styles.socialButtonText}>Google</Text></TouchableOpacity>
-                        <TouchableOpacity style={[styles.socialButton, {backgroundColor: '#ee2b8c'}]}><Text style={styles.socialButtonText}>Email</Text></TouchableOpacity>
+                        <TouchableOpacity style={[styles.socialButton, {backgroundColor: '#FF9500'}]}><Text style={styles.socialButtonText}>APPLE</Text></TouchableOpacity>
+                        <TouchableOpacity style={[styles.socialButton, {backgroundColor: '#008080'}]}><Text style={styles.socialButtonText}>GOOGLE</Text></TouchableOpacity>
+                        <TouchableOpacity style={[styles.socialButton, {backgroundColor: '#FF4081'}]}><Text style={styles.socialButtonText}>EMAIL</Text></TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>
@@ -60,24 +60,24 @@ const LoginAndSignUpScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#230f19' },
+    container: { flex: 1, backgroundColor: '#2A002A' },
     background: { ...StyleSheet.absoluteFillObject },
     scrollContent: { alignItems: 'center', padding: 24 },
-    title: { fontSize: 42, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 8 },
-    subtitle: { color: 'rgba(255,255,255,0.6)', textAlign: 'center', fontSize: 18, marginBottom: 32 },
-    glassPanel: { backgroundColor: 'rgba(39, 28, 33, 0.6)', borderRadius: 16, padding: 24, width: '100%', maxWidth: 480 },
-    toggleContainer: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: 8, padding: 4, marginBottom: 24 },
-    toggleButton: { flex: 1, paddingVertical: 10, borderRadius: 6 },
-    toggleButtonActive: { backgroundColor: '#fc0c84' },
-    toggleText: { color: 'rgba(255,255,255,0.5)', textAlign: 'center', fontWeight: 'bold' },
+    title: { fontSize: 42, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 8, textTransform: 'uppercase' },
+    subtitle: { color: '#D1C4E9', textAlign: 'center', fontSize: 18, marginBottom: 32 },
+    glassPanel: { backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 20, padding: 24, width: '100%', maxWidth: 480, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
+    toggleContainer: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 20, padding: 4, marginBottom: 24 },
+    toggleButton: { flex: 1, paddingVertical: 10, borderRadius: 16 },
+    toggleButtonActive: { backgroundColor: '#FF4081' },
+    toggleText: { color: '#D1C4E9', textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase' },
     toggleTextActive: { color: '#FFF' },
-    input: { backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: 8, padding: 16, color: '#FFF', marginBottom: 16, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    submitButton: { backgroundColor: '#fc0c84', padding: 16, borderRadius: 8, alignItems: 'center', marginTop: 8, shadowColor: '#fc0c84', shadowRadius: 20, shadowOpacity: 0.4 },
+    input: { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: 16, color: '#FFF', marginBottom: 16, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', fontWeight: 'bold', textTransform: 'uppercase' },
+    submitButton: { backgroundColor: '#FF4081', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 8, shadowColor: '#FF4081', shadowRadius: 20, shadowOpacity: 0.4 },
     submitButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' },
-    dividerText: { color: 'rgba(255,255,255,0.4)', textAlign: 'center', marginVertical: 24, textTransform: 'uppercase' },
-    socialContainer: { flexDirection: 'row', justifyContent: 'space-between' },
-    socialButton: { flex: 1, padding: 16, borderRadius: 8, alignItems: 'center', marginHorizontal: 4 },
-    socialButtonText: { color: '#FFF', fontWeight: 'bold' }
+    dividerText: { color: '#D1C4E9', textAlign: 'center', marginVertical: 24, textTransform: 'uppercase', fontWeight: 'bold' },
+    socialContainer: { flexDirection: 'row', justifyContent: 'space-between', gap: 8 },
+    socialButton: { flex: 1, padding: 16, borderRadius: 12, alignItems: 'center' },
+    socialButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' }
 });
 
 export default LoginAndSignUpScreen;

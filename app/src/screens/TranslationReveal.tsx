@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons } from '@expo/vector-icons';
 
 const TranslationReveal = () => {
 
@@ -12,7 +11,7 @@ const TranslationReveal = () => {
 
     return (
         <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#230f19', '#1e1b24']} style={styles.container}>
+            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
                 <ScrollView contentContainerStyle={styles.contentContainer}>
                     <Text style={styles.phaseTitle}>WHEN YOU SAID...</Text>
                     <Text style={styles.originalStatement}>"{originalStatement}"</Text>
@@ -22,16 +21,16 @@ const TranslationReveal = () => {
                         <Text style={styles.trueMeaning}>{trueMeaning}</Text>
 
                         <View style={styles.insightContainer}>
-                            <MaterialIcons name="psychology" size={24} color="#fc0c84" />
+                            <Text style={{fontSize: 24}}>💡</Text>
                             <Text style={styles.insightText}>{insight}</Text>
                         </View>
                     </View>
 
                     <TouchableOpacity style={styles.actionButton}>
-                        <Text style={styles.actionButtonText}>View Action Plan</Text>
-                        <MaterialIcons name="arrow-forward" size={22} color="#000" />
+                        <Text style={styles.actionButtonText}>VIEW ACTION PLAN</Text>
+                        <Text style={{fontSize: 22}}>▶️</Text>
                     </TouchableOpacity>
-                    <Text style={styles.nextStepText}>Next: Discover 3 ways to respond</Text>
+                    <Text style={styles.nextStepText}>NEXT: DISCOVER 3 WAYS TO RESPOND</Text>
                 </ScrollView>
             </LinearGradient>
         </SafeAreaView>
@@ -39,18 +38,18 @@ const TranslationReveal = () => {
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#230f19' },
+    safeArea: { flex: 1, backgroundColor: '#2A002A' },
     container: { flex: 1 },
     contentContainer: { flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 24 },
-    phaseTitle: { color: '#fc0c84', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 8, fontSize: 12 },
-    originalStatement: { color: 'rgba(255, 255, 255, 0.7)', fontSize: 22, fontStyle: 'italic', textAlign: 'center', marginBottom: 32 },
+    phaseTitle: { color: '#FF4081', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 8, fontSize: 12 },
+    originalStatement: { color: '#D1C4E9', fontSize: 22, fontStyle: 'italic', textAlign: 'center', marginBottom: 32 },
     revealCard: {
-        backgroundColor: '#1e1b24',
+        backgroundColor: 'rgba(255,255,255,0.1)',
         borderRadius: 20,
         padding: 24,
         borderWidth: 1,
-        borderColor: 'rgba(127, 19, 236, 0.3)',
-        shadowColor: "#7f13ec",
+        borderColor: 'rgba(255, 64, 129, 0.5)',
+        shadowColor: "#E040FB",
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.2,
         shadowRadius: 20,
@@ -58,25 +57,25 @@ const styles = StyleSheet.create({
         width: '100%',
         marginBottom: 32,
     },
-    revealTitle: { color: '#fc0c84', textTransform: 'uppercase', fontWeight: 'bold', letterSpacing: 1.5, fontSize: 12, marginBottom: 16 },
+    revealTitle: { color: '#FF4081', textTransform: 'uppercase', fontWeight: 'bold', letterSpacing: 1.5, fontSize: 12, marginBottom: 16 },
     trueMeaning: { color: '#fff', fontSize: 26, fontWeight: 'bold', lineHeight: 34, marginBottom: 24 },
-    insightContainer: { flexDirection: 'row', alignItems: 'flex-start', paddingTop: 16, borderTopWidth: 1, borderTopColor: 'rgba(255, 255, 255, 0.1)' },
-    insightText: { color: 'rgba(255, 255, 255, 0.6)', fontSize: 14, marginLeft: 12, flex: 1 },
+    insightContainer: { flexDirection: 'row', alignItems: 'flex-start', paddingTop: 16, borderTopWidth: 1, borderTopColor: 'rgba(255, 64, 129, 0.5)' },
+    insightText: { color: '#D1C4E9', fontSize: 14, marginLeft: 12, flex: 1 },
     actionButton: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: 18,
         paddingHorizontal: 32,
-        borderRadius: 16,
-        backgroundColor: '#ffd700', 
-        shadowColor: '#ff8c00',
+        borderRadius: 20,
+        backgroundColor: '#FFD700',
+        shadowColor: '#FFD700',
         shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.3,
         shadowRadius: 20,
         elevation: 8
     },
-    actionButtonText: { color: '#000', fontSize: 18, fontWeight: 'bold', marginRight: 8 },
-    nextStepText: { color: 'rgba(255, 255, 255, 0.5)', marginTop: 16, fontSize: 12 }
+    actionButtonText: { color: '#000', fontSize: 18, fontWeight: 'bold', marginRight: 8, textTransform: 'uppercase' },
+    nextStepText: { color: '#D1C4E9', marginTop: 16, fontSize: 12, fontWeight: 'bold', textTransform: 'uppercase' }
 });
 
 export default TranslationReveal;
