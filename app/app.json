@@ -8,7 +8,10 @@
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "scheme": "lovetrae",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "backgroundColor": "#0f0a0c",
     "primaryColor": "#db147c",
     "plugins": [
@@ -27,12 +30,6 @@
           "image": "./assets/splash-icon.png",
           "backgroundColor": "#0f0a0c",
           "imageWidth": 200
-        }
-      ],
-      [
-        "expo-blur",
-        {
-          "faceBlur": true
         }
       ],
       [
