@@ -65,15 +65,15 @@ export default function TrustBank({ route, navigation }: any) {
   const inputArea = (
     <View style={{flex: 1}}>
       <GlassCard>
-        <Text variant="header" style={{alignSelf: 'center', color: balance >= 0 ? '#33DEA5' : '#E11637'}}>Balance: {balance}</Text>
-        <View style={{gap: 8, marginVertical: 16}}>
+        <Text variant="header" style={{alignSelf: 'center', color: balance >= 0 ? COLORS.mintGreen : COLORS.vibrantPink}}>Balance: {balance}</Text>
+        <View style={{gap: SPACING.sm, marginVertical: SPACING.md}}>
             <TextInput placeholder="Description (e.g. Kept promise)" style={styles.input} value={desc} onChangeText={setDesc} />
             <TextInput placeholder="Amount (1-100)" keyboardType="numeric" style={styles.input} value={amount} onChangeText={setAmount} />
-            <View style={{flexDirection: 'row', gap: 16, justifyContent: 'center'}}>
-                <SquishyButton onPress={() => addTransaction('deposit')} style={[styles.btn, {backgroundColor: '#33DEA5'}]}>
+            <View style={{flexDirection: 'row', gap: SPACING.md, justifyContent: 'center'}}>
+                <SquishyButton onPress={() => addTransaction('deposit')} style={[styles.btn, {backgroundColor: COLORS.mintGreen}]}>
                     <Text variant="header">Deposit</Text>
                 </SquishyButton>
-                <SquishyButton onPress={() => addTransaction('withdrawal')} style={[styles.btn, {backgroundColor: '#E11637'}]}>
+                <SquishyButton onPress={() => addTransaction('withdrawal')} style={[styles.btn, {backgroundColor: COLORS.vibrantPink}]}>
                     <Text variant="header">Withdraw</Text>
                 </SquishyButton>
             </View>
@@ -82,7 +82,7 @@ export default function TrustBank({ route, navigation }: any) {
             {transactions.map((t, i) => (
                 <View key={i} style={styles.row}>
                     <Text variant="body">{t.description}</Text>
-                    <Text variant="keyword" style={{color: t.type === 'deposit' ? '#33DEA5' : '#E11637'}}>
+                    <Text variant="keyword" style={{color: t.type === 'deposit' ? COLORS.mintGreen : COLORS.vibrantPink}}>
                         {t.type === 'deposit' ? '+' : '-'}{t.amount}
                     </Text>
                 </View>
@@ -96,7 +96,27 @@ export default function TrustBank({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  input: { backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 10, color: '#fff' },
-  btn: { paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.1)' }
+  input: {
+    backgroundColor: COLORS.inputFieldBg,
+    borderWidth: SIZES.inputBorderWidth,
+    borderColor: COLORS.vibrantPink,
+    borderRadius: SIZES.borderRadius,
+    padding: SPACING.md,
+    color: COLORS.textPrimary,
+    ...GLOWS.soft(COLORS.vibrantPink)
+  },
+  btn: {
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
+    borderRadius: SIZES.buttonBorderRadius,
+    minWidth: Math.max(moderateScale(100), 100), // Ensure minimum touch target
+    minHeight: Math.max(moderateScale(44), 44)
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: SPACING.xs,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.dividerLines
+  }
 });

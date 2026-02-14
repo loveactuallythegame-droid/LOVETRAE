@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
 import { Header } from '../../components/ui/Header';
 import { SquishyButton } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SIZES, SPACING, GLOWS, moderateScale } from '../../theme';
 
 const SIX_SECONDS = 6000;
 
@@ -85,7 +86,10 @@ const SixSecondKissScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#230f18', '#181116']} style={styles.background} />
+      <LinearGradient
+        colors={[COLORS.deepCosmicPurple, COLORS.richPlum]}
+        style={styles.background}
+      />
       <Header title="6-Second Kiss Challenge" />
       <View style={styles.content}>
         <Text style={styles.title}>6-Second Kiss Challenge</Text>

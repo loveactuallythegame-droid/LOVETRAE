@@ -1,13 +1,16 @@
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, TYPOGRAPHY, SIZES, SPACING, GLOWS, moderateScale } from '../theme';
 
 const LieDetectorLiteScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
+            <LinearGradient 
+                colors={[COLORS.deepCosmicPurple, COLORS.midPurple]} 
+                style={styles.background} 
+            />
             
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>LIE DETECTOR: LITE™</Text>
@@ -22,7 +25,12 @@ const LieDetectorLiteScreen = () => {
                         <Text style={styles.meterValue}>65%</Text>
                     </View>
                     <View style={styles.meterBarContainer}>
-                        <LinearGradient colors={['#FF4081', '#E040FB']} start={{x:0, y:0}} end={{x:1, y:0}} style={[styles.meterBar, {width: '65%'}]} />
+                        <LinearGradient 
+                            colors={[COLORS.vibrantPink, COLORS.softViolet]} 
+                            start={{x:0, y:0}} 
+                            end={{x:1, y:0}} 
+                            style={[styles.meterBar, {width: '65%'}]} 
+                        />
                     </View>
                     <Text style={styles.meterStatus}>HIGH PITCH VARIANCE DETECTED</Text>
 
@@ -38,22 +46,103 @@ const LieDetectorLiteScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
-    background: { ...StyleSheet.absoluteFillObject },
-    header: { padding: 16, borderBottomWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', backgroundColor: 'rgba(255,255,255,0.1)' },
-    headerTitle: { color: '#FFF', fontSize: 20, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase' },
-    mainContent: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
-    analysisTitle: { color: '#FFF', fontSize: 32, fontWeight: 'bold', marginBottom: 24, textTransform: 'uppercase' },
-    panel: { backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 24, padding: 24, width: '100%', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    meterContainer: { flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginBottom: 8 },
-    meterTitle: { color: '#00FFFF', textTransform: 'uppercase', fontWeight: 'bold' },
-    meterValue: { color: '#00FFFF', fontSize: 24, fontWeight: 'bold' },
-    meterBarContainer: { width: '100%', height: 40, backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: 12, padding: 4, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    meterBar: { height: '100%', borderRadius: 8 },
-    meterStatus: { color: '#00FFFF', fontStyle: 'italic', marginTop: 8, fontWeight: 'bold', textTransform: 'uppercase' },
-    recordButton: { width: 180, height: 180, borderRadius: 90, backgroundColor: '#FF4081', justifyContent: 'center', alignItems: 'center', marginVertical: 48, shadowColor: '#FF4081', shadowRadius: 25, shadowOpacity: 0.4 },
-    recordButtonText: { color: '#FFF', fontSize: 24, fontWeight: 'bold', letterSpacing: 4, textTransform: 'uppercase' },
-    recordSubtext: { color: '#D1C4E9', textTransform: 'uppercase', letterSpacing: 2, textAlign: 'center', fontWeight: 'bold' }
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.deepCosmicPurple 
+    },
+    background: { 
+        ...StyleSheet.absoluteFillObject 
+    },
+    header: { 
+        padding: SPACING.lg, 
+        borderBottomWidth: 1, 
+        borderColor: COLORS.vibrantPink, 
+        backgroundColor: COLORS.richPlum 
+    },
+    headerTitle: { 
+        ...TYPOGRAPHY.gameTitle,
+        color: COLORS.textPrimary, 
+        textAlign: 'center', 
+        textTransform: 'uppercase' 
+    },
+    mainContent: { 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        padding: SPACING.xl 
+    },
+    analysisTitle: { 
+        ...TYPOGRAPHY.header,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.xl, 
+        textTransform: 'uppercase' 
+    },
+    panel: { 
+        backgroundColor: COLORS.inputFieldBg, 
+        borderRadius: SIZES.cardBorderRadius, 
+        padding: SPACING.xl, 
+        width: '90%', 
+        alignItems: 'center', 
+        borderWidth: SIZES.inputBorderWidth, 
+        borderColor: COLORS.vibrantPink,
+        ...GLOWS.soft(COLORS.vibrantPink)
+    },
+    meterContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        width: '100%', 
+        marginBottom: SPACING.sm 
+    },
+    meterTitle: { 
+        ...TYPOGRAPHY.button,
+        color: COLORS.aquaTeal, 
+        textTransform: 'uppercase' 
+    },
+    meterValue: { 
+        ...TYPOGRAPHY.score,
+        color: COLORS.aquaTeal 
+    },
+    meterBarContainer: { 
+        width: '100%', 
+        height: SIZES.progressBarHeight * 3, 
+        backgroundColor: COLORS.nightSky, 
+        borderRadius: SIZES.progressBarBorderRadius, 
+        padding: SPACING.xs, 
+        borderWidth: 1, 
+        borderColor: COLORS.vibrantPink 
+    },
+    meterBar: { 
+        height: '100%', 
+        borderRadius: SIZES.progressBarBorderRadius 
+    },
+    meterStatus: { 
+        ...TYPOGRAPHY.marcieDialogue,
+        color: COLORS.aquaTeal, 
+        marginTop: SPACING.sm, 
+        textTransform: 'uppercase' 
+    },
+    recordButton: { 
+        width: Math.max(moderateScale(180), 180), 
+        height: Math.max(moderateScale(180), 180), 
+        borderRadius: Math.max(moderateScale(90), 90), 
+        backgroundColor: COLORS.vibrantPink, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginVertical: SPACING.xl,
+        ...GLOWS.strong(COLORS.vibrantPink)
+    },
+    recordButtonText: { 
+        ...TYPOGRAPHY.button,
+        color: COLORS.textPrimary, 
+        letterSpacing: 4 
+    },
+    recordSubtext: { 
+        ...TYPOGRAPHY.caption,
+        color: COLORS.textSecondary, 
+        textTransform: 'uppercase', 
+        letterSpacing: 2, 
+        textAlign: 'center' 
+    }
 });
 
 export default LieDetectorLiteScreen;

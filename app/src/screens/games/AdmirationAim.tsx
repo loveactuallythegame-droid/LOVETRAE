@@ -5,6 +5,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
 import { Header } from '../../components/ui/Header';
 import { SquishyButton } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SIZES, SPACING, GLOWS, moderateScale } from '../../theme';
+import ASSETS, { getMarcieImage } from '../../utils/assets';
 
 const AdmirationAimScreen = () => {
   // Placeholder for game state and logic
@@ -13,12 +15,15 @@ const AdmirationAimScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#5C1459', '#1a0a1a']} style={styles.background} />
+      <LinearGradient
+        colors={[COLORS.deepCosmicPurple, COLORS.richPlum]}
+        style={styles.background}
+      />
       
       {/* Dr. Marcie Section */}
       <View style={styles.drMarcieSection}>
         <View style={styles.avatarContainer}>
-          <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+          <Image source={getMarcieImage(2)} style={styles.avatar} />
         </View>
         <View style={styles.quoteBox}>
           <Text style={styles.quoteText}>Expressing admiration strengthens your bond! Each target hit represents a positive trait you appreciate in your partner.</Text>
@@ -29,25 +34,25 @@ const AdmirationAimScreen = () => {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.targetContainer}>
           <LinearGradient
-            colors={['#db147c', '#f05d68']}
+            colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={[styles.ring, styles.outerRing]}
           />
           <LinearGradient
-            colors={['#ff7600', '#ffef1f']}
+            colors={[COLORS.warmOrange, COLORS.brightYellow]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={[styles.ring, styles.middleRing]}
           />
           <LinearGradient
-            colors={['#37cf97', '#b37dec']}
+            colors={[COLORS.mintGreen, COLORS.softViolet]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={[styles.ring, styles.innerRing]}
           />
           <LinearGradient
-            colors={['#ef1b6e', '#c41e77', '#a22ac4', '#9056ef']}
+            colors={[COLORS.progressGradientStart, COLORS.progressGradientMid1, COLORS.progressGradientMid2, COLORS.progressGradientEnd]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.bullseye}
@@ -65,7 +70,7 @@ const AdmirationAimScreen = () => {
             <View style={styles.scoreContainer}>
                 <Text style={styles.scoreLabel}>Score</Text>
                 <LinearGradient
-                  colors={['#db147c', '#f05d68']}
+                  colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={styles.scoreValueContainer}
