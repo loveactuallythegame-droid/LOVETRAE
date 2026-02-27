@@ -35,4 +35,7 @@ export const ENV = {
   
   // Backend API
   BACKEND_URL: getEnv('EXPO_PUBLIC_API_URL') || getEnv('REACT_APP_BACKEND_URL') || 'http://localhost:8001',
+  
+  // WebSocket URL
+  WS_URL: getEnv('EXPO_PUBLIC_WS_URL') || 'ws://localhost:8001',
 };

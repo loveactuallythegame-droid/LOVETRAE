@@ -8,9 +8,10 @@
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "scheme": "lovetrae",
-    "platforms": ["ios", "android"],
+    "platforms": ["ios", "android", "web"],
     "backgroundColor": "#0f0a0c",
     "primaryColor": "#db147c",
+    "owner": "lovetrae",
     "plugins": [
       "expo-router",
       [

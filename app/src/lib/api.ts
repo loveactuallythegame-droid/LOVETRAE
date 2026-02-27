@@ -1,395 +1,514 @@
-// API client for Love Actually backend
-// NOTE: Since we're moving to Firebase, we'll implement direct Firebase calls
-// but keeping this API wrapper for backward compatibility
+/**
+ * API Functions for Love Actually - The Game
+ * 
+ * This module exports all API functions organized by domain:
+ * - userApi: User management
+ * - coupleApi: Couple linking and management
+ * - gamesApi: Game sessions and categories
+ * - sosApi: SOS fight resolution
+ * - marcieApi: Dr. Marcie AI chat
+ */
 
-import { auth, db } from './firebaseClient';
-import { 
-  doc, 
-  getDoc, 
-  setDoc, 
-  updateDoc, 
-  serverTimestamp,
-  collection,
-  query,
-  where,
-  getDocs
-} from 'firebase/firestore';
+import { get, post, put, del, ApiError } from './httpClient';
 
+// ============================================================================
+// Type Definitions (matching admin/src/models.ts and backend/server.py)
+// ============================================================================
+
+export interface User {
+  id: string;
+  email: string;
+  display_name: string;
+  partner_id: string | null;
+  couple_code: string | null;
+  couple_id?: string | null;
+  sarcasm_level: number;
+  trust_level: number;
+  vulnerability_level: number;
+  points: number;
+  plan: string;
+  created_at: string;
+}
+
+export interface Couple {
+  id: string;
+  user1_id: string;
+  user2_id: string;
+  partners?: [string, string];
+  created_at: string;
+  trust_meter: number;
+  vulnerability_meter: number;
+  romance_meter: number;
+  connection_meter: number;
+  total_points: number;
+  streak_days: number;
+  linking_code?: string;
+}
+
+export interface CouplePresence {
+  couple_id: string;
+  user1_online: boolean;
+  user2_online: boolean;
+  total_connections: number;
+}
+
+export interface GameCategory {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  color: string;
+  games: string[];
+}
+
+export interface GameSession {
+  id: string;
+  user_id: string;
+  game_id: string;
+  category_id: string;
+  started_at: string;
+  completed: boolean;
+  completed_at?: string;
+  score: number;
+  responses: any[];
+}
+
+export interface SOSSession {
+  id: string;
+  initiator_id: string;
+  couple_id: string;
+  status: 'waiting_for_partner' | 'one_submitted' | 'analyzing' | 'completed';
+  started_at: string;
+  submissions: Record<string, SOSBoothSubmission>;
+  verdict?: string;
+}
+
+export interface SOSBoothSubmission {
+  i_feel: string;
+  when_partner: string;
+  because_i_tell_myself: string;
+  what_i_need: string;
+  submitted_at?: string;
+}
+
+export interface MarcieResponse {
+  response: string;
+  animation: string;
+  sarcasm_level: number;
+}
+
+export interface HealthCheck {
+  status: string;
+  app: string;
+  version: string;
+  timestamp: string;
+}
+
+// ============================================================================
 // User API
+// ============================================================================
+
 export const userApi = {
-  create: async (data: { email: string; display_name: string }) => {
-    const user = auth.currentUser;
-    if (!user) {
-      throw new Error('User not authenticated');
-    }
-    
-    const profileRef = doc(db, 'profiles', user.uid);
-    const profileData = {
-      userId: user.uid,
-      email: data.email,
-      display_name: data.display_name,
-      created_at: serverTimestamp(),
-      updated_at: serverTimestamp(),
-      partner_id: null,
-      couple_code: user.uid.substring(0, 8).toUpperCase(), // temporary code
-      sarcasm_level: 1,
-      trust_level: 0.5,
-      vulnerability_level: 0.5,
-      points: 0,
-      plan: "free"
-    };
-    
-    await setDoc(profileRef, profileData);
-    return profileData;
+  /**
+   * Create a new user in the backend after Firebase Auth signup
+   * 
+   * @param data - User data (email and display_name)
+   * @param token - Firebase Auth ID token
+   * @returns Created user object
+   * 
+   * @example
+   * const user = await userApi.create(
+   *   { email: 'test@example.com', display_name: 'Test User' },
+   *   await firebaseUser.getIdToken()
+   * );
+   */
+  create: async (
+    data: { email: string; display_name: string },
+    token: string
+  ): Promise<User> => {
+    return post<User>('users', data, { token });
   },
-  
-  get: async (userId: string) => {
-    const profileRef = doc(db, 'profiles', userId);
-    const profileSnap = await getDoc(profileRef);
-    
-    if (!profileSnap.exists()) {
-      throw new Error('User not found');
-    }
-    
-    return { id: userId, ...profileSnap.data() };
+
+  /**
+   * Get user by ID
+   * 
+   * @param userId - User's unique ID
+   * @param token - Firebase Auth ID token
+   * @returns User object
+   * 
+   * @example
+   * const user = await userApi.get('user-123', token);
+   */
+  get: async (userId: string, token: string): Promise<User> => {
+    return get<User>(`users/${userId}`, { token });
   },
-  
-  updateSarcasm: async (userId: string, level: number) => {
-    if (level < 1 || level > 4) {
-      throw new Error('Sarcasm level must be 1-4');
-    }
-    
-    const profileRef = doc(db, 'profiles', userId);
-    await updateDoc(profileRef, { 
-      sarcasm_level: level,
-      updated_at: serverTimestamp()
-    });
-    
-    return { success: true, sarcasm_level: level };
+
+  /**
+   * Update user's sarcasm level (1-4)
+   * 
+   * @param userId - User's unique ID
+   * @param level - Sarcasm level (1-4)
+   * @param token - Firebase Auth ID token
+   * @returns Success response with new level
+   * 
+   * @example
+   * const result = await userApi.updateSarcasm('user-123', 3, token);
+   * // { success: true, sarcasm_level: 3, name: 'Radical Truth Wizard' }
+   */
+  updateSarcasm: async (
+    userId: string,
+    level: number,
+    token: string
+  ): Promise<{ success: boolean; sarcasm_level: number; name: string }> => {
+    return put<{ success: boolean; sarcasm_level: number; name: string }>(
+      `users/${userId}/sarcasm`,
+      { level },
+      { token }
+    );
   },
 };
 
-// Couple Linking API
+// ============================================================================
+// Couple API
+// ============================================================================
+
 export const coupleApi = {
-  link: async (userId: string, partnerCode: string) => {
-    // Implementation moved to the component since it's Firebase-specific
-    throw new Error('Use the component function instead');
+  /**
+   * Link a user with their partner using a couple code
+   * 
+   * @param userId - Current user's ID
+   * @param partnerCode - Partner's couple code
+   * @param token - Firebase Auth ID token
+   * @returns Success response with couple ID and partner info
+   * 
+   * @example
+   * const result = await coupleApi.link('user-123', 'ABC12345', token);
+   * // { success: true, couple_id: 'couple-456', partner: { id: '...', display_name: '...' } }
+   */
+  link: async (
+    userId: string,
+    partnerCode: string,
+    token: string
+  ): Promise<{
+    success: boolean;
+    couple_id: string;
+    partner: { id: string; display_name: string };
+  }> => {
+    return post<{
+      success: boolean;
+      couple_id: string;
+      partner: { id: string; display_name: string };
+    }>('couples/link', { user_id: userId, partner_code: partnerCode }, { token });
   },
-  
-  get: async (coupleId: string) => {
-    const coupleRef = doc(db, 'couples', coupleId);
-    const coupleSnap = await getDoc(coupleRef);
-    
-    if (!coupleSnap.exists()) {
-      throw new Error('Couple not found');
-    }
-    
-    return { id: coupleId, ...coupleSnap.data() };
+
+  /**
+   * Get couple data by ID
+   * 
+   * @param coupleId - Couple's unique ID
+   * @param token - Firebase Auth ID token
+   * @returns Couple object
+   * 
+   * @example
+   * const couple = await coupleApi.get('couple-456', token);
+   */
+  get: async (coupleId: string, token: string): Promise<Couple> => {
+    return get<Couple>(`couples/${coupleId}`, { token });
+  },
+
+  /**
+   * Get couple presence (online status)
+   * 
+   * @param coupleId - Couple's unique ID
+   * @param token - Firebase Auth ID token
+   * @returns Presence status for both partners
+   * 
+   * @example
+   * const presence = await coupleApi.getPresence('couple-456', token);
+   * // { couple_id: '...', user1_online: true, user2_online: false, total_connections: 1 }
+   */
+  getPresence: async (coupleId: string, token: string): Promise<CouplePresence> => {
+    return get<CouplePresence>(`couples/${coupleId}/presence`, { token });
   },
 };
 
+// ============================================================================
 // Games API
+// ============================================================================
+
 export const gamesApi = {
-  getCategories: async () => {
-    // Return the categories directly since they're defined in the app
-    const categories = [
-      {
-        id: "emotional-connection",
-        name: "Emotional Connection",
-        description: "SEEN Method focused games",
-        icon: "heart",
-        color: "#FA1F63",
-        games: ["truth-or-trust", "gratitude-cloud", "eye-contact-challenge", "memory-lane-map", "vibe-check"]
-      },
-      {
-        id: "conflict-resolution",
-        name: "Conflict Resolution",
-        description: "Gottman-inspired games",
-        icon: "shield",
-        color: "#33DEA5",
-        games: ["slap-of-truth", "apology-auction", "defensiveness-detox", "whos-right", "stress-test"]
-      },
-      {
-        id: "creative-chaos",
-        name: "Creative Chaos",
-        description: "Playful, creative challenges",
-        icon: "sparkles",
-        color: "#E4E831",
-        games: ["role-swap-roast", "draw-your-feelings", "gif-battle", "karaoke-confessional", "ransom-note"]
-      },
-      {
-        id: "romance-hub",
-        name: "Romance Hub",
-        description: "Spicy & sweet connections",
-        icon: "flame",
-        color: "#BE1980",
-        games: ["date-night-roulette", "bedroom-bingo", "six-second-kiss", "foreplay-slider", "touch-map"]
-      },
-      {
-        id: "healing-hospital",
-        name: "Healing Hospital",
-        description: "Deep repair & recovery",
-        icon: "medkit",
-        color: "#5C1459",
-        games: ["windows-and-walls", "trigger-triage", "trust-bank", "the-iceberg", "secrecy-audit"]
-      },
-      {
-        id: "game-show",
-        name: "Game Show",
-        description: "Classic game show formats",
-        icon: "trophy",
-        color: "#22d3ee",
-        games: ["couples-jeopardy", "relationship-millionaire", "family-feud-couples", "newlywed-sync", "wheel-of-intimacy"]
-      },
-      {
-        id: "love-arcade",
-        name: "The Love Arcade",
-        description: "Championship matches of honesty, wit, and emotional parkour",
-        icon: "game-controller",
-        color: "#FF6B6B",
-        games: ["truth-teller-tower", "echo-chamber-escape", "intimacy-feud", "relational-jeopardy", "family-forge", "harbor-storm"]
-      }
-    ];
-    
-    return { categories };
+  /**
+   * Get all game categories
+   * 
+   * No authentication required - public endpoint
+   * 
+   * @returns List of game categories
+   * 
+   * @example
+   * const { categories } = await gamesApi.getCategories();
+   */
+  getCategories: async (): Promise<{ categories: GameCategory[] }> => {
+    return get<{ categories: GameCategory[] }>('games/categories');
   },
-  
-  getCategory: async (categoryId: string) => {
-    const categories = (await gamesApi.getCategories()).categories;
-    const category = categories.find(cat => cat.id === categoryId);
-    
-    if (!category) {
-      throw new Error('Category not found');
-    }
-    
-    return category;
+
+  /**
+   * Get a specific category with its games
+   * 
+   * @param categoryId - Category ID (e.g., 'emotional-connection', 'love-arcade')
+   * @returns Category object with games list
+   * 
+   * @example
+   * const category = await gamesApi.getCategory('love-arcade');
+   */
+  getCategory: async (categoryId: string): Promise<GameCategory> => {
+    return get<GameCategory>(`games/categories/${categoryId}`);
   },
-  
-  createSession: async (data: { user_id: string; game_id: string; category_id: string }) => {
-    const user = auth.currentUser;
-    if (!user) {
-      throw new Error('User not authenticated');
-    }
-    
-    const sessionRef = doc(collection(db, 'game_sessions'));
-    const sessionData = {
-      id: sessionRef.id,
-      userId: user.uid,
-      game_id: data.game_id,
-      category_id: data.category_id,
-      started_at: serverTimestamp(),
-      completed: false,
-      score: 0,
-      responses: [],
-      created_at: serverTimestamp()
-    };
-    
-    await setDoc(sessionRef, sessionData);
-    return sessionData;
+
+  /**
+   * Create a new game session
+   * 
+   * @param userId - Current user's ID
+   * @param gameId - Game identifier (e.g., 'truth-teller-tower')
+   * @param categoryId - Category ID
+   * @param token - Firebase Auth ID token
+   * @returns Created game session
+   * 
+   * @example
+   * const session = await gamesApi.createSession(
+   *   'user-123',
+   *   'truth-teller-tower',
+   *   'love-arcade',
+   *   token
+   * );
+   */
+  createSession: async (
+    userId: string,
+    gameId: string,
+    categoryId: string,
+    token: string
+  ): Promise<GameSession> => {
+    return post<GameSession>(
+      'games/sessions',
+      { user_id: userId, game_id: gameId, category_id: categoryId },
+      { token }
+    );
   },
-  
-  updateSession: async (sessionId: string, data: { score?: number; completed?: boolean; responses?: any[] }) => {
-    const sessionRef = doc(db, 'game_sessions', sessionId);
-    const updateData: any = { updated_at: serverTimestamp() };
-    
-    if (data.score !== undefined) updateData.score = data.score;
-    if (data.completed !== undefined) updateData.completed = data.completed;
-    if (data.responses !== undefined) updateData.responses = data.responses;
-    
-    await updateDoc(sessionRef, updateData);
-    
-    // If session is completed, update couple metrics
-    if (data.completed) {
-      // TODO: Update couple metrics based on game result
-    }
-    
-    return { id: sessionId, ...data };
+
+  /**
+   * Update a game session (score, completion status, responses)
+   * 
+   * @param sessionId - Game session ID
+   * @param data - Update data (score, completed, responses)
+   * @param token - Firebase Auth ID token
+   * @returns Updated game session
+   * 
+   * @example
+   * const updated = await gamesApi.updateSession(
+   *   'session-789',
+   *   { score: 85, completed: true, responses: [...] },
+   *   token
+   * );
+   */
+  updateSession: async (
+    sessionId: string,
+    data: {
+      score?: number;
+      completed?: boolean;
+      responses?: any[];
+    },
+    token: string
+  ): Promise<GameSession> => {
+    return put<GameSession>(`games/sessions/${sessionId}`, data, { token });
+  },
+
+  /**
+   * Get Love Arcade games with detailed configurations
+   * 
+   * No authentication required - public endpoint
+   * 
+   * @returns List of Love Arcade games
+   * 
+   * @example
+   * const { games } = await gamesApi.getLoveArcadeGames();
+   */
+  getLoveArcadeGames: async (): Promise<{
+    games: Array<{
+      id: string;
+      name: string;
+      phase: string;
+      format: string;
+      description: string;
+      max_score: number;
+      [key: string]: any;
+    }>;
+  }> => {
+    return get('love-arcade/games');
   },
 };
 
-// Love Arcade API
-export const loveArcadeApi = {
-  getGames: async () => {
-    // Return the arcade games directly since they're defined in the app
-    const games = [
-      {
-        id: "truth-teller-tower",
-        name: "Truth Teller Tower",
-        phase: "Foundation (Phase 1)",
-        format: "Who Wants to Be a Millionaire meets The Newlywed Game",
-        description: "Scale the lie-avalanche. Five questions. Three lifelines. One shared brain.",
-        max_score: 100,
-        lifelines: ["50/50", "Double Confidence", "Trust Check"],
-        scoring: {
-          correct_answer: 10,
-          predicted_partner: 5,
-          double_truth: 20
-        }
-      },
-      {
-        id: "echo-chamber-escape",
-        name: "Escape from the Echo Chamber",
-        phase: "Deconstruction (Phase 2)",
-        format: "Digital Escape Room",
-        description: "Trapped in a hall of infinite mirrors. Break the loop together.",
-        max_score: 100,
-        time_limit_per_puzzle: 90,
-        puzzles: 5
-      },
-      {
-        id: "intimacy-feud",
-        name: "The Intimacy Feud",
-        phase: "Shared Reality (Phase 3)",
-        format: "Family Feud style",
-        description: "Survey says... be boring. Be authentic. Be real.",
-        max_score: 250,
-        scoring: {
-          1st_place: 50,
-          2nd_place: 30,
-          3rd_place: 20,
-          partner_match: 10,
-          authenticity_streak: 15
-        }
-      },
-      {
-        id: "relational-jeopardy",
-        name: "Relational Jeopardy!",
-        phase: "The Future (Phase 4)",
-        format: "Jeopardy style",
-        description: "Categories designed by couples who rebuilt.",
-        max_score: 2000,
-        categories: ["Accountability Plans", "Redefinition", "Integration"],
-        has_daily_double: true,
-        has_final_jeopardy: true
-      },
-      {
-        id: "family-forge",
-        name: "Family Forge Edition",
-        phase: "Special - Family Building",
-        format: "Mixed game show formats",
-        description: "For couples forging families after betrayal.",
-        max_score: 1800,
-        sub_games: ["Family Feud: Our New Reality", "The Newlywed Game: Heart-to-Heart", "Chopped: Family Kitchen", "The Amazing Race: Legacy Dash"]
-      },
-      {
-        id: "harbor-storm",
-        name: "Harbor & Storm Edition",
-        phase: "Special - BPD/Emotional Regulation",
-        format: "Cooperative challenges",
-        description: "Build a better boat. Learn to sail as a crew.",
-        max_score: 1900,
-        sub_games: ["BPD Pattern Detective", "Validation Game Show", "Connection Constructor", "Harbor Master's Challenge"]
-      }
-    ];
-    
-    return { games };
-  },
-};
+// ============================================================================
+// SOS API
+// ============================================================================
 
-// SOS Fight Solver API
 export const sosApi = {
-  createSession: async (data: { initiator_id: string; couple_id: string }) => {
-    const user = auth.currentUser;
-    if (!user) {
-      throw new Error('User not authenticated');
-    }
-    
-    const sessionRef = doc(collection(db, 'sos_sessions'));
-    const sessionData = {
-      id: sessionRef.id,
-      initiator_id: user.uid,
-      couple_id: data.couple_id,
-      status: "waiting_for_partner",
-      started_at: serverTimestamp(),
-      submissions: {},
-      verdict: null,
-      created_at: serverTimestamp()
-    };
-    
-    await setDoc(sessionRef, sessionData);
-    return sessionData;
+  /**
+   * Create a new SOS fight resolution session
+   * 
+   * @param initiatorId - User initiating the SOS session
+   * @param coupleId - Couple's ID
+   * @param token - Firebase Auth ID token
+   * @returns Created SOS session
+   * 
+   * @example
+   * const session = await sosApi.createSession('user-123', 'couple-456', token);
+   */
+  createSession: async (
+    initiatorId: string,
+    coupleId: string,
+    token: string
+  ): Promise<SOSSession> => {
+    return post<SOSSession>(
+      'sos/sessions',
+      { initiator_id: initiatorId, couple_id: coupleId },
+      { token }
+    );
   },
-  
-  submit: async (sessionId: string, data: {
-    user_id: string;
-    i_feel: string;
-    when_partner: string;
-    because_i_tell_myself: string;
-    what_i_need: string;
-  }) => {
-    const sessionRef = doc(db, 'sos_sessions', sessionId);
-    const submissionData = {
-      [`submissions.${data.user_id}`]: {
-        i_feel: data.i_feel,
-        when_partner: data.when_partner,
-        because_i_tell_myself: data.because_i_tell_myself,
-        what_i_need: data.what_i_need,
-        submitted_at: serverTimestamp()
-      }
-    };
-    
-    await updateDoc(sessionRef, submissionData);
-    
-    // Check if both partners submitted
-    const sessionSnap = await getDoc(sessionRef);
-    const sessionData = sessionSnap.data();
-    const submissionCount = Object.keys(sessionData?.submissions || {}).length;
-    
-    if (submissionCount >= 2) {
-      await updateDoc(sessionRef, { status: "analyzing" });
-      // In real app, trigger AI analysis here
-    } else if (submissionCount === 1) {
-      await updateDoc(sessionRef, { status: "one_submitted" });
-    }
-    
-    return sessionSnap.data();
+
+  /**
+   * Submit a booth response in an SOS session
+   * 
+   * @param sessionId - SOS session ID
+   * @param userId - Current user's ID
+   * @param responses - Booth responses (I feel, when partner, etc.)
+   * @param token - Firebase Auth ID token
+   * @returns Updated SOS session
+   * 
+   * @example
+   * const updated = await sosApi.submitBooth(
+   *   'sos-789',
+   *   'user-123',
+   *   {
+   *     i_feel: 'hurt',
+   *     when_partner: 'ignores me',
+   *     because_i_tell_myself: "they don't care",
+   *     what_i_need: 'attention'
+   *   },
+   *   token
+   * );
+   */
+  submitBooth: async (
+    sessionId: string,
+    userId: string,
+    responses: SOSBoothSubmission,
+    token: string
+  ): Promise<SOSSession> => {
+    return post<SOSSession>(
+      `sos/sessions/${sessionId}/submit`,
+      {
+        session_id: sessionId,
+        user_id: userId,
+        i_feel: responses.i_feel,
+        when_partner: responses.when_partner,
+        because_i_tell_myself: responses.because_i_tell_myself,
+        what_i_need: responses.what_i_need,
+      },
+      { token }
+    );
   },
-  
-  get: async (sessionId: string) => {
-    const sessionRef = doc(db, 'sos_sessions', sessionId);
-    const sessionSnap = await getDoc(sessionRef);
-    
-    if (!sessionSnap.exists()) {
-      throw new Error('SOS Session not found');
-    }
-    
-    return { id: sessionId, ...sessionSnap.data() };
+
+  /**
+   * Get SOS session by ID
+   * 
+   * @param sessionId - SOS session ID
+   * @param token - Firebase Auth ID token
+   * @returns SOS session with submissions
+   * 
+   * @example
+   * const session = await sosApi.getSession('sos-789', token);
+   */
+  getSession: async (sessionId: string, token: string): Promise<SOSSession> => {
+    return get<SOSSession>(`sos/sessions/${sessionId}`, { token });
   },
 };
 
+// ============================================================================
 // Dr. Marcie AI API
+// ============================================================================
+
 export const marcieApi = {
-  chat: async (data: {
-    user_id: string;
-    context: string;
-    message: string;
-    sarcasm_level?: number;
-    game_context?: string;
-  }) => {
-    // For now, returning a mock response
-    // In the full implementation, this would call an actual AI endpoint
-    const responses = [
-      "Sweetheart, if avoiding tough conversations were cardio, you'd be an Olympic athlete. Let's talk.",
-      "That's not a red flag, darling—that's a red circus tent. With elephants.",
-      "Communication isn't mind-reading. Use words, not vibes.",
-      "Apologies without change are just performance art.",
-      "You're not broken, but you are bleeding—and you keep trying to dance in the fire.",
-      "Stop searching for closure in open wounds."
-    ];
-    
-    return {
-      response: responses[Math.floor(Math.random() * responses.length)],
-      animation: "marcie-idle",
-      sarcasm_level: data.sarcasm_level || 1
-    };
+  /**
+   * Chat with Dr. Marcie AI
+   * 
+   * @param userId - Current user's ID
+   * @param context - Context for the conversation
+   * @param message - User's message to Dr. Marcie
+   * @param sarcasmLevel - Sarcasm level (1-4)
+   * @param token - Firebase Auth ID token
+   * @param gameContext - Optional game context for game-specific responses
+   * @returns Dr. Marcie's response with animation
+   * 
+   * @example
+   * const response = await marcieApi.chat(
+   *   'user-123',
+   *   'User is struggling with trust issues',
+   *   'How do I rebuild trust?',
+   *   3,
+   *   token
+   * );
+   * // { response: "...", animation: "marcie-thinking", sarcasm_level: 3 }
+   */
+  chat: async (
+    userId: string,
+    context: string,
+    message: string,
+    sarcasmLevel: number,
+    token: string,
+    gameContext?: string
+  ): Promise<MarcieResponse> => {
+    return post<MarcieResponse>(
+      'marcie/chat',
+      {
+        user_id: userId,
+        context,
+        message,
+        sarcasm_level: sarcasmLevel,
+        game_context: gameContext,
+      },
+      { token }
+    );
   },
 };
+
+// ============================================================================
+// Health Check
+// ============================================================================
+
+export const healthApi = {
+  /**
+   * Check backend API health
+   * 
+   * No authentication required
+   * 
+   * @returns Health check response
+   * 
+   * @example
+   * const health = await healthApi.check();
+   * // { status: 'healthy', app: 'Love Actually - The Game', version: '1.0.0', timestamp: '...' }
+   */
+  check: async (): Promise<HealthCheck> => {
+    return get<HealthCheck>('health');
+  },
+};
+
+// ============================================================================
+// Export all APIs as default
+// ============================================================================
 
 export default {
-  user: userApi,
-  couple: coupleApi,
-  games: gamesApi,
-  loveArcade: loveArcadeApi,
-  sos: sosApi,
-  marcie: marcieApi,
+  userApi,
+  coupleApi,
+  gamesApi,
+  sosApi,
+  marcieApi,
+  healthApi,
+  ApiError,
 };
