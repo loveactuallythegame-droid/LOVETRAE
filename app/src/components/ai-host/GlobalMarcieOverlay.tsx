@@ -1,15 +1,16 @@
 
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { COLORS, TYPOGRAPHY, SIZES, SPACING, GLOWS } from '../../theme';
 // Placeholder for Lottie animations, assuming 'lottie-react-native' is installed.
 // import LottieView from 'lottie-react-native';
 
 const GlobalMarcieOverlay = ({ quote }: { quote?: string }) => {
   return (
     <View style={styles.marcieContainer}>
-      {/* 
-        The LottieView component will be used here. 
-        <LottieView source={require('../../../assets/animations/marcie-idle.json')} autoPlay loop />
+      {/*
+        The LottieView component will be used here.
+        <LottieView source={require('../../../public/animations/marcie-idle.webm')} autoPlay loop />
       */}
       <View style={styles.marcieCharacterModel} />
       {quote && (
@@ -27,31 +28,34 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 200, // Adjust as needed
+    height: moderateScale(200), // Responsive height
     alignItems: 'center',
     zIndex: 9999,
     pointerEvents: 'none', // Allow interactions with content underneath
   },
   marcieCharacterModel: {
     // This will be replaced by the Lottie animation component
-    width: 150,
-    height: 150,
-    backgroundColor: '#FA1F63', // Temporary placeholder color
-    borderRadius: 75,
+    width: moderateScale(150),
+    height: moderateScale(150),
+    backgroundColor: COLORS.vibrantPink, // Dr. Marcie's signature color
+    borderRadius: moderateScale(75),
+    ...GLOWS.medium(COLORS.vibrantPink)
   },
   speechBubble: {
     position: 'absolute',
-    bottom: 160, // Position above the character model
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    borderRadius: 12,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    bottom: moderateScale(160), // Responsive positioning above character
+    backgroundColor: COLORS.nightSky,
+    borderRadius: SIZES.cardBorderRadius,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
     maxWidth: '80%',
+    borderWidth: 1,
+    borderColor: COLORS.vibrantPink,
+    ...GLOWS.soft(COLORS.vibrantPink)
   },
   quoteText: {
-    fontFamily: 'SweetPink-Regular',
-    color: '#FFFFFF',
-    fontSize: 14,
+    ...TYPOGRAPHY.marcieDialogue,
+    color: COLORS.textPrimary,
     textAlign: 'center',
   },
 });

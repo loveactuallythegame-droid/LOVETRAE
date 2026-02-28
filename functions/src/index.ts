@@ -1,8 +1,14 @@
 
 import * as functions from "firebase-functions";
-import *dmin from "firebase-admin";
+import * as admin from "firebase-admin";
+import { generateGameContent, analyzeUserInput, synthesizeSpeech } from './vertex-ai-functions';
 
 admin.initializeApp();
+
+// Export Vertex AI functions
+exports.generateGameContent = generateGameContent;
+exports.analyzeUserInput = analyzeUserInput;
+exports.synthesizeSpeech = synthesizeSpeech;
 
 exports.calculateGameResults = functions.https.onCall(async (data, context) => {
   const { gameId, user1Answers, user2Answers } = data;
