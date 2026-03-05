@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../theme';
@@ -46,7 +45,7 @@ const BedroomBingoGame1Screen = () => {
     const progressPercentage = (completedLines / 5) * 100;
 
     return (
-        <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
@@ -118,7 +117,7 @@ const BedroomBingoGame1Screen = () => {
                     <Typography variant="button" style={{ color: COLORS.vibrantPink }}>SUBMIT LINE</Typography>
                 </SquishyButton>
             </LinearGradient>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

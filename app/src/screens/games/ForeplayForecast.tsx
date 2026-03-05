@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -11,36 +10,34 @@ export default function ForeplayForecast({ navigation }: any) {
   }, []);
 
   return (
-    <ScreenLayout showHeader={false} scrollable={false}>
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <View style={styles.header}>
-            <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-              <Typography variant="body">Back</Typography>
-            </SquishyButton>
-            <Typography variant="h1" style={styles.title}>Foreplay Forecast</Typography>
-          </View>
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.header}>
+          <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
+            <Typography variant="body">Back</Typography>
+          </SquishyButton>
+          <Typography variant="h1" style={styles.title}>Foreplay Forecast</Typography>
+        </View>
 
-          <GlassCard style={styles.card}>
-            <Typography variant="instructions" style={{ marginBottom: SPACING.small }}>Type: Live mood slider</Typography>
-            <Typography variant="body">Mechanics: A sets arousal bar (0–100). B performs non-sexual acts (compliment, neck rub) to raise it.</Typography>
-          </GlassCard>
+        <GlassCard style={styles.card}>
+          <Typography variant="instructions" style={{ marginBottom: SPACING.small }}>Type: Live mood slider</Typography>
+          <Typography variant="body">Mechanics: A sets arousal bar (0–100). B performs non-sexual acts (compliment, neck rub) to raise it.</Typography>
+        </GlassCard>
 
-          <GlassCard style={styles.card}>
-            <Typography variant="instructions" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
-            <Typography variant="body">
-              ✅ +20 points in 5 mins = +30{'\n'}
-              ✅ A names what helped = +10
-            </Typography>
-          </GlassCard>
+        <GlassCard style={styles.card}>
+          <Typography variant="instructions" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+          <Typography variant="body">
+            ✅ +20 points in 5 mins = +30{'\n'}
+            ✅ A names what helped = +10
+          </Typography>
+        </GlassCard>
 
-          <View style={styles.actionArea}>
-            <SquishyButton onPress={() => alert('Opening Slider...')} style={styles.playBtn}>
-              <Typography variant="body">Start Forecast</Typography>
-            </SquishyButton>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+        <View style={styles.actionArea}>
+          <SquishyButton onPress={() => alert('Opening Slider...')} style={styles.playBtn}>
+            <Typography variant="body">Start Forecast</Typography>
+          </SquishyButton>
+        </View>
+      </ScrollView>
     </ScreenLayout>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
@@ -11,36 +10,34 @@ export default function RepairReportCard({ navigation }: any) {
     }, []);
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
-            <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-                <ScrollView contentContainerStyle={styles.content}>
-                    <View style={styles.header}>
-                        <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
-                            <Typography variant="body">Back</Typography>
-                        </SquishyButton>
-                        <Typography variant="h1" style={styles.title}>The Repair Report Card</Typography>
-                    </View>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <ScrollView contentContainerStyle={styles.content}>
+                <View style={styles.header}>
+                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
+                        <Typography variant="body">Back</Typography>
+                    </SquishyButton>
+                    <Typography variant="h1" style={styles.title}>The Repair Report Card</Typography>
+                </View>
 
-                    <GlassCard style={styles.card}>
-                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Weekly slider survey</Typography>
-                        <Typography variant="body">Mechanics: Rate 5 areas (Listening, Space, Humor, Touch, Honesty).</Typography>
-                    </GlassCard>
+                <GlassCard style={styles.card}>
+                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Weekly slider survey</Typography>
+                    <Typography variant="body">Mechanics: Rate 5 areas (Listening, Space, Humor, Touch, Honesty).</Typography>
+                </GlassCard>
 
-                    <GlassCard style={styles.card}>
-                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
-                        <Typography variant="body">
-                            ✅ Improvement vs. last week = +5/area{'\n'}
-                            ✅ Honesty +10% = +15
-                        </Typography>
-                    </GlassCard>
+                <GlassCard style={styles.card}>
+                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+                    <Typography variant="body">
+                        ✅ Improvement vs. last week = +5/area{'\n'}
+                        ✅ Honesty +10% = +15
+                    </Typography>
+                </GlassCard>
 
-                    <View style={styles.actionArea}>
-                        <SquishyButton onPress={() => alert('Opening Survey...')} style={styles.playBtn}>
-                            <Typography variant="h2" color={COLORS.textPrimary}>Start Rate</Typography>
-                        </SquishyButton>
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
+                <View style={styles.actionArea}>
+                    <SquishyButton onPress={() => alert('Opening Survey...')} style={styles.playBtn}>
+                        <Typography variant="h2" color={COLORS.textPrimary}>Start Rate</Typography>
+                    </SquishyButton>
+                </View>
+            </ScrollView>
         </ScreenLayout>
     );
 }

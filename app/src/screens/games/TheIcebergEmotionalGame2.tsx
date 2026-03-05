@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
@@ -9,39 +8,37 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const TheIcebergEmotionalGame2 = () => {
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.deepCosmic]} style={styles.container}>
-                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-                    <View style={styles.header}>
-                        <Typography variant="h1" center>The Iceberg Excavation</Typography>
-                    </View>
+                <View style={styles.header}>
+                    <Typography variant="h1" center>The Iceberg Excavation</Typography>
+                </View>
 
-                    <View style={styles.icebergCanvas}>
-                        {/* Placeholder for the iceberg visual */}
-                        <View style={styles.icebergVisual} />
+                <View style={styles.icebergCanvas}>
+                    {/* Placeholder for the iceberg visual */}
+                    <View style={styles.icebergVisual} />
 
-                        {/* Emotion Nodes */}
-                        <GlassCard style={[styles.node, styles.surfaceNode]}>
-                            <MaterialIcons name="priority-high" size={16} color={COLORS.textPrimary} />
-                        </GlassCard>
-                        <GlassCard style={[styles.node, styles.midNode]}>
-                            <MaterialIcons name="water-drop" size={20} color={COLORS.textPrimary} />
-                        </GlassCard>
-                        <GlassCard style={[styles.node, styles.deepNode]}>
-                            <MaterialIcons name="lock" size={24} color={COLORS.textPrimary} />
-                        </GlassCard>
-                    </View>
-
-                    <GlassCard style={styles.insightCard} variant="outlined">
-                        <Typography variant="h3">Insight Discovered</Typography>
-                        <Typography variant="body" style={styles.insightText}>
-                            "Anger is often a shield for sadness. Why is it safer to be angry?"
-                        </Typography>
-                        <SquishyButton onPress={() => {}} size="medium">
-                            <Typography variant="button">Discuss Prompt</Typography>
-                        </SquishyButton>
+                    {/* Emotion Nodes */}
+                    <GlassCard style={[styles.node, styles.surfaceNode]}>
+                        <MaterialIcons name="priority-high" size={16} color={COLORS.textPrimary} />
                     </GlassCard>
-                </SafeAreaView>
+                    <GlassCard style={[styles.node, styles.midNode]}>
+                        <MaterialIcons name="water-drop" size={20} color={COLORS.textPrimary} />
+                    </GlassCard>
+                    <GlassCard style={[styles.node, styles.deepNode]}>
+                        <MaterialIcons name="lock" size={24} color={COLORS.textPrimary} />
+                    </GlassCard>
+                </View>
+
+                <GlassCard style={styles.insightCard} variant="outlined">
+                    <Typography variant="h3">Insight Discovered</Typography>
+                    <Typography variant="body" style={styles.insightText}>
+                        "Anger is often a shield for sadness. Why is it safer to be angry?"
+                    </Typography>
+                    <SquishyButton onPress={() => {}} size="medium">
+                        <Typography variant="button">Discuss Prompt</Typography>
+                    </SquishyButton>
+                </GlassCard>
             </LinearGradient>
         </ScreenLayout>
     );

@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
@@ -30,32 +29,30 @@ const TheLoveScriptDebacle = () => {
     };
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.deepCosmic]} style={styles.container}>
-                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-                    <ScrollView contentContainerStyle={styles.scrollContent}>
-                        <Typography variant="h1" center style={styles.header}>The Love-Script Debacle</Typography>
-                        
-                        <View style={styles.grid}>
-                            {scripts.map(script => (
-                                <LoveScriptCard key={script.title} script={script} onDeconstruct={handleDeconstruct} />
-                            ))}
-                        </View>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
+                    <Typography variant="h1" center style={styles.header}>The Love-Script Debacle</Typography>
+                    
+                    <View style={styles.grid}>
+                        {scripts.map(script => (
+                            <LoveScriptCard key={script.title} script={script} onDeconstruct={handleDeconstruct} />
+                        ))}
+                    </View>
 
-                        <GlassCard style={styles.deconstructionZone} variant="outlined">
-                            <MaterialIcons name="delete-forever" size={48} color={COLORS.warmOrange} />
-                            <Typography variant="h2" style={styles.zoneTitle}>Deconstruction Zone</Typography>
-                            <Typography variant="body" center style={styles.zoneSubtitle}>
-                                Drag false scripts here to analyze.
+                    <GlassCard style={styles.deconstructionZone} variant="outlined">
+                        <MaterialIcons name="delete-forever" size={48} color={COLORS.warmOrange} />
+                        <Typography variant="h2" style={styles.zoneTitle}>Deconstruction Zone</Typography>
+                        <Typography variant="body" center style={styles.zoneSubtitle}>
+                            Drag false scripts here to analyze.
+                        </Typography>
+                        {deconstructed.length > 0 && (
+                            <Typography variant="caption" style={styles.deconstructedCount}>
+                                {deconstructed.length} deconstructed
                             </Typography>
-                            {deconstructed.length > 0 && (
-                                <Typography variant="caption" style={styles.deconstructedCount}>
-                                    {deconstructed.length} deconstructed
-                                </Typography>
-                            )}
-                        </GlassCard>
-                    </ScrollView>
-                </SafeAreaView>
+                        )}
+                    </GlassCard>
+                </ScrollView>
             </LinearGradient>
         </ScreenLayout>
     );

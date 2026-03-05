@@ -2,7 +2,6 @@ import React from 'react';
 import {
     View, StyleSheet, FlatList, Image
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -67,61 +66,59 @@ const AchievementCard = ({ item }: { item: typeof achievements[0] }) => {
 
 const AchievementsAndBadgesScreen = () => {
     return (
-        <ScreenLayout showMarcie={true} marcieQuote="Achievements and badges celebrate your growth as a couple! Each milestone represents real progress in your relationship.">
-            <SafeAreaView style={styles.container} edges={['bottom']}>
-                <View style={styles.content}>
-                    <Typography variant="h1" style={styles.title}>
-                        The Love Arcade
-                    </Typography>
-                    <Typography variant="h2" style={styles.subtitle}>
-                        +100 Games to Deepen Connection
-                    </Typography>
+        <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Achievements and badges celebrate your growth as a couple! Each milestone represents real progress in your relationship.">
+            <View style={styles.content}>
+                <Typography variant="h1" style={styles.title}>
+                    The Love Arcade
+                </Typography>
+                <Typography variant="h2" style={styles.subtitle}>
+                    +100 Games to Deepen Connection
+                </Typography>
 
-                    <View style={styles.header}>
-                        <Typography variant="h3">Achievements</Typography>
-                        <Typography variant="caption" style={styles.headerSubtitle}>12 / 40 Collected</Typography>
-                    </View>
-
-                    <FlatList
-                        data={achievements}
-                        renderItem={({ item }) => <AchievementCard item={item} />}
-                        keyExtractor={item => item.id}
-                        numColumns={2}
-                        contentContainerStyle={styles.grid}
-                        ListHeaderComponent={() => (
-                             <View style={styles.statsContainer}>
-                                <LinearGradient
-                                    colors={GRADIENTS.primary.colors}
-                                    start={GRADIENTS.primary.start}
-                                    end={GRADIENTS.primary.end}
-                                    style={styles.statBox}
-                                >
-                                    <Typography variant="h3" style={styles.statValue}>2,450</Typography>
-                                    <Typography variant="caption" style={styles.statLabel}>XP</Typography>
-                                </LinearGradient>
-                                <LinearGradient
-                                    colors={[COLORS.mintGreen, COLORS.softViolet]}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 1 }}
-                                    style={styles.statBox}
-                                >
-                                    <Typography variant="h3" style={styles.statValue}>Top 15%</Typography>
-                                    <Typography variant="caption" style={styles.statLabel}>Rank</Typography>
-                                </LinearGradient>
-                                <LinearGradient
-                                    colors={[COLORS.warmOrange, COLORS.brightYellow]}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 1 }}
-                                    style={styles.statBox}
-                                >
-                                    <Typography variant="h3" style={styles.statValue}>14</Typography>
-                                    <Typography variant="caption" style={styles.statLabel}>Streak</Typography>
-                                </LinearGradient>
-                            </View>
-                        )}
-                    />
+                <View style={styles.header}>
+                    <Typography variant="h3">Achievements</Typography>
+                    <Typography variant="caption" style={styles.headerSubtitle}>12 / 40 Collected</Typography>
                 </View>
-            </SafeAreaView>
+
+                <FlatList
+                    data={achievements}
+                    renderItem={({ item }) => <AchievementCard item={item} />}
+                    keyExtractor={item => item.id}
+                    numColumns={2}
+                    contentContainerStyle={styles.grid}
+                    ListHeaderComponent={() => (
+                         <View style={styles.statsContainer}>
+                            <LinearGradient
+                                colors={GRADIENTS.primary.colors}
+                                start={GRADIENTS.primary.start}
+                                end={GRADIENTS.primary.end}
+                                style={styles.statBox}
+                            >
+                                <Typography variant="h3" style={styles.statValue}>2,450</Typography>
+                                <Typography variant="caption" style={styles.statLabel}>XP</Typography>
+                            </LinearGradient>
+                            <LinearGradient
+                                colors={[COLORS.mintGreen, COLORS.softViolet]}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}
+                                style={styles.statBox}
+                            >
+                                <Typography variant="h3" style={styles.statValue}>Top 15%</Typography>
+                                <Typography variant="caption" style={styles.statLabel}>Rank</Typography>
+                            </LinearGradient>
+                            <LinearGradient
+                                colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}
+                                style={styles.statBox}
+                            >
+                                <Typography variant="h3" style={styles.statValue}>14</Typography>
+                                <Typography variant="caption" style={styles.statLabel}>Streak</Typography>
+                            </LinearGradient>
+                        </View>
+                    )}
+                />
+            </View>
         </ScreenLayout>
     );
 };

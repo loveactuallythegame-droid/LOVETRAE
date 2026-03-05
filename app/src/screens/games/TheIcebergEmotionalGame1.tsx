@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS } from '../../theme';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,40 +15,38 @@ const TheIcebergEmotionalGame1 = () => {
     };
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundPrimary]} style={styles.container}>
-                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-                    <View style={styles.headerContainer}>
-                        <Typography variant="h1" center>THE ICEBERG</Typography>
-                        <Typography variant="body" center style={styles.headerSubtitle}>
-                            From surface reactions to hidden core needs.
-                        </Typography>
+                <View style={styles.headerContainer}>
+                    <Typography variant="h1" center>THE ICEBERG</Typography>
+                    <Typography variant="body" center style={styles.headerSubtitle}>
+                        From surface reactions to hidden core needs.
+                    </Typography>
+                </View>
+
+                <View style={styles.icebergContainer}>
+                    {/* Surface Emotion */}
+                    <View style={styles.surfaceContainer}>
+                        <GlassCard style={styles.emotionNode}>
+                            <Typography variant="h2">ANGER</Typography>
+                        </GlassCard>
                     </View>
 
-                    <View style={styles.icebergContainer}>
-                        {/* Surface Emotion */}
-                        <View style={styles.surfaceContainer}>
+                    <View style={styles.waterline} />
+
+                    {/* Deep Emotion */}
+                    <View style={styles.deepContainer}>
+                        {!revealed ? (
+                            <SquishyButton onPress={revealEmotion} size="large">
+                                <Typography variant="button">REVEAL CORE NEED</Typography>
+                            </SquishyButton>
+                        ) : (
                             <GlassCard style={styles.emotionNode}>
-                                <Typography variant="h2">ANGER</Typography>
+                                <Typography variant="h2">FEAR</Typography>
                             </GlassCard>
-                        </View>
-
-                        <View style={styles.waterline} />
-
-                        {/* Deep Emotion */}
-                        <View style={styles.deepContainer}>
-                            {!revealed ? (
-                                <SquishyButton onPress={revealEmotion} size="large">
-                                    <Typography variant="button">REVEAL CORE NEED</Typography>
-                                </SquishyButton>
-                            ) : (
-                                <GlassCard style={styles.emotionNode}>
-                                    <Typography variant="h2">FEAR</Typography>
-                                </GlassCard>
-                            )}
-                        </View>
+                        )}
                     </View>
-                </SafeAreaView>
+                </View>
             </LinearGradient>
         </ScreenLayout>
     );

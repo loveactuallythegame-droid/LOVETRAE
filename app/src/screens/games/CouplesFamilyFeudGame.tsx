@@ -10,10 +10,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 // Backend integration
@@ -200,16 +199,16 @@ const CouplesFamilyFeudGame: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <SafeAreaView style={styles.container}>
+            <ScreenLayout showHeader={false} scrollable={true}>
                 <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background}>
                     <Text variant="h2" style={styles.loadingText}>Loading Survey...</Text>
                 </LinearGradient>
-            </SafeAreaView>
+            </ScreenLayout>
         );
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background} />
             
             <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -297,7 +296,7 @@ const CouplesFamilyFeudGame: React.FC = () => {
                     <Text variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
                 )}
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

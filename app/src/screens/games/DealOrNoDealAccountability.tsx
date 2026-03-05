@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
@@ -90,9 +89,9 @@ export default function DealOrNoDealAccountability({ route, navigation }: any) {
     }), [gameId, round]);
 
     return (
-        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />
-        </SafeAreaView>
+        </ScreenLayout>
     );
 }
 

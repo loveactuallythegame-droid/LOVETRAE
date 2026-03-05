@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -17,36 +16,34 @@ const TheNeedsDecoderGame = () => {
     const [selected, setSelected] = useState<number | null>(null);
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundSecondary]} style={styles.container}>
-                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-                    <Typography variant="h1" center>The Needs Decoder</Typography>
-                    <Typography variant="body" center style={styles.subHeader}>Partner A sent:</Typography>
+                <Typography variant="h1" center>The Needs Decoder</Typography>
+                <Typography variant="body" center style={styles.subHeader}>Partner A sent:</Typography>
 
-                    <View style={styles.emojiContainer}>
-                        <Typography variant="h1" style={styles.emoji}>☁️</Typography>
-                        <Typography variant="h1" style={styles.emoji}>☕</Typography>
-                        <Typography variant="h1" style={styles.emoji}>🐕</Typography>
-                    </View>
+                <View style={styles.emojiContainer}>
+                    <Typography variant="h1" style={styles.emoji}>☁️</Typography>
+                    <Typography variant="h1" style={styles.emoji}>☕</Typography>
+                    <Typography variant="h1" style={styles.emoji}>🐕</Typography>
+                </View>
 
-                    <View style={styles.optionsContainer}>
-                        {options.map((option, i) => (
-                            <GlassCard 
-                                key={i} 
-                                onPress={() => setSelected(i)}
-                                style={[styles.option, selected === i && styles.selectedOption]}
-                                variant={selected === i ? 'default' : 'outlined'}
-                            >
-                                <Typography variant="body">{option}</Typography>
-                                {selected === i && <MaterialIcons name="check-circle" size={24} color={COLORS.vibrantPink} />}
-                            </GlassCard>
-                        ))}
-                    </View>
+                <View style={styles.optionsContainer}>
+                    {options.map((option, i) => (
+                        <GlassCard 
+                            key={i} 
+                            onPress={() => setSelected(i)}
+                            style={[styles.option, selected === i && styles.selectedOption]}
+                            variant={selected === i ? 'default' : 'outlined'}
+                        >
+                            <Typography variant="body">{option}</Typography>
+                            {selected === i && <MaterialIcons name="check-circle" size={24} color={COLORS.vibrantPink} />}
+                        </GlassCard>
+                    ))}
+                </View>
 
-                    <SquishyButton onPress={() => {}} size="large" style={styles.submitButton}>
-                        <Typography variant="button">SUBMIT DECODING</Typography>
-                    </SquishyButton>
-                </SafeAreaView>
+                <SquishyButton onPress={() => {}} size="large" style={styles.submitButton}>
+                    <Typography variant="button">SUBMIT DECODING</Typography>
+                </SquishyButton>
             </LinearGradient>
         </ScreenLayout>
     );

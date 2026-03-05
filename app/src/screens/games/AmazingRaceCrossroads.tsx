@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
@@ -21,82 +20,80 @@ const AmazingRaceCrossroadsScreen = () => {
     }
 
     return (
-        <ScreenLayout showMarcie={true} marcieQuote="At relationship crossroads, choices matter! Each decision shapes your journey together. Choose wisely!">
-            <SafeAreaView style={styles.container} edges={['bottom']}>
-                <ScrollView contentContainerStyle={styles.content}>
-                    <Typography variant="h1" style={styles.title}>
-                        The Love Arcade
-                    </Typography>
-                    <Typography variant="h2" style={styles.subtitle}>
-                        +100 Games to Deepen Connection
-                    </Typography>
+        <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="At relationship crossroads, choices matter! Each decision shapes your journey together. Choose wisely!">
+            <ScrollView contentContainerStyle={styles.content}>
+                <Typography variant="h1" style={styles.title}>
+                    The Love Arcade
+                </Typography>
+                <Typography variant="h2" style={styles.subtitle}>
+                    +100 Games to Deepen Connection
+                </Typography>
 
-                    <View style={styles.decisionHub}>
-                        <LinearGradient
-                            colors={GRADIENTS.primary.colors}
-                            start={GRADIENTS.primary.start}
-                            end={GRADIENTS.primary.end}
-                            style={styles.card}
-                        >
-                            <Typography variant="h3" style={styles.cardTitle}>WORD-WOUND PROTOCOL</Typography>
-                            <Typography variant="caption" style={styles.cardSubtitle}>PHASE 04: ACTIVE</Typography>
-                        </LinearGradient>
+                <View style={styles.decisionHub}>
+                    <LinearGradient
+                        colors={GRADIENTS.primary.colors}
+                        start={GRADIENTS.primary.start}
+                        end={GRADIENTS.primary.end}
+                        style={styles.card}
+                    >
+                        <Typography variant="h3" style={styles.cardTitle}>WORD-WOUND PROTOCOL</Typography>
+                        <Typography variant="caption" style={styles.cardSubtitle}>PHASE 04: ACTIVE</Typography>
+                    </LinearGradient>
 
-                        <LinearGradient
-                            colors={[COLORS.lavenderPurple, COLORS.softViolet]}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
-                            style={styles.card}
-                        >
-                            <Typography variant="h3" style={styles.hubTitle}>DETOUR</Typography>
-                            <Typography variant="body" style={styles.hubDescription}>Choose your communication style for the next 500 miles:</Typography>
-                            <TouchableOpacity 
-                                style={[styles.optionButton, detour === 'candor' && styles.selectedOption]}
-                                onPress={() => handleDetourSelect('candor')}
-                            >
-                                <Typography variant="h4" style={styles.optionTitle}>Radical Candor</Typography>
-                                <Typography variant="body" style={styles.optionDescription}>High intensity, direct feedback, zero filters.</Typography>
-                            </TouchableOpacity>
-                            <Typography variant="body" style={styles.orText}>-- OR --</Typography>
-                            <TouchableOpacity 
-                                style={[styles.optionButton, detour === 'soft' && styles.selectedOption]}
-                                 onPress={() => handleDetourSelect('soft')}
-                            >
-                                <Typography variant="h4" style={styles.optionTitle}>Softened Start-up</Typography>
-                                <Typography variant="body" style={styles.optionDescription}>Low impact, high empathy, gradual entry.</Typography>
-                            </TouchableOpacity>
-                        </LinearGradient>
-
-                        <LinearGradient
-                            colors={[COLORS.warmOrange, COLORS.brightYellow]}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
-                            style={styles.card}
-                        >
-                            <Typography variant="h3" style={[styles.hubTitle, {color: COLORS.textPrimary}]}>ROADBLOCK</Typography>
-                            <Typography variant="body" style={styles.hubDescription}>A personal growth task for ONE partner only:</Typography>
-                             <View style={styles.roadblockTask}>
-                                <Typography variant="h4" style={styles.optionTitle}>Mirror Meditation</Typography>
-                                <Typography variant="body" style={styles.optionDescription}>Facing self-criticism without projection. Takes approx 20 mins.</Typography>
-                            </View>
-                            <SquishyButton onPress={() => handleRoadblockSelect('user')}>
-                                <Typography variant="button">I'll Take This Task</Typography>
-                            </SquishyButton>
-                        </LinearGradient>
-                    </View>
-                     {/* Simplified representation of the map and moderator for mobile */}
-                     <LinearGradient
-                        colors={[COLORS.mintGreen, COLORS.softViolet]}
+                    <LinearGradient
+                        colors={[COLORS.lavenderPurple, COLORS.softViolet]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
-                        style={styles.moderatorCard}
+                        style={styles.card}
                     >
-                        <Typography variant="h4" style={styles.moderatorName}>Dr. Marcie Liss</Typography>
-                        <Typography variant="caption" style={styles.moderatorTitle}>Race Moderator</Typography>
-                        <Typography variant="body" style={styles.moderatorQuote}>"Phase 4 Word-Wound Protocol is active. Choose your path wisely, the rift is closing!"</Typography>
+                        <Typography variant="h3" style={styles.hubTitle}>DETOUR</Typography>
+                        <Typography variant="body" style={styles.hubDescription}>Choose your communication style for the next 500 miles:</Typography>
+                        <TouchableOpacity 
+                            style={[styles.optionButton, detour === 'candor' && styles.selectedOption]}
+                            onPress={() => handleDetourSelect('candor')}
+                        >
+                            <Typography variant="h4" style={styles.optionTitle}>Radical Candor</Typography>
+                            <Typography variant="body" style={styles.optionDescription}>High intensity, direct feedback, zero filters.</Typography>
+                        </TouchableOpacity>
+                        <Typography variant="body" style={styles.orText}>-- OR --</Typography>
+                        <TouchableOpacity 
+                            style={[styles.optionButton, detour === 'soft' && styles.selectedOption]}
+                             onPress={() => handleDetourSelect('soft')}
+                        >
+                            <Typography variant="h4" style={styles.optionTitle}>Softened Start-up</Typography>
+                            <Typography variant="body" style={styles.optionDescription}>Low impact, high empathy, gradual entry.</Typography>
+                        </TouchableOpacity>
                     </LinearGradient>
-                </ScrollView>
-            </SafeAreaView>
+
+                    <LinearGradient
+                        colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={styles.card}
+                    >
+                        <Typography variant="h3" style={[styles.hubTitle, {color: COLORS.textPrimary}]}>ROADBLOCK</Typography>
+                        <Typography variant="body" style={styles.hubDescription}>A personal growth task for ONE partner only:</Typography>
+                         <View style={styles.roadblockTask}>
+                            <Typography variant="h4" style={styles.optionTitle}>Mirror Meditation</Typography>
+                            <Typography variant="body" style={styles.optionDescription}>Facing self-criticism without projection. Takes approx 20 mins.</Typography>
+                        </View>
+                        <SquishyButton onPress={() => handleRoadblockSelect('user')}>
+                            <Typography variant="button">I'll Take This Task</Typography>
+                        </SquishyButton>
+                    </LinearGradient>
+                </View>
+                 {/* Simplified representation of the map and moderator for mobile */}
+                 <LinearGradient
+                    colors={[COLORS.mintGreen, COLORS.softViolet]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.moderatorCard}
+                >
+                    <Typography variant="h4" style={styles.moderatorName}>Dr. Marcie Liss</Typography>
+                    <Typography variant="caption" style={styles.moderatorTitle}>Race Moderator</Typography>
+                    <Typography variant="body" style={styles.moderatorQuote}>"Phase 4 Word-Wound Protocol is active. Choose your path wisely, the rift is closing!"</Typography>
+                </LinearGradient>
+            </ScrollView>
         </ScreenLayout>
     );
 };

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions, Animated } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
@@ -103,101 +102,99 @@ export default function ApologyAuction({ route, navigation }: any) {
   };
 
   return (
-    <ScreenLayout showMarcie={true} marcieQuote="Genuine apologies are the foundation of trust! Choose the most heartfelt option to win this auction.">
-      <SafeAreaView style={styles.container} edges={['bottom']}>
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content}>
-          <Typography variant="h1" style={styles.title}>
-            The Love Arcade
-          </Typography>
-          <Typography variant="h2" style={styles.subtitle}>
-            +100 Games to Deepen Connection
-          </Typography>
+    <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Genuine apologies are the foundation of trust! Choose the most heartfelt option to win this auction.">
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content}>
+        <Typography variant="h1" style={styles.title}>
+          The Love Arcade
+        </Typography>
+        <Typography variant="h2" style={styles.subtitle}>
+          +100 Games to Deepen Connection
+        </Typography>
 
-          <GlassCard>
-            <LinearGradient
-              colors={[COLORS.backgroundInput, COLORS.backgroundInput]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.gradientContainer}
-            >
-              <Typography variant="h3" style={{ marginBottom: SPACING.md, color: COLORS.textPrimary }}>
-                Round {round} of 5
-              </Typography>
-              <Typography variant="body" style={{ marginBottom: SPACING.lg, color: COLORS.textSecondary }}>
-                Select the most genuine apology for the situation
-              </Typography>
+        <GlassCard>
+          <LinearGradient
+            colors={[COLORS.backgroundInput, COLORS.backgroundInput]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientContainer}
+          >
+            <Typography variant="h3" style={{ marginBottom: SPACING.md, color: COLORS.textPrimary }}>
+              Round {round} of 5
+            </Typography>
+            <Typography variant="body" style={{ marginBottom: SPACING.lg, color: COLORS.textSecondary }}>
+              Select the most genuine apology for the situation
+            </Typography>
 
-              <View style={styles.cardsContainer}>
-                {APOLOGY_CARDS.map((card) => (
-                  <Animated.View 
-                    key={card.id}
+            <View style={styles.cardsContainer}>
+              {APOLOGY_CARDS.map((card) => (
+                <Animated.View 
+                  key={card.id}
+                  style={[
+                    { transform: [{ scale: selectedCard === card.id ? scaleAnim : 1 }] }
+                  ]}
+                >
+                  <LinearGradient
+                    colors={GRADIENTS.primary.colors}
+                    start={GRADIENTS.primary.start}
+                    end={GRADIENTS.primary.end}
                     style={[
-                      { transform: [{ scale: selectedCard === card.id ? scaleAnim : 1 }] }
+                      styles.card,
+                      selectedCard === card.id && styles.selectedCard
                     ]}
                   >
-                    <LinearGradient
-                      colors={GRADIENTS.primary.colors}
-                      start={GRADIENTS.primary.start}
-                      end={GRADIENTS.primary.end}
-                      style={[
-                        styles.card,
-                        selectedCard === card.id && styles.selectedCard
-                      ]}
+                    <SquishyButton
+                      style={styles.squishyButton}
+                      onPress={() => selectCard(card.id)}
                     >
-                      <SquishyButton
-                        style={styles.squishyButton}
-                        onPress={() => selectCard(card.id)}
-                      >
-                        <Typography variant="body" style={{ 
-                          color: selectedCard === card.id ? COLORS.backgroundPrimary : COLORS.textPrimary,
-                          textAlign: 'center'
+                      <Typography variant="body" style={{ 
+                        color: selectedCard === card.id ? COLORS.backgroundPrimary : COLORS.textPrimary,
+                        textAlign: 'center'
+                      }}>
+                        {card.text}
+                      </Typography>
+                      <View style={styles.cardFooter}>
+                        <Typography variant="caption" style={{ 
+                          color: selectedCard === card.id ? COLORS.backgroundPrimary : COLORS.mintGreen 
                         }}>
-                          {card.text}
+                          Value: {card.value} pts
                         </Typography>
-                        <View style={styles.cardFooter}>
-                          <Typography variant="caption" style={{ 
-                            color: selectedCard === card.id ? COLORS.backgroundPrimary : COLORS.mintGreen 
-                          }}>
-                            Value: {card.value} pts
-                          </Typography>
-                        </View>
-                      </SquishyButton>
-                    </LinearGradient>
-                  </Animated.View>
-                ))}
-              </View>
+                      </View>
+                    </SquishyButton>
+                  </LinearGradient>
+                </Animated.View>
+              ))}
+            </View>
 
-              <SquishyButton 
-                style={styles.submitButton} 
-                onPress={submitBid} 
-                disabled={!selectedCard}
-              >
-                <Typography variant="button" style={{ color: COLORS.textPrimary }}>
-                  Bid Apology
-                </Typography>
-              </SquishyButton>
-            </LinearGradient>
+            <SquishyButton 
+              style={styles.submitButton} 
+              onPress={submitBid} 
+              disabled={!selectedCard}
+            >
+              <Typography variant="button" style={{ color: COLORS.textPrimary }}>
+                Bid Apology
+              </Typography>
+            </SquishyButton>
+          </LinearGradient>
+        </GlassCard>
+        
+        {partnerResponse && (
+          <GlassCard style={styles.partnerCard}>
+            <Typography variant="caption" style={{ color: COLORS.mintGreen, marginBottom: SPACING.sm }}>
+              Partner's Choice:
+            </Typography>
+            <Typography variant="body" style={{ color: COLORS.textSecondary }}>
+              {partnerResponse.selectedCard 
+                ? `Selected card with value: ${partnerResponse.selectedCard}`
+                : 'Partner is selecting...'}
+            </Typography>
           </GlassCard>
-          
-          {partnerResponse && (
-            <GlassCard style={styles.partnerCard}>
-              <Typography variant="caption" style={{ color: COLORS.mintGreen, marginBottom: SPACING.sm }}>
-                Partner's Choice:
-              </Typography>
-              <Typography variant="body" style={{ color: COLORS.textSecondary }}>
-                {partnerResponse.selectedCard 
-                  ? `Selected card with value: ${partnerResponse.selectedCard}`
-                  : 'Partner is selecting...'}
-              </Typography>
-            </GlassCard>
-          )}
+        )}
 
-          <View style={styles.scoreContainer}>
-            <Typography variant="caption" style={styles.scoreLabel}>Your Score</Typography>
-            <Typography variant="h2" style={styles.scoreValue}>{playerScore}</Typography>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+        <View style={styles.scoreContainer}>
+          <Typography variant="caption" style={styles.scoreLabel}>Your Score</Typography>
+          <Typography variant="h2" style={styles.scoreValue}>{playerScore}</Typography>
+        </View>
+      </ScrollView>
     </ScreenLayout>
   );
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { GlassCard, Typography, ScreenLayout } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS } from '../../theme';
@@ -9,49 +8,47 @@ const ForeplaySliderGame2Screen = () => {
   const intensity = 75;
 
   return (
-    <ScreenLayout showHeader={false} scrollable={false}>
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <View style={styles.header}>
-          <Typography variant="h1">Foreplay Slider</Typography>
-          <Typography variant="body">Partner A: Find the sweet spot. Partner B: Feel the heat.</Typography>
-        </View>
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <View style={styles.header}>
+        <Typography variant="h1">Foreplay Slider</Typography>
+        <Typography variant="body">Partner A: Find the sweet spot. Partner B: Feel the heat.</Typography>
+      </View>
 
-        <View style={styles.mainGrid}>
-          {/* Left Panel: Controller */}
-          <GlassCard style={styles.glassPanel}>
-            <Typography variant="label">PARTNER A</Typography>
-            <View style={styles.sliderContainer}>
-              <View style={styles.sliderTrack}>
-                <LinearGradient 
-                  colors={[COLORS.rosePink, COLORS.vibrantPink]} 
-                  style={[styles.sliderFill, { height: `${intensity}%` }]} 
-                />
-                <View style={[styles.sliderHandle, { bottom: `${intensity}%` }]} />
-              </View>
+      <View style={styles.mainGrid}>
+        {/* Left Panel: Controller */}
+        <GlassCard style={styles.glassPanel}>
+          <Typography variant="label">PARTNER A</Typography>
+          <View style={styles.sliderContainer}>
+            <View style={styles.sliderTrack}>
+              <LinearGradient 
+                colors={[COLORS.rosePink, COLORS.vibrantPink]} 
+                style={[styles.sliderFill, { height: `${intensity}%` }]} 
+              />
+              <View style={[styles.sliderHandle, { bottom: `${intensity}%` }]} />
             </View>
-            <Typography variant="h1" style={styles.sliderValueText}>{intensity}%</Typography>
-          </GlassCard>
-
-          {/* Right Panel: Visualizer */}
-          <View style={styles.rightColumn}>
-            <GlassCard style={styles.visualizerPanel}>
-              <Typography variant="label">AROUSAL LEVEL</Typography>
-              <View style={styles.orbContainer}>
-                <LinearGradient 
-                  colors={[COLORS.lavenderPurple, COLORS.vibrantPink]} 
-                  style={styles.orb}
-                >
-                  <Typography variant="h1" style={styles.orbText}>{intensity}%</Typography>
-                </LinearGradient>
-              </View>
-            </GlassCard>
-            <GlassCard style={styles.marciePanel}>
-              <View style={styles.marcieAvatar} />
-              <Typography variant="marcieDialogue">"Oh, the tension is palpable! We're reaching the climax of this round..."</Typography>
-            </GlassCard>
           </View>
+          <Typography variant="h1" style={styles.sliderValueText}>{intensity}%</Typography>
+        </GlassCard>
+
+        {/* Right Panel: Visualizer */}
+        <View style={styles.rightColumn}>
+          <GlassCard style={styles.visualizerPanel}>
+            <Typography variant="label">AROUSAL LEVEL</Typography>
+            <View style={styles.orbContainer}>
+              <LinearGradient 
+                colors={[COLORS.lavenderPurple, COLORS.vibrantPink]} 
+                style={styles.orb}
+              >
+                <Typography variant="h1" style={styles.orbText}>{intensity}%</Typography>
+              </LinearGradient>
+            </View>
+          </GlassCard>
+          <GlassCard style={styles.marciePanel}>
+            <View style={styles.marcieAvatar} />
+            <Typography variant="marcieDialogue">"Oh, the tension is palpable! We're reaching the climax of this round..."</Typography>
+          </GlassCard>
         </View>
-      </SafeAreaView>
+      </View>
     </ScreenLayout>
   );
 };

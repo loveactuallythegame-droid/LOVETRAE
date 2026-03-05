@@ -44,57 +44,55 @@ const TouchMapConfiguration = ({ navigation }: any) => {
     };
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
-            <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    <View style={styles.header}>
-                        <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="ghost" size="small">
-                            <MaterialIcons name="arrow-back" size={24} color={COLORS.textPrimary} />
-                        </SquishyButton>
-                        <Typography variant="h1" style={styles.headerTitle}>Touch Map</Typography>
-                        <View style={{ width: 24 }} />
-                    </View>
-
-                    <Typography variant="body" center style={styles.subtitle}>
-                        Tap each body part to cycle through your touch preferences.
-                    </Typography>
-
-                    <GlassCard style={styles.touchMapContainer}>
-                        <TouchableOpacity style={[styles.bodyPart, styles.head, { backgroundColor: stateColors[touchMap.head] }]} onPress={() => toggleState('head')} />
-                        <TouchableOpacity style={[styles.bodyPart, styles.neck, { backgroundColor: stateColors[touchMap.neck] }]} onPress={() => toggleState('neck')} />
-                        <View style={styles.torsoContainer}>
-                            <TouchableOpacity style={[styles.bodyPart, styles.arms, { backgroundColor: stateColors[touchMap.arms] }]} onPress={() => toggleState('arms')} />
-                            <View style={styles.mainTorso}>
-                                <TouchableOpacity style={[styles.bodyPart, styles.shoulders, { backgroundColor: stateColors[touchMap.shoulders] }]} onPress={() => toggleState('shoulders')} />
-                                <TouchableOpacity style={[styles.bodyPart, styles.chest, { backgroundColor: stateColors[touchMap.chest] }]} onPress={() => toggleState('chest')} />
-                                <TouchableOpacity style={[styles.bodyPart, styles.stomach, { backgroundColor: stateColors[touchMap.stomach] }]} onPress={() => toggleState('stomach')} />
-                            </View>
-                            <TouchableOpacity style={[styles.bodyPart, styles.arms, { backgroundColor: stateColors[touchMap.arms] }]} onPress={() => toggleState('arms')} />
-                        </View>
-                        <TouchableOpacity style={[styles.bodyPart, styles.legs, { backgroundColor: stateColors[touchMap.legs] }]} onPress={() => toggleState('legs')} />
-                        <TouchableOpacity style={[styles.bodyPart, styles.feet, { backgroundColor: stateColors[touchMap.feet] }]} onPress={() => toggleState('feet')} />
-                    </GlassCard>
-
-                    <View style={styles.legend}>
-                        <View style={styles.legendItem}>
-                            <View style={[styles.legendColor, { backgroundColor: stateColors.like }]} />
-                            <Typography variant="body">Like</Typography>
-                        </View>
-                        <View style={styles.legendItem}>
-                            <View style={[styles.legendColor, { backgroundColor: stateColors.dislike }]} />
-                            <Typography variant="body">Dislike</Typography>
-                        </View>
-                        <View style={styles.legendItem}>
-                            <View style={[styles.legendColor, { backgroundColor: stateColors.none }]} />
-                            <Typography variant="body">Neutral / Ask</Typography>
-                        </View>
-                    </View>
-
-                    <SquishyButton onPress={handleSave} style={styles.saveButton}>
-                        <Typography variant="h2" color={COLORS.textPrimary}>Save Preferences</Typography>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                <View style={styles.header}>
+                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="ghost" size="small">
+                        <MaterialIcons name="arrow-back" size={24} color={COLORS.textPrimary} />
                     </SquishyButton>
-                </ScrollView>
-            </SafeAreaView>
+                    <Typography variant="h1" style={styles.headerTitle}>Touch Map</Typography>
+                    <View style={{ width: 24 }} />
+                </View>
+
+                <Typography variant="body" center style={styles.subtitle}>
+                    Tap each body part to cycle through your touch preferences.
+                </Typography>
+
+                <GlassCard style={styles.touchMapContainer}>
+                    <TouchableOpacity style={[styles.bodyPart, styles.head, { backgroundColor: stateColors[touchMap.head] }]} onPress={() => toggleState('head')} />
+                    <TouchableOpacity style={[styles.bodyPart, styles.neck, { backgroundColor: stateColors[touchMap.neck] }]} onPress={() => toggleState('neck')} />
+                    <View style={styles.torsoContainer}>
+                        <TouchableOpacity style={[styles.bodyPart, styles.arms, { backgroundColor: stateColors[touchMap.arms] }]} onPress={() => toggleState('arms')} />
+                        <View style={styles.mainTorso}>
+                            <TouchableOpacity style={[styles.bodyPart, styles.shoulders, { backgroundColor: stateColors[touchMap.shoulders] }]} onPress={() => toggleState('shoulders')} />
+                            <TouchableOpacity style={[styles.bodyPart, styles.chest, { backgroundColor: stateColors[touchMap.chest] }]} onPress={() => toggleState('chest')} />
+                            <TouchableOpacity style={[styles.bodyPart, styles.stomach, { backgroundColor: stateColors[touchMap.stomach] }]} onPress={() => toggleState('stomach')} />
+                        </View>
+                        <TouchableOpacity style={[styles.bodyPart, styles.arms, { backgroundColor: stateColors[touchMap.arms] }]} onPress={() => toggleState('arms')} />
+                    </View>
+                    <TouchableOpacity style={[styles.bodyPart, styles.legs, { backgroundColor: stateColors[touchMap.legs] }]} onPress={() => toggleState('legs')} />
+                    <TouchableOpacity style={[styles.bodyPart, styles.feet, { backgroundColor: stateColors[touchMap.feet] }]} onPress={() => toggleState('feet')} />
+                </GlassCard>
+
+                <View style={styles.legend}>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendColor, { backgroundColor: stateColors.like }]} />
+                        <Typography variant="body">Like</Typography>
+                    </View>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendColor, { backgroundColor: stateColors.dislike }]} />
+                        <Typography variant="body">Dislike</Typography>
+                    </View>
+                    <View style={styles.legendItem}>
+                        <View style={[styles.legendColor, { backgroundColor: stateColors.none }]} />
+                        <Typography variant="body">Neutral / Ask</Typography>
+                    </View>
+                </View>
+
+                <SquishyButton onPress={handleSave} style={styles.saveButton}>
+                    <Typography variant="h2" color={COLORS.textPrimary}>Save Preferences</Typography>
+                </SquishyButton>
+            </ScrollView>
         </ScreenLayout>
     );
 };

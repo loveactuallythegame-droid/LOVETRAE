@@ -10,7 +10,7 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenLayout } from '../../components/ui';
@@ -126,23 +126,20 @@ const TrustBank: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <ScreenLayout scrollable={false} showHeader={false}>
-                <SafeAreaView style={styles.container}>
-                    <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.healingHospital]} style={styles.background}>
-                        <Typography variant="body" center style={styles.loadingText}>
-                            Opening Trust Bank...
-                        </Typography>
-                    </LinearGradient>
-                </SafeAreaView>
+            <ScreenLayout showHeader={false} scrollable={true}>
+                <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.healingHospital]} style={styles.background}>
+                    <Typography variant="body" center style={styles.loadingText}>
+                        Opening Trust Bank...
+                    </Typography>
+                </LinearGradient>
             </ScreenLayout>
         );
     }
 
     return (
-        <ScreenLayout scrollable={false} showHeader={false}>
-            <SafeAreaView style={styles.container}>
-                <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.healingHospital]} style={styles.background}>
-                    <ScrollView contentContainerStyle={styles.scrollContent}>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.healingHospital]} style={styles.background}>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
                         {/* Header */}
                         <View style={styles.header}>
                             <Typography variant="h1" center>
@@ -277,16 +274,12 @@ const TrustBank: React.FC = () => {
                             </Typography>
                         )}
                     </ScrollView>
-                </LinearGradient>
-            </SafeAreaView>
+            </LinearGradient>
         </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     background: {
         flex: 1,
     },

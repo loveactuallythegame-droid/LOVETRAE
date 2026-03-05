@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
@@ -18,7 +18,7 @@ const BidRadarGameScreen = () => {
 
     return (
         <ScreenLayout showHeader={false} scrollable={true}>
-            <SafeAreaView style={styles.container}>
+
                 {/* Dr. Marcie Section */}
                 <GlassCard style={styles.drMarcieSection} variant="outlined">
                     <View style={styles.avatarContainer}>
@@ -88,7 +88,7 @@ const BidRadarGameScreen = () => {
                     </GlassCard>
 
                 </ScrollView>
-            </SafeAreaView>
+
         </ScreenLayout>
     );
 };

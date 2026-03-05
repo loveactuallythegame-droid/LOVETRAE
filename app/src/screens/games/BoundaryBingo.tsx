@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { ScreenLayout, GlassCard, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
 
@@ -38,8 +38,8 @@ const BoundaryBingoScreen = () => {
   );
 
   return (
-    <ScreenLayout showHeader={false} scrollable={false}>
-      <SafeAreaView style={styles.container}>
+    <ScreenLayout showHeader={false} scrollable={true}>
+
         <Typography variant="h1" center style={styles.gameTitle}>The Love Arcade</Typography>
         <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
         
@@ -62,7 +62,7 @@ const BoundaryBingoScreen = () => {
             contentContainerStyle={styles.grid}
           />
         </View>
-      </SafeAreaView>
+
     </ScreenLayout>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
@@ -40,7 +39,7 @@ const AppreciationAuctionGameScreen = () => {
     };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScreenLayout showHeader={false} scrollable={true}>
         <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.deepCosmic]} style={styles.background} />
         
         {/* Dr. Marcie Section */}
@@ -83,7 +82,7 @@ const AppreciationAuctionGameScreen = () => {
                 <PlayerCard name="Jamie" coins={playerBCoins} color={COLORS.vibrantPink} onBid={() => handleBid('B')} />
             </View>
         </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 

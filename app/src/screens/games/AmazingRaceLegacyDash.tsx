@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ScreenLayout, Typography, GlassCard } from '../../components/ui';
@@ -38,71 +37,69 @@ const LegacyMilestone = ({ title, status, active, last }: { title: string, statu
 
 const AmazingRaceLegacyDashScreen = () => {
   return (
-    <ScreenLayout showMarcie={true} marcieQuote="Your legacy dash shows incredible progress! Each milestone represents real growth in your relationship journey.">
-      <SafeAreaView style={styles.container} edges={['bottom']}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <Typography variant="h1" style={styles.title}>
-            The Love Arcade
-          </Typography>
-          <Typography variant="h2" style={styles.subtitle}>
-            +100 Games to Deepen Connection
-          </Typography>
+    <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Your legacy dash shows incredible progress! Each milestone represents real growth in your relationship journey.">
+      <ScrollView contentContainerStyle={styles.content}>
+        <Typography variant="h1" style={styles.title}>
+          The Love Arcade
+        </Typography>
+        <Typography variant="h2" style={styles.subtitle}>
+          +100 Games to Deepen Connection
+        </Typography>
 
-          <LinearGradient
-              colors={GRADIENTS.primary.colors}
-              start={GRADIENTS.primary.start}
-              end={GRADIENTS.primary.end}
-              style={styles.progressCard}
-          >
-              <View style={styles.progressHeader}>
-                  <Typography variant="h3" style={styles.progressTitle}>Overall Team Progress</Typography>
-                  <Typography variant="h2" style={styles.progressPercentage}>65%</Typography>
-              </View>
-              <View style={styles.progressBarContainer}>
-                  <LinearGradient 
-                      colors={COLORS.progress}
-                      start={{x: 0, y: 0}}
-                      end={{x: 1, y: 0}}
-                      style={[styles.progressBar, {width: '65%'}]}/>
-              </View>
-              <Typography variant="body" style={styles.milestoneCounter}>6/9 Milestones Completed</Typography>
-          </LinearGradient>
+        <LinearGradient
+            colors={GRADIENTS.primary.colors}
+            start={GRADIENTS.primary.start}
+            end={GRADIENTS.primary.end}
+            style={styles.progressCard}
+        >
+            <View style={styles.progressHeader}>
+                <Typography variant="h3" style={styles.progressTitle}>Overall Team Progress</Typography>
+                <Typography variant="h2" style={styles.progressPercentage}>65%</Typography>
+            </View>
+            <View style={styles.progressBarContainer}>
+                <LinearGradient 
+                    colors={COLORS.progress}
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
+                    style={[styles.progressBar, {width: '65%'}]}/>
+            </View>
+            <Typography variant="body" style={styles.milestoneCounter}>6/9 Milestones Completed</Typography>
+        </LinearGradient>
 
-          <View style={styles.mainGrid}>
-              <LinearGradient
-                  colors={[COLORS.lavenderPurple, COLORS.softViolet]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.milestoneList}
-              >
-                   <LegacyMilestone title="Foundation: De-escalation" status="Completed - Day 4" />
-                   <LegacyMilestone title="Trust Rebuild: Transparency" status='Active Milestone: "The Shared Calendar Challenge"' active />
-                   <LegacyMilestone title="Communication Hub: New Rules" status="Unlocks at 75%" />
-                   <LegacyMilestone title="Future Vision: Legacy Planning" status="Final Stretch" last />
-              </LinearGradient>
-               {/* Map section would be a more complex component */}
-              <LinearGradient
-                  colors={[COLORS.mintGreen, COLORS.softViolet]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.mapContainer}
-              >
-                  <Typography variant="h3" style={styles.mapPlaceholderText}>Race Map Area</Typography>
-              </LinearGradient>
-          </View>
+        <View style={styles.mainGrid}>
+            <LinearGradient
+                colors={[COLORS.lavenderPurple, COLORS.softViolet]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.milestoneList}
+            >
+                 <LegacyMilestone title="Foundation: De-escalation" status="Completed - Day 4" />
+                 <LegacyMilestone title="Trust Rebuild: Transparency" status='Active Milestone: "The Shared Calendar Challenge"' active />
+                 <LegacyMilestone title="Communication Hub: New Rules" status="Unlocks at 75%" />
+                 <LegacyMilestone title="Future Vision: Legacy Planning" status="Final Stretch" last />
+            </LinearGradient>
+             {/* Map section would be a more complex component */}
+            <LinearGradient
+                colors={[COLORS.mintGreen, COLORS.softViolet]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.mapContainer}
+            >
+                <Typography variant="h3" style={styles.mapPlaceholderText}>Race Map Area</Typography>
+            </LinearGradient>
+        </View>
 
-          <LinearGradient
-              colors={[COLORS.warmOrange, COLORS.brightYellow]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.moderatorCard}
-          >
-               <Typography variant="caption" style={styles.moderatorTitle}>Race Moderator</Typography>
-               <Typography variant="h4" style={styles.moderatorName}>Dr. Marcie Liss</Typography>
-              <Typography variant="body" style={styles.moderatorQuote}>"You're gaining speed on the Trust Rebuild! Keep pushing together."</Typography>
-          </LinearGradient>
-        </ScrollView>
-      </SafeAreaView>
+        <LinearGradient
+            colors={[COLORS.warmOrange, COLORS.brightYellow]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.moderatorCard}
+        >
+             <Typography variant="caption" style={styles.moderatorTitle}>Race Moderator</Typography>
+             <Typography variant="h4" style={styles.moderatorName}>Dr. Marcie Liss</Typography>
+            <Typography variant="body" style={styles.moderatorQuote}>"You're gaining speed on the Trust Rebuild! Keep pushing together."</Typography>
+        </LinearGradient>
+      </ScrollView>
     </ScreenLayout>
   );
 };
@@ -246,7 +243,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
         paddingHorizontal: SPACING.regular,
         paddingVertical: SPACING.small,
-        borderRadius: BORDER_RADIUS.xlarge,
+        borderRadius: BORDER_RADIUS.xxlarge,
     },
     moderatorCard: { 
         borderRadius: BORDER_RADIUS.xlarge, 

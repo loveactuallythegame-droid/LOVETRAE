@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Typography, GlassCard, RadialGradientBackground, ScreenLayout } from '../../components/ui';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -291,7 +290,7 @@ export default function GameLibraryScreen({ navigation }: any) {
   return (
     <View style={styles.root}>
       <RadialGradientBackground />
-      <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
+      <ScreenLayout showHeader={false} scrollable={true}>
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
@@ -384,7 +383,7 @@ export default function GameLibraryScreen({ navigation }: any) {
           <View style={{ height: 100 }} />
         </ScrollView>
 
-      </SafeAreaView>
+      </ScreenLayout>
     </View>
   );
 }

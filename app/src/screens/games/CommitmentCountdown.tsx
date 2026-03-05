@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
@@ -12,7 +12,7 @@ export default function CommitmentCountdown({ navigation }: any) {
 
     return (
         <ScreenLayout showHeader={false} scrollable={true}>
-            <SafeAreaView style={styles.container}>
+
                 <ScrollView contentContainerStyle={styles.content}>
                     <View style={styles.header}>
                         <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
@@ -53,7 +53,7 @@ export default function CommitmentCountdown({ navigation }: any) {
                         </SquishyButton>
                     </View>
                 </ScrollView>
-            </SafeAreaView>
+
         </ScreenLayout>
     );
 }

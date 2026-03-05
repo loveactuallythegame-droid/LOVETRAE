@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Slider from '@react-native-community/slider';
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
@@ -13,7 +12,7 @@ const ApologyAuctionGameScreen = () => {
     const auctionItem = "I'm sorry you feel that way.";
 
     return (
-        <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.deepCosmic]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
@@ -95,7 +94,7 @@ const ApologyAuctionGameScreen = () => {
                     <Typography variant="button" style={{ color: COLORS.textPrimary }}>Next Auction</Typography>
                 </SquishyButton>
             </View>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

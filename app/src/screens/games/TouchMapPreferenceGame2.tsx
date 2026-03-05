@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Switch } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout } from '../../components/ui';
@@ -39,91 +38,89 @@ const TouchMapPreferenceGame2 = () => {
     };
 
     return (
-        <ScreenLayout scrollable={false} showHeader={false}>
-            <SafeAreaView style={styles.safeArea}>
-                <LinearGradient colors={[COLORS.healingHospital, COLORS.backgroundSecondary]} style={styles.container}>
-                    <ScrollView contentContainerStyle={styles.scrollContent}>
-                        <Typography variant="h1" center style={styles.title}>
-                            The Love Arcade
-                        </Typography>
-                        <Typography variant="h2" center style={styles.subtitle}>
-                            +100 Games to Deepen Connection
-                        </Typography>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <LinearGradient colors={[COLORS.healingHospital, COLORS.backgroundSecondary]} style={styles.container}>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
+                    <Typography variant="h1" center style={styles.title}>
+                        The Love Arcade
+                    </Typography>
+                    <Typography variant="h2" center style={styles.subtitle}>
+                        +100 Games to Deepen Connection
+                    </Typography>
 
-                        <Typography variant="body" center>
-                            Touch Map Preference
-                        </Typography>
-                        <Typography variant="caption" center style={styles.caption}>
-                            Tap zones to communicate comfort levels.
-                        </Typography>
+                    <Typography variant="body" center>
+                        Touch Map Preference
+                    </Typography>
+                    <Typography variant="caption" center style={styles.caption}>
+                        Tap zones to communicate comfort levels.
+                    </Typography>
 
-                        <Svg height="500" width="250" viewBox="0 0 200 500">
-                            {Object.entries(anatomicalZones).map(([key, d]) => (
-                                <SquishyButton
-                                    key={key}
-                                    onPress={() => handleZonePress(key)}
-                                    variant="ghost"
-                                >
-                                    <Path 
-                                        d={d} 
-                                        fill={consentColors[zoneColors[key] as keyof typeof consentColors] || consentColors.default}
-                                        stroke={COLORS.aquaTeal} 
-                                        strokeWidth="1"
-                                    />
-                                </SquishyButton>
-                            ))}
-                            {compare && Object.entries(partnerPrefs).map(([key, pref]) => (
+                    <Svg height="500" width="250" viewBox="0 0 200 500">
+                        {Object.entries(anatomicalZones).map(([key, d]) => (
+                            <SquishyButton
+                                key={key}
+                                onPress={() => handleZonePress(key)}
+                                variant="ghost"
+                            >
                                 <Path 
-                                    key={`${key}-partner`} 
-                                    d={anatomicalZones[key]} 
-                                    fill="none" 
-                                    stroke={consentColors[pref as keyof typeof consentColors]} 
-                                    strokeWidth="2" 
-                                    strokeDasharray="4, 4" 
+                                    d={d} 
+                                    fill={consentColors[zoneColors[key] as keyof typeof consentColors] || consentColors.default}
+                                    stroke={COLORS.aquaTeal} 
+                                    strokeWidth="1"
                                 />
-                            ))}
-                        </Svg>
-                        
-                        <GlassCard style={styles.controls}>
-                            <View style={styles.legend}>
-                                <SquishyButton 
-                                    onPress={() => setActiveColor('yes')} 
-                                    variant={activeColor === 'yes' ? 'primary' : 'ghost'}
-                                    style={styles.legendItem}
-                                >
-                                    <View style={[styles.legendColor, { backgroundColor: consentColors.yes }]} />
-                                    <Typography variant="button">Yes</Typography>
-                                </SquishyButton>
-                                <SquishyButton 
-                                    onPress={() => setActiveColor('maybe')} 
-                                    variant={activeColor === 'maybe' ? 'primary' : 'ghost'}
-                                    style={styles.legendItem}
-                                >
-                                    <View style={[styles.legendColor, { backgroundColor: consentColors.maybe }]} />
-                                    <Typography variant="button">Maybe</Typography>
-                                </SquishyButton>
-                                <SquishyButton 
-                                    onPress={() => setActiveColor('no')} 
-                                    variant={activeColor === 'no' ? 'primary' : 'ghost'}
-                                    style={styles.legendItem}
-                                >
-                                    <View style={[styles.legendColor, { backgroundColor: consentColors.no }]} />
-                                    <Typography variant="button">No</Typography>
-                                </SquishyButton>
-                            </View>
-                            <View style={styles.switchContainer}>
-                                <Typography variant="body">Compare Maps</Typography>
-                                <Switch 
-                                    value={compare} 
-                                    onValueChange={setCompare} 
-                                    trackColor={{ false: COLORS.textDisabled, true: COLORS.vibrantPink }} 
-                                    thumbColor={COLORS.textPrimary} 
-                                />
-                            </View>
-                        </GlassCard>
-                    </ScrollView>
-                </LinearGradient>
-            </SafeAreaView>
+                            </SquishyButton>
+                        ))}
+                        {compare && Object.entries(partnerPrefs).map(([key, pref]) => (
+                            <Path 
+                                key={`${key}-partner`} 
+                                d={anatomicalZones[key]} 
+                                fill="none" 
+                                stroke={consentColors[pref as keyof typeof consentColors]} 
+                                strokeWidth="2" 
+                                strokeDasharray="4, 4" 
+                            />
+                        ))}
+                    </Svg>
+                    
+                    <GlassCard style={styles.controls}>
+                        <View style={styles.legend}>
+                            <SquishyButton 
+                                onPress={() => setActiveColor('yes')} 
+                                variant={activeColor === 'yes' ? 'primary' : 'ghost'}
+                                style={styles.legendItem}
+                            >
+                                <View style={[styles.legendColor, { backgroundColor: consentColors.yes }]} />
+                                <Typography variant="button">Yes</Typography>
+                            </SquishyButton>
+                            <SquishyButton 
+                                onPress={() => setActiveColor('maybe')} 
+                                variant={activeColor === 'maybe' ? 'primary' : 'ghost'}
+                                style={styles.legendItem}
+                            >
+                                <View style={[styles.legendColor, { backgroundColor: consentColors.maybe }]} />
+                                <Typography variant="button">Maybe</Typography>
+                            </SquishyButton>
+                            <SquishyButton 
+                                onPress={() => setActiveColor('no')} 
+                                variant={activeColor === 'no' ? 'primary' : 'ghost'}
+                                style={styles.legendItem}
+                            >
+                                <View style={[styles.legendColor, { backgroundColor: consentColors.no }]} />
+                                <Typography variant="button">No</Typography>
+                            </SquishyButton>
+                        </View>
+                        <View style={styles.switchContainer}>
+                            <Typography variant="body">Compare Maps</Typography>
+                            <Switch 
+                                value={compare} 
+                                onValueChange={setCompare} 
+                                trackColor={{ false: COLORS.textDisabled, true: COLORS.vibrantPink }} 
+                                thumbColor={COLORS.textPrimary} 
+                            />
+                        </View>
+                    </GlassCard>
+                </ScrollView>
+            </LinearGradient>
         </ScreenLayout>
     );
 };

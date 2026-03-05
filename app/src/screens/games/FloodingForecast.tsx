@@ -1,6 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -62,10 +61,8 @@ export default function FloodingForecast({ route, navigation }: any) {
   }), [gameId]);
 
   return (
-    <ScreenLayout showHeader={false} scrollable={false}>
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => finish()} />
-      </SafeAreaView>
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => finish()} />
     </ScreenLayout>
   );
 }

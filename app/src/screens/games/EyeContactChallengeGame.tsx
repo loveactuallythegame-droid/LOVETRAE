@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, ImageBackground } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, GlassCard, Text } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -17,40 +16,38 @@ const EyeContactChallengeGameScreen = () => {
     const player2Img = { uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDlObUMoIqneOJIiB970-VU-F71iwgSMBoDrsH2duaW04-tBgqYvjaLGwa2SIqyjMgFImBchzdQSzIg1Noho8h8nJHrGe0s3bF0ei5pqk0SM4Ugko564K04vG0bis_Uav6wpGo7WYVtwBD6PfqH5seILc48ZcKWOlusDGG9ABC8pBMRkqz_ID4tQZCXAqlB17rpYEAOKNYj1tHRKZYJ2B5rQmjXujqztM-8_WieCOE_oizSytoCZoJV4xpxFUuTn380EL8JQh1yS8ya' };
 
     return (
-        <ScreenLayout showHeader={false}>
-            <SafeAreaView style={styles.container}>
-                <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background} />
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background} />
 
-                <View style={styles.header}>
-                    <Text variant="h1" center>The Love Arcade</Text>
-                    <Text variant="h2" center>+100 Games to Deepen Connection</Text>
-                </View>
+            <View style={styles.header}>
+                <Text variant="h1" center>The Love Arcade</Text>
+                <Text variant="h2" center>+100 Games to Deepen Connection</Text>
+            </View>
 
-                <View style={styles.videoFeedsContainer}>
-                    <ImageBackground source={player1Img} style={styles.videoFeed} imageStyle={styles.videoImage}>
-                        <GlassCard style={styles.playerNameCard}>
-                            <Text variant="caption">PLAYER 1: ALEX</Text>
-                        </GlassCard>
-                    </ImageBackground>
-
-                    <GlassCard style={styles.timerContainer}>
-                        <Text variant="h1" style={{ color: COLORS.error }}>00:48</Text>
-                        <Text variant="caption" style={styles.timerLabel}>Don't Look Away</Text>
+            <View style={styles.videoFeedsContainer}>
+                <ImageBackground source={player1Img} style={styles.videoFeed} imageStyle={styles.videoImage}>
+                    <GlassCard style={styles.playerNameCard}>
+                        <Text variant="caption">PLAYER 1: ALEX</Text>
                     </GlassCard>
+                </ImageBackground>
 
-                    <ImageBackground source={player2Img} style={styles.videoFeed} imageStyle={styles.videoImage}>
-                        <GlassCard style={styles.playerNameCard}>
-                            <Text variant="caption">PLAYER 2: SAM</Text>
-                        </GlassCard>
-                    </ImageBackground>
-                </View>
-
-                <GlassCard style={styles.footer}>
-                    <StatDisplay label="Time Locked" value="00:12:45" />
-                    <StatDisplay label="Pupil Dilat." value="NORMAL" color={COLORS.error} />
-                    <StatDisplay label="Heart Sync" value="88 BPM" color={COLORS.vibrantPink} />
+                <GlassCard style={styles.timerContainer}>
+                    <Text variant="h1" style={{ color: COLORS.error }}>00:48</Text>
+                    <Text variant="caption" style={styles.timerLabel}>Don't Look Away</Text>
                 </GlassCard>
-            </SafeAreaView>
+
+                <ImageBackground source={player2Img} style={styles.videoFeed} imageStyle={styles.videoImage}>
+                    <GlassCard style={styles.playerNameCard}>
+                        <Text variant="caption">PLAYER 2: SAM</Text>
+                    </GlassCard>
+                </ImageBackground>
+            </View>
+
+            <GlassCard style={styles.footer}>
+                <StatDisplay label="Time Locked" value="00:12:45" />
+                <StatDisplay label="Pupil Dilat." value="NORMAL" color={COLORS.error} />
+                <StatDisplay label="Heart Sync" value="88 BPM" color={COLORS.vibrantPink} />
+            </GlassCard>
         </ScreenLayout>
     );
 };

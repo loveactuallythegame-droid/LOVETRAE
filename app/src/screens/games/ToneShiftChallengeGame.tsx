@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
@@ -38,59 +37,57 @@ const ToneShiftChallengeGame = () => {
     const vocalWarmth = 65;
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.deepCosmic]} style={styles.container}>
-                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-                    <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
-                        <View style={styles.header}>
-                            <Typography variant="h1" center>"We need to talk"</Typography>
-                            <Typography variant="body" center style={styles.headerSubtitle}>
-                                Select a tone and say it like you mean it!
-                            </Typography>
-                        </View>
+                <ScrollView contentContainerStyle={styles.scrollView} showsVerticalScrollIndicator={false}>
+                    <View style={styles.header}>
+                        <Typography variant="h1" center>"We need to talk"</Typography>
+                        <Typography variant="body" center style={styles.headerSubtitle}>
+                            Select a tone and say it like you mean it!
+                        </Typography>
+                    </View>
 
-                        <View style={styles.mainContent}>
-                            {/* Right Sidebar Content */}
-                            <GlassCard style={styles.rightSidebar} variant="elevated">
-                                <Typography variant="caption" style={styles.sidebarTitle}>Vocal Warmth</Typography>
-                                <View style={styles.thermometerContainer}>
-                                    <View style={styles.thermometer}>
-                                        <LinearGradient 
-                                            colors={[COLORS.aquaTeal, COLORS.vibrantPink, COLORS.lavenderPurple]}
-                                            style={[styles.thermometerFill, { height: `${vocalWarmth}%` }]}
-                                        />
-                                    </View>
+                    <View style={styles.mainContent}>
+                        {/* Right Sidebar Content */}
+                        <GlassCard style={styles.rightSidebar} variant="elevated">
+                            <Typography variant="caption" style={styles.sidebarTitle}>Vocal Warmth</Typography>
+                            <View style={styles.thermometerContainer}>
+                                <View style={styles.thermometer}>
+                                    <LinearGradient 
+                                        colors={[COLORS.aquaTeal, COLORS.vibrantPink, COLORS.lavenderPurple]}
+                                        style={[styles.thermometerFill, { height: `${vocalWarmth}%` }]}
+                                    />
                                 </View>
-                                <Typography variant="h2" style={styles.scoreText}>{vocalWarmth}%</Typography>
-                            </GlassCard>
-                            
-                            <GlassCard style={styles.challengeArea} variant="elevated">
-                                <View style={styles.toneGrid}>
-                                    {tones.map((tone) => (
-                                        <ToneButton
-                                            key={tone.name}
-                                            tone={tone}
-                                            selected={selectedTone === tone.name}
-                                            onPress={() => setSelectedTone(tone.name)}
-                                        />
-                                    ))}
-                                </View>
-
-                                <SquishyButton onPress={() => {}} size="large" style={styles.recordButton}>
-                                    <MaterialIcons name="mic" size={24} color={COLORS.textPrimary} />
-                                    <Typography variant="button">START RECORDING</Typography>
-                                </SquishyButton>
-                            </GlassCard>
-                        </View>
-                        
-                        <GlassCard style={styles.verdictCard} variant="outlined">
-                            <Typography variant="caption" style={styles.verdictTitle}>MARCIE'S VERDICT</Typography>
-                            <Typography variant="body" center style={styles.verdictText}>
-                                "You sound like a microwave, honey. Add some soul to that sentence!"
-                            </Typography>
+                            </View>
+                            <Typography variant="h2" style={styles.scoreText}>{vocalWarmth}%</Typography>
                         </GlassCard>
-                    </ScrollView>
-                </SafeAreaView>
+                        
+                        <GlassCard style={styles.challengeArea} variant="elevated">
+                            <View style={styles.toneGrid}>
+                                {tones.map((tone) => (
+                                    <ToneButton
+                                        key={tone.name}
+                                        tone={tone}
+                                        selected={selectedTone === tone.name}
+                                        onPress={() => setSelectedTone(tone.name)}
+                                    />
+                                ))}
+                            </View>
+
+                            <SquishyButton onPress={() => {}} size="large" style={styles.recordButton}>
+                                <MaterialIcons name="mic" size={24} color={COLORS.textPrimary} />
+                                <Typography variant="button">START RECORDING</Typography>
+                            </SquishyButton>
+                        </GlassCard>
+                    </View>
+                    
+                    <GlassCard style={styles.verdictCard} variant="outlined">
+                        <Typography variant="caption" style={styles.verdictTitle}>MARCIE'S VERDICT</Typography>
+                        <Typography variant="body" center style={styles.verdictText}>
+                            "You sound like a microwave, honey. Add some soul to that sentence!"
+                        </Typography>
+                    </GlassCard>
+                </ScrollView>
             </LinearGradient>
         </ScreenLayout>
     );

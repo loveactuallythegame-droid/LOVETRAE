@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, Typography, GlassCard } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
@@ -53,7 +52,7 @@ const BedroomBingoCardScreen = () => {
     const completedPercentage = (activeTiles.filter(Boolean).length / 25) * 100;
 
     return (
-        <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
@@ -99,7 +98,7 @@ const BedroomBingoCardScreen = () => {
                     <Typography variant="caption" style={{ color: COLORS.textSecondary }}>{activeTiles.filter(Boolean).length} / 25 Completed</Typography>
                 </LinearGradient>
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

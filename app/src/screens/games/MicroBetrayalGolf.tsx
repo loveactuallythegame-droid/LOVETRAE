@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 export default function MicroBetrayalGolf({ navigation }: any) {
@@ -33,87 +32,85 @@ export default function MicroBetrayalGolf({ navigation }: any) {
   }
 
   return (
-    <ScreenLayout showMarcie={true} marcieQuote={hole ? "Sunk it? Impressive." : "Aim for Repair."}>
-      <SafeAreaView style={styles.container} edges={['bottom']}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <View style={styles.header}>
-            <SquishyButton 
-              variant="ghost" 
-              size="small"
-              onPress={() => navigation.goBack()}
-            >
-              <Typography variant="body">Back</Typography>
-            </SquishyButton>
-            <Typography variant="h2">Micro-Betrayal Golf</Typography>
+    <ScreenLayout showMarcie={true} marcieQuote={hole ? "Sunk it? Impressive." : "Aim for Repair."} showHeader={false} scrollable={true}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.header}>
+          <SquishyButton 
+            variant="ghost" 
+            size="small"
+            onPress={() => navigation.goBack()}
+          >
+            <Typography variant="body">Back</Typography>
+          </SquishyButton>
+          <Typography variant="h2">Micro-Betrayal Golf</Typography>
+        </View>
+
+        <Typography variant="h1" style={styles.mainTitle}>
+          The Love Arcade
+        </Typography>
+        <Typography variant="body" style={styles.subtitle}>
+          +100 Games to Deepen Connection
+        </Typography>
+
+        <GlassCard style={styles.course}>
+          <View style={[styles.hole, hole ? {backgroundColor: COLORS.success} : {}]}>
+            <Typography variant="caption">REPAIR</Typography>
           </View>
 
-          <Typography variant="h1" style={styles.mainTitle}>
-            The Love Arcade
+          <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
+            <Typography variant="h1">{hole ? '⛳️' : '⚪️'}</Typography>
+          </View>
+
+          <View style={styles.controls}>
+            <Typography variant="body">Angle: {Math.round(angle)}°</Typography>
+            <Slider
+              style={{ width: '100%', height: 40 }}
+              minimumValue={-45}
+              maximumValue={45}
+              value={angle}
+              onValueChange={setAngle}
+              minimumTrackTintColor={COLORS.success}
+            />
+
+            <Typography variant="body">Power: {Math.round(power)}%</Typography>
+            <Slider
+              style={{ width: '100%', height: 40 }}
+              minimumValue={0}
+              maximumValue={100}
+              value={power}
+              onValueChange={setPower}
+              minimumTrackTintColor={COLORS.vibrantPink}
+            />
+          </View>
+
+          {!hole ? (
+            <SquishyButton variant="primary" size="large" onPress={putt}>
+              <Typography variant="button" color={COLORS.textPrimary}>PUTT</Typography>
+            </SquishyButton>
+          ) : (
+            <SquishyButton variant="secondary" size="large" onPress={reset}>
+              <Typography variant="button" color={COLORS.textPrimary}>Next Hole</Typography>
+            </SquishyButton>
+          )}
+
+          <Typography 
+            variant="body" 
+            style={{
+              marginTop: SPACING.lg, 
+              textAlign: 'center', 
+              color: hole ? COLORS.success : COLORS.textPrimary
+            }}
+          >
+            {feedback}
           </Typography>
-          <Typography variant="body" style={styles.subtitle}>
-            +100 Games to Deepen Connection
-          </Typography>
 
-          <GlassCard style={styles.course}>
-            <View style={[styles.hole, hole ? {backgroundColor: COLORS.success} : {}]}>
-              <Typography variant="caption">REPAIR</Typography>
-            </View>
-
-            <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
-              <Typography variant="h1">{hole ? '⛳️' : '⚪️'}</Typography>
-            </View>
-
-            <View style={styles.controls}>
-              <Typography variant="body">Angle: {Math.round(angle)}°</Typography>
-              <Slider
-                style={{ width: '100%', height: 40 }}
-                minimumValue={-45}
-                maximumValue={45}
-                value={angle}
-                onValueChange={setAngle}
-                minimumTrackTintColor={COLORS.success}
-              />
-
-              <Typography variant="body">Power: {Math.round(power)}%</Typography>
-              <Slider
-                style={{ width: '100%', height: 40 }}
-                minimumValue={0}
-                maximumValue={100}
-                value={power}
-                onValueChange={setPower}
-                minimumTrackTintColor={COLORS.vibrantPink}
-              />
-            </View>
-
-            {!hole ? (
-              <SquishyButton variant="primary" size="large" onPress={putt}>
-                <Typography variant="button" color={COLORS.textPrimary}>PUTT</Typography>
-              </SquishyButton>
-            ) : (
-              <SquishyButton variant="secondary" size="large" onPress={reset}>
-                <Typography variant="button" color={COLORS.textPrimary}>Next Hole</Typography>
-              </SquishyButton>
-            )}
-
-            <Typography 
-              variant="body" 
-              style={{
-                marginTop: SPACING.lg, 
-                textAlign: 'center', 
-                color: hole ? COLORS.success : COLORS.textPrimary
-              }}
-            >
-              {feedback}
+          {hole && (
+            <Typography variant="sass" style={{marginTop: SPACING.md, textAlign: 'center'}}>
+              Marcie: "Sunk it in {strokes} strokes? Impressive."
             </Typography>
-
-            {hole && (
-              <Typography variant="sass" style={{marginTop: SPACING.md, textAlign: 'center'}}>
-                Marcie: "Sunk it in {strokes} strokes? Impressive."
-              </Typography>
-            )}
-          </GlassCard>
-        </ScrollView>
-      </SafeAreaView>
+          )}
+        </GlassCard>
+      </ScrollView>
     </ScreenLayout>
   );
 }

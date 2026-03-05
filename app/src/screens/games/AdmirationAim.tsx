@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
@@ -12,69 +11,67 @@ const AdmirationAimScreen = () => {
   const kudos = ["You're an amazing listener.", "I love your sense of humor.", "Thank you for always being there for me."];
 
   return (
-    <ScreenLayout showMarcie={true} marcieQuote="Expressing admiration strengthens your bond! Each target hit represents a positive trait you appreciate in your partner.">
-      <SafeAreaView style={styles.container} edges={['bottom']}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <Typography variant="h1" style={styles.title}>
-            The Love Arcade
-          </Typography>
-          <Typography variant="h2" style={styles.subtitle}>
-            +100 Games to Deepen Connection
-          </Typography>
+    <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Expressing admiration strengthens your bond! Each target hit represents a positive trait you appreciate in your partner.">
+      <ScrollView contentContainerStyle={styles.content}>
+        <Typography variant="h1" style={styles.title}>
+          The Love Arcade
+        </Typography>
+        <Typography variant="h2" style={styles.subtitle}>
+          +100 Games to Deepen Connection
+        </Typography>
 
-          <View style={styles.targetContainer}>
-            <LinearGradient
-              colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.ring, styles.outerRing]}
-            />
-            <LinearGradient
-              colors={[COLORS.warmOrange, COLORS.brightYellow]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.ring, styles.middleRing]}
-            />
-            <LinearGradient
-              colors={[COLORS.mintGreen, COLORS.softViolet]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={[styles.ring, styles.innerRing]}
-            />
-            <LinearGradient
-              colors={COLORS.progress}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.bullseye}
-            />
-          </View>
+        <View style={styles.targetContainer}>
+          <LinearGradient
+            colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={[styles.ring, styles.outerRing]}
+          />
+          <LinearGradient
+            colors={[COLORS.warmOrange, COLORS.brightYellow]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={[styles.ring, styles.middleRing]}
+          />
+          <LinearGradient
+            colors={[COLORS.mintGreen, COLORS.softViolet]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={[styles.ring, styles.innerRing]}
+          />
+          <LinearGradient
+            colors={COLORS.progress}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.bullseye}
+          />
+        </View>
 
-          <GlassCard style={styles.kudosContainer}>
-            <Typography variant="h3" style={styles.kudosTitle}>Kudos Corner</Typography>
-            {kudos.map((kudo, index) => (
-              <Typography key={index} variant="body" style={styles.kudoText}>- {kudo}</Typography>
-            ))}
-          </GlassCard>
+        <GlassCard style={styles.kudosContainer}>
+          <Typography variant="h3" style={styles.kudosTitle}>Kudos Corner</Typography>
+          {kudos.map((kudo, index) => (
+            <Typography key={index} variant="body" style={styles.kudoText}>- {kudo}</Typography>
+          ))}
+        </GlassCard>
 
-          <View style={styles.scoreAndActionContainer}>
-              <View style={styles.scoreContainer}>
-                  <Typography variant="caption" style={styles.scoreLabel}>Score</Typography>
-                  <LinearGradient
-                    colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.scoreValueContainer}
-                  >
-                    <Typography variant="h2" style={styles.scoreValue}>{score}</Typography>
-                  </LinearGradient>
-              </View>
-              
-              <SquishyButton>
-                  <Typography variant="button">Fire!</Typography>
-              </SquishyButton>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+        <View style={styles.scoreAndActionContainer}>
+            <View style={styles.scoreContainer}>
+                <Typography variant="caption" style={styles.scoreLabel}>Score</Typography>
+                <LinearGradient
+                  colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.scoreValueContainer}
+                >
+                  <Typography variant="h2" style={styles.scoreValue}>{score}</Typography>
+                </LinearGradient>
+            </View>
+            
+            <SquishyButton>
+                <Typography variant="button">Fire!</Typography>
+            </SquishyButton>
+        </View>
+      </ScrollView>
     </ScreenLayout>
   );
 };

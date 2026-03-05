@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
@@ -11,36 +10,34 @@ export default function SixSecondStareDown({ navigation }: any) {
     }, []);
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
-            <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-                <ScrollView contentContainerStyle={styles.content}>
-                    <View style={styles.header}>
-                        <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
-                            <Typography variant="body">Back</Typography>
-                        </SquishyButton>
-                        <Typography variant="h1" style={styles.title}>Six-Second Stare-Down</Typography>
-                    </View>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <ScrollView contentContainerStyle={styles.content}>
+                <View style={styles.header}>
+                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
+                        <Typography variant="body">Back</Typography>
+                    </SquishyButton>
+                    <Typography variant="h1" style={styles.title}>Six-Second Stare-Down</Typography>
+                </View>
 
-                    <GlassCard style={styles.card}>
-                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Real-time camera sync</Typography>
-                        <Typography variant="body">Mechanics: Front cams → AI detects mutual gaze → 6-sec timer.</Typography>
-                    </GlassCard>
+                <GlassCard style={styles.card}>
+                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Real-time camera sync</Typography>
+                    <Typography variant="body">Mechanics: Front cams → AI detects mutual gaze → 6-sec timer.</Typography>
+                </GlassCard>
 
-                    <GlassCard style={styles.card}>
-                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
-                        <Typography variant="body">
-                            ✅ 6 sec eye contact = +25{'\n'}
-                            ✅ Sync blink (±0.5s) = +10
-                        </Typography>
-                    </GlassCard>
+                <GlassCard style={styles.card}>
+                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+                    <Typography variant="body">
+                        ✅ 6 sec eye contact = +25{'\n'}
+                        ✅ Sync blink (±0.5s) = +10
+                    </Typography>
+                </GlassCard>
 
-                    <View style={styles.actionArea}>
-                        <SquishyButton onPress={() => alert('Starting Gaze Detection...')} style={styles.playBtn}>
-                            <Typography variant="h2" color={COLORS.textPrimary}>Start Detection</Typography>
-                        </SquishyButton>
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
+                <View style={styles.actionArea}>
+                    <SquishyButton onPress={() => alert('Starting Gaze Detection...')} style={styles.playBtn}>
+                        <Typography variant="h2" color={COLORS.textPrimary}>Start Detection</Typography>
+                    </SquishyButton>
+                </View>
+            </ScrollView>
         </ScreenLayout>
     );
 }

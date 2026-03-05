@@ -15,7 +15,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, Alert, ScrollView, TouchableOpacity, Animated as RNAnimated } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -357,23 +357,20 @@ const TruthTellerTower: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <ScreenLayout scrollable={false} showHeader={false}>
-                <SafeAreaView style={styles.container}>
-                    <LinearGradient colors={[COLORS.deepCosmic, COLORS.midPurple]} style={styles.background}>
-                        <Typography variant="body" center style={styles.loadingText}>
-                            Preparing Truth Teller Tower...
-                        </Typography>
-                    </LinearGradient>
-                </SafeAreaView>
+            <ScreenLayout showHeader={false} scrollable={true}>
+                <LinearGradient colors={[COLORS.deepCosmic, COLORS.midPurple]} style={styles.background}>
+                    <Typography variant="body" center style={styles.loadingText}>
+                        Preparing Truth Teller Tower...
+                    </Typography>
+                </LinearGradient>
             </ScreenLayout>
         );
     }
 
     return (
-        <ScreenLayout scrollable={false} showHeader={false}>
-            <SafeAreaView style={styles.container}>
-                {/* Game Area Background: midPurple */}
-                <LinearGradient 
+        <ScreenLayout showHeader={false} scrollable={true}>
+            {/* Game Area Background: midPurple */}
+            <LinearGradient 
                     colors={[COLORS.deepCosmic, COLORS.midPurple]} 
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
@@ -500,30 +497,26 @@ const TruthTellerTower: React.FC = () => {
                             </Typography>
                         )}
                     </ScrollView>
-                </LinearGradient>
+            </LinearGradient>
 
-                {/* Dr. Marcie Overlay - Triggers based on game state */}
-                <GlobalMarcieOverlay
-                    animation={getMarcieAnimation(gameOverlayState)}
-                    position="bottom-right"
-                    visible={true}
-                    quote={marcieQuote}
-                    showBubble={!!marcieQuote}
-                    bubbleDuration={ANIMATIONS.duration.slow * 8}
-                    size="medium"
-                    gameState={gameOverlayState === 'intro' ? 'intro' : 
-                              gameOverlayState === 'thinking' ? 'thinking' : 
-                              gameOverlayState === 'results' ? 'results' : 'playing'}
-                />
-            </SafeAreaView>
+            {/* Dr. Marcie Overlay - Triggers based on game state */}
+            <GlobalMarcieOverlay
+                animation={getMarcieAnimation(gameOverlayState)}
+                position="bottom-right"
+                visible={true}
+                quote={marcieQuote}
+                showBubble={!!marcieQuote}
+                bubbleDuration={ANIMATIONS.duration.slow * 8}
+                size="medium"
+                gameState={gameOverlayState === 'intro' ? 'intro' : 
+                          gameOverlayState === 'thinking' ? 'thinking' : 
+                          gameOverlayState === 'results' ? 'results' : 'playing'}
+            />
         </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     background: {
         flex: 1,
     },

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Asset } from 'expo-asset';
 import { RadialGradient } from 'expo-linear-gradient'; 
 import { useGameContent } from '../../lib/useGameContent';
@@ -56,10 +55,8 @@ const GameWrapper = ({ coupleId, gameSessionId }: GameWrapperProps) => {
 
   if (error) {
     return (
-      <ScreenLayout showHeader={false} scrollable={false}>
-        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-          <Typography variant="body" color={COLORS.textPrimary}>{error}</Typography>
-        </SafeAreaView>
+      <ScreenLayout showHeader={false} scrollable={true}>
+        <Typography variant="body" color={COLORS.textPrimary}>{error}</Typography>
       </ScreenLayout>
     );
   }
@@ -67,20 +64,18 @@ const GameWrapper = ({ coupleId, gameSessionId }: GameWrapperProps) => {
   const themeColor = gameContent.ui_theme_color || COLORS.healingHospital;
 
   return (
-    <ScreenLayout showHeader={false} scrollable={false}>
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <RadialGradient
-          style={StyleSheet.absoluteFill}
-          colors={[`${themeColor}50`, COLORS.backgroundPrimary]}
-          stops={[0.1, 0.7]}
-          center={[0.5, 0.2]}
-        />
-        <GlobalHeader progress={50} /> 
-        <View style={styles.hostContainer}>
-          <MarcieHost state={'talking'} />
-        </View>
-        {/* Your actual game components will go here */}
-      </SafeAreaView>
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <RadialGradient
+        style={StyleSheet.absoluteFill}
+        colors={[`${themeColor}50`, COLORS.backgroundPrimary]}
+        stops={[0.1, 0.7]}
+        center={[0.5, 0.2]}
+      />
+      <GlobalHeader progress={50} /> 
+      <View style={styles.hostContainer}>
+        <MarcieHost state={'talking'} />
+      </View>
+      {/* Your actual game components will go here */}
     </ScreenLayout>
   );
 };

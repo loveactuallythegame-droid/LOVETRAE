@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -65,9 +64,9 @@ export default function DreamDecoder({ route, navigation }: any) {
   }), [gameId, index]);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+    <ScreenLayout showHeader={false} scrollable={true}>
       <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }
 

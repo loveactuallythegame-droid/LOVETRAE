@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 type Zone = 'Head' | 'Chest' | 'Hands' | 'Legs' | 'Back';
@@ -35,44 +34,42 @@ export default function TouchMap({ navigation }: any) {
   }
 
   return (
-    <ScreenLayout showHeader={false} scrollable={false}>
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <View style={styles.header}>
-            <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
-              <Typography variant="body">Back</Typography>
-            </SquishyButton>
-            <Typography variant="h1">The Touch Map: Lite</Typography>
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.header}>
+          <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
+            <Typography variant="body">Back</Typography>
+          </SquishyButton>
+          <Typography variant="h1">The Touch Map: Lite</Typography>
+        </View>
+
+        <GlassCard style={styles.card}>
+          <Typography variant="body" center style={{ marginBottom: SPACING.xlarge }}>
+            Tap zones to set comfort level.
+          </Typography>
+          <View style={styles.legend}>
+            <Typography variant="caption" color={ZONE_COLORS.green}>Green: Yes</Typography>
+            <Typography variant="caption" color={ZONE_COLORS.yellow}>Yellow: Ask</Typography>
+            <Typography variant="caption" color={ZONE_COLORS.red}>Red: No</Typography>
           </View>
 
-          <GlassCard style={styles.card}>
-            <Typography variant="body" center style={{ marginBottom: SPACING.xlarge }}>
-              Tap zones to set comfort level.
-            </Typography>
-            <View style={styles.legend}>
-              <Typography variant="caption" color={ZONE_COLORS.green}>Green: Yes</Typography>
-              <Typography variant="caption" color={ZONE_COLORS.yellow}>Yellow: Ask</Typography>
-              <Typography variant="caption" color={ZONE_COLORS.red}>Red: No</Typography>
-            </View>
+          <View style={styles.bodyMap}>
+            {ZONES.map((z) => (
+              <Pressable key={z} onPress={() => cycleColor(z)} style={[styles.zone, { backgroundColor: colors[z] }]}>
+                <Typography variant="button" style={styles.zoneText}>{z}</Typography>
+              </Pressable>
+            ))}
+          </View>
 
-            <View style={styles.bodyMap}>
-              {ZONES.map((z) => (
-                <Pressable key={z} onPress={() => cycleColor(z)} style={[styles.zone, { backgroundColor: colors[z] }]}>
-                  <Typography variant="button" style={styles.zoneText}>{z}</Typography>
-                </Pressable>
-              ))}
-            </View>
+          <SquishyButton style={[styles.btn, { marginTop: SPACING.xxlarge }]}>
+             <Typography variant="h2" color={COLORS.textPrimary}>Sync with Partner</Typography>
+          </SquishyButton>
 
-            <SquishyButton style={[styles.btn, { marginTop: SPACING.xxlarge }]}>
-               <Typography variant="h2" color={COLORS.textPrimary}>Sync with Partner</Typography>
-            </SquishyButton>
-
-            <Typography variant="sass" center style={{ marginTop: SPACING.xxlarge }}>
-               "They marked 'Chest' yellow... you green. Wanna unpack that?"
-            </Typography>
-          </GlassCard>
-        </ScrollView>
-      </SafeAreaView>
+          <Typography variant="sass" center style={{ marginTop: SPACING.xxlarge }}>
+             "They marked 'Chest' yellow... you green. Wanna unpack that?"
+          </Typography>
+        </GlassCard>
+      </ScrollView>
     </ScreenLayout>
   );
 }

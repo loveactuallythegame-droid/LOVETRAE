@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
@@ -11,36 +10,34 @@ export default function RansomNoteRomance({ navigation }: any) {
     }, []);
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
-            <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-                <ScrollView contentContainerStyle={styles.content}>
-                    <View style={styles.header}>
-                        <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
-                            <Typography variant="body">Back</Typography>
-                        </SquishyButton>
-                        <Typography variant="h1" style={styles.title}>Ransom Note Romance</Typography>
-                    </View>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <ScrollView contentContainerStyle={styles.content}>
+                <View style={styles.header}>
+                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
+                        <Typography variant="body">Back</Typography>
+                    </SquishyButton>
+                    <Typography variant="h1" style={styles.title}>Ransom Note Romance</Typography>
+                </View>
 
-                    <GlassCard style={styles.card}>
-                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Drag-and-drop cutout</Typography>
-                        <Typography variant="body">Mechanics: Build threat: "GIVE ME… TACOS… OR… I… SERENADE YOU."</Typography>
-                    </GlassCard>
+                <GlassCard style={styles.card}>
+                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Drag-and-drop cutout</Typography>
+                    <Typography variant="body">Mechanics: Build threat: "GIVE ME… TACOS… OR… I… SERENADE YOU."</Typography>
+                </GlassCard>
 
-                    <GlassCard style={styles.card}>
-                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
-                        <Typography variant="body">
-                            ✅ Absurdly sweet = +20 (Marcie judges){'\n'}
-                            ✅ Partner laughs (self-reported ✅) = +10
-                        </Typography>
-                    </GlassCard>
+                <GlassCard style={styles.card}>
+                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+                    <Typography variant="body">
+                        ✅ Absurdly sweet = +20 (Marcie judges){'\n'}
+                        ✅ Partner laughs (self-reported ✅) = +10
+                    </Typography>
+                </GlassCard>
 
-                    <View style={styles.actionArea}>
-                        <SquishyButton onPress={() => alert('Opening Cutouts...')} style={styles.playBtn}>
-                            <Typography variant="h2" color={COLORS.textPrimary}>Create Note</Typography>
-                        </SquishyButton>
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
+                <View style={styles.actionArea}>
+                    <SquishyButton onPress={() => alert('Opening Cutouts...')} style={styles.playBtn}>
+                        <Typography variant="h2" color={COLORS.textPrimary}>Create Note</Typography>
+                    </SquishyButton>
+                </View>
+            </ScrollView>
         </ScreenLayout>
     );
 }

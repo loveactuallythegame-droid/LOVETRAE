@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ScreenLayout, Typography, SquishyButton } from '../../components/ui';
@@ -25,61 +24,59 @@ const AdmirationAimArGame = () => {
     )
 
     return (
-        <ScreenLayout showMarcie={true} marcieQuote="Aim for RESILIENT! Precision is key to a healthy relationship. Take the shot!">
-            <SafeAreaView style={styles.container} edges={['bottom']}>
-                <View style={styles.content}>
-                    <Typography variant="h1" style={styles.title}>
-                        The Love Arcade
-                    </Typography>
-                    <Typography variant="h2" style={styles.subtitle}>
-                        +100 Games to Deepen Connection
-                    </Typography>
-                    
-                    {/* AR background would be a camera view in a real app */}
+        <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Aim for RESILIENT! Precision is key to a healthy relationship. Take the shot!">
+            <View style={styles.content}>
+                <Typography variant="h1" style={styles.title}>
+                    The Love Arcade
+                </Typography>
+                <Typography variant="h2" style={styles.subtitle}>
+                    +100 Games to Deepen Connection
+                </Typography>
+                
+                {/* AR background would be a camera view in a real app */}
 
-                    <View style={styles.hudHeader}>
-                        <Typography variant="h3" style={styles.hudTitle}>Admiration Aim AR</Typography>
+                <View style={styles.hudHeader}>
+                    <Typography variant="h3" style={styles.hudTitle}>Admiration Aim AR</Typography>
+                    <LinearGradient
+                        colors={GRADIENTS.primary.colors}
+                        start={GRADIENTS.primary.start}
+                        end={GRADIENTS.primary.end}
+                        style={styles.hudScoreContainer}
+                    >
+                        <Typography variant="h2" style={styles.hudScore}>084,200</Typography>
+                    </LinearGradient>
+                </View>
+
+                <View style={styles.gameWorld}>
+                    <Target word="WITTY" top="20%" left="15%" />
+                    <Target word="PATIENT" top="70%" left="20%" />
+                    <Target word="RESILIENT" top="40%" left="55%" scale={1.25} />
+                    <Target word="STRONG" top="80%" left="60%" />
+                    <Target word="CALM" top="15%" left="70%" />
+
+                    {/* Central Crosshair */}
+                    <View style={styles.crosshairContainer}>
                         <LinearGradient
-                            colors={GRADIENTS.primary.colors}
-                            start={GRADIENTS.primary.start}
-                            end={GRADIENTS.primary.end}
-                            style={styles.hudScoreContainer}
-                        >
-                            <Typography variant="h2" style={styles.hudScore}>084,200</Typography>
-                        </LinearGradient>
-                    </View>
-
-                    <View style={styles.gameWorld}>
-                        <Target word="WITTY" top="20%" left="15%" />
-                        <Target word="PATIENT" top="70%" left="20%" />
-                        <Target word="RESILIENT" top="40%" left="55%" scale={1.25} />
-                        <Target word="STRONG" top="80%" left="60%" />
-                        <Target word="CALM" top="15%" left="70%" />
-
-                        {/* Central Crosshair */}
-                        <View style={styles.crosshairContainer}>
-                            <LinearGradient
-                                colors={COLORS.progress}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={styles.crosshair}
-                            />
-                            <LinearGradient
-                                colors={[COLORS.warmOrange, COLORS.brightYellow]}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={styles.crosshairInner}
-                            />
-                        </View>
-                    </View>
-
-                    <View style={styles.controlsFooter}>
-                        <SquishyButton onPress={calculateGameResults}>
-                            <Typography variant="button">LAUNCH COMPLIMENT</Typography>
-                        </SquishyButton>
+                            colors={COLORS.progress}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.crosshair}
+                        />
+                        <LinearGradient
+                            colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.crosshairInner}
+                        />
                     </View>
                 </View>
-            </SafeAreaView>
+
+                <View style={styles.controlsFooter}>
+                    <SquishyButton onPress={calculateGameResults}>
+                        <Typography variant="button">LAUNCH COMPLIMENT</Typography>
+                    </SquishyButton>
+                </View>
+            </View>
         </ScreenLayout>
     );
 };

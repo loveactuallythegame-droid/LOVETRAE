@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const DefensivenessDetoxGameScreen = () => {
     return (
-        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
             <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.header}>
@@ -51,7 +50,7 @@ const DefensivenessDetoxGameScreen = () => {
                     <Typography variant="button">CHECK FOR DEFENSIVENESS</Typography>
                 </SquishyButton>
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

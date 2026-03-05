@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -14,8 +14,8 @@ const EmpathyEchoGameScreen = () => {
     const partnerBWave = [10, 24, 48, 32, 20, 40, 16];
 
     return (
-        <ScreenLayout showHeader={false}>
-            <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
+
                 <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background} />
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <View style={styles.header}>
@@ -60,7 +60,7 @@ const EmpathyEchoGameScreen = () => {
                         </View>
                     </GlassCard>
                 </ScrollView>
-            </SafeAreaView>
+
         </ScreenLayout>
     );
 };

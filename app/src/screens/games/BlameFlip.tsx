@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const ORIGINAL = ["You", "make", "me", "feel", "ignored"];
@@ -21,7 +21,7 @@ export default function BlameFlip({ navigation }: any) {
 
   return (
     <ScreenLayout showHeader={false} scrollable={true}>
-      <SafeAreaView style={styles.container}>
+
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.header}>
             <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
@@ -70,7 +70,7 @@ export default function BlameFlip({ navigation }: any) {
             )}
           </GlassCard>
         </ScrollView>
-      </SafeAreaView>
+
     </ScreenLayout>
   );
 }

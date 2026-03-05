@@ -9,7 +9,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, TouchableOpacity, Alert, Animated } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -142,68 +141,66 @@ const SixSecondKissGame: React.FC<GameProps> = ({ session, updateScore, isSyncin
   };
 
   return (
-    <ScreenLayout showMarcie={true} marcieQuote="Ready to share some intimate moments? The 6-second kiss challenge helps couples connect deeply through sustained eye contact and physical touch.">
-      <SafeAreaView style={styles.container} edges={['bottom']}>
-        <View style={styles.content}>
-          <Typography variant="h1" style={styles.title}>
-            The Love Arcade
-          </Typography>
-          <Typography variant="h2" style={styles.subtitle}>
-            +100 Games to Deepen Connection
-          </Typography>
+    <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Ready to share some intimate moments? The 6-second kiss challenge helps couples connect deeply through sustained eye contact and physical touch.">
+      <View style={styles.content}>
+        <Typography variant="h1" style={styles.title}>
+          The Love Arcade
+        </Typography>
+        <Typography variant="h2" style={styles.subtitle}>
+          +100 Games to Deepen Connection
+        </Typography>
 
-          {/* Sync indicator */}
-          {isSyncing && (
-            <View style={styles.syncIndicator}>
-              <Typography variant="caption" style={styles.syncText}>💾 Saving...</Typography>
-            </View>
-          )}
+        {/* Sync indicator */}
+        {isSyncing && (
+          <View style={styles.syncIndicator}>
+            <Typography variant="caption" style={styles.syncText}>💾 Saving...</Typography>
+          </View>
+        )}
 
-          <View style={styles.gameArea}>
-            <TouchZone 
-              player="Player 1" 
-              onHold={setPlayer1Hold} 
-              isHolding={player1Hold} 
-            />
-            
-            <View style={styles.timerContainer}>
-              <LinearGradient
-                colors={COLORS.progress}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.timerGradient}
-              >
-                <Typography variant="h1" style={styles.timerText}>
-                  {countdown.toFixed(2)}s
-                </Typography>
-              </LinearGradient>
-            </View>
-
-            <TouchZone 
-              player="Player 2" 
-              onHold={setPlayer2Hold} 
-              isHolding={player2Hold} 
-            />
+        <View style={styles.gameArea}>
+          <TouchZone 
+            player="Player 1" 
+            onHold={setPlayer1Hold} 
+            isHolding={player1Hold} 
+          />
+          
+          <View style={styles.timerContainer}>
+            <LinearGradient
+              colors={COLORS.progress}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.timerGradient}
+            >
+              <Typography variant="h1" style={styles.timerText}>
+                {countdown.toFixed(2)}s
+              </Typography>
+            </LinearGradient>
           </View>
 
-          <GlassCard style={styles.instructionsContainer}>
-            <Typography variant="body" style={styles.instructions}>
-              Both partners must hold their buttons simultaneously for 6 seconds
-            </Typography>
-          </GlassCard>
-
-          <SquishyButton onPress={resetGame} style={styles.resetButton}>
-            <Typography variant="button">Reset Challenge</Typography>
-          </SquishyButton>
-
-          {/* Session info (debug) */}
-          {session && (
-            <Typography variant="caption" style={styles.sessionInfo}>
-              Session: {session.id.slice(0, 8)}...
-            </Typography>
-          )}
+          <TouchZone 
+            player="Player 2" 
+            onHold={setPlayer2Hold} 
+            isHolding={player2Hold} 
+          />
         </View>
-      </SafeAreaView>
+
+        <GlassCard style={styles.instructionsContainer}>
+          <Typography variant="body" style={styles.instructions}>
+            Both partners must hold their buttons simultaneously for 6 seconds
+          </Typography>
+        </GlassCard>
+
+        <SquishyButton onPress={resetGame} style={styles.resetButton}>
+          <Typography variant="button">Reset Challenge</Typography>
+        </SquishyButton>
+
+        {/* Session info (debug) */}
+        {session && (
+          <Typography variant="caption" style={styles.sessionInfo}>
+            Session: {session.id.slice(0, 8)}...
+          </Typography>
+        )}
+      </View>
     </ScreenLayout>
   );
 };

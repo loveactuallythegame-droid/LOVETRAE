@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
@@ -11,8 +11,8 @@ export default function DateNightRoulette({ navigation }: any) {
     }, []);
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
-            <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <ScreenLayout showHeader={false} scrollable={true}>
+
                 <ScrollView contentContainerStyle={styles.content}>
                     <View style={styles.header}>
                         <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
@@ -50,7 +50,7 @@ export default function DateNightRoulette({ navigation }: any) {
                         </SquishyButton>
                     </View>
                 </ScrollView>
-            </SafeAreaView>
+
         </ScreenLayout>
     );
 }

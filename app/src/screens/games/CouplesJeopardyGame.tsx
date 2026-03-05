@@ -11,10 +11,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 // Backend integration
@@ -223,11 +222,11 @@ const CouplesJeopardyGame: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <SafeAreaView style={styles.container}>
+            <ScreenLayout showHeader={false} scrollable={true}>
                 <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background}>
                     <Text variant="h2" style={styles.loadingText}>Loading Jeopardy...</Text>
                 </LinearGradient>
-            </SafeAreaView>
+            </ScreenLayout>
         );
     }
 
@@ -236,7 +235,7 @@ const CouplesJeopardyGame: React.FC = () => {
         const clue = categories[selectedClue.catIndex].clues[selectedClue.clueIndex];
         
         return (
-            <SafeAreaView style={styles.container}>
+            <ScreenLayout showHeader={false} scrollable={true}>
                 <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background}>
                     <ScrollView contentContainerStyle={styles.scrollContent}>
                         {showWager && (
@@ -276,13 +275,13 @@ const CouplesJeopardyGame: React.FC = () => {
                         </SquishyButton>
                     </ScrollView>
                 </LinearGradient>
-            </SafeAreaView>
+            </ScreenLayout>
         );
     }
 
     // Game board
     return (
-        <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background} />
             
             <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -338,7 +337,7 @@ const CouplesJeopardyGame: React.FC = () => {
                     <Text variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
                 )}
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

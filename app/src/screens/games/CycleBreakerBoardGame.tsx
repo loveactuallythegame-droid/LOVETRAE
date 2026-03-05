@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { Header, GlassCard, Text, SquishyButton, ScreenLayout } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 const AntidoteCard = ({ name, description, effect, color }: any) => (
@@ -39,7 +38,7 @@ const GameNode = ({ type, title, subtitle, color, isCurrent }: any) => (
 const CycleBreakerBoardGameScreen = () => {
 
     return (
-        <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
@@ -117,7 +116,7 @@ const CycleBreakerBoardGameScreen = () => {
                     </LinearGradient>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

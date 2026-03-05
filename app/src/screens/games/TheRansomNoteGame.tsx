@@ -28,42 +28,40 @@ const TheRansomNoteGame = ({ navigation }: any) => {
     };
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
-            <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    <View style={styles.header}>
-                        <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
-                            <Typography variant="body">Back</Typography>
-                        </SquishyButton>
-                        <Typography variant="h1" style={styles.headerTitle}>The Ransom Note</Typography>
-                        <View style={{ width: 24 }} />
-                    </View>
-
-                    <Typography variant="h2" style={styles.objective}>Invite your partner on a date... or else.</Typography>
-
-                    <GlassCard style={styles.canvas}>
-                        {note.length > 0 ? (
-                            <View style={styles.noteContainer}>
-                                {note.map((word, i) => (
-                                    <View key={i} style={[styles.noteWord, styles[word.style as keyof typeof styles]]}>
-                                        <Typography variant="body" style={styles.noteText}>{word.text}</Typography>
-                                    </View>
-                                ))}
-                            </View>
-                        ) : (
-                            <Typography variant="body" style={styles.placeholder}>Tap words to add them here</Typography>
-                        )}
-                    </GlassCard>
-
-                    <ScrollView horizontal contentContainerStyle={styles.wordBank} showsHorizontalScrollIndicator={false}>
-                        {wordBank.map((word, i) => <RansomWord key={i} word={word} onSelect={addWordToNote} />)}
-                    </ScrollView>
-
-                    <SquishyButton onPress={() => setNote([])} style={styles.clearBtn} variant="secondary">
-                        <Typography variant="body">Clear Note</Typography>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                <View style={styles.header}>
+                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
+                        <Typography variant="body">Back</Typography>
                     </SquishyButton>
+                    <Typography variant="h1" style={styles.headerTitle}>The Ransom Note</Typography>
+                    <View style={{ width: 24 }} />
+                </View>
+
+                <Typography variant="h2" style={styles.objective}>Invite your partner on a date... or else.</Typography>
+
+                <GlassCard style={styles.canvas}>
+                    {note.length > 0 ? (
+                        <View style={styles.noteContainer}>
+                            {note.map((word, i) => (
+                                <View key={i} style={[styles.noteWord, styles[word.style as keyof typeof styles]]}>
+                                    <Typography variant="body" style={styles.noteText}>{word.text}</Typography>
+                                </View>
+                            ))}
+                        </View>
+                    ) : (
+                        <Typography variant="body" style={styles.placeholder}>Tap words to add them here</Typography>
+                    )}
+                </GlassCard>
+
+                <ScrollView horizontal contentContainerStyle={styles.wordBank} showsHorizontalScrollIndicator={false}>
+                    {wordBank.map((word, i) => <RansomWord key={i} word={word} onSelect={addWordToNote} />)}
                 </ScrollView>
-            </SafeAreaView>
+
+                <SquishyButton onPress={() => setNote([])} style={styles.clearBtn} variant="secondary">
+                    <Typography variant="body">Clear Note</Typography>
+                </SquishyButton>
+            </ScrollView>
         </ScreenLayout>
     );
 };

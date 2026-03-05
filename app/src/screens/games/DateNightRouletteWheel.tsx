@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, Image, Platform } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Svg, Path } from 'react-native-svg';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
@@ -39,7 +38,7 @@ const DateNightRouletteWheelScreen = () => {
     ];
 
     return (
-        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
@@ -91,7 +90,7 @@ const DateNightRouletteWheelScreen = () => {
                     </View>
                 </GlassCard>
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

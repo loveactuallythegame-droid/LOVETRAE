@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { ScreenLayout } from '../../components/ui';
 import { GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -13,8 +13,8 @@ export default function TriggerTakedown({ navigation }: any) {
     }, []);
 
     return (
-        <ScreenLayout scrollable={false} showHeader={false}>
-            <SafeAreaView style={styles.safeArea}>
+        <ScreenLayout showHeader={false} scrollable={true}>
+
                 <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundPrimary]} style={styles.container}>
                     <ScrollView contentContainerStyle={styles.content}>
                         <View style={styles.header}>
@@ -67,7 +67,6 @@ export default function TriggerTakedown({ navigation }: any) {
                         </View>
                     </ScrollView>
                 </LinearGradient>
-            </SafeAreaView>
         </ScreenLayout>
     );
 }

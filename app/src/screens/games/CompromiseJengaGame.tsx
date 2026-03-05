@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, Header, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 
 const initialTower = [
@@ -29,7 +28,7 @@ const CompromiseJengaGameScreen = () => {
     const [stability, setStability] = useState(75);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
@@ -97,7 +96,7 @@ const CompromiseJengaGameScreen = () => {
 
                 </ScrollView>
             </View>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

@@ -12,7 +12,6 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TextInput, Alert, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
@@ -199,7 +198,7 @@ const EscapeEchoChamber: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <ScreenLayout showHeader={false}>
+            <ScreenLayout showHeader={false} scrollable={true}>
                 <View style={styles.container}>
                     <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background}>
                         <Text variant="h2" center style={styles.loadingText}>Entering the Echo Chamber...</Text>
@@ -213,99 +212,97 @@ const EscapeEchoChamber: React.FC = () => {
     const progressPercentage = ((currentStage + 1) / PUZZLES.length) * 100;
 
     return (
-        <ScreenLayout showHeader={false}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <View style={styles.container}>
                 <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background}>
-                    <SafeAreaView style={styles.safeArea}>
-                        <ScrollView contentContainerStyle={styles.scrollContent}>
-                            {/* Header */}
-                            <View style={styles.header}>
-                                <Text variant="h1" center>The Love Arcade</Text>
-                                <Text variant="h2" center>+100 Games to Deepen Connection</Text>
-                                <Text variant="h3" center style={styles.gameTitle}>Escape the Echo Chamber</Text>
-                                <Text variant="body" center style={styles.subtitle}>Break the love script</Text>
-                                <View style={styles.progressContainer}>
-                                    <Text variant="caption">
-                                        Puzzle {currentStage + 1} of {PUZZLES.length}
-                                    </Text>
-                                    <View style={styles.scoreRow}>
-                                        <Text variant="caption" style={styles.scoreText}>Score: {score}</Text>
-                                        {isSyncing && <Text variant="caption">💾</Text>}
-                                    </View>
+                    <ScrollView contentContainerStyle={styles.scrollContent}>
+                        {/* Header */}
+                        <View style={styles.header}>
+                            <Text variant="h1" center>The Love Arcade</Text>
+                            <Text variant="h2" center>+100 Games to Deepen Connection</Text>
+                            <Text variant="h3" center style={styles.gameTitle}>Escape the Echo Chamber</Text>
+                            <Text variant="body" center style={styles.subtitle}>Break the love script</Text>
+                            <View style={styles.progressContainer}>
+                                <Text variant="caption">
+                                    Puzzle {currentStage + 1} of {PUZZLES.length}
+                                </Text>
+                                <View style={styles.scoreRow}>
+                                    <Text variant="caption" style={styles.scoreText}>Score: {score}</Text>
+                                    {isSyncing && <Text variant="caption">💾</Text>}
                                 </View>
                             </View>
+                        </View>
 
-                            {/* Progress Bar */}
-                            <View style={styles.progressBar}>
-                                <View 
-                                    style={[
-                                        styles.progressFill, 
-                                        { width: `${progressPercentage}%` }
-                                    ]} 
-                                />
-                            </View>
+                        {/* Progress Bar */}
+                        <View style={styles.progressBar}>
+                            <View 
+                                style={[
+                                    styles.progressFill, 
+                                    { width: `${progressPercentage}%` }
+                                ]} 
+                            />
+                        </View>
 
-                            {/* Puzzle Card */}
-                            <GlassCard style={styles.puzzleCard}>
-                                <Text variant="h3">{currentPuzzle?.title}</Text>
-                                <Text variant="body" style={styles.puzzleDescription}>{currentPuzzle?.description}</Text>
-                                
-                                {attempts > 1 && (
-                                    <SquishyButton 
-                                        variant="ghost"
-                                        onPress={() => setShowHint(!showHint)}
-                                        style={styles.hintButton}
-                                    >
-                                        <Text variant="button">
-                                            {showHint ? 'Hide Hint' : 'Need a Hint?'}
-                                        </Text>
-                                    </SquishyButton>
-                                )}
-                                
-                                {showHint && (
-                                    <GlassCard style={styles.hintBox}>
-                                        <Text variant="body">💡 {currentPuzzle?.hint}</Text>
-                                    </GlassCard>
-                                )}
-                            </GlassCard>
-
-                            {/* Input Area */}
-                            <View style={styles.inputContainer}>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Enter solution..."
-                                    placeholderTextColor={COLORS.textHint}
-                                    value={userInput}
-                                    onChangeText={setUserInput}
-                                    onSubmitEditing={checkAnswer}
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                />
-                                
+                        {/* Puzzle Card */}
+                        <GlassCard style={styles.puzzleCard}>
+                            <Text variant="h3">{currentPuzzle?.title}</Text>
+                            <Text variant="body" style={styles.puzzleDescription}>{currentPuzzle?.description}</Text>
+                            
+                            {attempts > 1 && (
                                 <SquishyButton 
-                                    onPress={checkAnswer}
-                                    disabled={!userInput.trim()}
+                                    variant="ghost"
+                                    onPress={() => setShowHint(!showHint)}
+                                    style={styles.hintButton}
                                 >
-                                    <Text variant="button">Decrypt File</Text>
+                                    <Text variant="button">
+                                        {showHint ? 'Hide Hint' : 'Need a Hint?'}
+                                    </Text>
                                 </SquishyButton>
-                            </View>
-
-                            {/* Attempts Counter */}
-                            <Text variant="caption" center style={styles.attemptsText}>
-                                Attempts: {attempts} {attempts > 0 && '(Fewer attempts = more points!)'}
-                            </Text>
-
-                            {/* Reset Button */}
-                            <SquishyButton variant="ghost" onPress={resetGame} style={styles.resetButton}>
-                                <Text variant="button">Start Over</Text>
-                            </SquishyButton>
-
-                            {/* Session Info */}
-                            {session && (
-                                <Text variant="caption" center style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
                             )}
-                        </ScrollView>
-                    </SafeAreaView>
+                            
+                            {showHint && (
+                                <GlassCard style={styles.hintBox}>
+                                    <Text variant="body">💡 {currentPuzzle?.hint}</Text>
+                                </GlassCard>
+                            )}
+                        </GlassCard>
+
+                        {/* Input Area */}
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Enter solution..."
+                                placeholderTextColor={COLORS.textHint}
+                                value={userInput}
+                                onChangeText={setUserInput}
+                                onSubmitEditing={checkAnswer}
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                            />
+                            
+                            <SquishyButton 
+                                onPress={checkAnswer}
+                                disabled={!userInput.trim()}
+                            >
+                                <Text variant="button">Decrypt File</Text>
+                            </SquishyButton>
+                        </View>
+
+                        {/* Attempts Counter */}
+                        <Text variant="caption" center style={styles.attemptsText}>
+                            Attempts: {attempts} {attempts > 0 && '(Fewer attempts = more points!)'}
+                        </Text>
+
+                        {/* Reset Button */}
+                        <SquishyButton variant="ghost" onPress={resetGame} style={styles.resetButton}>
+                            <Text variant="button">Start Over</Text>
+                        </SquishyButton>
+
+                        {/* Session Info */}
+                        {session && (
+                            <Text variant="caption" center style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
+                        )}
+                    </ScrollView>
                 </LinearGradient>
             </View>
         </ScreenLayout>

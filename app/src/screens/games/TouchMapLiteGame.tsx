@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Svg, Circle, Path } from 'react-native-svg';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
@@ -62,79 +61,77 @@ const TouchMapLiteGame = () => {
     return (
         <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundSecondary]} style={styles.container}>
-                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <Typography variant="h1" center>Touch Map Lite</Typography>
-                        <Typography variant="body" center style={styles.subtitle}>Where is it okay to touch?</Typography>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <Typography variant="h1" center>Touch Map Lite</Typography>
+                    <Typography variant="body" center style={styles.subtitle}>Where is it okay to touch?</Typography>
 
-                        <View style={styles.colorSelector}>
-                            <SquishyButton 
-                                onPress={() => setActiveColor('rgba(0,255,0,0.4)')} 
-                                size="small" 
-                                variant="secondary"
-                                style={[styles.selectorButton, {backgroundColor: COLORS.mintGreen}]}
-                            >
-                                <Typography variant="caption" style={styles.selectorText}>Safe</Typography>
-                            </SquishyButton>
-                            <SquishyButton 
-                                onPress={() => setActiveColor('rgba(255,255,0,0.4)')} 
-                                size="small" 
-                                variant="secondary"
-                                style={[styles.selectorButton, {backgroundColor: COLORS.warning}]}
-                            >
-                                <Typography variant="caption" style={styles.selectorText}>Caution</Typography>
-                            </SquishyButton>
-                            <SquishyButton 
-                                onPress={() => setActiveColor('rgba(255,0,0,0.4)')} 
-                                size="small" 
-                                variant="secondary"
-                                style={[styles.selectorButton, {backgroundColor: COLORS.error}]}
-                            >
-                                <Typography variant="caption" style={styles.selectorText}>Off-limits</Typography>
-                            </SquishyButton>
-                        </View>
+                    <View style={styles.colorSelector}>
+                        <SquishyButton 
+                            onPress={() => setActiveColor('rgba(0,255,0,0.4)')} 
+                            size="small" 
+                            variant="secondary"
+                            style={[styles.selectorButton, {backgroundColor: COLORS.mintGreen}]}
+                        >
+                            <Typography variant="caption" style={styles.selectorText}>Safe</Typography>
+                        </SquishyButton>
+                        <SquishyButton 
+                            onPress={() => setActiveColor('rgba(255,255,0,0.4)')} 
+                            size="small" 
+                            variant="secondary"
+                            style={[styles.selectorButton, {backgroundColor: COLORS.warning}]}
+                        >
+                            <Typography variant="caption" style={styles.selectorText}>Caution</Typography>
+                        </SquishyButton>
+                        <SquishyButton 
+                            onPress={() => setActiveColor('rgba(255,0,0,0.4)')} 
+                            size="small" 
+                            variant="secondary"
+                            style={[styles.selectorButton, {backgroundColor: COLORS.error}]}
+                        >
+                            <Typography variant="caption" style={styles.selectorText}>Off-limits</Typography>
+                        </SquishyButton>
+                    </View>
 
-                        <View style={styles.mapsContainer}>
-                            <GlassCard style={styles.mapCard}>
-                                <Typography variant="caption" style={styles.mapTitle}>Your Map</Typography>
-                                <Svg height="300" width="150" viewBox="0 0 200 400">
-                                    {bodyParts.map(part => (
-                                        <BodyPart 
-                                            key={part} 
-                                            part={part} 
-                                            color={userMap[part] || 'rgba(255,255,255,0.1)'} 
-                                            onPress={handlePartPress} 
-                                        />
-                                    ))}
-                                </Svg>
-                            </GlassCard>
-                            <GlassCard style={styles.mapCard}>
-                                <Typography variant="caption" style={styles.mapTitle}>Partner's Map</Typography>
-                                <Svg height="300" width="150" viewBox="0 0 200 400">
-                                    {bodyParts.map(part => (
-                                        <BodyPart 
-                                            key={part} 
-                                            part={part} 
-                                            color={partnerMap[part]} 
-                                            onPress={() => {}} 
-                                        />
-                                    ))}
-                                </Svg>
-                            </GlassCard>
-                        </View>
+                    <View style={styles.mapsContainer}>
+                        <GlassCard style={styles.mapCard}>
+                            <Typography variant="caption" style={styles.mapTitle}>Your Map</Typography>
+                            <Svg height="300" width="150" viewBox="0 0 200 400">
+                                {bodyParts.map(part => (
+                                    <BodyPart 
+                                        key={part} 
+                                        part={part} 
+                                        color={userMap[part] || 'rgba(255,255,255,0.1)'} 
+                                        onPress={handlePartPress} 
+                                    />
+                                ))}
+                            </Svg>
+                        </GlassCard>
+                        <GlassCard style={styles.mapCard}>
+                            <Typography variant="caption" style={styles.mapTitle}>Partner's Map</Typography>
+                            <Svg height="300" width="150" viewBox="0 0 200 400">
+                                {bodyParts.map(part => (
+                                    <BodyPart 
+                                        key={part} 
+                                        part={part} 
+                                        color={partnerMap[part]} 
+                                        onPress={() => {}} 
+                                    />
+                                ))}
+                            </Svg>
+                        </GlassCard>
+                    </View>
 
-                        <View style={styles.statsContainer}>
-                            <GlassCard style={styles.statBox}>
-                                <Typography variant="caption" style={styles.statLabel}>Sync Rate</Typography>
-                                <Typography variant="h1" style={styles.statValue}>{syncRate}%</Typography>
-                            </GlassCard>
-                            <GlassCard style={styles.statBox}>
-                                <Typography variant="caption" style={styles.statLabel}>Mismatches</Typography>
-                                <Typography variant="h1" style={[styles.statValue, {color: COLORS.warning}]}>{mismatches}</Typography>
-                            </GlassCard>
-                        </View>
-                    </ScrollView>
-                </SafeAreaView>
+                    <View style={styles.statsContainer}>
+                        <GlassCard style={styles.statBox}>
+                            <Typography variant="caption" style={styles.statLabel}>Sync Rate</Typography>
+                            <Typography variant="h1" style={styles.statValue}>{syncRate}%</Typography>
+                        </GlassCard>
+                        <GlassCard style={styles.statBox}>
+                            <Typography variant="caption" style={styles.statLabel}>Mismatches</Typography>
+                            <Typography variant="h1" style={[styles.statValue, {color: COLORS.warning}]}>{mismatches}</Typography>
+                        </GlassCard>
+                    </View>
+                </ScrollView>
             </LinearGradient>
         </ScreenLayout>
     );

@@ -10,7 +10,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 // Backend integration
@@ -209,18 +209,15 @@ const ChoppedFamily: React.FC = () => {
     if (sessionLoading) {
         return (
             <ScreenLayout showHeader={false} scrollable={true}>
-                <SafeAreaView style={styles.container}>
                     <Typography variant="h1" center style={styles.loadingText}>The Love Arcade</Typography>
-                    <Typography variant="body" center>Preparing the Kitchen...</Typography>
-                </SafeAreaView>
+                <Typography variant="body" center>Preparing the Kitchen...</Typography>
             </ScreenLayout>
         );
     }
 
     return (
         <ScreenLayout showHeader={false} scrollable={true}>
-            <SafeAreaView style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
                     <Typography variant="h1" center style={styles.gameTitle}>The Love Arcade</Typography>
                     <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
 
@@ -326,8 +323,7 @@ const ChoppedFamily: React.FC = () => {
                     {session && (
                         <Typography variant="caption" center style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Typography>
                     )}
-                </ScrollView>
-            </SafeAreaView>
+            </ScrollView>
         </ScreenLayout>
     );
 };

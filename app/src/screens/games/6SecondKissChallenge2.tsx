@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -86,66 +85,64 @@ const SixSecondKissChallenge2 = () => {
     );
 
     return (
-        <ScreenLayout showMarcie={true} marcieQuote="Maintaining physical connection during this challenge helps strengthen emotional bonds. The 6-second rule is scientifically proven to deepen intimacy!">
-            <SafeAreaView style={styles.container} edges={['bottom']}>
-                <View style={styles.content}>
-                    <Typography variant="h1" style={styles.title}>
-                        The Love Arcade
-                    </Typography>
-                    <Typography variant="h2" style={styles.subtitle}>
-                        +100 Games to Deepen Connection
-                    </Typography>
+        <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Maintaining physical connection during this challenge helps strengthen emotional bonds. The 6-second rule is scientifically proven to deepen intimacy!">
+            <View style={styles.content}>
+                <Typography variant="h1" style={styles.title}>
+                    The Love Arcade
+                </Typography>
+                <Typography variant="h2" style={styles.subtitle}>
+                    +100 Games to Deepen Connection
+                </Typography>
 
-                    <View style={styles.gameArea}>
-                        <PlayerTouchPoint 
-                            player="PLAYER 1" 
-                            onHold={setPlayer1Hold} 
-                            isHolding={player1Hold} 
-                            scaleAnim={scaleAnim1}
-                        />
+                <View style={styles.gameArea}>
+                    <PlayerTouchPoint 
+                        player="PLAYER 1" 
+                        onHold={setPlayer1Hold} 
+                        isHolding={player1Hold} 
+                        scaleAnim={scaleAnim1}
+                    />
+                    
+                    <View style={styles.centerSection}>
+                        <LinearGradient
+                            colors={COLORS.progress}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.timerCircle}
+                        >
+                            <Typography variant="h1" style={styles.timerText}>
+                                {Math.ceil(countdown)}
+                                <Typography variant="body" style={styles.timerSec}>s</Typography>
+                            </Typography>
+                        </LinearGradient>
                         
-                        <View style={styles.centerSection}>
+                        <View style={styles.progressContainer}>
+                            <Typography variant="caption" style={styles.progressLabel}>Connection Strength</Typography>
                             <LinearGradient
-                                colors={COLORS.progress}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={styles.timerCircle}
+                                colors={GRADIENTS.primary.colors}
+                                start={GRADIENTS.primary.start}
+                                end={GRADIENTS.primary.end}
+                                style={styles.progressBarBg}
                             >
-                                <Typography variant="h1" style={styles.timerText}>
-                                    {Math.ceil(countdown)}
-                                    <Typography variant="body" style={styles.timerSec}>s</Typography>
-                                </Typography>
+                                <View style={[styles.progressFill, { width: `${connection}%` }]}>
+                                    <LinearGradient
+                                        colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                                        start={{ x: 0, y: 0 }}
+                                        end={{ x: 1, y: 1 }}
+                                        style={styles.progressFillInner}
+                                    />
+                                </View>
                             </LinearGradient>
-                            
-                            <View style={styles.progressContainer}>
-                                <Typography variant="caption" style={styles.progressLabel}>Connection Strength</Typography>
-                                <LinearGradient
-                                    colors={GRADIENTS.primary.colors}
-                                    start={GRADIENTS.primary.start}
-                                    end={GRADIENTS.primary.end}
-                                    style={styles.progressBarBg}
-                                >
-                                    <View style={[styles.progressFill, { width: `${connection}%` }]}>
-                                        <LinearGradient
-                                            colors={[COLORS.warmOrange, COLORS.brightYellow]}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 1 }}
-                                            style={styles.progressFillInner}
-                                        />
-                                    </View>
-                                </LinearGradient>
-                            </View>
                         </View>
-
-                        <PlayerTouchPoint 
-                            player="PLAYER 2" 
-                            onHold={setPlayer2Hold} 
-                            isHolding={player2Hold} 
-                            scaleAnim={scaleAnim2}
-                        />
                     </View>
+
+                    <PlayerTouchPoint 
+                        player="PLAYER 2" 
+                        onHold={setPlayer2Hold} 
+                        isHolding={player2Hold} 
+                        scaleAnim={scaleAnim2}
+                    />
                 </View>
-            </SafeAreaView>
+            </View>
         </ScreenLayout>
     );
 };

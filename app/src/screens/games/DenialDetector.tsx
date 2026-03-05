@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
@@ -17,7 +16,7 @@ export default function DenialDetector({ navigation }: any) {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+    <ScreenLayout showHeader={false} scrollable={true}>
       <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={StyleSheet.absoluteFillObject} />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
@@ -64,7 +63,7 @@ export default function DenialDetector({ navigation }: any) {
           </GlassCard>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }
 

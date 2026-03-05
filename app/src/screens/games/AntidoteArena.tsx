@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, Animated } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -50,53 +49,49 @@ const AntidoteArena = ({ route }: { route: any }) => {
 
   if (!gameState) {
     return (
-      <ScreenLayout showMarcie={false}>
-        <SafeAreaView style={styles.container} edges={['bottom']}>
-          <View style={styles.loadingContainer}>
-            <Typography variant="body">Loading...</Typography>
-          </View>
-        </SafeAreaView>
+      <ScreenLayout showHeader={false} scrollable={true} showMarcie={false}>
+        <View style={styles.loadingContainer}>
+          <Typography variant="body">Loading...</Typography>
+        </View>
       </ScreenLayout>
     );
   }
 
   return (
-    <ScreenLayout showMarcie={true} marcieQuote="Fight the four horsemen of relationship apocalypse! Each antidote represents a positive communication strategy.">
-      <SafeAreaView style={styles.container} edges={['bottom']}>
-        <View style={styles.content}>
-          <Typography variant="h1" style={styles.title}>
-            The Love Arcade
-          </Typography>
-          <Typography variant="h2" style={styles.subtitle}>
-            +100 Games to Deepen Connection
+    <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Fight the four horsemen of relationship apocalypse! Each antidote represents a positive communication strategy.">
+      <View style={styles.content}>
+        <Typography variant="h1" style={styles.title}>
+          The Love Arcade
+        </Typography>
+        <Typography variant="h2" style={styles.subtitle}>
+          +100 Games to Deepen Connection
+        </Typography>
+
+        <View style={styles.gameContainer}>
+          <View style={styles.iconContainer}>
+            <MaterialCommunityIcons name="sword-cross" size={64} color={COLORS.vibrantPink} />
+          </View>
+          
+          <Typography variant="h3" style={styles.horsemanText}>
+            The Horseman of {gameState.horseman} is attacking!
           </Typography>
 
-          <View style={styles.gameContainer}>
-            <View style={styles.iconContainer}>
-              <MaterialCommunityIcons name="sword-cross" size={64} color={COLORS.vibrantPink} />
-            </View>
-            
-            <Typography variant="h3" style={styles.horsemanText}>
-              The Horseman of {gameState.horseman} is attacking!
-            </Typography>
-
-            <View style={styles.antidoteGrid}>
-              {gameState.antidotes?.map((antidote: any) => (
-                <SquishyButton
-                  key={antidote.name}
-                  onPress={() => handleAntidoteSelection(antidote.name)}
-                  style={styles.antidoteButton}
-                >
-                  <MaterialCommunityIcons name={antidote.icon} size={32} color={COLORS.textPrimary} />
-                  <Typography variant="caption" style={styles.antidoteText}>
-                    {antidote.name}
-                  </Typography>
-                </SquishyButton>
-              ))}
-            </View>
+          <View style={styles.antidoteGrid}>
+            {gameState.antidotes?.map((antidote: any) => (
+              <SquishyButton
+                key={antidote.name}
+                onPress={() => handleAntidoteSelection(antidote.name)}
+                style={styles.antidoteButton}
+              >
+                <MaterialCommunityIcons name={antidote.icon} size={32} color={COLORS.textPrimary} />
+                <Typography variant="caption" style={styles.antidoteText}>
+                  {antidote.name}
+                </Typography>
+              </SquishyButton>
+            ))}
           </View>
         </View>
-      </SafeAreaView>
+      </View>
     </ScreenLayout>
   );
 };

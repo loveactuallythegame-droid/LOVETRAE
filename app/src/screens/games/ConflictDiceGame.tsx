@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, Header, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 
 const topics = [{icon: 'rebase_edit', text: 'The Dishwasher'}, {icon: 'schedule', text: 'Being Late'}, {icon: 'phone_android', text: 'Screen Time'}];
@@ -39,7 +38,7 @@ const ConflictDiceGameScreen = () => {
     useEffect(rollDice, []);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.deepCosmic, COLORS.deepCosmic]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
@@ -93,7 +92,7 @@ const ConflictDiceGameScreen = () => {
                     {/* Fame items would be populated from state */}
                 </LinearGradient>
             </View>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

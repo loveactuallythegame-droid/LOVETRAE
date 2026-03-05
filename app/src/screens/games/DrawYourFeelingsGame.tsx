@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Svg, Path } from 'react-native-svg';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, ANIMATIONS } from '../../theme';
@@ -21,7 +20,7 @@ const GuessMessage = ({ user, message, highlight }: { user: string, message: str
 
 const DrawYourFeelingsGameScreen = () => {
     return (
-        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
             <View style={styles.mainLayout}>
                 {/* Left Sidebar */}
@@ -64,7 +63,7 @@ const DrawYourFeelingsGameScreen = () => {
                     </View>
                 </GlassCard>
             </View>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 

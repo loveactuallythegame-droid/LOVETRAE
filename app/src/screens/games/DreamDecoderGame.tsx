@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS } from '../../theme';
 
 const DreamDecoderGameScreen = () => {
     return (
-        <ScreenLayout showHeader={false}>
-            <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={true}>
+
                 <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <View style={styles.header}>
@@ -54,7 +54,7 @@ const DreamDecoderGameScreen = () => {
                         </View>
                     </View>
                 </ScrollView>
-            </SafeAreaView>
+
         </ScreenLayout>
     );
 };

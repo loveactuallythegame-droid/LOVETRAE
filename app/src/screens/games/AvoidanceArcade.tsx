@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, ANIMATIONS } from '../../theme';
@@ -53,7 +52,7 @@ export default function AvoidanceArcade({ navigation }: any) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScreenLayout showHeader={false} scrollable={true}>
       <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundPrimary]} style={styles.background}>
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.header}>
@@ -108,7 +107,7 @@ export default function AvoidanceArcade({ navigation }: any) {
           )}
         </ScrollView>
       </LinearGradient>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }
 

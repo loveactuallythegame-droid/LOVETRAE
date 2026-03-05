@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
@@ -25,51 +24,49 @@ const TheIntimacyFeud = () => {
     };
 
     return (
-        <ScreenLayout showHeader={false} scrollable={false}>
+        <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.deepCosmic]} style={styles.container}>
-                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
-                    <Typography variant="h1" center style={styles.header}>The Intimacy Feud</Typography>
-                    <Typography variant="body" center style={styles.prompt}>
-                        A secret desire your partner finally shared
-                    </Typography>
+                <Typography variant="h1" center style={styles.header}>The Intimacy Feud</Typography>
+                <Typography variant="body" center style={styles.prompt}>
+                    A secret desire your partner finally shared
+                </Typography>
 
-                    <View style={styles.board}>
-                        {answers.map((answer, index) => (
-                            <GlassCard key={index} style={styles.slot} variant="elevated">
-                                <Typography variant="body">{answer || '[ Locked ]'}</Typography>
-                                {answer ? null : <MaterialIcons name="lock" size={24} color={COLORS.textHint} />}
-                            </GlassCard>
-                        ))}
-                    </View>
+                <View style={styles.board}>
+                    {answers.map((answer, index) => (
+                        <GlassCard key={index} style={styles.slot} variant="elevated">
+                            <Typography variant="body">{answer || '[ Locked ]'}</Typography>
+                            {answer ? null : <MaterialIcons name="lock" size={24} color={COLORS.textHint} />}
+                        </GlassCard>
+                    ))}
+                </View>
 
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Enter a secret desire..."
-                            placeholderTextColor={COLORS.textHint}
-                            value={guess}
-                            onChangeText={setGuess}
-                        />
-                        <SquishyButton onPress={handleGuess} size="small" style={styles.sendButton}>
-                            <MaterialIcons name="send" size={24} color={COLORS.textPrimary} />
-                        </SquishyButton>
-                    </View>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter a secret desire..."
+                        placeholderTextColor={COLORS.textHint}
+                        value={guess}
+                        onChangeText={setGuess}
+                    />
+                    <SquishyButton onPress={handleGuess} size="small" style={styles.sendButton}>
+                        <MaterialIcons name="send" size={24} color={COLORS.textPrimary} />
+                    </SquishyButton>
+                </View>
 
-                    <View style={styles.strikesContainer}>
-                        {[1, 2, 3].map(i => (
-                            <GlassCard 
-                                key={i} 
-                                style={[styles.strike, i <= strikes && styles.strikeActive]}
-                            >
-                                <MaterialIcons 
-                                    name="close" 
-                                    size={32} 
-                                    color={i <= strikes ? COLORS.textPrimary : COLORS.textDisabled} 
-                                />
-                            </GlassCard>
-                        ))}
-                    </View>
-                </SafeAreaView>
+                <View style={styles.strikesContainer}>
+                    {[1, 2, 3].map(i => (
+                        <GlassCard 
+                            key={i} 
+                            style={[styles.strike, i <= strikes && styles.strikeActive]}
+                        >
+                            <MaterialIcons 
+                                name="close" 
+                                size={32} 
+                                color={i <= strikes ? COLORS.textPrimary : COLORS.textDisabled} 
+                            />
+                        </GlassCard>
+                    ))}
+                </View>
             </LinearGradient>
         </ScreenLayout>
     );
