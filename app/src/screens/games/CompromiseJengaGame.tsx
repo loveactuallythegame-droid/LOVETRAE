@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header } from '../../components/ui/Header';
+import { Header, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 
 const initialTower = [
     ['Respect Space', 'Daily Check-in', 'Date Nights'],
@@ -14,12 +15,12 @@ const initialTower = [
 
 const JengaBlock = ({ text }: { text: string | null }) => (
     <LinearGradient
-        colors={['#db147c', '#f05d68']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+        colors={GRADIENTS.primary.colors}
+        start={GRADIENTS.primary.start}
+        end={GRADIENTS.primary.end}
         style={[styles.jengaBlock, !text && styles.emptyBlock]}
     >
-        {text && <Text style={styles.blockText}>{text}</Text>}
+        {text && <Text variant="caption">{text}</Text>}
     </LinearGradient>
 );
 
@@ -29,7 +30,7 @@ const CompromiseJengaGameScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#101322', '#221017']} style={styles.background} />
+            <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
             <View style={styles.drMarcieSection}>
@@ -37,32 +38,32 @@ const CompromiseJengaGameScreen = () => {
                     <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                 </View>
                 <View style={styles.quoteBox}>
-                    <Text style={styles.quoteText}>Build a compromise tower! Stack concessions to create a stable solution together.</Text>
+                    <Text variant="sass">Build a compromise tower! Stack concessions to create a stable solution together.</Text>
                 </View>
             </View>
             
             <Header title="Compromise Jenga" />
             <View style={styles.gameLayout}>
                 <LinearGradient
-                    colors={['#a22ac4', '#9056ef']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
+                    colors={[COLORS.lavenderPurple, COLORS.softViolet]}
+                    start={GRADIENTS.primary.start}
+                    end={GRADIENTS.primary.end}
                     style={styles.sidebar}
                 >
-                    <Text style={styles.sidebarTitle}>Compromise Warehouse</Text>
+                    <Text variant="h2" style={styles.sidebarTitle}>Compromise Warehouse</Text>
                     {/* Placeholder for draggable blocks */}
                 </LinearGradient>
                 <ScrollView contentContainerStyle={styles.gameStage}>
                     <LinearGradient
-                        colors={['#37cf97', '#b37dec']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
+                        colors={[COLORS.mintGreen, COLORS.softViolet]}
+                        start={GRADIENTS.primary.start}
+                        end={GRADIENTS.primary.end}
                         style={styles.stabilityMeter}
                     >
-                        <Text style={styles.meterTitle}>STABILITY: {stability}%</Text>
+                        <Text variant="h2" style={styles.meterTitle}>STABILITY: {stability}%</Text>
                         <View style={styles.meterBar}>
                             <LinearGradient 
-                                colors={['#db147c', '#f05d68']} 
+                                colors={GRADIENTS.primary.colors} 
                                 style={{width: `${stability}%`, height: '100%'}} 
                             />
                         </View>
@@ -75,23 +76,23 @@ const CompromiseJengaGameScreen = () => {
                             </View>
                         ))}
                          <LinearGradient
-                            colors={['#ff7600', '#ffef1f']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
+                            colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                            start={GRADIENTS.primary.start}
+                            end={GRADIENTS.primary.end}
                             style={styles.dropZone}
                          >
-                            <Text style={styles.dropZoneText}>Drop Block Here</Text>
+                            <Text variant="body" style={styles.dropZoneText}>Drop Block Here</Text>
                         </LinearGradient>
                     </View>
 
                     <LinearGradient
-                        colors={['#ff7600', '#ffef1f']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
+                        colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                        start={GRADIENTS.primary.start}
+                        end={GRADIENTS.primary.end}
                         style={styles.hostContainer}
                     >
-                        <Text style={styles.hostQuote}>"Gravity always wins... and so does resentment if you aren't careful with your foundation!"</Text>
-                        <Text style={styles.hostName}>- Dr. Marcie Liss</Text>
+                        <Text variant="body" style={styles.hostQuote}>"Gravity always wins... and so does resentment if you aren't careful with your foundation!"</Text>
+                        <Text variant="caption" style={styles.hostName}>- Dr. Marcie Liss</Text>
                     </LinearGradient>
 
                 </ScrollView>
@@ -101,183 +102,140 @@ const CompromiseJengaGameScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#101322' },
+    container: { flex: 1, backgroundColor: COLORS.backgroundPrimary },
     background: { ...StyleSheet.absoluteFillObject },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xxlarge,
+        padding: SPACING.regular,
+        margin: SPACING.regular,
+        marginBottom: SPACING.small,
     },
     avatarContainer: {
         width: 50,
         height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular,
     },
     avatar: {
         width: 40,
         height: 40,
-        borderRadius: 20,
-        resizeMode: 'cover'
+        borderRadius: BORDER_RADIUS.round,
+        resizeMode: 'cover',
     },
     quoteBox: {
         flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
-    },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular,
     },
     gameLayout: { flexDirection: 'row', flex: 1 },
     sidebar: { 
         width: 200, 
-        padding: 15,
-        borderRadius: 16,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.xlarge,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     sidebarTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 18, 
-        color: '#ffffff',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        color: COLORS.textPrimary,
+        backgroundColor: COLORS.backgroundInput,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.large,
     },
-    gameStage: { flex: 1, padding: 20, alignItems: 'center' },
+    gameStage: { flex: 1, padding: SPACING.regular, alignItems: 'center' },
     stabilityMeter: { 
         width: '90%', 
-        borderRadius: 16, 
-        padding: 15, 
-        marginBottom: 30,
+        borderRadius: BORDER_RADIUS.xlarge, 
+        padding: SPACING.regular, 
+        marginBottom: SPACING.xlarge,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     meterTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        color: '#ffffff', 
-        fontSize: 16, 
+        color: COLORS.textPrimary, 
         textAlign: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        backgroundColor: COLORS.backgroundInput,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.large,
     },
     meterBar: { 
         height: 10, 
-        backgroundColor: 'rgba(255,255,255,0.1)', 
-        borderRadius: 5, 
-        marginTop: 5,
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.round, 
+        marginTop: SPACING.small,
         borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        borderColor: COLORS.borderSubtle,
     },
     towerContainer: { width: '80%', alignItems: 'center' },
-    towerLayer: { flexDirection: 'row', marginBottom: 5, justifyContent: 'center' },
+    towerLayer: { flexDirection: 'row', marginBottom: SPACING.small, justifyContent: 'center' },
     jengaBlock: { 
-        borderRadius: 8,
+        borderRadius: BORDER_RADIUS.medium,
         height: 40,
         flex: 1,
-        marginHorizontal: 2,
+        marginHorizontal: SPACING.tiny,
         justifyContent: 'center', 
         alignItems: 'center',
-        padding: 5,
+        padding: SPACING.small,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 3,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.small,
     },
     emptyBlock: { backgroundColor: 'transparent', borderColor: 'transparent' },
-    blockText: { 
-        fontFamily: 'WonderfulSometimes-Regular', 
-        color: '#ffffff', 
-        fontSize: 10, 
-        textAlign: 'center', 
-        textTransform: 'uppercase' 
-    },
     dropZone: { 
         height: 50, 
         width: '60%', 
-        borderRadius: 12, 
+        borderRadius: BORDER_RADIUS.large, 
         justifyContent: 'center', 
         alignItems: 'center', 
-        marginTop: 10,
+        marginTop: SPACING.regular,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        borderColor: COLORS.borderSubtle,
         borderStyle: 'dashed',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        ...SHADOWS.large,
     },
     dropZoneText: { 
-        color: '#ffffff', 
-        fontFamily: 'SweetPink-Regular', 
-        textTransform: 'uppercase',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 8,
+        color: COLORS.textPrimary,
+        backgroundColor: COLORS.backgroundInput,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.medium,
     },
     hostContainer: { 
         position: 'absolute', 
-        bottom: 20, 
-        left: 20, 
+        bottom: SPACING.regular, 
+        left: SPACING.regular, 
         width: '45%', 
-        padding: 10, 
-        borderRadius: 12,
+        padding: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.large,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     hostQuote: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
-        fontStyle: 'italic', 
-        fontSize: 13,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        padding: 8,
-        borderRadius: 8,
+        color: COLORS.textPrimary,
+        backgroundColor: COLORS.backgroundInput,
+        padding: SPACING.small,
+        borderRadius: BORDER_RADIUS.medium,
     },
     hostName: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         textAlign: 'right', 
-        marginTop: 5, 
-        textTransform: 'uppercase',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 8,
-    }
+        marginTop: SPACING.small,
+        backgroundColor: COLORS.backgroundInput,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.medium,
+    },
 });
 
 export default CompromiseJengaGameScreen;

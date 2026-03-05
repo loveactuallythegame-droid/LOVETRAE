@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header } from '../../components/ui/Header'; // Assuming a generic header
+
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 
 const AmazingRaceCrossroadsScreen = () => {
     const [detour, setDetour] = useState<string | null>(null);
@@ -19,305 +21,224 @@ const AmazingRaceCrossroadsScreen = () => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#102222', '#1a2a2a']} style={styles.background} />
-            
-            {/* Dr. Marcie Section */}
-            <View style={styles.drMarcieSection}>
-                <View style={styles.avatarContainer}>
-                    <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
-                </View>
-                <View style={styles.quoteBox}>
-                    <Text style={styles.quoteText}>At relationship crossroads, choices matter! Each decision shapes your journey together. Choose wisely!</Text>
-                </View>
-            </View>
-            
-            <Header title="Amazing Race: Crossroads" />
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <View style={styles.decisionHub}>
-                    <LinearGradient
-                        colors={['#db147c', '#f05d68']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.card}
-                    >
-                        <Text style={styles.cardTitle}>WORD-WOUND PROTOCOL</Text>
-                        <Text style={styles.cardSubtitle}>PHASE 04: ACTIVE</Text>
-                    </LinearGradient>
+        <ScreenLayout showMarcie={true} marcieQuote="At relationship crossroads, choices matter! Each decision shapes your journey together. Choose wisely!">
+            <SafeAreaView style={styles.container} edges={['bottom']}>
+                <ScrollView contentContainerStyle={styles.content}>
+                    <Typography variant="h1" style={styles.title}>
+                        The Love Arcade
+                    </Typography>
+                    <Typography variant="h2" style={styles.subtitle}>
+                        +100 Games to Deepen Connection
+                    </Typography>
 
-                    <LinearGradient
-                        colors={['#a22ac4', '#9056ef']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.card}
-                    >
-                        <Text style={styles.hubTitle}>DETOUR</Text>
-                        <Text style={styles.hubDescription}>Choose your communication style for the next 500 miles:</Text>
-                        <TouchableOpacity 
-                            style={[styles.optionButton, detour === 'candor' && styles.selectedOption]}
-                            onPress={() => handleDetourSelect('candor')}
+                    <View style={styles.decisionHub}>
+                        <LinearGradient
+                            colors={GRADIENTS.primary.colors}
+                            start={GRADIENTS.primary.start}
+                            end={GRADIENTS.primary.end}
+                            style={styles.card}
                         >
-                            <Text style={styles.optionTitle}>Radical Candor</Text>
-                            <Text style={styles.optionDescription}>High intensity, direct feedback, zero filters.</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.orText}>-- OR --</Text>
-                        <TouchableOpacity 
-                            style={[styles.optionButton, detour === 'soft' && styles.selectedOption]}
-                             onPress={() => handleDetourSelect('soft')}
-                        >
-                            <Text style={styles.optionTitle}>Softened Start-up</Text>
-                            <Text style={styles.optionDescription}>Low impact, high empathy, gradual entry.</Text>
-                        </TouchableOpacity>
-                    </LinearGradient>
+                            <Typography variant="h3" style={styles.cardTitle}>WORD-WOUND PROTOCOL</Typography>
+                            <Typography variant="caption" style={styles.cardSubtitle}>PHASE 04: ACTIVE</Typography>
+                        </LinearGradient>
 
-                    <LinearGradient
-                        colors={['#ff7600', '#ffef1f']}
+                        <LinearGradient
+                            colors={[COLORS.lavenderPurple, COLORS.softViolet]}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.card}
+                        >
+                            <Typography variant="h3" style={styles.hubTitle}>DETOUR</Typography>
+                            <Typography variant="body" style={styles.hubDescription}>Choose your communication style for the next 500 miles:</Typography>
+                            <TouchableOpacity 
+                                style={[styles.optionButton, detour === 'candor' && styles.selectedOption]}
+                                onPress={() => handleDetourSelect('candor')}
+                            >
+                                <Typography variant="h4" style={styles.optionTitle}>Radical Candor</Typography>
+                                <Typography variant="body" style={styles.optionDescription}>High intensity, direct feedback, zero filters.</Typography>
+                            </TouchableOpacity>
+                            <Typography variant="body" style={styles.orText}>-- OR --</Typography>
+                            <TouchableOpacity 
+                                style={[styles.optionButton, detour === 'soft' && styles.selectedOption]}
+                                 onPress={() => handleDetourSelect('soft')}
+                            >
+                                <Typography variant="h4" style={styles.optionTitle}>Softened Start-up</Typography>
+                                <Typography variant="body" style={styles.optionDescription}>Low impact, high empathy, gradual entry.</Typography>
+                            </TouchableOpacity>
+                        </LinearGradient>
+
+                        <LinearGradient
+                            colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.card}
+                        >
+                            <Typography variant="h3" style={[styles.hubTitle, {color: COLORS.textPrimary}]}>ROADBLOCK</Typography>
+                            <Typography variant="body" style={styles.hubDescription}>A personal growth task for ONE partner only:</Typography>
+                             <View style={styles.roadblockTask}>
+                                <Typography variant="h4" style={styles.optionTitle}>Mirror Meditation</Typography>
+                                <Typography variant="body" style={styles.optionDescription}>Facing self-criticism without projection. Takes approx 20 mins.</Typography>
+                            </View>
+                            <SquishyButton onPress={() => handleRoadblockSelect('user')}>
+                                <Typography variant="button">I'll Take This Task</Typography>
+                            </SquishyButton>
+                        </LinearGradient>
+                    </View>
+                     {/* Simplified representation of the map and moderator for mobile */}
+                     <LinearGradient
+                        colors={[COLORS.mintGreen, COLORS.softViolet]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
-                        style={styles.card}
+                        style={styles.moderatorCard}
                     >
-                        <Text style={[styles.hubTitle, {color: '#ffffff'}]}>ROADBLOCK</Text>
-                        <Text style={styles.hubDescription}>A personal growth task for ONE partner only:</Text>
-                         <View style={styles.roadblockTask}>
-                            <Text style={styles.optionTitle}>Mirror Meditation</Text>
-                            <Text style={styles.optionDescription}>Facing self-criticism without projection. Takes approx 20 mins.</Text>
-                        </View>
-                        <TouchableOpacity style={styles.roadblockButton} onPress={() => handleRoadblockSelect('user')}>
-                            <Text style={styles.roadblockButtonText}>I'll Take This Task</Text>
-                        </TouchableOpacity>
+                        <Typography variant="h4" style={styles.moderatorName}>Dr. Marcie Liss</Typography>
+                        <Typography variant="caption" style={styles.moderatorTitle}>Race Moderator</Typography>
+                        <Typography variant="body" style={styles.moderatorQuote}>"Phase 4 Word-Wound Protocol is active. Choose your path wisely, the rift is closing!"</Typography>
                     </LinearGradient>
-                </View>
-                 {/* Simplified representation of the map and moderator for mobile */}
-                 <LinearGradient
-                    colors={['#37cf97', '#b37dec']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.moderatorCard}
-                >
-                    <Text style={styles.moderatorName}>Dr. Marcie Liss</Text>
-                    <Text style={styles.moderatorTitle}>Race Moderator</Text>
-                    <Text style={styles.moderatorQuote}>"Phase 4 Word-Wound Protocol is active. Choose your path wisely, the rift is closing!"</Text>
-                </LinearGradient>
-            </ScrollView>
-        </SafeAreaView>
+                </ScrollView>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#1a2a2a' },
-    background: { ...StyleSheet.absoluteFillObject },
-    drMarcieSection: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
     },
-    avatarContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 12
+    content: { 
+        padding: SPACING.lg 
     },
-    avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        resizeMode: 'cover'
+    title: { 
+        textAlign: 'center', 
+        marginBottom: SPACING.sm 
     },
-    quoteBox: {
-        flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+    subtitle: { 
+        textAlign: 'center', 
+        opacity: 0.7, 
+        marginBottom: SPACING.lg 
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+    decisionHub: { 
+        marginBottom: SPACING.lg 
     },
-    scrollViewContent: { padding: 20 },
-    decisionHub: { marginBottom: 20 },
     card: {
-        borderRadius: 16,
-        padding: 20,
-        marginBottom: 20,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.lg,
+        marginBottom: SPACING.lg,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     cardTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 24, 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         textTransform: 'uppercase',
         textAlign: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 20,
+        paddingHorizontal: SPACING.regular,
+        paddingVertical: SPACING.small,
+        borderRadius: BORDER_RADIUS.xxlarge,
     },
     cardSubtitle: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 14, 
-        color: '#ff7600', 
+        color: COLORS.warmOrange, 
         textTransform: 'uppercase',
         textAlign: 'center',
-        marginTop: 8,
+        marginTop: SPACING.small,
         backgroundColor: 'rgba(255, 118, 0, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
     hubTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 18, 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         textTransform: 'uppercase', 
-        marginBottom: 10,
+        marginBottom: SPACING.regular,
         textAlign: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 20,
+        paddingHorizontal: SPACING.regular,
+        paddingVertical: SPACING.small,
+        borderRadius: BORDER_RADIUS.xxlarge,
     },
     hubDescription: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 14, 
-        color: '#ffffff', 
-        marginBottom: 15,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.regular,
         textAlign: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
     optionButton: { 
-        padding: 15, 
-        borderRadius: 10, 
+        padding: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.large, 
         borderWidth: 1, 
-        borderColor: 'rgba(255, 255, 255, 0.2)', 
+        borderColor: COLORS.borderSubtle, 
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        marginVertical: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 3,
+        marginVertical: SPACING.xs,
+        ...SHADOWS.small,
     },
     selectedOption: { 
-        borderColor: '#db147c', 
+        borderColor: COLORS.vibrantPink, 
         backgroundColor: 'rgba(219, 20, 124, 0.2)',
-        transform: [{ scale: 1.02 }],
     },
     optionTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 16, 
-        color: '#ffffff',
+        color: COLORS.textPrimary,
         textAlign: 'center',
     },
     optionDescription: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 12, 
-        color: '#ffffff', 
-        marginTop: 5,
+        color: COLORS.textSecondary, 
+        marginTop: SPACING.xs,
         textAlign: 'center',
-        opacity: 0.8,
     },
     orText: { 
         textAlign: 'center', 
-        color: '#db147c', 
-        marginVertical: 10, 
-        fontFamily: 'HolidayChristmas-Regular',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: COLORS.vibrantPink, 
+        marginVertical: SPACING.regular,
         backgroundColor: 'rgba(219, 20, 124, 0.2)',
-        padding: 4,
-        borderRadius: 12,
+        padding: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
     roadblockTask: { 
         backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-        padding: 15, 
-        borderRadius: 10, 
+        padding: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.large, 
         borderWidth: 1, 
         borderColor: 'rgba(255, 118, 0, 0.3)', 
-        marginBottom: 15,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 3,
-    },
-    roadblockButton: { 
-        backgroundColor: '#db147c', 
-        padding: 15, 
-        borderRadius: 10, 
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    roadblockButtonText: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 14, 
-        color: '#ffffff', 
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
+        marginBottom: SPACING.regular,
+        ...SHADOWS.small,
     },
     moderatorCard: { 
         alignItems: 'center', 
-        padding: 20, 
-        borderRadius: 16,
+        padding: SPACING.lg, 
+        borderRadius: BORDER_RADIUS.xlarge,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     moderatorName: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 20, 
-        color: '#ffffff',
+        color: COLORS.textPrimary,
         textAlign: 'center',
         backgroundColor: 'rgba(219, 20, 124, 0.2)',
-        paddingHorizontal: 12,
-        paddingVertical: 4,
-        borderRadius: 16,
+        paddingHorizontal: SPACING.regular,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
     moderatorTitle: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 12, 
-        color: '#ff7600', 
+        color: COLORS.warmOrange, 
         textTransform: 'uppercase', 
-        marginBottom: 10,
+        marginBottom: SPACING.regular,
         textAlign: 'center',
         backgroundColor: 'rgba(255, 118, 0, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
     moderatorQuote: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 14, 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         textAlign: 'center', 
         fontStyle: 'italic',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 12,
-        borderRadius: 12,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.large,
     },
 });
 

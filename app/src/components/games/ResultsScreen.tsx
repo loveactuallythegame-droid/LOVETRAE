@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
+import { Typography, SquishyButton } from '../ui';
 
 interface ResultsScreenProps {
   scores: {
@@ -44,37 +46,52 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({
   };
 
   const getWinnerColor = () => {
-    if (winner === 'tie') return '#FFD700';
-    return winner === 'player1' ? '#ef1b6e' : '#9056ef';
+    if (winner === 'tie') return COLORS.brightYellow;
+    return winner === 'player1' ? COLORS.vibrantPink : COLORS.lavenderPurple;
   };
 
   return (
     <View style={styles.container}>
       <LinearGradient 
-        colors={['#1a0033', '#330066', '#4d0099']} 
+        colors={[COLORS.deepCosmic, COLORS.richPlum, COLORS.midPurple]} 
         style={styles.background} 
       />
       
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Winner Announcement */}
         <View style={styles.winnerContainer}>
-          <Text style={[styles.winnerText, { color: getWinnerColor() }]}>
+          <Typography 
+            variant="gameTitle" 
+            color={getWinnerColor()}
+            center
+            style={styles.winnerText}
+          >
             {getWinnerMessage()}
-          </Text>
+          </Typography>
           
           <View style={styles.scoresContainer}>
             <View style={[styles.scoreCard, winner === 'player1' && styles.winnerCard]}>
-              <Text style={styles.scoreLabel}>Player 1</Text>
-              <Text style={styles.scoreValue}>{scores.player1}</Text>
+              <Typography variant="label" color={COLORS.textPrimary} style={styles.scoreLabel}>
+                Player 1
+              </Typography>
+              <Typography variant="h2" color={COLORS.textPrimary}>
+                {scores.player1}
+              </Typography>
             </View>
             
             <View style={styles.vsContainer}>
-              <Text style={styles.vsText}>VS</Text>
+              <Typography variant="h3" color={COLORS.vibrantPink} style={styles.vsText}>
+                VS
+              </Typography>
             </View>
             
             <View style={[styles.scoreCard, winner === 'player2' && styles.winnerCard]}>
-              <Text style={styles.scoreLabel}>Player 2</Text>
-              <Text style={styles.scoreValue}>{scores.player2}</Text>
+              <Typography variant="label" color={COLORS.textPrimary} style={styles.scoreLabel}>
+                Player 2
+              </Typography>
+              <Typography variant="h2" color={COLORS.textPrimary}>
+                {scores.player2}
+              </Typography>
             </View>
           </View>
         </View>
@@ -82,52 +99,65 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({
         {/* Game Stats */}
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
-            <Ionicons name="time-outline" size={24} color="#ef1b6e" />
-            <Text style={styles.statLabel}>Duration</Text>
-            <Text style={styles.statValue}>{formatTime(duration)}</Text>
+            <Ionicons name="time-outline" size={TYPOGRAPHY.fontSize.displaySmall} color={COLORS.vibrantPink} />
+            <Typography variant="caption" color={COLORS.textPrimary} style={styles.statLabel}>
+              Duration
+            </Typography>
+            <Typography variant="body" color={COLORS.textPrimary}>
+              {formatTime(duration)}
+            </Typography>
           </View>
           
           <View style={styles.statItem}>
-            <Ionicons name="trophy-outline" size={24} color="#FFD700" />
-            <Text style={styles.statLabel}>Total Points</Text>
-            <Text style={styles.statValue}>{scores.player1 + scores.player2}</Text>
+            <Ionicons name="trophy-outline" size={TYPOGRAPHY.fontSize.displaySmall} color={COLORS.brightYellow} />
+            <Typography variant="caption" color={COLORS.textPrimary} style={styles.statLabel}>
+              Total Points
+            </Typography>
+            <Typography variant="body" color={COLORS.textPrimary}>
+              {scores.player1 + scores.player2}
+            </Typography>
           </View>
         </View>
 
         {/* Marcie's Commentary */}
         <View style={styles.commentaryContainer}>
           <View style={styles.marcieHeader}>
-            <Ionicons name="chatbubble-ellipses" size={24} color="#ef1b6e" />
-            <Text style={styles.marcieTitle}>Dr. Marcie Says</Text>
+            <Ionicons name="chatbubble-ellipses" size={TYPOGRAPHY.fontSize.displaySmall} color={COLORS.vibrantPink} />
+            <Typography variant="h4" color={COLORS.vibrantPink}>
+              Dr. Marcie Says
+            </Typography>
           </View>
-          <Text style={styles.commentaryText}>{marcieCommentary}</Text>
+          <Typography variant="marcieDialogue" color={COLORS.textPrimary}>
+            {marcieCommentary}
+          </Typography>
         </View>
 
         {/* Achievements */}
         {achievements.length > 0 && (
           <View style={styles.achievementsContainer}>
-            <Text style={styles.achievementsTitle}>Achievements Unlocked</Text>
+            <Typography variant="h3" color={COLORS.brightYellow} center style={styles.achievementsTitle}>
+              Achievements Unlocked
+            </Typography>
             {achievements.map((achievement, index) => (
               <View key={index} style={styles.achievementItem}>
-                <Ionicons name="star" size={20} color="#FFD700" />
-                <Text style={styles.achievementText}>{achievement}</Text>
+                <Ionicons name="star" size={TYPOGRAPHY.fontSize.headerSmall} color={COLORS.brightYellow} />
+                <Typography variant="body" color={COLORS.brightYellow} style={styles.achievementText}>
+                  {achievement}
+                </Typography>
               </View>
             ))}
           </View>
         )}
 
         {/* Continue Button */}
-        <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-          <LinearGradient
-            colors={['#ef1b6e', '#9056ef']}
-            style={styles.continueGradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          >
-            <Text style={styles.continueText}>Continue</Text>
-            <Ionicons name="arrow-forward" size={20} color="#ffffff" style={styles.continueIcon} />
-          </LinearGradient>
-        </TouchableOpacity>
+        <SquishyButton onPress={handleContinue} style={styles.continueButton}>
+          <View style={styles.continueContent}>
+            <Typography variant="button" color={COLORS.textPrimary}>
+              Continue
+            </Typography>
+            <Ionicons name="arrow-forward" size={TYPOGRAPHY.fontSize.headerSmall} color={COLORS.textPrimary} style={styles.continueIcon} />
+          </View>
+        </SquishyButton>
       </ScrollView>
     </View>
   );
@@ -136,27 +166,24 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a0033',
+    backgroundColor: COLORS.deepCosmic,
   },
   background: {
     ...StyleSheet.absoluteFillObject,
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 40,
+    paddingHorizontal: SPACING.screenPadding,
+    paddingVertical: SPACING.sectionPadding,
   },
   winnerContainer: {
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: SPACING.xxlarge,
   },
   winnerText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 24,
+    marginBottom: SPACING.xlarge,
     textTransform: 'uppercase',
-    letterSpacing: 2,
+    letterSpacing: TYPOGRAPHY.letterSpacing.wide,
   },
   scoresContainer: {
     flexDirection: 'row',
@@ -164,139 +191,94 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   scoreCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    borderRadius: 16,
+    backgroundColor: COLORS.backgroundInput,
+    paddingHorizontal: SPACING.xlarge,
+    paddingVertical: SPACING.regular,
+    borderRadius: BORDER_RADIUS.card,
     borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: COLORS.borderSubtle,
     alignItems: 'center',
     minWidth: 100,
   },
   winnerCard: {
-    borderColor: '#FFD700',
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
-    shadowColor: '#FFD700',
+    borderColor: COLORS.brightYellow,
+    backgroundColor: 'rgba(255, 239, 31, 0.1)',
+    shadowColor: COLORS.brightYellow,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
     shadowRadius: 10,
     elevation: 5,
   },
   scoreLabel: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 8,
+    marginBottom: SPACING.small,
     opacity: 0.8,
   },
-  scoreValue: {
-    color: '#ffffff',
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
   vsContainer: {
-    marginHorizontal: 20,
+    marginHorizontal: SPACING.large,
   },
   vsText: {
-    color: '#ef1b6e',
-    fontSize: 18,
-    fontWeight: 'bold',
     opacity: 0.7,
   },
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 32,
-    paddingVertical: 20,
+    marginBottom: SPACING.xxlarge,
+    paddingVertical: SPACING.large,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 16,
+    borderRadius: BORDER_RADIUS.card,
   },
   statItem: {
     alignItems: 'center',
   },
   statLabel: {
-    color: '#ffffff',
-    fontSize: 12,
+    marginTop: SPACING.small,
+    marginBottom: SPACING.tiny,
     opacity: 0.7,
-    marginTop: 8,
-    marginBottom: 4,
-  },
-  statValue: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   commentaryContainer: {
-    backgroundColor: 'rgba(239, 27, 110, 0.1)',
-    padding: 20,
-    borderRadius: 16,
+    backgroundColor: 'rgba(252, 12, 132, 0.1)',
+    padding: SPACING.large,
+    borderRadius: BORDER_RADIUS.card,
     borderWidth: 1,
-    borderColor: 'rgba(239, 27, 110, 0.3)',
-    marginBottom: 24,
+    borderColor: 'rgba(252, 12, 132, 0.3)',
+    marginBottom: SPACING.xlarge,
   },
   marcieHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
-  },
-  marcieTitle: {
-    color: '#ef1b6e',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 8,
-  },
-  commentaryText: {
-    color: '#ffffff',
-    fontSize: 14,
-    lineHeight: 20,
-    fontStyle: 'italic',
+    marginBottom: SPACING.medium,
   },
   achievementsContainer: {
-    marginBottom: 32,
+    marginBottom: SPACING.xxlarge,
   },
   achievementsTitle: {
-    color: '#FFD700',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
+    marginBottom: SPACING.regular,
   },
   achievementItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 215, 0, 0.1)',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 12,
-    marginBottom: 8,
+    backgroundColor: 'rgba(255, 239, 31, 0.1)',
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.medium,
+    borderRadius: BORDER_RADIUS.large,
+    marginBottom: SPACING.small,
     borderWidth: 1,
-    borderColor: 'rgba(255, 215, 0, 0.3)',
+    borderColor: 'rgba(255, 239, 31, 0.3)',
   },
   achievementText: {
-    color: '#FFD700',
-    fontSize: 14,
-    marginLeft: 12,
+    marginLeft: SPACING.medium,
     flex: 1,
   },
   continueButton: {
-    marginTop: 8,
+    marginTop: SPACING.small,
   },
-  continueGradient: {
+  continueContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 25,
-  },
-  continueText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginRight: 8,
   },
   continueIcon: {
-    marginLeft: 4,
+    marginLeft: SPACING.small,
   },
 });
 

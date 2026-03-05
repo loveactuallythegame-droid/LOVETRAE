@@ -1,81 +1,118 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import ScreenLayout from '../layout/ScreenLayout';
 
 const LeaderboardDetail5Screen = () => {
-    return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
-            
-            <View style={styles.header}>
-                 <TouchableOpacity>
-                    <Text style={styles.headerBack}>ABORT REPAIR</Text>
-                 </TouchableOpacity>
-                <View style={styles.headerTitleContainer}>
-                    <Text style={styles.headerTitle}>PHASE 04: EMOTIONAL RE-ENTRY</Text>
-                    {/* Progress dots */}
-                </View>
-                <Text style={styles.headerStatus}>98.4%</Text>
-            </View>
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <LinearGradient colors={[COLORS.deepCosmic, COLORS.richPlum]} style={styles.background} />
+      
+      <View style={styles.header}>
+        <TouchableOpacity>
+          <Typography variant="label" color={COLORS.textSecondary}>
+            ABORT REPAIR
+          </Typography>
+        </TouchableOpacity>
+        <View style={styles.headerTitleContainer}>
+          <Typography variant="label" color={COLORS.textPrimary} center>
+            PHASE 04: EMOTIONAL RE-ENTRY
+          </Typography>
+        </View>
+        <Typography variant="body" color={COLORS.info}>98.4%</Typography>
+      </View>
 
-            <View style={styles.mainContent}>
-                <Text style={styles.title}>REFLECTIVE LISTENING</Text>
-                <Text style={styles.subtitle}>Take turns repeating what you heard your partner say before responding.</Text>
+      <View style={styles.mainContent}>
+        <Typography variant="h1" color={COLORS.textPrimary} center>
+          REFLECTIVE LISTENING
+        </Typography>
+        <Typography variant="body" color={COLORS.textSecondary} center style={styles.subtitle}>
+          Take turns repeating what you heard your partner say before responding.
+        </Typography>
 
-                <View style={styles.timerContainer}>
-                    <View style={styles.timerRing} />
-                    <Text style={styles.timerText}>04:42</Text>
-                    <Text style={styles.timerStatus}>CONNECTION IN PROGRESS...</Text>
-                </View>
+        <View style={styles.timerContainer}>
+          <View style={styles.timerRing} />
+          <Typography variant="gameTitle" color={COLORS.textPrimary}>04:42</Typography>
+          <Typography variant="label" color={COLORS.info}>
+            CONNECTION IN PROGRESS...
+          </Typography>
+        </View>
+      </View>
 
-                {/* Floating panels would be positioned with absolute layout */}
-            </View>
-
-            <View style={styles.footer}>
-                <View style={styles.speakerListenerContainer}>
-                    {/* Speaker and Listener cards */}
-                </View>
-                 <TouchableOpacity style={styles.nextButton}>
-                    <Text style={styles.nextButtonText}>NEXT STEP</Text>
-                </TouchableOpacity>
-            </View>
-
-        </SafeAreaView>
-    );
+      <View style={styles.footer}>
+        <View style={styles.speakerListenerContainer}>
+          {/* Speaker and Listener cards would go here */}
+        </View>
+        <SquishyButton style={styles.nextButton}>
+          <Typography variant="button" color={COLORS.textPrimary}>
+            NEXT STEP
+          </Typography>
+        </SquishyButton>
+      </View>
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
-    background: { ...StyleSheet.absoluteFillObject },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', backgroundColor: 'rgba(255,255,255,0.1)' },
-    headerBack: { color: '#D1C4E9', textTransform: 'uppercase', fontSize: 10, fontWeight: 'bold' },
-    headerTitleContainer: { alignItems: 'center' },
-    headerTitle: { color: '#FFF', textTransform: 'uppercase', fontSize: 12, fontWeight: 'bold', letterSpacing: 2 },
-    headerStatus: { color: '#00FFFF', fontWeight: 'bold' },
-    mainContent: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
-    title: { fontSize: 32, fontWeight: 'bold', color: '#FFF', marginBottom: 8, textTransform: 'uppercase' },
-    subtitle: { color: '#D1C4E9', textAlign: 'center', maxWidth: 300 },
-    timerContainer: { alignItems: 'center', justifyContent: 'center', marginVertical: 48 },
-    timerRing: {
-        width: 300,
-        height: 300,
-        borderRadius: 150,
-        borderWidth: 15,
-        borderColor: '#00FFFF',
-        borderBottomColor: 'transparent',
-        borderLeftColor: 'transparent',
-        transform: [{rotate: '45deg'}],
-        position: 'absolute',
-        opacity: 0.8
-    },
-    timerText: { fontSize: 72, fontWeight: 'bold', color: '#FFF' },
-    timerStatus: { color: '#00FFFF', textTransform: 'uppercase', letterSpacing: 3, fontWeight: 'bold' },
-    footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderTopWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', backgroundColor: 'rgba(255,255,255,0.1)' },
-    speakerListenerContainer: { flexDirection: 'row', gap: 16 },
-    nextButton: { backgroundColor: '#FF4081', paddingVertical: 12, paddingHorizontal: 24, borderRadius: 20 },
-    nextButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' }
+  background: { ...StyleSheet.absoluteFillObject },
+  header: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    padding: SPACING.regular, 
+    borderBottomWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    backgroundColor: COLORS.backgroundInput 
+  },
+  headerTitleContainer: { 
+    alignItems: 'center' 
+  },
+  mainContent: { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    padding: SPACING.screenPadding 
+  },
+  subtitle: { 
+    maxWidth: 300,
+    marginTop: SPACING.small 
+  },
+  timerContainer: { 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    marginVertical: SPACING.xxxlarge 
+  },
+  timerRing: {
+    width: SPACING.xxxlarge * 6,
+    height: SPACING.xxxlarge * 6,
+    borderRadius: BORDER_RADIUS.round,
+    borderWidth: SPACING.medium,
+    borderColor: COLORS.info,
+    borderBottomColor: 'transparent',
+    borderLeftColor: 'transparent',
+    position: 'absolute',
+    opacity: 0.8
+  },
+  footer: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    padding: SPACING.regular, 
+    borderTopWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    backgroundColor: COLORS.backgroundInput 
+  },
+  speakerListenerContainer: { 
+    flexDirection: 'row', 
+    gap: SPACING.regular 
+  },
+  nextButton: {
+    minWidth: SPACING.xxxlarge * 3,
+  },
 });
 
 export default LeaderboardDetail5Screen;

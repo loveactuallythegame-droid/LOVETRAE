@@ -1,35 +1,39 @@
 import React from 'react';
 import {
-    View, Text, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity, Image
+    View, StyleSheet, FlatList, Image
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
+
+import { ScreenLayout, Typography, GlassCard } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 const achievements = [
     { id: '1', title: 'Communication King', desc: 'Unlock 10 deep conversations', unlocked: true, icon: 'forum', date: '2d ago' },
     { id: '2', title: 'Conflict Crusher', desc: 'Resolve a Tier 3 argument', unlocked: true, icon: 'shield', date: '1w ago' },
-    { id: '3', title: 'First Date Redux', desc: 'Recreate your very first date', unlocked: false, icon: 'lock', progress: 0.4 },
-    { id: '4', title: 'Golden Anniversary', desc: 'Maintain a 365-day streak', unlocked: false, icon: 'lock', progress: 0.12 },
+    { id: '3', title: 'First Date Redux', desc: 'Recreate your very first date', unlocked: false, icon: 'lock', progress: 40 },
+    { id: '4', title: 'Golden Anniversary', desc: 'Maintain a 365-day streak', unlocked: false, icon: 'lock', progress: 12 },
     { id: '5', title: 'True Empath', desc: 'Identify 5 unstated emotions', unlocked: true, icon: 'volunteer-activism', date: 'Yesterday' },
-    { id: '6', title: 'World Travelers', desc: 'Unlock 5 destination quests', unlocked: false, icon: 'lock', progress: 0.6 },
+    { id: '6', title: 'World Travelers', desc: 'Unlock 5 destination quests', unlocked: false, icon: 'lock', progress: 60 },
 ];
 
-const AchievementCard = ({ item }) => {
+const AchievementCard = ({ item }: { item: typeof achievements[0] }) => {
     if (item.unlocked) {
         return (
             <LinearGradient
-                colors={['#db147c', '#f05d68']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+                colors={GRADIENTS.primary.colors}
+                start={GRADIENTS.primary.start}
+                end={GRADIENTS.primary.end}
                 style={[styles.card, styles.unlockedCard]}
             >
                 <View style={styles.cardInner}>
                     <View style={styles.unlockedIconContainer}>
-                        <MaterialIcons name={item.icon} size={32} color="#ffffff" />
+                        <MaterialIcons name={item.icon as any} size={32} color={COLORS.textPrimary} />
                     </View>
-                    <Text style={styles.cardTitle}>{item.title}</Text>
-                    <Text style={styles.cardDesc}>{item.desc}</Text>
-                    <Text style={styles.cardDate}>{item.date}</Text>
+                    <Typography variant="h4" style={styles.cardTitle}>{item.title}</Typography>
+                    <Typography variant="body" style={styles.cardDesc}>{item.desc}</Typography>
+                    <Typography variant="caption" style={styles.cardDate}>{item.date}</Typography>
                 </View>
             </LinearGradient>
         );
@@ -37,23 +41,23 @@ const AchievementCard = ({ item }) => {
 
     return (
         <LinearGradient
-            colors={['#a22ac4', '#9056ef']}
+            colors={[COLORS.lavenderPurple, COLORS.softViolet]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={[styles.card, styles.lockedCard]}
         >
             <View style={styles.cardInner}>
                 <View style={styles.lockedIconContainer}>
-                    <MaterialIcons name="lock" size={32} color="rgba(255,255,255,0.7)" />
+                    <MaterialIcons name="lock" size={32} color={COLORS.textSecondary} />
                 </View>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardDesc}>{item.desc}</Text>
+                <Typography variant="h4" style={styles.cardTitle}>{item.title}</Typography>
+                <Typography variant="body" style={styles.cardDesc}>{item.desc}</Typography>
                 <View style={styles.progressBar}>
                     <LinearGradient
-                        colors={['#ff7600', '#ffef1f']}
+                        colors={[COLORS.warmOrange, COLORS.brightYellow]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
-                        style={styles.progressFill}
+                        style={[styles.progressFill, { width: `${item.progress}%` }]}
                     />
                 </View>
             </View>
@@ -63,149 +67,125 @@ const AchievementCard = ({ item }) => {
 
 const AchievementsAndBadgesScreen = () => {
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#102222', '#1a2e2e']} style={styles.container}>
-                {/* Dr. Marcie Section */}
-                <View style={styles.drMarcieSection}>
-                    <View style={styles.avatarContainer}>
-                        <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
-                    </View>
-                    <View style={styles.quoteBox}>
-                        <Text style={styles.quoteText}>Achievements and badges celebrate your growth as a couple! Each milestone represents real progress in your relationship.</Text>
-                    </View>
-                </View>
+        <ScreenLayout showMarcie={true} marcieQuote="Achievements and badges celebrate your growth as a couple! Each milestone represents real progress in your relationship.">
+            <SafeAreaView style={styles.container} edges={['bottom']}>
+                <View style={styles.content}>
+                    <Typography variant="h1" style={styles.title}>
+                        The Love Arcade
+                    </Typography>
+                    <Typography variant="h2" style={styles.subtitle}>
+                        +100 Games to Deepen Connection
+                    </Typography>
 
-                <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Achievements</Text>
-                    <Text style={styles.headerSubtitle}>12 / 40 Collected</Text>
-                </View>
+                    <View style={styles.header}>
+                        <Typography variant="h3">Achievements</Typography>
+                        <Typography variant="caption" style={styles.headerSubtitle}>12 / 40 Collected</Typography>
+                    </View>
 
-                <FlatList
-                    data={achievements}
-                    renderItem={({ item }) => <AchievementCard item={item} />}
-                    keyExtractor={item => item.id}
-                    numColumns={2}
-                    contentContainerStyle={styles.grid}
-                    ListHeaderComponent={() => (
-                         <View style={styles.statsContainer}>
-                            <LinearGradient
-                                colors={['#db147c', '#f05d68']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={styles.statBox}
-                            >
-                                <Text style={styles.statValue}>2,450</Text>
-                                <Text style={styles.statLabel}>XP</Text>
-                            </LinearGradient>
-                            <LinearGradient
-                                colors={['#37cf97', '#b37dec']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={styles.statBox}
-                            >
-                                <Text style={styles.statValue}>Top 15%</Text>
-                                <Text style={styles.statLabel}>Rank</Text>
-                            </LinearGradient>
-                            <LinearGradient
-                                colors={['#ff7600', '#ffef1f']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={styles.statBox}
-                            >
-                                <Text style={styles.statValue}>14</Text>
-                                <Text style={styles.statLabel}>Streak</Text>
-                            </LinearGradient>
-                        </View>
-                    )}
-                />
-            </LinearGradient>
-        </SafeAreaView>
+                    <FlatList
+                        data={achievements}
+                        renderItem={({ item }) => <AchievementCard item={item} />}
+                        keyExtractor={item => item.id}
+                        numColumns={2}
+                        contentContainerStyle={styles.grid}
+                        ListHeaderComponent={() => (
+                             <View style={styles.statsContainer}>
+                                <LinearGradient
+                                    colors={GRADIENTS.primary.colors}
+                                    start={GRADIENTS.primary.start}
+                                    end={GRADIENTS.primary.end}
+                                    style={styles.statBox}
+                                >
+                                    <Typography variant="h3" style={styles.statValue}>2,450</Typography>
+                                    <Typography variant="caption" style={styles.statLabel}>XP</Typography>
+                                </LinearGradient>
+                                <LinearGradient
+                                    colors={[COLORS.mintGreen, COLORS.softViolet]}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 1 }}
+                                    style={styles.statBox}
+                                >
+                                    <Typography variant="h3" style={styles.statValue}>Top 15%</Typography>
+                                    <Typography variant="caption" style={styles.statLabel}>Rank</Typography>
+                                </LinearGradient>
+                                <LinearGradient
+                                    colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                                    start={{ x: 0, y: 0 }}
+                                    end={{ x: 1, y: 1 }}
+                                    style={styles.statBox}
+                                >
+                                    <Typography variant="h3" style={styles.statValue}>14</Typography>
+                                    <Typography variant="caption" style={styles.statLabel}>Streak</Typography>
+                                </LinearGradient>
+                            </View>
+                        )}
+                    />
+                </View>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#102222' },
-    container: { flex: 1 },
-    drMarcieSection: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
     },
-    avatarContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 12
+    content: { 
+        flex: 1, 
+        padding: SPACING.lg 
     },
-    avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        resizeMode: 'cover'
+    title: { 
+        textAlign: 'center', 
+        marginBottom: SPACING.sm 
     },
-    quoteBox: {
-        flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+    subtitle: { 
+        textAlign: 'center', 
+        opacity: 0.7, 
+        marginBottom: SPACING.lg 
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
-    },
-    header: { padding: 24, alignItems: 'center' },
-    headerTitle: { 
-        fontSize: 32, 
-        fontWeight: 'bold', 
-        color: '#fff',
-        textShadowColor: 'rgba(219, 20, 124, 0.7)',
-        textShadowOffset: {width: 0, height: 0},
-        textShadowRadius: 10,
+    header: { 
+        padding: SPACING.lg, 
+        alignItems: 'center' 
     },
     headerSubtitle: { 
-        color: '#db147c', 
-        fontSize: 16, 
-        marginTop: 4,
+        marginTop: SPACING.xs,
         backgroundColor: 'rgba(219, 20, 124, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 2,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.large,
     },
-    statsContainer: { flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 16, marginBottom: 24 },
+    statsContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        paddingHorizontal: SPACING.regular, 
+        marginBottom: SPACING.lg 
+    },
     statBox: { 
         alignItems: 'center', 
-        padding: 12, 
-        borderRadius: 12, 
+        padding: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.large, 
         width: 100,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        ...SHADOWS.large,
     },
-    statValue: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-    statLabel: { color: 'rgba(255,255,255,0.8)', fontSize: 12, textTransform: 'uppercase', marginTop: 4 },
-    grid: { paddingHorizontal: 12 },
+    statValue: { 
+        color: COLORS.textPrimary,
+    },
+    statLabel: { 
+        color: COLORS.textSecondary, 
+        marginTop: SPACING.xs,
+    },
+    grid: { 
+        paddingHorizontal: SPACING.small 
+    },
     card: { 
         flex: 1, 
-        margin: 8, 
-        borderRadius: 16, 
-        padding: 16, 
+        margin: SPACING.small, 
+        borderRadius: BORDER_RADIUS.xlarge, 
+        padding: SPACING.regular, 
         alignItems: 'center', 
         minHeight: 180,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        ...SHADOWS.large,
     },
     cardInner: {
         flex: 1,
@@ -213,71 +193,65 @@ const styles = StyleSheet.create({
     },
     unlockedCard: { 
         borderWidth: 2, 
-        borderColor: 'rgba(255, 255, 255, 0.3)',
+        borderColor: COLORS.borderSubtle,
     },
     lockedCard: { 
         borderWidth: 2, 
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        borderColor: COLORS.borderSubtle,
     },
     unlockedIconContainer: { 
         width: 60, 
         height: 60, 
-        borderRadius: 30, 
+        borderRadius: BORDER_RADIUS.round, 
         backgroundColor: 'rgba(255, 255, 255, 0.2)', 
         justifyContent: 'center', 
         alignItems: 'center', 
-        marginBottom: 12,
+        marginBottom: SPACING.regular,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.3)',
+        borderColor: COLORS.borderSubtle,
     },
     lockedIconContainer: { 
         width: 60, 
         height: 60, 
-        borderRadius: 30, 
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        borderRadius: BORDER_RADIUS.round, 
+        backgroundColor: 'rgba(0, 0, 0, 0.2)', 
         justifyContent: 'center', 
         alignItems: 'center', 
-        marginBottom: 12,
+        marginBottom: SPACING.regular,
         borderWidth: 2,
         borderStyle: 'dashed',
-        borderColor: 'rgba(255, 255, 255, 0.3)',
+        borderColor: COLORS.borderSubtle,
     },
     cardTitle: { 
-        color: '#fff', 
-        fontWeight: 'bold', 
+        color: COLORS.textPrimary, 
         textAlign: 'center', 
-        marginBottom: 4,
-        fontSize: 16,
+        marginBottom: SPACING.xs,
     },
     cardDesc: { 
-        color: 'rgba(255,255,255,0.8)', 
-        fontSize: 12, 
+        color: COLORS.textSecondary, 
         textAlign: 'center', 
-        marginBottom: 8,
-        lineHeight: 16,
+        marginBottom: SPACING.small,
     },
     cardDate: { 
-        color: '#ffffff', 
-        fontSize: 10, 
-        fontWeight: 'bold', 
-        textTransform: 'uppercase',
+        color: COLORS.textPrimary,
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 10,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.medium,
     },
     progressBar: { 
         height: 8, 
         backgroundColor: 'rgba(0,0,0,0.3)', 
         width: '80%', 
-        borderRadius: 4, 
+        borderRadius: BORDER_RADIUS.small, 
         overflow: 'hidden', 
         marginTop: 'auto',
         borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        borderColor: COLORS.borderSubtle,
     },
     progressFill: { 
         height: '100%', 
+        borderRadius: BORDER_RADIUS.small,
     },
 });
 

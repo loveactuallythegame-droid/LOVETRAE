@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const CARDS = [
   { text: "I messed up", type: "Guilt" },
@@ -40,60 +40,150 @@ export default function GuiltShameSort({ navigation }: any) {
   }
 
   return (
-    <LinearGradient colors={['#4a1c40', '#000000']} style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.header}>
-          <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Text variant="body">Back</Text>
-          </SquishyButton>
-          <Text variant="header">Guilt vs. Shame</Text>
-        </View>
+    <ScreenLayout 
+      showHeader={false} 
+      scrollable={true}
+      contentStyle={styles.content}
+    >
+      <View style={styles.header}>
+        <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
+          <Typography variant="body">Back</Typography>
+        </SquishyButton>
+        <Typography variant="h1" style={styles.title}>The Love Arcade</Typography>
+      </View>
 
-        {!finished ? (
-          <GlassCard style={styles.card}>
-            <Text variant="body" style={{ textAlign: 'center' }}>Sort the thought:</Text>
-            <View style={styles.cardContent}>
-              <Text variant="header" style={styles.cardText}>{CARDS[index].text}</Text>
-            </View>
+      <Typography variant="h2" style={styles.subtitle}>
+        +100 Games to Deepen Connection
+      </Typography>
 
-            {feedback ? <Text variant="header" style={{ color: feedback === "Correct!" ? '#33DEA5' : '#FA1F63', textAlign: 'center' }}>{feedback}</Text> : null}
+      {!finished ? (
+        <GlassCard style={styles.card}>
+          <Typography variant="body" style={styles.instruction}>
+            Sort the thought:
+          </Typography>
+          <View style={styles.cardContent}>
+            <Typography variant="h2" style={styles.cardText}>{CARDS[index].text}</Typography>
+          </View>
 
-            <View style={styles.actions}>
-              <SquishyButton onPress={() => handleSwipe("Guilt")} style={[styles.btn, styles.guiltBtn]}>
-                <Text variant="header">Guilt (Healthy)</Text>
-              </SquishyButton>
-              <SquishyButton onPress={() => handleSwipe("Shame")} style={[styles.btn, styles.shameBtn]}>
-                <Text variant="header">Shame (Toxic)</Text>
-              </SquishyButton>
-            </View>
-          </GlassCard>
-        ) : (
-          <GlassCard style={styles.card}>
-            <Text variant="header" style={{ textAlign: 'center' }}>Sorting Complete</Text>
-            <Text variant="header" style={{ textAlign: 'center', fontSize: 40, color: '#33DEA5' }}>{score}/{CARDS.length}</Text>
-            <Text variant="body" style={{ textAlign: 'center', marginTop: 10 }}>
-              Marcie: "Remember: Guilt says 'I did something bad'. Shame says 'I am bad'. Know the difference."
-            </Text>
-            <SquishyButton onPress={() => { setIndex(0); setScore(0); setFinished(false); }} style={styles.btn}>
-              <Text variant="header">Retry</Text>
+          {feedback ? (
+            <Typography 
+              variant="h2" 
+              style={{ 
+                color: feedback === "Correct!" ? COLORS.success : COLORS.emotionalConnection, 
+                textAlign: 'center',
+                marginBottom: SPACING.medium,
+              }}
+            >
+              {feedback}
+            </Typography>
+          ) : null}
+
+          <View style={styles.actions}>
+            <SquishyButton onPress={() => handleSwipe("Guilt")} style={[styles.btn, styles.guiltBtn]}>
+              <Typography variant="h3">Guilt (Healthy)</Typography>
             </SquishyButton>
-          </GlassCard>
-        )}
-      </ScrollView>
-    </LinearGradient>
+            <SquishyButton onPress={() => handleSwipe("Shame")} style={[styles.btn, styles.shameBtn]}>
+              <Typography variant="h3">Shame (Toxic)</Typography>
+            </SquishyButton>
+          </View>
+        </GlassCard>
+      ) : (
+        <GlassCard style={styles.card}>
+          <Typography variant="h2" style={styles.completeTitle}>Sorting Complete</Typography>
+          <Typography variant="h1" style={styles.scoreText}>{score}/{CARDS.length}</Typography>
+          <Typography variant="body" style={styles.marcieQuote}>
+            Marcie: "Remember: Guilt says 'I did something bad'. Shame says 'I am bad'. Know the difference."
+          </Typography>
+          <SquishyButton 
+            onPress={() => { setIndex(0); setScore(0); setFinished(false); }} 
+            style={styles.retryBtn}
+          >
+            <Typography variant="h3">Retry</Typography>
+          </SquishyButton>
+        </GlassCard>
+      )}
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { padding: 20, gap: 20, flexGrow: 1, justifyContent: 'center' },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-  card: { padding: 30, gap: 20, minHeight: 400, justifyContent: 'center' },
-  cardContent: { height: 150, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 20 },
-  cardText: { fontSize: 28, textAlign: 'center' },
-  actions: { flexDirection: 'row', gap: 10, marginTop: 20 },
-  btn: { flex: 1, padding: 20, borderRadius: 12, alignItems: 'center' },
-  guiltBtn: { backgroundColor: '#33DEA5' },
-  shameBtn: { backgroundColor: '#FA1F63' }
+  content: {
+    padding: SPACING.screenPadding,
+    gap: SPACING.large,
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.small,
+  },
+  backBtn: {
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.small,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.large,
+  },
+  title: {
+    color: COLORS.textPrimary,
+    flex: 1,
+  },
+  subtitle: {
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.medium,
+  },
+  card: {
+    padding: SPACING.xlarge,
+    gap: SPACING.large,
+    minHeight: 400,
+    justifyContent: 'center',
+  },
+  instruction: {
+    textAlign: 'center',
+  },
+  cardContent: {
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.xlarge,
+  },
+  cardText: {
+    textAlign: 'center',
+  },
+  actions: {
+    flexDirection: 'row',
+    gap: SPACING.small,
+    marginTop: SPACING.large,
+  },
+  btn: {
+    flex: 1,
+    padding: SPACING.large,
+    borderRadius: BORDER_RADIUS.large,
+    alignItems: 'center',
+  },
+  guiltBtn: {
+    backgroundColor: COLORS.success,
+  },
+  shameBtn: {
+    backgroundColor: COLORS.emotionalConnection,
+  },
+  completeTitle: {
+    textAlign: 'center',
+  },
+  scoreText: {
+    textAlign: 'center',
+    color: COLORS.success,
+  },
+  marcieQuote: {
+    textAlign: 'center',
+    marginTop: SPACING.medium,
+  },
+  retryBtn: {
+    padding: SPACING.large,
+    borderRadius: BORDER_RADIUS.large,
+    alignItems: 'center',
+    backgroundColor: COLORS.gradientStart,
+    marginTop: SPACING.large,
+  },
 });

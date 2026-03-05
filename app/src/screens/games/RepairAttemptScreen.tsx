@@ -1,7 +1,8 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import GameCard from '../../components/games/GameCard';
+import { View, StyleSheet, FlatList } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 const repairOptions = [
   {
@@ -31,73 +32,109 @@ const repairOptions = [
 ];
 
 const RepairAttemptScreen = () => {
-  const [selectedPath, setSelectedPath] = useState(null);
+  const [selectedPath, setSelectedPath] = useState<string | null>(null);
 
-  const handleSelectPath = (pathId) => {
+  const handleSelectPath = (pathId: string) => {
     setSelectedPath(pathId);
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Choose Your Peace Offering</Text>
-      <Text style={styles.subtitle}>
-        Tension detected in the cosmic field. Select a repair attempt to realign your orbits and restore harmony to the connection.
-      </Text>
-      <FlatList
-        data={repairOptions}
-        renderItem={({ item }) => (
-          <GameCard
-            {...item}
-            onPress={() => handleSelectPath(item.id)}
-            isSelected={selectedPath === item.id}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.list}
-      />
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>CHOOSE THIS PATH</Text>
-      </TouchableOpacity>
-    </View>
+    <ScreenLayout showHeader={false}>
+      <View style={styles.container}>
+        <Typography variant="h1" center style={styles.title}>Choose Your Peace Offering</Typography>
+        <Typography variant="body" center style={styles.subtitle}>
+          Tension detected in the cosmic field. Select a repair attempt to realign your orbits and restore harmony to the connection.
+        </Typography>
+        
+        <FlatList
+          data={repairOptions}
+          renderItem={({ item }) => (
+            <TouchableOption
+              item={item}
+              onPress={() => handleSelectPath(item.id)}
+              isSelected={selectedPath === item.id}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.list}
+        />
+        
+        <SquishyButton 
+          onPress={() => {}}
+          variant="primary"
+          size="large"
+          style={styles.button}
+          disabled={!selectedPath}
+        >
+          <Typography variant="button">Choose This Path</Typography>
+        </SquishyButton>
+      </View>
+    </ScreenLayout>
   );
 };
+
+// Helper component for touchable option
+function TouchableOption({ item, onPress, isSelected }: { item: any, onPress: () => void, isSelected: boolean }) {
+  return (
+    <SquishyButton
+      onPress={onPress}
+      variant={isSelected ? 'primary' : 'secondary'}
+      size="large"
+      style={styles.cardButton}
+    >
+      <View style={styles.cardContent}>
+        <Typography variant="caption" style={styles.category}>{item.category}</Typography>
+        <Typography variant="h3" style={styles.cardTitle}>{item.title}</Typography>
+        <Typography variant="body" style={styles.cardDescription}>{item.description}</Typography>
+      </View>
+    </SquishyButton>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#230f19',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: SPACING.screenPadding,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: SPACING.regular,
   },
   subtitle: {
-    fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.7)',
-    textAlign: 'center',
-    marginBottom: 30,
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.xlarge,
   },
   list: {
-    paddingBottom: 30,
+    paddingBottom: SPACING.xlarge,
+    paddingHorizontal: SPACING.small,
+  },
+  cardButton: {
+    width: 280,
+    marginRight: SPACING.regular,
+    padding: SPACING.regular,
+  },
+  cardContent: {
+    alignItems: 'center',
+    padding: SPACING.regular,
+  },
+  category: {
+    color: COLORS.textHint,
+    marginBottom: SPACING.small,
+    textTransform: 'uppercase',
+  },
+  cardTitle: {
+    marginBottom: SPACING.regular,
+    textAlign: 'center',
+  },
+  cardDescription: {
+    color: COLORS.textSecondary,
+    textAlign: 'center',
   },
   button: {
-    backgroundColor: '#FA1F63',
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 30,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+    marginTop: SPACING.xlarge,
   },
 });
 

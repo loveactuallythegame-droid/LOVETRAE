@@ -1,24 +1,26 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout } from '../layout';
+import { Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
-const Dice = ({ title, value, icon }) => (
-    <View style={styles.dice}>
-        <Text style={{fontSize: 40}}>{icon}</Text>
-        <Text style={styles.diceValue}>{value}</Text>
-        <Text style={styles.diceTitle}>{title}</Text>
-    </View>
+const Dice = ({ title, value, icon }: { title: string; value: string; icon: string }) => (
+    <GlassCard style={styles.dice} variant="default">
+        <Typography variant="h1" style={styles.diceIcon}>{icon}</Typography>
+        <Typography variant="gameTitle" style={styles.diceValue}>{value}</Typography>
+        <Typography variant="label" style={styles.diceTitle}>{title}</Typography>
+    </GlassCard>
 );
 
 const LegacyDiceGameScreen = () => {
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <LinearGradient colors={[COLORS.deepCosmicPurple, COLORS.midPurple]} style={styles.background} />
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                <Text style={styles.title}>LEGACY DICE ARENA</Text>
-                <Text style={styles.subtitle}>Roll your future. Record your legacy.</Text>
+                <Typography variant="gameTitle" style={styles.title}>LEGACY DICE ARENA</Typography>
+                <Typography variant="body" style={styles.subtitle}>Roll your future. Record your legacy.</Typography>
 
                 <View style={styles.diceContainer}>
                     <Dice title="CHILDREN" value="3" icon="👶"/>
@@ -26,43 +28,51 @@ const LegacyDiceGameScreen = () => {
                     <Dice title="LOYALTY SCORE" value="88%" icon="💖"/>
                 </View>
 
-                <TouchableOpacity style={styles.recordButton}>
-                    <Text style={styles.recordButtonText}>RECORD LEGACY</Text>
-                </TouchableOpacity>
+                <SquishyButton variant="primary" size="large" onPress={() => {}}>
+                    <Typography variant="button" color={COLORS.textPrimary}>RECORD LEGACY</Typography>
+                </SquishyButton>
                 
                 {/* Waveform visualization would go here */}
 
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
     background: { ...StyleSheet.absoluteFillObject },
-    scrollContent: { alignItems: 'center', padding: 24 },
-    title: { fontSize: 48, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 8, textTransform: 'uppercase' },
-    subtitle: { color: '#D1C4E9', textAlign: 'center', marginBottom: 32 },
-    diceContainer: { flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginBottom: 32, gap: 16 },
+    scrollContent: { alignItems: 'center', padding: SPACING.screenPadding },
+    title: { 
+        color: COLORS.textPrimary, 
+        textAlign: 'center', 
+        marginBottom: SPACING.tiny, 
+        textTransform: 'uppercase' 
+    },
+    subtitle: { 
+        color: COLORS.textSecondary, 
+        textAlign: 'center', 
+        marginBottom: SPACING.xlarge 
+    },
+    diceContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        width: '100%', 
+        marginBottom: SPACING.xlarge, 
+        gap: SPACING.regular 
+    },
     dice: {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'rgba(255, 64, 129, 0.5)',
         minWidth: 120,
         flex: 1,
+        alignItems: 'center',
     },
-    diceValue: { fontSize: 48, fontWeight: 'bold', color: '#FFF' },
-    diceTitle: { color: '#FF4081', textTransform: 'uppercase', fontSize: 10, marginTop: 8, fontWeight: 'bold' },
-    recordButton: {
-        paddingVertical: 16,
-        paddingHorizontal: 48,
-        borderRadius: 32,
-        backgroundColor: '#FF4081',
+    diceIcon: { fontSize: TYPOGRAPHY.fontSize.displayLarge },
+    diceValue: { 
+        color: COLORS.textPrimary,
+        marginVertical: SPACING.small,
     },
-    recordButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase', fontSize: 16 },
+    diceTitle: { 
+        color: COLORS.vibrantPink,
+    },
 });
 
 export default LegacyDiceGameScreen;

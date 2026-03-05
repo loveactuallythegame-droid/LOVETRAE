@@ -9,15 +9,19 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TextInput, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Alert, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
 
 // Components
-import { GlassCard, Text } from '../../components/ui';
+import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+
+// Theme
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 // Game Constants
 const GAME_ID = 'echo-chamber-escape';
@@ -195,105 +199,116 @@ const EscapeEchoChamber: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <View style={styles.container}>
-                <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                    <Text style={styles.loadingText}>Entering the Echo Chamber...</Text>
-                </LinearGradient>
-            </View>
+            <ScreenLayout showHeader={false}>
+                <View style={styles.container}>
+                    <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background}>
+                        <Text variant="h2" center style={styles.loadingText}>Entering the Echo Chamber...</Text>
+                    </LinearGradient>
+                </View>
+            </ScreenLayout>
         );
     }
 
+    // Calculate progress percentage
+    const progressPercentage = ((currentStage + 1) / PUZZLES.length) * 100;
+
     return (
-        <View style={styles.container}>
-            <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <Text style={styles.title}>Escape the Echo Chamber</Text>
-                        <Text style={styles.subtitle}>Break the love script</Text>
-                        <View style={styles.progressContainer}>
-                            <Text style={styles.progressText}>
-                                Puzzle {currentStage + 1} of {PUZZLES.length}
+        <ScreenLayout showHeader={false}>
+            <View style={styles.container}>
+                <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background}>
+                    <SafeAreaView style={styles.safeArea}>
+                        <ScrollView contentContainerStyle={styles.scrollContent}>
+                            {/* Header */}
+                            <View style={styles.header}>
+                                <Text variant="h1" center>The Love Arcade</Text>
+                                <Text variant="h2" center>+100 Games to Deepen Connection</Text>
+                                <Text variant="h3" center style={styles.gameTitle}>Escape the Echo Chamber</Text>
+                                <Text variant="body" center style={styles.subtitle}>Break the love script</Text>
+                                <View style={styles.progressContainer}>
+                                    <Text variant="caption">
+                                        Puzzle {currentStage + 1} of {PUZZLES.length}
+                                    </Text>
+                                    <View style={styles.scoreRow}>
+                                        <Text variant="caption" style={styles.scoreText}>Score: {score}</Text>
+                                        {isSyncing && <Text variant="caption">💾</Text>}
+                                    </View>
+                                </View>
+                            </View>
+
+                            {/* Progress Bar */}
+                            <View style={styles.progressBar}>
+                                <View 
+                                    style={[
+                                        styles.progressFill, 
+                                        { width: `${progressPercentage}%` }
+                                    ]} 
+                                />
+                            </View>
+
+                            {/* Puzzle Card */}
+                            <GlassCard style={styles.puzzleCard}>
+                                <Text variant="h3">{currentPuzzle?.title}</Text>
+                                <Text variant="body" style={styles.puzzleDescription}>{currentPuzzle?.description}</Text>
+                                
+                                {attempts > 1 && (
+                                    <SquishyButton 
+                                        variant="ghost"
+                                        onPress={() => setShowHint(!showHint)}
+                                        style={styles.hintButton}
+                                    >
+                                        <Text variant="button">
+                                            {showHint ? 'Hide Hint' : 'Need a Hint?'}
+                                        </Text>
+                                    </SquishyButton>
+                                )}
+                                
+                                {showHint && (
+                                    <GlassCard style={styles.hintBox}>
+                                        <Text variant="body">💡 {currentPuzzle?.hint}</Text>
+                                    </GlassCard>
+                                )}
+                            </GlassCard>
+
+                            {/* Input Area */}
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Enter solution..."
+                                    placeholderTextColor={COLORS.textHint}
+                                    value={userInput}
+                                    onChangeText={setUserInput}
+                                    onSubmitEditing={checkAnswer}
+                                    autoCapitalize="none"
+                                    autoCorrect={false}
+                                />
+                                
+                                <SquishyButton 
+                                    onPress={checkAnswer}
+                                    disabled={!userInput.trim()}
+                                >
+                                    <Text variant="button">Decrypt File</Text>
+                                </SquishyButton>
+                            </View>
+
+                            {/* Attempts Counter */}
+                            <Text variant="caption" center style={styles.attemptsText}>
+                                Attempts: {attempts} {attempts > 0 && '(Fewer attempts = more points!)'}
                             </Text>
-                            <View style={styles.scoreRow}>
-                                <Text style={styles.scoreText}>Score: {score}</Text>
-                                {isSyncing && <Text style={styles.syncText}>💾</Text>}
-                            </View>
-                        </View>
-                    </View>
 
-                    {/* Progress Bar */}
-                    <View style={styles.progressBar}>
-                        <View 
-                            style={[
-                                styles.progressFill, 
-                                { width: `${((currentStage + 1) / PUZZLES.length) * 100}%` }
-                            ]} 
-                        />
-                    </View>
+                            {/* Reset Button */}
+                            <SquishyButton variant="ghost" onPress={resetGame} style={styles.resetButton}>
+                                <Text variant="button">Start Over</Text>
+                            </SquishyButton>
 
-                    {/* Puzzle Card */}
-                    <GlassCard style={styles.puzzleCard}>
-                        <Text style={styles.puzzleTitle}>{currentPuzzle?.title}</Text>
-                        <Text style={styles.puzzleDescription}>{currentPuzzle?.description}</Text>
-                        
-                        {attempts > 1 && (
-                            <TouchableOpacity 
-                                style={styles.hintButton}
-                                onPress={() => setShowHint(!showHint)}
-                            >
-                                <Text style={styles.hintButtonText}>
-                                    {showHint ? 'Hide Hint' : 'Need a Hint?'}
-                                </Text>
-                            </TouchableOpacity>
-                        )}
-                        
-                        {showHint && (
-                            <View style={styles.hintBox}>
-                                <Text style={styles.hintText}>💡 {currentPuzzle?.hint}</Text>
-                            </View>
-                        )}
-                    </GlassCard>
-
-                    {/* Input Area */}
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Enter solution..."
-                            placeholderTextColor="#9ca3af"
-                            value={userInput}
-                            onChangeText={setUserInput}
-                            onSubmitEditing={checkAnswer}
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                        />
-                        
-                        <TouchableOpacity 
-                            style={[styles.submitButton, !userInput.trim() && styles.disabledButton]}
-                            onPress={checkAnswer}
-                            disabled={!userInput.trim()}
-                        >
-                            <Text style={styles.submitText}>Decrypt File</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Attempts Counter */}
-                    <Text style={styles.attemptsText}>
-                        Attempts: {attempts} {attempts > 0 && '(Fewer attempts = more points!)'}
-                    </Text>
-
-                    {/* Reset Button */}
-                    <TouchableOpacity style={styles.resetButton} onPress={resetGame}>
-                        <Text style={styles.resetText}>Start Over</Text>
-                    </TouchableOpacity>
-
-                    {/* Session Info */}
-                    {session && (
-                        <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
-                    )}
-                </ScrollView>
-            </LinearGradient>
-        </View>
+                            {/* Session Info */}
+                            {session && (
+                                <Text variant="caption" center style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
+                            )}
+                        </ScrollView>
+                    </SafeAreaView>
+                </LinearGradient>
+            </View>
+        </ScreenLayout>
     );
 };
 
@@ -304,156 +319,89 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
     },
+    safeArea: {
+        flex: 1,
+    },
     scrollContent: {
-        padding: 20,
-        paddingTop: 60,
+        padding: SPACING.screenPadding,
+        paddingTop: SPACING.xxxlarge,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: SPACING.large,
     },
-    title: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        color: '#fff',
-        textAlign: 'center',
+    gameTitle: {
+        marginTop: SPACING.regular,
     },
     subtitle: {
-        fontSize: 14,
-        color: 'rgba(255,255,255,0.7)',
-        marginTop: 5,
+        marginTop: SPACING.small,
         fontStyle: 'italic',
     },
     progressContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
-        marginTop: 15,
-        paddingHorizontal: 10,
-    },
-    progressText: {
-        color: 'rgba(255,255,255,0.8)',
-        fontSize: 14,
+        marginTop: SPACING.regular,
+        paddingHorizontal: SPACING.small,
     },
     scoreRow: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     scoreText: {
-        color: '#db147c',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-    syncText: {
-        marginLeft: 5,
-        fontSize: 12,
+        color: COLORS.vibrantPink,
     },
     progressBar: {
         height: 4,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 2,
-        marginBottom: 25,
+        backgroundColor: COLORS.divider,
+        borderRadius: BORDER_RADIUS.small,
+        marginBottom: SPACING.xlarge,
         overflow: 'hidden',
     },
     progressFill: {
         height: '100%',
-        backgroundColor: '#db147c',
-        borderRadius: 2,
+        backgroundColor: COLORS.vibrantPink,
+        borderRadius: BORDER_RADIUS.small,
     },
     puzzleCard: {
-        padding: 20,
-        marginBottom: 20,
-    },
-    puzzleTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#fff',
-        marginBottom: 12,
+        marginBottom: SPACING.large,
     },
     puzzleDescription: {
-        fontSize: 15,
-        color: 'rgba(255,255,255,0.85)',
-        lineHeight: 22,
+        marginTop: SPACING.regular,
+        lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
     },
     hintButton: {
-        marginTop: 15,
-        paddingVertical: 8,
-        paddingHorizontal: 15,
-        backgroundColor: 'rgba(219, 20, 124, 0.2)',
-        borderRadius: 15,
+        marginTop: SPACING.regular,
         alignSelf: 'flex-start',
     },
-    hintButtonText: {
-        color: '#db147c',
-        fontSize: 13,
-        fontWeight: '600',
-    },
     hintBox: {
-        marginTop: 15,
-        padding: 12,
-        backgroundColor: 'rgba(255, 215, 0, 0.1)',
-        borderRadius: 8,
-        borderLeftWidth: 3,
-        borderLeftColor: '#FFD700',
-    },
-    hintText: {
-        color: '#FFD700',
-        fontSize: 14,
-        fontStyle: 'italic',
+        marginTop: SPACING.regular,
+        backgroundColor: COLORS.backgroundInput,
     },
     inputContainer: {
-        marginBottom: 15,
+        marginBottom: SPACING.regular,
     },
     input: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 12,
-        padding: 15,
-        color: '#fff',
-        fontSize: 16,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.input,
+        padding: SPACING.regular,
+        color: COLORS.textPrimary,
+        fontSize: TYPOGRAPHY.fontSize.bodyLarge,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)',
-        marginBottom: 12,
-    },
-    submitButton: {
-        backgroundColor: '#db147c',
-        paddingVertical: 15,
-        borderRadius: 12,
-        alignItems: 'center',
-    },
-    disabledButton: {
-        opacity: 0.5,
-    },
-    submitText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        borderColor: COLORS.borderSubtle,
+        marginBottom: SPACING.regular,
     },
     attemptsText: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 12,
-        textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: SPACING.large,
     },
     resetButton: {
         alignSelf: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-    },
-    resetText: {
-        color: 'rgba(255,255,255,0.5)',
-        fontSize: 14,
     },
     loadingText: {
-        color: '#fff',
-        fontSize: 18,
-        textAlign: 'center',
         marginTop: 100,
     },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
-        textAlign: 'center',
-        marginTop: 20,
+        marginTop: SPACING.xlarge,
     },
 });
 

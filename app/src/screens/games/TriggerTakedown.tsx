@@ -1,55 +1,107 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, GRADIENTS } from '../../theme';
 
 export default function TriggerTakedown({ navigation }: any) {
     useEffect(() => {
-        speakMarcie("You neutralized ‘that hotel logo’ with a glitter bomb. Still shaky? Tap ‘Breathe’—I’ll time you.");
+        speakMarcie("You neutralized 'that hotel logo' with a glitter bomb. Still shaky? Tap 'Breathe'—I'll time you.");
     }, []);
 
     return (
-        <LinearGradient colors={['#2A0040', '#000000']} style={styles.container}>
-            <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.header}>
-                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-                        <Text variant="body">Back</Text>
-                    </SquishyButton>
-                    <Text variant="header" style={styles.title}>Trigger Takedown (AR)</Text>
-                </View>
+        <ScreenLayout scrollable={false} showHeader={false}>
+            <SafeAreaView style={styles.safeArea}>
+                <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundPrimary]} style={styles.container}>
+                    <ScrollView contentContainerStyle={styles.content}>
+                        <View style={styles.header}>
+                            <SquishyButton 
+                                onPress={() => navigation.goBack()} 
+                                variant="ghost"
+                                size="small"
+                            >
+                                <Typography variant="body">Back</Typography>
+                            </SquishyButton>
+                            <Typography variant="h1" style={styles.title}>
+                                The Love Arcade
+                            </Typography>
+                        </View>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Type: Async AR interaction</Text>
-                    <Text variant="body">Mechanics: Camera → point at object/song → “squash” trigger → select grounding (Breathe/Tap/Share).</Text>
-                </GlassCard>
+                        <Typography variant="h2" center style={styles.subtitle}>
+                            +100 Games to Deepen Connection
+                        </Typography>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Scoring</Text>
-                    <Text variant="body">
-                        ✅ Trigger tagged = +5{'\n'}
-                        ✅ Grounding completed = +10{'\n'}
-                        ✅ Shared with partner = +5
-                    </Text>
-                </GlassCard>
+                        <GlassCard style={styles.card}>
+                            <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                                Trigger Takedown (AR)
+                            </Typography>
+                            <Typography variant="instructions" style={{ marginBottom: SPACING.regular }}>
+                                Type: Async AR interaction
+                            </Typography>
+                            <Typography variant="body">
+                                Mechanics: Camera → point at object/song → "squash" trigger → select grounding (Breathe/Tap/Share).
+                            </Typography>
+                        </GlassCard>
 
-                <View style={styles.actionArea}>
-                    <SquishyButton onPress={() => alert('Opening AR Camera...')} style={styles.playBtn}>
-                        <Text variant="header">Open AR Camera</Text>
-                    </SquishyButton>
-                </View>
-            </ScrollView>
-        </LinearGradient>
+                        <GlassCard style={styles.card}>
+                            <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                                Scoring
+                            </Typography>
+                            <Typography variant="body">
+                                ✅ Trigger tagged = +5{'\n'}
+                                ✅ Grounding completed = +10{'\n'}
+                                ✅ Shared with partner = +5
+                            </Typography>
+                        </GlassCard>
+
+                        <View style={styles.actionArea}>
+                            <SquishyButton 
+                                onPress={() => alert('Opening AR Camera...')} 
+                                size="large"
+                            >
+                                <Typography variant="h3">Open AR Camera</Typography>
+                            </SquishyButton>
+                        </View>
+                    </ScrollView>
+                </LinearGradient>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
-    content: { padding: 20, gap: 20 },
-    header: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 40 },
-    backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-    title: { fontSize: 22, color: '#fff', flex: 1 },
-    card: { padding: 20 },
-    actionArea: { marginTop: 40, alignItems: 'center' },
-    playBtn: { width: '80%', paddingVertical: 15, backgroundColor: '#FA1F63', borderRadius: 20, alignItems: 'center' }
+    safeArea: { 
+        flex: 1, 
+        backgroundColor: COLORS.deepCosmic 
+    },
+    container: { 
+        flex: 1 
+    },
+    content: { 
+        padding: SPACING.screenPadding, 
+        gap: SPACING.xlarge 
+    },
+    header: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        gap: SPACING.regular, 
+        marginTop: SPACING.xlarge 
+    },
+    title: { 
+        flex: 1,
+        textAlign: 'center'
+    },
+    subtitle: { 
+        marginBottom: SPACING.large 
+    },
+    card: { 
+        padding: SPACING.xlarge 
+    },
+    actionArea: { 
+        marginTop: SPACING.xxlarge, 
+        alignItems: 'center' 
+    },
 });

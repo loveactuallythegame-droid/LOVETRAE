@@ -1,8 +1,10 @@
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS } from '../../theme';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons } from '@expo/vector-icons';
 
 const TheIcebergEmotionalGame1 = () => {
     const [revealed, setRevealed] = useState(false);
@@ -14,49 +16,68 @@ const TheIcebergEmotionalGame1 = () => {
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#191022', '#0a0612']} style={styles.container}>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.headerTitle}>THE ICEBERG</Text>
-                    <Text style={styles.headerSubtitle}>From surface reactions to hidden core needs.</Text>
-                </View>
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundPrimary]} style={styles.container}>
+                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+                    <View style={styles.headerContainer}>
+                        <Typography variant="h1" center>THE ICEBERG</Typography>
+                        <Typography variant="body" center style={styles.headerSubtitle}>
+                            From surface reactions to hidden core needs.
+                        </Typography>
+                    </View>
 
-                <View style={styles.icebergContainer}>
-                    {/* Surface Emotion */}
-                    <View style={styles.surfaceContainer}>
-                        <View style={styles.emotionNode}>
-                            <Text style={styles.emotionText}>ANGER</Text>
+                    <View style={styles.icebergContainer}>
+                        {/* Surface Emotion */}
+                        <View style={styles.surfaceContainer}>
+                            <GlassCard style={styles.emotionNode}>
+                                <Typography variant="h2">ANGER</Typography>
+                            </GlassCard>
+                        </View>
+
+                        <View style={styles.waterline} />
+
+                        {/* Deep Emotion */}
+                        <View style={styles.deepContainer}>
+                            {!revealed ? (
+                                <SquishyButton onPress={revealEmotion} size="large">
+                                    <Typography variant="button">REVEAL CORE NEED</Typography>
+                                </SquishyButton>
+                            ) : (
+                                <GlassCard style={styles.emotionNode}>
+                                    <Typography variant="h2">FEAR</Typography>
+                                </GlassCard>
+                            )}
                         </View>
                     </View>
-
-                    <View style={styles.waterline} />
-
-                    {/* Deep Emotion */}
-                    <View style={styles.deepContainer}>
-                        {!revealed ? (
-                            <TouchableOpacity style={styles.revealButton} onPress={revealEmotion}>
-                                <Text style={styles.revealButtonText}>REVEAL CORE NEED</Text>
-                            </TouchableOpacity>
-                        ) : (
-                            <View style={styles.emotionNode}>
-                                <Text style={styles.emotionText}>FEAR</Text>
-                            </View>
-                        )}
-                    </View>
-                </View>
-                
+                </SafeAreaView>
             </LinearGradient>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#0a0612' },
-    container: { flex: 1, justifyContent: 'center', padding: 24 },
-    headerContainer: { alignItems: 'center', marginBottom: 32 },
-    headerTitle: { color: '#fff', fontSize: 40, fontWeight: 'bold' },
-    headerSubtitle: { color: 'rgba(255,255,255,0.6)', marginTop: 8 },
-    icebergContainer: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+    container: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        padding: SPACING.screenPadding 
+    },
+    safeArea: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
+    },
+    headerContainer: { 
+        alignItems: 'center', 
+        marginBottom: SPACING.xxlarge 
+    },
+    headerSubtitle: { 
+        color: COLORS.textSecondary, 
+        marginTop: SPACING.small 
+    },
+    icebergContainer: { 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+    },
     surfaceContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -67,23 +88,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    waterline: { height: 2, width: '100%', backgroundColor: '#ff006d', marginVertical: 20 },
+    waterline: { 
+        height: 2, 
+        width: '100%', 
+        backgroundColor: COLORS.vibrantPink, 
+        marginVertical: SPACING.large 
+    },
     emotionNode: {
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-        backgroundColor: 'rgba(48, 40, 57, 0.8)',
-        borderRadius: 30,
-        borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)',
+        paddingHorizontal: SPACING.xlarge,
+        paddingVertical: SPACING.regular,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    emotionText: { color: '#fff', fontSize: 24, fontWeight: 'bold' },
-    revealButton: {
-        backgroundColor: '#ff006d',
-        paddingVertical: 16,
-        paddingHorizontal: 32,
-        borderRadius: 20,
-    },
-    revealButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 18 },
 });
 
 export default TheIcebergEmotionalGame1;

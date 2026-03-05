@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, GlassCard, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function RoleSwapRoast({ route, navigation }: any) {
   const { gameId } = route.params || { gameId: 'role-swap-roast' };
@@ -83,27 +85,47 @@ export default function RoleSwapRoast({ route, navigation }: any) {
   const inputArea = (
     <View>
       <GlassCard>
-        <Text variant="body">Use camera, toggle filters, and deliver your impression</Text>
-        <View style={{ flexDirection: 'row', gap: 8 }}>
-          <SquishyButton onPress={toggleHelium} style={styles.btn}><Text variant="header">Helium {helium ? 'On' : 'Off'}</Text></SquishyButton>
-          <SquishyButton onPress={toggleAr} style={styles.btn}><Text variant="header">AR {arOn ? 'On' : 'Off'}</Text></SquishyButton>
+        <Typography variant="body">Use camera, toggle filters, and deliver your impression</Typography>
+        <View style={{ flexDirection: 'row', gap: SPACING.small, marginTop: SPACING.regular }}>
+          <SquishyButton onPress={toggleHelium} style={styles.btn}>
+            <Typography variant="h3">Helium {helium ? 'On' : 'Off'}</Typography>
+          </SquishyButton>
+          <SquishyButton onPress={toggleAr} style={styles.btn}>
+            <Typography variant="h3">AR {arOn ? 'On' : 'Off'}</Typography>
+          </SquishyButton>
         </View>
-        <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
-          <SquishyButton onPress={addLaugh} style={styles.btn}><Text variant="header">Laugh +1</Text></SquishyButton>
-          <SquishyButton onPress={castVote} style={styles.btn}><Text variant="header">Cast Partner Vote</Text></SquishyButton>
+        <View style={{ flexDirection: 'row', gap: SPACING.small, marginTop: SPACING.regular }}>
+          <SquishyButton onPress={addLaugh} style={styles.btn}>
+            <Typography variant="h3">Laugh +1</Typography>
+          </SquishyButton>
+          <SquishyButton onPress={castVote} style={styles.btn}>
+            <Typography variant="h3">Cast Partner Vote</Typography>
+          </SquishyButton>
         </View>
-        <View style={{ marginTop: 8 }}>
-          <Text variant="keyword">Accuracy {accuracy}%</Text>
-          <Text variant="keyword">Partner Votes {partnerVotes}</Text>
+        <View style={{ marginTop: SPACING.regular }}>
+          <Typography variant="caption" style={styles.scoreText}>Accuracy {accuracy}%</Typography>
+          <Typography variant="caption" style={styles.scoreText}>Partner Votes {partnerVotes}</Typography>
         </View>
       </GlassCard>
     </View>
   );
 
-  return <GameContainer state={baseState} inputs={["camera"]} inputArea={inputArea} onComplete={onComplete} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={["camera"]} inputArea={inputArea} onComplete={onComplete} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  btn: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: '#5C1459', borderRadius: 10 },
+  btn: { 
+    flex: 1,
+    paddingHorizontal: SPACING.regular, 
+    paddingVertical: SPACING.small, 
+    backgroundColor: COLORS.healingHospital, 
+    borderRadius: BORDER_RADIUS.medium 
+  },
+  scoreText: {
+    color: COLORS.textSecondary
+  }
 });
-

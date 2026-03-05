@@ -1,8 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 const SecrecyAuditQuizGame1 = () => {
     const [timer, setTimer] = useState(3);
@@ -18,67 +19,133 @@ const SecrecyAuditQuizGame1 = () => {
     }, [timer]);
 
     const handleAnswer = () => {
-        // Handle answer logic
-        if (timer < 2) { // Example hesitation logic
+        if (timer < 2) {
             setHesitation(true);
         }
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#16213e', '#0f3460']} style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <View style={styles.container}>
                 <View style={styles.sideBar}>
-                    <Text style={styles.sideBarTitle}>Dr. Marcie Liss</Text>
-                     <View style={styles.truthDetector}>
-                        <Text style={styles.truthDetectorLabel}>Truth Detector</Text>
-                         <Text style={styles.truthDetectorStatus}>Watching...</Text>
+                    <Typography variant="h3" center style={styles.sideBarTitle}>Dr. Marcie Liss</Typography>
+                    <View style={styles.truthDetector}>
+                        <Typography variant="caption" style={styles.truthDetectorLabel}>Truth Detector</Typography>
+                        <Typography variant="body" style={styles.truthDetectorStatus}>Watching...</Typography>
                     </View>
                 </View>
                 <View style={styles.mainContent}>
-                    <Text style={styles.header}>SECRECY AUDIT</Text>
-                    <View style={[styles.questionCard, hesitation && styles.hesitationFlash]}>
+                    <Typography variant="h1" center style={styles.header}>SECRECY AUDIT</Typography>
+                    <GlassCard style={[styles.questionCard, hesitation && styles.hesitationFlash]}>
                         <View style={styles.timerCircle}>
-                            <Text style={styles.timerText}>{`0${timer}`}</Text>
+                            <Typography variant="h2" style={styles.timerText}>{`0${timer}`}</Typography>
                         </View>
-                        <Text style={styles.questionText}>Have you ever kept a significant financial purchase hidden from your partner to avoid conflict?</Text>
+                        <Typography variant="h2" center style={styles.questionText}>Have you ever kept a significant financial purchase hidden from your partner to avoid conflict?</Typography>
                         <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.trueButton} onPress={handleAnswer}>
-                                <MaterialIcons name="check-circle" size={32} color="#fff" />
-                                <Text style={styles.buttonText}>TRUE</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.falseButton} onPress={handleAnswer}>
-                                <MaterialIcons name="cancel" size={32} color="#fff" />
-                                <Text style={styles.buttonText}>FALSE</Text>
-                            </TouchableOpacity>
+                            <SquishyButton onPress={handleAnswer} style={styles.trueButton}>
+                                <MaterialIcons name="check-circle" size={32} color={COLORS.textPrimary} />
+                                <Typography variant="button" style={styles.buttonText}>TRUE</Typography>
+                            </SquishyButton>
+                            <SquishyButton onPress={handleAnswer} style={styles.falseButton}>
+                                <MaterialIcons name="cancel" size={32} color={COLORS.textPrimary} />
+                                <Typography variant="button" style={styles.buttonText}>FALSE</Typography>
+                            </SquishyButton>
                         </View>
-                        {hesitation && <Text style={styles.hesitationText}>Hesitation Detected</Text>}
-                    </View>
+                        {hesitation && <Typography variant="caption" center style={styles.hesitationText}>Hesitation Detected</Typography>}
+                    </GlassCard>
                 </View>
-            </LinearGradient>
-        </SafeAreaView>
+            </View>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#0f3460' },
-    container: { flex: 1, flexDirection: 'row' },
-    sideBar: { width: 100, backgroundColor: 'rgba(40, 46, 57, 0.6)', padding: 12, justifyContent: 'space-between', alignItems: 'center' },
-    sideBarTitle: { color: '#fff', fontWeight: 'bold', textAlign: 'center' },
-    truthDetector: { alignItems: 'center' },
-    truthDetectorLabel: { color: 'rgba(255,255,255,0.5)', fontSize: 10, textTransform: 'uppercase' },
-    truthDetectorStatus: { color: '#ffbf00', fontSize: 12 },
-    mainContent: { flex: 1, justifyContent: 'center', padding: 24 },
-    header: { color: '#fff', fontSize: 32, fontWeight: 'bold', textAlign: 'center', marginBottom: 24 },
-    questionCard: { backgroundColor: 'rgba(40, 46, 57, 0.6)', borderRadius: 24, padding: 24, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    hesitationFlash: { borderColor: '#ffbf00', borderWidth: 2, shadowColor: '#ffbf00', shadowRadius: 10 },
-    timerCircle: { width: 50, height: 50, borderRadius: 25, borderWidth: 4, borderColor: '#ff0048', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 16, right: 16 },
-    timerText: { color: '#fff', fontSize: 20, fontWeight: 'bold' },
-    questionText: { color: '#fff', fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginVertical: 40 },
-    buttonContainer: { flexDirection: 'row', gap: 16 },
-    trueButton: { flex: 1, height: 100, backgroundColor: '#ff0048', borderRadius: 16, justifyContent: 'center', alignItems: 'center', gap: 8 },
-    falseButton: { flex: 1, height: 100, backgroundColor: '#d4145a', borderRadius: 16, justifyContent: 'center', alignItems: 'center', gap: 8 },
-    buttonText: { color: '#fff', fontSize: 20, fontWeight: 'bold' },
-    hesitationText: { color: '#ffbf00', marginTop: 16, textTransform: 'uppercase', fontSize: 12 },
+    container: { 
+        flex: 1, 
+        flexDirection: 'row' 
+    },
+    sideBar: { 
+        width: 100, 
+        backgroundColor: COLORS.backgroundCard, 
+        padding: SPACING.regular, 
+        justifyContent: 'space-between', 
+        alignItems: 'center' 
+    },
+    sideBarTitle: { 
+        color: COLORS.textPrimary 
+    },
+    truthDetector: { 
+        alignItems: 'center' 
+    },
+    truthDetectorLabel: { 
+        color: COLORS.textHint 
+    },
+    truthDetectorStatus: { 
+        color: COLORS.warning 
+    },
+    mainContent: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        padding: SPACING.xlarge 
+    },
+    header: { 
+        marginBottom: SPACING.xlarge 
+    },
+    questionCard: { 
+        padding: SPACING.xlarge, 
+        alignItems: 'center' 
+    },
+    hesitationFlash: { 
+        borderColor: COLORS.warning, 
+        borderWidth: 2 
+    },
+    timerCircle: { 
+        width: 50, 
+        height: 50, 
+        borderRadius: BORDER_RADIUS.round, 
+        borderWidth: 4, 
+        borderColor: COLORS.error, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        position: 'absolute', 
+        top: SPACING.regular, 
+        right: SPACING.regular 
+    },
+    timerText: { 
+        color: COLORS.textPrimary 
+    },
+    questionText: { 
+        marginVertical: SPACING.xxlarge 
+    },
+    buttonContainer: { 
+        flexDirection: 'row', 
+        gap: SPACING.regular 
+    },
+    trueButton: { 
+        flex: 1, 
+        height: 100, 
+        backgroundColor: COLORS.error, 
+        borderRadius: BORDER_RADIUS.large, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        gap: SPACING.small 
+    },
+    falseButton: { 
+        flex: 1, 
+        height: 100, 
+        backgroundColor: COLORS.emotionalConnection, 
+        borderRadius: BORDER_RADIUS.large, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        gap: SPACING.small 
+    },
+    buttonText: { 
+        color: COLORS.textPrimary 
+    },
+    hesitationText: { 
+        color: COLORS.warning, 
+        marginTop: SPACING.regular 
+    },
 });
 
 export default SecrecyAuditQuizGame1;

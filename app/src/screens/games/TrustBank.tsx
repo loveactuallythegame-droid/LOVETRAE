@@ -8,17 +8,21 @@
  * - Calculates final balance
  */
 
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { ScreenLayout } from '../../components/ui';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
 
 // Components
-import { GlassCard, Text } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton } from '../../components/ui';
+
+// Theme
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 // Game Constants
 const GAME_ID = 'trust-bank';
@@ -122,118 +126,162 @@ const TrustBank: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <SafeAreaView style={styles.container}>
-                <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                    <Text style={styles.loadingText}>Opening Trust Bank...</Text>
-                </LinearGradient>
-            </SafeAreaView>
+            <ScreenLayout scrollable={false} showHeader={false}>
+                <SafeAreaView style={styles.container}>
+                    <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.healingHospital]} style={styles.background}>
+                        <Typography variant="body" center style={styles.loadingText}>
+                            Opening Trust Bank...
+                        </Typography>
+                    </LinearGradient>
+                </SafeAreaView>
+            </ScreenLayout>
         );
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <Text style={styles.title}>Trust Bank</Text>
-                        <Text style={styles.subtitle}>Log your trust deposits & withdrawals</Text>
-                    </View>
-
-                    {/* Balance Display */}
-                    <GlassCard style={styles.balanceCard}>
-                        <Text style={styles.balanceLabel}>Current Balance</Text>
-                        <Text style={[
-                            styles.balanceAmount,
-                            balance >= 0 ? styles.positiveBalance : styles.negativeBalance
-                        ]}>
-                            {balance >= 0 ? '+' : ''}{balance}
-                        </Text>
-                        {isSyncing && <Text style={styles.syncText}>💾 Saving...</Text>}
-                    </GlassCard>
-
-                    {/* Transaction Form */}
-                    <GlassCard style={styles.formCard}>
-                        <Text style={styles.formLabel}>New Transaction</Text>
-                        
-                        <TextInput
-                            style={styles.input}
-                            placeholder="What happened? (e.g., 'Listened without interrupting')"
-                            placeholderTextColor="#999"
-                            value={description}
-                            onChangeText={setDescription}
-                            multiline
-                        />
-                        
-                        <TextInput
-                            style={styles.amountInput}
-                            placeholder="Amount (1-100)"
-                            placeholderTextColor="#999"
-                            keyboardType="numeric"
-                            value={amount}
-                            onChangeText={setAmount}
-                        />
-
-                        <View style={styles.buttonRow}>
-                            <TouchableOpacity 
-                                style={[styles.actionButton, styles.depositButton]}
-                                onPress={() => addTransaction('deposit')}
-                            >
-                                <Text style={styles.buttonText}>+ Deposit</Text>
-                            </TouchableOpacity>
-                            
-                            <TouchableOpacity 
-                                style={[styles.actionButton, styles.withdrawalButton]}
-                                onPress={() => addTransaction('withdrawal')}
-                            >
-                                <Text style={styles.buttonText}>- Withdrawal</Text>
-                            </TouchableOpacity>
+        <ScreenLayout scrollable={false} showHeader={false}>
+            <SafeAreaView style={styles.container}>
+                <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.healingHospital]} style={styles.background}>
+                    <ScrollView contentContainerStyle={styles.scrollContent}>
+                        {/* Header */}
+                        <View style={styles.header}>
+                            <Typography variant="h1" center>
+                                The Love Arcade
+                            </Typography>
+                            <Typography variant="h2" center style={styles.subtitle}>
+                                +100 Games to Deepen Connection
+                            </Typography>
                         </View>
-                    </GlassCard>
 
-                    {/* Transaction History */}
-                    <Text style={styles.historyTitle}>Transaction History</Text>
-                    
-                    {transactions.length === 0 ? (
-                        <Text style={styles.emptyText}>No transactions yet. Start building trust!</Text>
-                    ) : (
-                        transactions.map((t) => (
-                            <View key={t.id} style={styles.transactionRow}>
-                                <View style={[
-                                    styles.typeIndicator,
-                                    t.type === 'deposit' ? styles.depositIndicator : styles.withdrawalIndicator
-                                ]}>
-                                    <Text style={styles.typeText}>
-                                        {t.type === 'deposit' ? '+' : '-'}
-                                    </Text>
-                                </View>
-                                <View style={styles.transactionInfo}>
-                                    <Text style={styles.transactionDesc}>{t.description}</Text>
-                                    <Text style={styles.transactionAmount}>
-                                        {t.type === 'deposit' ? '+' : '-'}{t.amount}
-                                    </Text>
-                                </View>
+                        <Typography variant="h3" center style={styles.gameTitle}>
+                            Trust Bank
+                        </Typography>
+                        <Typography variant="body" center style={styles.gameSubtitle}>
+                            Log your trust deposits & withdrawals
+                        </Typography>
+
+                        {/* Balance Display */}
+                        <GlassCard style={styles.balanceCard}>
+                            <Typography variant="caption" style={styles.balanceLabel}>
+                                Current Balance
+                            </Typography>
+                            <Typography 
+                                variant="gameTitle" 
+                                style={[
+                                    styles.balanceAmount,
+                                    { color: balance >= 0 ? COLORS.success : COLORS.error }
+                                ]}
+                            >
+                                {balance >= 0 ? '+' : ''}{balance}
+                            </Typography>
+                            {isSyncing && (
+                                <Typography variant="caption" style={styles.syncText}>
+                                    💾 Saving...
+                                </Typography>
+                            )}
+                        </GlassCard>
+
+                        {/* Transaction Form */}
+                        <GlassCard style={styles.formCard}>
+                            <Typography variant="h4" style={styles.formLabel}>
+                                New Transaction
+                            </Typography>
+                            
+                            <TextInput
+                                style={styles.input}
+                                placeholder="What happened? (e.g., 'Listened without interrupting')"
+                                placeholderTextColor={COLORS.textHint}
+                                value={description}
+                                onChangeText={setDescription}
+                                multiline
+                            />
+                            
+                            <TextInput
+                                style={styles.amountInput}
+                                placeholder="Amount (1-100)"
+                                placeholderTextColor={COLORS.textHint}
+                                keyboardType="numeric"
+                                value={amount}
+                                onChangeText={setAmount}
+                            />
+
+                            <View style={styles.buttonRow}>
+                                <SquishyButton 
+                                    onPress={() => addTransaction('deposit')}
+                                    variant="primary"
+                                    style={styles.actionButton}
+                                >
+                                    <Typography variant="button" style={{ color: COLORS.textPrimary }}>
+                                        + Deposit
+                                    </Typography>
+                                </SquishyButton>
+                                
+                                <SquishyButton 
+                                    onPress={() => addTransaction('withdrawal')}
+                                    variant="ghost"
+                                    style={styles.actionButton}
+                                >
+                                    <Typography variant="button">- Withdrawal</Typography>
+                                </SquishyButton>
                             </View>
-                        ))
-                    )}
+                        </GlassCard>
 
-                    {/* Finish Button */}
-                    {transactions.length > 0 && (
-                        <TouchableOpacity style={styles.finishButton} onPress={finishGame}>
-                            <Text style={styles.finishText}>Close Account & Finish</Text>
-                        </TouchableOpacity>
-                    )}
+                        {/* Transaction History */}
+                        <Typography variant="h4" style={styles.historyTitle}>
+                            Transaction History
+                        </Typography>
+                        
+                        {transactions.length === 0 ? (
+                            <Typography variant="body" center style={styles.emptyText}>
+                                No transactions yet. Start building trust!
+                            </Typography>
+                        ) : (
+                            transactions.map((t) => (
+                                <View key={t.id} style={styles.transactionRow}>
+                                    <View style={[
+                                        styles.typeIndicator,
+                                        { backgroundColor: t.type === 'deposit' ? COLORS.success : COLORS.error }
+                                    ]}>
+                                        <Typography variant="h4" style={styles.typeText}>
+                                            {t.type === 'deposit' ? '+' : '-'}
+                                        </Typography>
+                                    </View>
+                                    <View style={styles.transactionInfo}>
+                                        <Typography variant="body" style={styles.transactionDesc}>
+                                            {t.description}
+                                        </Typography>
+                                        <Typography variant="button" style={styles.transactionAmount}>
+                                            {t.type === 'deposit' ? '+' : '-'}{t.amount}
+                                        </Typography>
+                                    </View>
+                                </View>
+                            ))
+                        )}
 
-                    {session && (
-                        <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
-                    )}
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+                        {/* Finish Button */}
+                        {transactions.length > 0 && (
+                            <SquishyButton 
+                                onPress={finishGame}
+                                size="large"
+                                style={styles.finishButton}
+                            >
+                                <Typography variant="button">
+                                    Close Account & Finish
+                                </Typography>
+                            </SquishyButton>
+                        )}
+
+                        {session && (
+                            <Typography variant="caption" center style={styles.sessionInfo}>
+                                Session: {session.id.slice(0, 8)}...
+                            </Typography>
+                        )}
+                    </ScrollView>
+                </LinearGradient>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
-
-import { Alert } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -243,140 +291,95 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        padding: 20,
-        paddingTop: 60,
+        padding: SPACING.screenPadding,
+        paddingTop: SPACING.xxxlarge,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#fff',
+        marginBottom: SPACING.regular,
     },
     subtitle: {
-        fontSize: 14,
-        color: 'rgba(255,255,255,0.7)',
-        marginTop: 5,
+        marginTop: SPACING.small,
+    },
+    gameTitle: {
+        marginTop: SPACING.large,
+        marginBottom: SPACING.small,
+    },
+    gameSubtitle: {
+        marginBottom: SPACING.large,
     },
     loadingText: {
-        color: '#fff',
-        fontSize: 18,
-        textAlign: 'center',
         marginTop: 100,
     },
     balanceCard: {
-        padding: 25,
-        marginBottom: 20,
+        padding: SPACING.xxlarge,
+        marginBottom: SPACING.xlarge,
         alignItems: 'center',
     },
     balanceLabel: {
-        fontSize: 14,
-        color: 'rgba(255,255,255,0.7)',
-        marginBottom: 10,
+        marginBottom: SPACING.regular,
     },
     balanceAmount: {
-        fontSize: 48,
-        fontWeight: 'bold',
-    },
-    positiveBalance: {
-        color: '#33DEA5',
-    },
-    negativeBalance: {
-        color: '#ff4444',
+        fontSize: TYPOGRAPHY.fontSize.displayLarge,
     },
     syncText: {
-        color: 'rgba(255,255,255,0.5)',
-        fontSize: 12,
-        marginTop: 10,
+        marginTop: SPACING.regular,
     },
     formCard: {
-        padding: 20,
-        marginBottom: 20,
+        padding: SPACING.xlarge,
+        marginBottom: SPACING.xlarge,
     },
     formLabel: {
-        fontSize: 16,
-        color: '#FFD700',
-        marginBottom: 15,
-        fontWeight: '600',
+        color: COLORS.brightYellow,
+        marginBottom: SPACING.regular,
     },
     input: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 10,
-        padding: 15,
-        color: '#fff',
-        fontSize: 14,
-        marginBottom: 10,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.input,
+        padding: SPACING.regular,
+        color: COLORS.textPrimary,
+        fontSize: TYPOGRAPHY.fontSize.bodyMedium,
+        marginBottom: SPACING.regular,
         minHeight: 60,
     },
     amountInput: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 10,
-        padding: 15,
-        color: '#fff',
-        fontSize: 16,
-        marginBottom: 15,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.input,
+        padding: SPACING.regular,
+        color: COLORS.textPrimary,
+        fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+        marginBottom: SPACING.large,
     },
     buttonRow: {
         flexDirection: 'row',
-        gap: 10,
+        gap: SPACING.regular,
     },
     actionButton: {
         flex: 1,
-        paddingVertical: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-    },
-    depositButton: {
-        backgroundColor: '#33DEA5',
-    },
-    withdrawalButton: {
-        backgroundColor: '#ff4444',
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 14,
-        fontWeight: 'bold',
     },
     historyTitle: {
-        fontSize: 18,
-        color: '#fff',
-        marginBottom: 15,
-        fontWeight: '600',
+        marginBottom: SPACING.regular,
     },
     emptyText: {
-        color: 'rgba(255,255,255,0.5)',
-        fontSize: 14,
-        textAlign: 'center',
-        fontStyle: 'italic',
-        marginBottom: 20,
+        marginBottom: SPACING.xlarge,
     },
     transactionRow: {
         flexDirection: 'row',
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        padding: 12,
-        borderRadius: 10,
-        marginBottom: 8,
+        backgroundColor: COLORS.backgroundInput,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.large,
+        marginBottom: SPACING.small,
     },
     typeIndicator: {
         width: 30,
         height: 30,
-        borderRadius: 15,
+        borderRadius: BORDER_RADIUS.round,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 10,
-    },
-    depositIndicator: {
-        backgroundColor: '#33DEA5',
-    },
-    withdrawalIndicator: {
-        backgroundColor: '#ff4444',
+        marginRight: SPACING.regular,
     },
     typeText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
+        color: COLORS.textPrimary,
     },
     transactionInfo: {
         flex: 1,
@@ -385,32 +388,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     transactionDesc: {
-        color: '#fff',
-        fontSize: 14,
         flex: 1,
     },
     transactionAmount: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 14,
+        color: COLORS.textPrimary,
     },
     finishButton: {
-        backgroundColor: '#FFD700',
-        paddingVertical: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    finishText: {
-        color: '#000',
-        fontSize: 16,
-        fontWeight: 'bold',
+        marginTop: SPACING.xlarge,
     },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
-        textAlign: 'center',
-        marginTop: 20,
+        marginTop: SPACING.xxlarge,
     },
 });
 

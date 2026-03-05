@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Alert } from 'react-native';
-import { Text, GlassCard } from '../../components/ui';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
 import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS, TYPOGRAPHY } from '../../theme';
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
-
-const { width, height } = Dimensions.get('window');
 
 const DEFENSIVENESS_SCENARIOS = [
   {
@@ -78,7 +77,7 @@ export default function DefensivenessDetox({ route, navigation }: any) {
             collection(db, 'game_sessions'),
             where('couple_id', '==', couple_code),
             where('gameId', '==', gameId),
-            where('userId', '!=', user.uid) // Different user
+            where('userId', '!=', user.uid)
           );
           
           const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
@@ -153,9 +152,9 @@ export default function DefensivenessDetox({ route, navigation }: any) {
   const currentScenario = DEFENSIVENESS_SCENARIOS[currentScenarioIndex];
 
   const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: theme.SPACING.lg }}>
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: SPACING.xlarge }} showsVerticalScrollIndicator={false}>
       {!gameCompleted ? (
-        <GlassCard>
+        <GlassCard padding="large">
           <LinearGradient
             colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
             start={{ x: 0, y: 0 }}
@@ -163,40 +162,17 @@ export default function DefensivenessDetox({ route, navigation }: any) {
             style={styles.gradientContainer}
           >
             <View style={styles.headerContainer}>
-              <Text 
-                variant="header" 
-                style={{ 
-                  marginBottom: theme.SPACING.md, 
-                  color: theme.COLORS.textPrimary,
-                  fontSize: theme.TYPOGRAPHY.title.fontSize
-                }}
-              >
+              <Typography variant="h2" style={styles.title}>
                 Defensiveness Detox
-              </Text>
-              <Text 
-                variant="small" 
-                style={{ 
-                  position: 'absolute', 
-                  right: theme.SPACING.md, 
-                  top: theme.SPACING.md,
-                  color: theme.COLORS.textHint 
-                }}
-              >
+              </Typography>
+              <Typography variant="caption" style={styles.progress}>
                 {currentScenarioIndex + 1}/{DEFENSIVENESS_SCENARIOS.length}
-              </Text>
+              </Typography>
             </View>
             
-            <Text 
-              variant="body" 
-              style={{ 
-                marginBottom: theme.SPACING.lg, 
-                color: theme.COLORS.textPrimary,
-                fontSize: theme.TYPOGRAPHY.body.fontSize,
-                lineHeight: 24
-              }}
-            >
+            <Typography variant="body" style={styles.scenarioText}>
               {currentScenario.scenario}
-            </Text>
+            </Typography>
 
             <View style={styles.responsesContainer}>
               {currentScenario.responses.map((response) => (
@@ -212,25 +188,25 @@ export default function DefensivenessDetox({ route, navigation }: any) {
                   <LinearGradient
                     colors={
                       selectedResponse === response.id
-                        ? [theme.COLORS.primaryGradientStart, theme.COLORS.primaryGradientEnd]
+                        ? GRADIENTS.primary.colors
                         : ['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.1)']
                     }
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     style={styles.responseGradient}
                   >
-                    <Text
+                    <Typography
                       variant="body"
                       style={{
                         color:
                           selectedResponse === response.id
-                            ? theme.COLORS.background
-                            : theme.COLORS.textPrimary,
+                            ? COLORS.backgroundPrimary
+                            : COLORS.textPrimary,
                         lineHeight: 20
                       }}
                     >
                       {response.text}
-                    </Text>
+                    </Typography>
                   </LinearGradient>
                 </TouchableOpacity>
               ))}
@@ -238,17 +214,17 @@ export default function DefensivenessDetox({ route, navigation }: any) {
 
             {feedback && (
               <View style={styles.feedbackContainer}>
-                <Text 
+                <Typography 
                   variant="sass" 
                   style={{
                     color: selectedResponse && 
                            currentScenario.responses.find(r => r.id === selectedResponse)?.defensive 
-                           ? theme.COLORS.warning 
-                           : theme.COLORS.success
+                           ? COLORS.warning 
+                           : COLORS.success
                   }}
                 >
                   {feedback}
-                </Text>
+                </Typography>
               </View>
             )}
 
@@ -259,45 +235,45 @@ export default function DefensivenessDetox({ route, navigation }: any) {
             >
               <LinearGradient
                 colors={[
-                  selectedResponse ? theme.COLORS.primaryGradientStart : '#666',
-                  selectedResponse ? theme.COLORS.primaryGradientEnd : '#666'
+                  selectedResponse ? GRADIENTS.primary.colors[0] : '#666',
+                  selectedResponse ? GRADIENTS.primary.colors[1] : '#666'
                 ]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.nextGradient}
               >
-                <Text 
-                  variant="header" 
+                <Typography 
+                  variant="h3" 
                   style={{ 
-                    color: selectedResponse ? theme.COLORS.background : theme.COLORS.textHint,
+                    color: selectedResponse ? COLORS.backgroundPrimary : COLORS.textHint,
                     textAlign: 'center'
                   }}
                 >
                   {currentScenarioIndex === DEFENSIVENESS_SCENARIOS.length - 1 ? 'Finish Game' : 'Next Scenario'}
-                </Text>
+                </Typography>
               </LinearGradient>
             </TouchableOpacity>
           </LinearGradient>
         </GlassCard>
       ) : (
-        <GlassCard>
+        <GlassCard padding="large">
           <LinearGradient
             colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.gradientContainer}
           >
-            <Text variant="header" style={{ textAlign: 'center', marginBottom: theme.SPACING.md, color: theme.COLORS.success }}>
+            <Typography variant="h1" center style={{ color: COLORS.success, marginBottom: SPACING.regular }}>
               Game Complete!
-            </Text>
-            <Text variant="body" style={{ textAlign: 'center', marginBottom: theme.SPACING.lg, color: theme.COLORS.textPrimary }}>
+            </Typography>
+            <Typography variant="body" center style={{ marginBottom: SPACING.xlarge }}>
               Your final score: {score}
-            </Text>
-            <Text variant="body" style={{ textAlign: 'center', marginBottom: theme.SPACING.lg, color: theme.COLORS.textSecondary }}>
+            </Typography>
+            <Typography variant="body" center style={{ marginBottom: SPACING.xlarge }}>
               {score > 50 
                 ? "Great job recognizing defensive patterns and choosing constructive responses!" 
                 : "Remember, recognizing defensiveness is the first step to changing the pattern."}
-            </Text>
+            </Typography>
             <TouchableOpacity 
               style={styles.finishButton} 
               onPress={() => {
@@ -313,20 +289,18 @@ export default function DefensivenessDetox({ route, navigation }: any) {
               }}
             >
               <LinearGradient
-                colors={[theme.COLORS.primaryGradientStart, theme.COLORS.primaryGradientEnd]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+                colors={GRADIENTS.primary.colors}
+                start={GRADIENTS.primary.start}
+                end={GRADIENTS.primary.end}
                 style={styles.nextGradient}
               >
-                <Text 
-                  variant="header" 
-                  style={{ 
-                    color: theme.COLORS.background,
-                    textAlign: 'center'
-                  }}
+                <Typography 
+                  variant="h3" 
+                  center
+                  style={{ color: COLORS.backgroundPrimary }}
                 >
                   Return to Menu
-                </Text>
+                </Typography>
               </LinearGradient>
             </TouchableOpacity>
           </LinearGradient>
@@ -334,24 +308,24 @@ export default function DefensivenessDetox({ route, navigation }: any) {
       )}
 
       {partnerResponse && (
-        <GlassCard style={styles.partnerCard}>
-          <Text 
+        <GlassCard style={styles.partnerCard} padding="medium">
+          <Typography 
             variant="sass" 
             style={{ 
-              color: theme.COLORS.accentTeal, 
-              marginBottom: theme.SPACING.sm 
+              color: COLORS.aquaTeal, 
+              marginBottom: SPACING.small 
             }}
           >
             Partner's Choice:
-          </Text>
-          <Text 
+          </Typography>
+          <Typography 
             variant="body" 
             style={{ 
-              color: theme.COLORS.textSecondary 
+              color: COLORS.textSecondary 
             }}
           >
             {partnerResponse}
-          </Text>
+          </Typography>
         </GlassCard>
       )}
     </ScrollView>
@@ -375,73 +349,90 @@ export default function DefensivenessDetox({ route, navigation }: any) {
   };
 
   return (
-    <GameContainer 
-      state={baseState} 
-      inputs={["custom"]} 
-      inputArea={inputArea} 
-      onComplete={() => {
-        if (sessionId) {
-          const sessionRef = doc(db, 'game_sessions', sessionId);
-          updateDoc(sessionRef, {
-            finished_at: new Date().toISOString(),
-            score: score,
-            state: JSON.stringify({ completed: true, finalScore: score, responses })
-          });
-        }
-        navigation.goBack();
-      }} 
-      sessionId={sessionId} 
-    />
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <GameContainer 
+        state={baseState} 
+        inputs={["custom"]} 
+        inputArea={inputArea} 
+        onComplete={() => {
+          if (sessionId) {
+            const sessionRef = doc(db, 'game_sessions', sessionId);
+            updateDoc(sessionRef, {
+              finished_at: new Date().toISOString(),
+              score: score,
+              state: JSON.stringify({ completed: true, finalScore: score, responses })
+            });
+          }
+          navigation.goBack();
+        }} 
+        sessionId={sessionId} 
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundPrimary,
+  },
   gradientContainer: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.large,
   },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: theme.SPACING.md,
+    marginBottom: SPACING.regular,
+  },
+  title: {
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.headerLarge
+  },
+  progress: {
+    color: COLORS.textHint
+  },
+  scenarioText: {
+    marginBottom: SPACING.xlarge,
+    color: COLORS.textPrimary,
+    lineHeight: 24
   },
   responsesContainer: {
-    gap: theme.SPACING.md,
-    marginBottom: theme.SPACING.lg,
+    gap: SPACING.regular,
+    marginBottom: SPACING.xlarge,
   },
   responseOption: {
-    borderRadius: theme.SIZES.borderRadius,
+    borderRadius: BORDER_RADIUS.large,
     overflow: 'hidden',
   },
   selectedResponse: {
     borderWidth: 2,
-    borderColor: theme.COLORS.success,
+    borderColor: COLORS.success,
   },
   responseGradient: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.large,
   },
   feedbackContainer: {
-    padding: theme.SPACING.md,
+    padding: SPACING.regular,
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: theme.SIZES.borderRadius,
-    marginBottom: theme.SPACING.lg,
+    borderRadius: BORDER_RADIUS.large,
+    marginBottom: SPACING.xlarge,
   },
   nextButton: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
+    borderRadius: BORDER_RADIUS.button,
     overflow: 'hidden',
   },
   nextGradient: {
-    padding: theme.SPACING.lg,
-    borderRadius: theme.SIZES.buttonBorderRadius,
+    padding: SPACING.large,
+    borderRadius: BORDER_RADIUS.button,
   },
   finishButton: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
+    borderRadius: BORDER_RADIUS.button,
     overflow: 'hidden',
   },
   partnerCard: {
-    marginTop: theme.SPACING.md,
-    padding: theme.SPACING.md,
+    marginTop: SPACING.regular,
   },
 });

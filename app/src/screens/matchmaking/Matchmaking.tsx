@@ -1,18 +1,17 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
   Alert,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { collection, addDoc, query, where, getDocs, updateDoc, doc, onSnapshot } from 'firebase/firestore';
+import { collection, addDoc, doc, onSnapshot, getDoc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '../../lib/firebaseClient';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const MatchmakingScreen = () => {
   const [myCode, setMyCode] = useState('');
@@ -22,7 +21,7 @@ const MatchmakingScreen = () => {
   const navigation = useNavigation();
   const currentUser = auth.currentUser;
 
-  let lobbyListener = null;
+  let lobbyListener: any = null;
 
   const generateCode = async () => {
     if (myCode) {
@@ -33,19 +32,18 @@ const MatchmakingScreen = () => {
     setStatusMessage('Generating your unique connection code...');
     try {
       const lobbyRef = await addDoc(collection(db, 'lobbies'), {
-        initiatorId: currentUser.uid,
+        initiatorId: currentUser?.uid,
         status: 'waiting',
         createdAt: new Date(),
       });
       setMyCode(lobbyRef.id);
       setStatusMessage(`Your code is: ${lobbyRef.id}. Share it with your partner.`);
 
-      // Listen for a partner to join
       lobbyListener = onSnapshot(doc(db, 'lobbies', lobbyRef.id), (doc) => {
         const data = doc.data();
         if (data && data.status === 'matched') {
           setIsSearching(false);
-          if (lobbyListener) lobbyListener(); // Unsubscribe
+          if (lobbyListener) lobbyListener();
           navigation.navigate('GameLobby', { coupleId: doc.id });
         }
       });
@@ -69,19 +67,17 @@ const MatchmakingScreen = () => {
       const lobbyRef = doc(db, 'lobbies', partnerCode);
       const lobbySnap = await getDoc(lobbyRef);
 
-      if (lobbySnap.exists() && lobbySnap.data().status === 'waiting') {
+      if (lobbySnap.exists() && lobbySnap.data()?.status === 'waiting') {
         await updateDoc(lobbyRef, {
           status: 'matched',
-          joinerId: currentUser.uid,
+          joinerId: currentUser?.uid,
         });
-        // The initiator's listener will handle their navigation.
-        // We navigate the joiner here.
         setIsSearching(false);
         navigation.navigate('GameLobby', { coupleId: partnerCode });
       } else {
         throw new Error('Lobby not found or already full.');
       }
-    } catch (error) {
+    } catch (error: any) {
       Alert.alert('Connection Failed', error.message);
       setIsSearching(false);
       setStatusMessage('Connection failed. Please check the code and try again.');
@@ -89,7 +85,6 @@ const MatchmakingScreen = () => {
   };
 
   useEffect(() => {
-    // Cleanup listener on unmount
     return () => {
       if (lobbyListener) {
         lobbyListener();
@@ -98,90 +93,116 @@ const MatchmakingScreen = () => {
   }, [lobbyListener]);
 
   return (
-    <LinearGradient colors={['#1b192e', '#0e0d1a']} style={styles.container}>
-        <Text style={styles.title}>Connect with Your Partner</Text>
-        <Text style={styles.statusText}>{statusMessage}</Text>
+    <ScreenLayout 
+      showMarcie={true} 
+      marcieQuote="Connect with your partner to begin your journey together."
+      scrollable={true}
+    >
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          <Typography variant="h1" style={styles.title}>
+            Connect with Your Partner
+          </Typography>
+          
+          <Typography variant="body" style={styles.statusText}>
+            {statusMessage}
+          </Typography>
 
-        {isSearching && <ActivityIndicator size="large" color="#fc0c84" style={{ marginVertical: 20 }}/>}
-
-        <View style={styles.card}>
-            <Text style={styles.cardTitle}>Share Your Code</Text>
-            <TouchableOpacity style={styles.button} onPress={generateCode}>
-                <Text style={styles.buttonText}>{myCode ? `Code: ${myCode}` : 'Generate Code'}</Text>
-            </TouchableOpacity>
-        </View>
-
-        <View style={styles.card}>
-            <Text style={styles.cardTitle}>Enter Partner's Code</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter code..."
-                placeholderTextColor="rgba(255, 255, 255, 0.4)"
-                value={partnerCode}
-                onChangeText={setPartnerCode}
+          {isSearching && (
+            <ActivityIndicator 
+              size="large" 
+              color={COLORS.vibrantPink} 
+              style={styles.loader}
             />
-            <TouchableOpacity style={styles.button} onPress={connectToPartner}>
-                <Text style={styles.buttonText}>Connect</Text>
-            </TouchableOpacity>
+          )}
+
+          <GlassCard style={styles.card}>
+            <Typography variant="h3" style={styles.cardTitle}>
+              Share Your Code
+            </Typography>
+            <Typography variant="body" style={styles.cardDescription}>
+              Generate a unique code and share it with your partner to connect.
+            </Typography>
+            <SquishyButton 
+              onPress={generateCode}
+              variant="primary"
+              size="large"
+            >
+              {myCode ? `Code: ${myCode}` : 'Generate Code'}
+            </SquishyButton>
+          </GlassCard>
+
+          <GlassCard style={styles.card}>
+            <Typography variant="h3" style={styles.cardTitle}>
+              Enter Partner's Code
+            </Typography>
+            <Typography variant="body" style={styles.cardDescription}>
+              Have a code? Enter it below to join your partner.
+            </Typography>
+            <TextInput
+              placeholder="Enter code..."
+              placeholderTextColor={COLORS.textHint}
+              value={partnerCode}
+              onChangeText={setPartnerCode}
+              style={styles.input}
+            />
+            <SquishyButton 
+              onPress={connectToPartner}
+              variant="primary"
+              size="large"
+            >
+              Connect
+            </SquishyButton>
+          </GlassCard>
         </View>
-    </LinearGradient>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+  },
+  content: {
+    flex: 1,
+    paddingVertical: SPACING.xlarge,
     justifyContent: 'center',
-    padding: 24,
   },
   title: {
-    fontFamily: 'BarbieDream-Regular',
-    fontSize: 36,
-    color: '#ffffff',
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: SPACING.large,
   },
   statusText: {
-    fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
-    marginBottom: 32,
-    paddingHorizontal: 20,
+    marginBottom: SPACING.xxl,
+    paddingHorizontal: SPACING.lg,
+    opacity: 0.8,
+  },
+  loader: {
+    marginVertical: SPACING.xl,
   },
   card: {
-    backgroundColor: 'rgba(27, 25, 46, 0.8)',
-    borderRadius: 16,
-    padding: 24,
-    width: '100%',
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    marginBottom: SPACING.xl,
+    padding: SPACING.xlarge,
   },
   cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: 16,
+    marginBottom: SPACING.small,
+  },
+  cardDescription: {
+    marginBottom: SPACING.large,
+    opacity: 0.7,
   },
   input: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: 8,
-    padding: 16,
-    color: '#ffffff',
-    fontSize: 16,
-    marginBottom: 16,
-  },
-  button: {
-    backgroundColor: '#fc0c84',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 16,
+    marginBottom: SPACING.large,
+    height: 52,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.input,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    paddingHorizontal: SPACING.regular,
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
   },
 });
 

@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat, Easing } from 'react-native-reanimated';
-import { Text, SquishyButton, RadialGradientBackground, GlassCard } from '../../components/ui';
+import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { subscribeFight, supabase } from '../../lib/supabase';
 import * as Notifications from 'expo-notifications';
 import { useAppStore } from '../../state/store';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MarcieHost } from '../../components/ai-host';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 type CoolDownRoomProps = {
   route: any;
@@ -17,7 +17,7 @@ type CoolDownRoomProps = {
 export default function CoolDownRoom({ route, navigation }: CoolDownRoomProps) {
   const { fightId } = route.params || {};
   const breath = useSharedValue(0);
-  const [remaining, setRemaining] = useState(72); // 7200 originally, shortened for testing/demo
+  const [remaining, setRemaining] = useState(72);
   const timerRef = useRef<any>(null);
 
   useEffect(() => {
@@ -31,14 +31,20 @@ export default function CoolDownRoom({ route, navigation }: CoolDownRoomProps) {
       subscribeFight(fightId, (payload) => {
         const after = payload.new;
         if (after?.partner_b_input) {
-          Notifications.scheduleNotificationAsync({ content: { title: 'Partner joined SOS', body: 'Ready for verdict.' }, trigger: null });
+          Notifications.scheduleNotificationAsync({ 
+            content: { title: 'Partner joined SOS', body: 'Ready for verdict.' }, 
+            trigger: null 
+          });
           navigation.replace('SOSVerdict', { fightId });
         }
       }).then((s: any) => sub = s);
       useAppStore.getState().setSOSSessionId(fightId);
     }
 
-    return () => { clearInterval(timerRef.current); if (sub) supabase.removeChannel(sub); };
+    return () => { 
+      clearInterval(timerRef.current); 
+      if (sub) supabase.removeChannel(sub); 
+    };
   }, [fightId]);
 
   useEffect(() => {
@@ -54,49 +60,102 @@ export default function CoolDownRoom({ route, navigation }: CoolDownRoomProps) {
   const ss = Math.floor(remaining % 60).toString().padStart(2, '0');
 
   return (
-    <View style={styles.root}>
-      <RadialGradientBackground />
-      <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
+    <ScreenLayout 
+      showMarcie={true} 
+      marcieQuote="Breathe with the circle. In... and out..."
+      scrollable={false}
+    >
+      <SafeAreaView style={styles.container}>
         <View style={styles.content}>
-          <Text variant="header" style={styles.title}>Cool Down Room</Text>
-          <Text variant="body" style={styles.sub}>Wait for partner & breathe</Text>
+          <Typography variant="h1" style={styles.title}>Cool Down Room</Typography>
+          <Typography variant="body" style={styles.sub}>Wait for partner & breathe</Typography>
 
           <View style={styles.orbContainer}>
             <Animated.View style={[styles.orb, circleStyle]} />
             <View style={styles.orbCore} />
           </View>
 
-          <Text variant="keyword" style={{ fontSize: 24, marginTop: 20 }}>{mm}:{ss}</Text>
+          <Typography variant="h2" style={styles.timer}>{mm}:{ss}</Typography>
 
           <GlassCard style={styles.tipCard}>
-            <Ionicons name="leaf" size={24} color="#33DEA5" style={{ marginBottom: 8 }} />
-            <Text variant="body" style={{ textAlign: 'center' }}>
-              {"When heartbeat > 100bpm, you physically can't listen. Breathe until the circle is slow."}
-            </Text>
+            <Ionicons name="leaf" size={32} color={COLORS.success} style={styles.tipIcon} />
+            <Typography variant="body" style={styles.tipText}>
+              When heartbeat {'>'} 100bpm, you physically can't listen. Breathe until the circle is slow.
+            </Typography>
           </GlassCard>
 
-          <SquishyButton style={styles.skipBtn} onPress={() => navigation.replace('SOSVerdict', { fightId })}>
-            <Text variant="body" style={{ color: 'rgba(255,255,255,0.6)' }}>Skip (I'm Calm)</Text>
+          <SquishyButton 
+            onPress={() => navigation.replace('SOSVerdict', { fightId })}
+            variant="ghost"
+            size="medium"
+          >
+            Skip (I'm Calm)
           </SquishyButton>
         </View>
-
-        <MarcieHost mode="idle" size={100} float position={{ x: 0, y: 50 }} />
       </SafeAreaView>
-    </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#0a0708' },
-  content: { alignItems: 'center', width: '100%', padding: 20 },
-  title: { color: '#33DEA5', fontSize: 24, marginBottom: 4 },
-  sub: { color: 'rgba(255,255,255,0.5)', marginBottom: 40 },
-
-  orbContainer: { width: 200, height: 200, alignItems: 'center', justifyContent: 'center' },
-  orb: { position: 'absolute', width: 140, height: 140, borderRadius: 70, backgroundColor: '#33DEA5', opacity: 0.3 },
-  orbCore: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#33DEA5', opacity: 0.8, shadowColor: '#33DEA5', shadowRadius: 20, shadowOpacity: 0.5 },
-
-  tipCard: { marginTop: 40, alignItems: 'center', backgroundColor: 'rgba(51, 222, 165, 0.1)', borderColor: '#33DEA5' },
-  skipBtn: { marginTop: 20, backgroundColor: 'transparent' }
+  container: {
+    flex: 1,
+  },
+  content: { 
+    flex: 1,
+    alignItems: 'center', 
+    justifyContent: 'center',
+    paddingVertical: SPACING.xlarge,
+  },
+  title: { 
+    color: COLORS.success, 
+    marginBottom: SPACING.small,
+    textAlign: 'center',
+  },
+  sub: { 
+    opacity: 0.5, 
+    marginBottom: SPACING.xxl,
+    textAlign: 'center',
+  },
+  orbContainer: { 
+    width: 200, 
+    height: 200, 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    marginBottom: SPACING.xl,
+  },
+  orb: { 
+    position: 'absolute', 
+    width: 140, 
+    height: 140, 
+    borderRadius: 70, 
+    backgroundColor: COLORS.success, 
+    opacity: 0.3,
+  },
+  orbCore: { 
+    width: 100, 
+    height: 100, 
+    borderRadius: 50, 
+    backgroundColor: COLORS.success, 
+    opacity: 0.8,
+    ...SHADOWS.neonSoft,
+    shadowColor: COLORS.success,
+  },
+  timer: {
+    marginBottom: SPACING.xxl,
+  },
+  tipCard: { 
+    marginTop: SPACING.xl, 
+    alignItems: 'center', 
+    backgroundColor: `${COLORS.success}10`, 
+    borderColor: COLORS.success,
+    marginBottom: SPACING.xl,
+    padding: SPACING.xlarge,
+  },
+  tipIcon: {
+    marginBottom: SPACING.large,
+  },
+  tipText: {
+    textAlign: 'center',
+  },
 });

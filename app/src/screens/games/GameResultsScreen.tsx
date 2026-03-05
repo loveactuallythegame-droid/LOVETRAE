@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { Text, GlassCard } from '../../components/ui';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc } from 'firebase/firestore';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS } from '../../theme';
 
 export default function GameResultsScreen({ route, navigation }: any) {
   const { gameId, gameTitle, score, maxScore, xpEarned, completed, responses, achievements } = route.params || {
@@ -57,164 +58,158 @@ export default function GameResultsScreen({ route, navigation }: any) {
   }, []);
 
   const percentage = Math.round((score / maxScore) * 100);
-  const badgeColor = percentage >= 80 ? theme.COLORS.success : percentage >= 60 ? theme.COLORS.accentYellow : theme.COLORS.warning;
+  const badgeColor = percentage >= 80 ? COLORS.success : percentage >= 60 ? COLORS.warning : COLORS.error;
 
   const renderAchievement = (achievement: any) => (
     <GlassCard key={achievement.id} style={styles.achievementCard}>
       <LinearGradient
-        colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
+        colors={[COLORS.vibrantPink + '33', COLORS.rosePink + '33']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.achievementGradient}
       >
         <View style={styles.achievementContent}>
-          <Text variant="title" style={{ color: theme.COLORS.textPrimary }}>
+          <Typography variant="h2" color={COLORS.textPrimary}>
             {achievement.title}
-          </Text>
-          <Text variant="small" style={{ color: theme.COLORS.textSecondary }}>
+          </Typography>
+          <Typography variant="caption" color={COLORS.textSecondary}>
             {achievement.description}
-          </Text>
+          </Typography>
         </View>
       </LinearGradient>
     </GlassCard>
   );
 
   return (
-    <LinearGradient
-      colors={[theme.COLORS.background, '#392830', theme.COLORS.background]}
-      style={styles.container}
-    >
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.header}>
-          <Text variant="header" style={styles.title}>Game Results</Text>
-          <Text variant="body" style={styles.subtitle}>{gameTitle}</Text>
-        </View>
-
-        <GlassCard style={styles.resultsCard}>
-          <LinearGradient
-            colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.gradientContainer}
-          >
-            <View style={styles.scoreContainer}>
-              <Text variant="header" style={{ fontSize: 48, color: badgeColor }}>
-                {percentage}%
-              </Text>
-              <Text variant="body" style={{ color: theme.COLORS.textSecondary, marginTop: theme.SPACING.sm }}>
-                {score}/{maxScore} points
-              </Text>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <LinearGradient
+          colors={[COLORS.backgroundPrimary, COLORS.backgroundCard, COLORS.backgroundPrimary]}
+          style={styles.gradient}
+        >
+          <ScrollView contentContainerStyle={styles.content}>
+            <View style={styles.header}>
+              <Typography variant="h1" style={styles.title}>Game Results</Typography>
+              <Typography variant="body" color={COLORS.textSecondary}>{gameTitle}</Typography>
             </View>
 
-            <View style={styles.xpContainer}>
-              <Text variant="body" style={{ color: theme.COLORS.textSecondary }}>
-                XP Earned:
-              </Text>
-              <Text variant="header" style={{ color: theme.COLORS.accentTeal, marginLeft: theme.SPACING.sm }}>
-                +{xpEarned}
-              </Text>
-            </View>
-
-            <View style={styles.badgeContainer}>
+            <GlassCard style={styles.resultsCard}>
               <LinearGradient
-                colors={[badgeColor, badgeColor + '80']}
+                colors={[COLORS.vibrantPink + '33', COLORS.rosePink + '33']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={styles.badgeGradient}
+                style={styles.gradientContainer}
               >
-                <Text variant="header" style={{ color: theme.COLORS.background, textAlign: 'center' }}>
-                  {percentage >= 80 ? 'EXCELLENT' : percentage >= 60 ? 'GOOD' : 'KEEP GOING'}
-                </Text>
+                <View style={styles.scoreContainer}>
+                  <Typography variant="h1" color={badgeColor}>
+                    {percentage}%
+                  </Typography>
+                  <Typography variant="body" color={COLORS.textSecondary} style={{ marginTop: SPACING.small }}>
+                    {score}/{maxScore} points
+                  </Typography>
+                </View>
+
+                <View style={styles.xpContainer}>
+                  <Typography variant="body" color={COLORS.textSecondary}>
+                    XP Earned:
+                  </Typography>
+                  <Typography variant="h2" color={COLORS.aquaTeal} style={{ marginLeft: SPACING.small }}>
+                    +{xpEarned}
+                  </Typography>
+                </View>
+
+                <View style={styles.badgeContainer}>
+                  <LinearGradient
+                    colors={[badgeColor, badgeColor + '80']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.badgeGradient}
+                  >
+                    <Typography variant="h2" color={COLORS.backgroundPrimary} center>
+                      {percentage >= 80 ? 'EXCELLENT' : percentage >= 60 ? 'GOOD' : 'KEEP GOING'}
+                    </Typography>
+                  </LinearGradient>
+                </View>
               </LinearGradient>
+            </GlassCard>
+
+            {achievements && achievements.length > 0 && (
+              <View>
+                <Typography variant="h2" style={styles.sectionTitle}>Achievements</Typography>
+                {achievements.map(renderAchievement)}
+              </View>
+            )}
+
+            <View style={styles.statsContainer}>
+              <GlassCard style={styles.statCard}>
+                <LinearGradient
+                  colors={[COLORS.vibrantPink + '33', COLORS.rosePink + '33']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.gradientContainer}
+                >
+                  <Typography variant="body" color={COLORS.textSecondary} style={{ marginBottom: SPACING.small }}>
+                    Responses
+                  </Typography>
+                  <Typography variant="h2" color={COLORS.textPrimary}>
+                    {responses ? responses.length : 0}
+                  </Typography>
+                </LinearGradient>
+              </GlassCard>
+
+              <GlassCard style={styles.statCard}>
+                <LinearGradient
+                  colors={[COLORS.vibrantPink + '33', COLORS.rosePink + '33']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.gradientContainer}
+                >
+                  <Typography variant="body" color={COLORS.textSecondary} style={{ marginBottom: SPACING.small }}>
+                    Completion
+                  </Typography>
+                  <Typography variant="h2" color={COLORS.textPrimary}>
+                    {completed ? 'Yes' : 'No'}
+                  </Typography>
+                </LinearGradient>
+              </GlassCard>
+
+              <GlassCard style={styles.statCard}>
+                <LinearGradient
+                  colors={[COLORS.vibrantPink + '33', COLORS.rosePink + '33']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.gradientContainer}
+                >
+                  <Typography variant="body" color={COLORS.textSecondary} style={{ marginBottom: SPACING.small }}>
+                    Time
+                  </Typography>
+                  <Typography variant="h2" color={COLORS.textPrimary}>
+                    5:42
+                  </Typography>
+                </LinearGradient>
+              </GlassCard>
             </View>
-          </LinearGradient>
-        </GlassCard>
 
-        {achievements && achievements.length > 0 && (
-          <View>
-            <Text variant="title" style={styles.sectionTitle}>Achievements</Text>
-            {achievements.map(renderAchievement)}
-          </View>
-        )}
+            <View style={styles.buttonContainer}>
+              <SquishyButton 
+                onPress={() => navigation.navigate('GameLibraryGridView')}
+                style={styles.button}
+              >
+                <Typography variant="body">Play Another Game</Typography>
+              </SquishyButton>
 
-        <View style={styles.statsContainer}>
-          <GlassCard style={styles.statCard}>
-            <LinearGradient
-              colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.gradientContainer}
-            >
-              <Text variant="body" style={{ color: theme.COLORS.textSecondary, marginBottom: theme.SPACING.sm }}>
-                Responses
-              </Text>
-              <Text variant="header" style={{ color: theme.COLORS.textPrimary }}>
-                {responses ? responses.length : 0}
-              </Text>
-            </LinearGradient>
-          </GlassCard>
-
-          <GlassCard style={styles.statCard}>
-            <LinearGradient
-              colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.gradientContainer}
-            >
-              <Text variant="body" style={{ color: theme.COLORS.textSecondary, marginBottom: theme.SPACING.sm }}>
-                Completion
-              </Text>
-              <Text variant="header" style={{ color: theme.COLORS.textPrimary }}>
-                {completed ? 'Yes' : 'No'}
-              </Text>
-            </LinearGradient>
-          </GlassCard>
-
-          <GlassCard style={styles.statCard}>
-            <LinearGradient
-              colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.gradientContainer}
-            >
-              <Text variant="body" style={{ color: theme.COLORS.textSecondary, marginBottom: theme.SPACING.sm }}>
-                Time
-              </Text>
-              <Text variant="header" style={{ color: theme.COLORS.textPrimary }}>
-                5:42
-              </Text>
-            </LinearGradient>
-          </GlassCard>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={styles.button} 
-            onPress={() => navigation.navigate('GameLibraryGridView')}
-          >
-            <LinearGradient
-              colors={[theme.COLORS.primaryGradientStart, theme.COLORS.primaryGradientEnd]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.buttonGradient}
-            >
-              <Text variant="header" style={{ color: theme.COLORS.background, textAlign: 'center' }}>
-                Play Another Game
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={styles.secondaryButton} 
-            onPress={() => navigation.navigate('DashboardHome')}
-          >
-            <Text variant="header" style={{ color: theme.COLORS.textPrimary, textAlign: 'center' }}>
-              Return to Dashboard
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </LinearGradient>
+              <SquishyButton 
+                onPress={() => navigation.navigate('DashboardHome')}
+                variant="ghost"
+                style={styles.secondaryButton}
+              >
+                <Typography variant="body">Return to Dashboard</Typography>
+              </SquishyButton>
+            </View>
+          </ScrollView>
+        </LinearGradient>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 }
 
@@ -222,60 +217,57 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  gradient: {
+    flex: 1,
+  },
   content: {
-    padding: theme.SPACING.lg,
-    paddingBottom: theme.SPACING.xxl,
+    padding: SPACING.screenPadding,
+    paddingBottom: SPACING.xxlarge,
   },
   header: {
     alignItems: 'center',
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.xlarge,
   },
   title: {
-    fontSize: theme.TYPOGRAPHY.header.fontSize,
-    color: theme.COLORS.textPrimary,
-    marginBottom: theme.SPACING.sm,
-  },
-  subtitle: {
-    fontSize: theme.TYPOGRAPHY.body.fontSize,
-    color: theme.COLORS.textSecondary,
+    marginBottom: SPACING.small,
   },
   resultsCard: {
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.xlarge,
   },
   gradientContainer: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.xlarge,
     alignItems: 'center',
   },
   scoreContainer: {
     alignItems: 'center',
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.xlarge,
   },
   xpContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.xlarge,
   },
   badgeContainer: {
     alignSelf: 'center',
-    marginTop: theme.SPACING.md,
+    marginTop: SPACING.regular,
   },
   badgeGradient: {
-    paddingHorizontal: theme.SPACING.lg,
-    paddingVertical: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    paddingHorizontal: SPACING.xlarge,
+    paddingVertical: SPACING.regular,
+    borderRadius: BORDER_RADIUS.xlarge,
   },
   sectionTitle: {
-    color: theme.COLORS.textPrimary,
-    marginBottom: theme.SPACING.md,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.regular,
   },
   achievementCard: {
-    marginBottom: theme.SPACING.md,
+    marginBottom: SPACING.regular,
   },
   achievementGradient: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.xlarge,
   },
   achievementContent: {
     alignItems: 'center',
@@ -283,28 +275,20 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.xlarge,
   },
   statCard: {
     flex: 1,
-    marginHorizontal: theme.SPACING.sm,
+    marginHorizontal: SPACING.tiny,
   },
   buttonContainer: {
-    marginTop: theme.SPACING.lg,
+    marginTop: SPACING.xlarge,
   },
   button: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    overflow: 'hidden',
-    marginBottom: theme.SPACING.md,
-  },
-  buttonGradient: {
-    padding: theme.SPACING.lg,
-    borderRadius: theme.SIZES.buttonBorderRadius,
+    marginBottom: SPACING.regular,
   },
   secondaryButton: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
     borderWidth: 1,
-    borderColor: theme.COLORS.textHint,
-    padding: theme.SPACING.lg,
+    borderColor: COLORS.borderSubtle,
   },
 });

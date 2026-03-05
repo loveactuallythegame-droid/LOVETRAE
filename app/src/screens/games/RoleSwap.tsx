@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const CONFLICT = "I feel ignored when you game all night.";
 
@@ -17,22 +19,22 @@ export default function RoleSwap({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Role Swap</Text>
-        <Text variant="body">Partner says:</Text>
-        <Text variant="sass" style={styles.line}>"{CONFLICT}"</Text>
-        <Text variant="body">Reply AS THEM (defend yourself as they would):</Text>
+        <Typography variant="h2" style={{ marginBottom: SPACING.regular }}>Role Swap</Typography>
+        <Typography variant="body">Partner says:</Typography>
+        <Typography variant="sass" style={styles.line}>"{CONFLICT}"</Typography>
+        <Typography variant="body">Reply AS THEM (defend yourself as they would):</Typography>
         <TextInput
             style={styles.input}
             placeholder="Type their usual response..."
-            placeholderTextColor="#666"
+            placeholderTextColor={COLORS.textHint}
             value={reply}
             onChangeText={setReply}
             multiline
         />
         <SquishyButton onPress={submit} style={styles.btn}>
-            <Text variant="header">Send Line</Text>
+            <Typography variant="h2">Send Line</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -50,11 +52,33 @@ export default function RoleSwap({ route, navigation }: any) {
     playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
   }), [gameId]);
 
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => submit()} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => submit()} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  line: { fontSize: 18, textAlign: 'center', marginVertical: 16, color: '#FA1F63', fontStyle: 'italic' },
-  input: { backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', padding: 12, borderRadius: 8, minHeight: 80 },
-  btn: { marginTop: 16, backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
+  line: { 
+    textAlign: 'center', 
+    marginVertical: SPACING.large, 
+    color: COLORS.emotionalConnection, 
+    fontStyle: 'italic' 
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    color: COLORS.textPrimary, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.medium, 
+    minHeight: 80,
+    marginVertical: SPACING.regular
+  },
+  btn: { 
+    marginTop: SPACING.regular, 
+    backgroundColor: COLORS.success, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
+    alignItems: 'center' 
+  },
 });

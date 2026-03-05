@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function RelationshipCouncil({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -44,18 +46,23 @@ export default function RelationshipCouncil({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
-                <Text variant="header">Article I: Boundaries</Text>
-                <Text variant="body">Prompt: Communication with friends of previous threat categories.</Text>
+                <Typography variant="h2">Article I: Boundaries</Typography>
+                <Typography variant="body" style={styles.prompt}>Prompt: Communication with friends of previous threat categories.</Typography>
 
                 <View style={styles.entry}>
-                    <Text variant="instructions">Draft:</Text>
-                    <Text variant="body" style={styles.draft}>"We proactively share plans involving them and invite partner to join or opt out."</Text>
+                    <Typography variant="caption">Draft:</Typography>
+                    <Typography variant="body" style={styles.draft}>"We proactively share plans involving them and invite partner to join or opt out."</Typography>
                 </View>
 
-                <SquishyButton onPress={ratify} style={styles.submitBtn}>
-                    <Text variant="header">Ratify Article</Text>
+                <SquishyButton 
+                    onPress={ratify} 
+                    variant="primary"
+                    size="large"
+                    style={styles.submitBtn}
+                >
+                    <Typography variant="button">Ratify Article</Typography>
                 </SquishyButton>
             </GlassCard>
         </ScrollView>
@@ -77,23 +84,26 @@ export default function RelationshipCouncil({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        gap: SPACING.regular,
+    },
     entry: {
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        padding: 12,
-        borderRadius: 8,
-        marginVertical: 10
+        backgroundColor: COLORS.backgroundInput,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.medium,
+        marginVertical: SPACING.regular,
     },
     draft: {
         fontStyle: 'italic',
-        color: '#33DEA5',
-        marginTop: 4
+        color: COLORS.mintGreen,
+        marginTop: SPACING.small,
+    },
+    prompt: {
+        marginTop: SPACING.small,
+        marginBottom: SPACING.small,
     },
     submitBtn: {
-        marginTop: 20,
-        backgroundColor: '#00BFFF',
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20
+        marginTop: SPACING.xlarge,
+        marginBottom: SPACING.xlarge,
     },
 });

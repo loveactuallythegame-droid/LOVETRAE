@@ -1,24 +1,23 @@
 
 import React from "react";
-import { View, Text } from "react-native";
-import { RadialGradientBackground } from "../../components/ui/RadialGradientBackground";
-import { Header } from "../../components/ui/Header";
+import { View } from "react-native";
+import { ScreenLayout } from "../../layout";
+import { Typography } from "../../components/ui";
+import { COLORS } from "../../theme";
 
 const AdminAnalytics = () => {
-
-
   return (
-    <RadialGradientBackground
-      colors={["#5C1459", "#FA1F63"]}
+    <ScreenLayout
+      showHeader={true}
+      scrollable={true}
     >
-      <Header
-        logoSource={require("../../../assets/logo/mainlogoone.png")}
-      />
-      <View className="flex-1 justify-center items-center">
-        <Text className="text-white text-4xl font-wonderful-sometimes">Admin Analytics</Text>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Typography variant="h1" color={COLORS.textPrimary}>
+          Admin Analytics
+        </Typography>
         {/* Add charts and data visualizations here */}
       </View>
-    </RadialGradientBackground>
+    </ScreenLayout>
   );
 };
 

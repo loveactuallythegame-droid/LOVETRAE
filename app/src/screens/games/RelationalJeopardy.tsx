@@ -10,14 +10,17 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Alert, TextInput } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
 
 // Components
-import { GlassCard, Text } from '../../components/ui';
+import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
+
+// Theme
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -250,11 +253,11 @@ const RelationalJeopardy: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <View style={styles.container}>
-                <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                    <Text style={styles.loadingText}>Loading Jeopardy...</Text>
-                </LinearGradient>
-            </View>
+            <ScreenLayout showHeader={false}>
+                <View style={styles.centerContent}>
+                    <Typography variant="h2">Loading Jeopardy...</Typography>
+                </View>
+            </ScreenLayout>
         );
     }
 
@@ -263,193 +266,175 @@ const RelationalJeopardy: React.FC = () => {
         const clue = categories[selectedClue.catIndex].clues[selectedClue.clueIndex];
         
         return (
-            <View style={styles.container}>
-                <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                    <ScrollView contentContainerStyle={styles.scrollContent}>
-                        {/* Daily Double */}
-                        {showDailyDouble && (
-                            <View style={styles.dailyDoubleBanner}>
-                                <Text style={styles.dailyDoubleText}>🎯 DAILY DOUBLE!</Text>
-                                <Text style={styles.wagerText}>Current Score: {score}</Text>
-                                <TextInput
-                                    style={styles.wagerInput}
-                                    placeholder="Enter wager..."
-                                    placeholderTextColor="#999"
-                                    keyboardType="numeric"
-                                    value={dailyDoubleWager.toString()}
-                                    onChangeText={(text) => setDailyDoubleWager(Math.min(score, parseInt(text) || 0))}
-                                />
-                            </View>
-                        )}
+            <ScreenLayout showHeader={false}>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
+                    {/* Daily Double */}
+                    {showDailyDouble && (
+                        <View style={styles.dailyDoubleBanner}>
+                            <Typography variant="h1" style={styles.dailyDoubleText}>🎯 DAILY DOUBLE!</Typography>
+                            <Typography variant="body" style={styles.wagerText}>Current Score: {score}</Typography>
+                            <TextInput
+                                style={styles.wagerInput}
+                                placeholder="Enter wager..."
+                                placeholderTextColor={COLORS.textHint}
+                                keyboardType="numeric"
+                                value={dailyDoubleWager.toString()}
+                                onChangeText={(text) => setDailyDoubleWager(Math.min(score, parseInt(text) || 0))}
+                            />
+                        </View>
+                    )}
 
-                        {/* Question */}
-                        <GlassCard style={styles.questionCard}>
-                            <Text style={styles.categoryLabel}>{categories[selectedClue.catIndex].name}</Text>
-                            <Text style={styles.valueLabel}>${clue.value}</Text>
-                            <Text style={styles.questionText}>{clue.question}</Text>
-                        </GlassCard>
+                    {/* Question */}
+                    <GlassCard style={styles.questionCard}>
+                        <Typography variant="caption" style={styles.categoryLabel}>{categories[selectedClue.catIndex].name}</Typography>
+                        <Typography variant="h2" style={styles.valueLabel}>${clue.value}</Typography>
+                        <Typography variant="body" center>{clue.question}</Typography>
+                    </GlassCard>
 
-                        {/* Answer Input */}
-                        <TextInput
-                            style={styles.answerInput}
-                            placeholder="What is...?"
-                            placeholderTextColor="#999"
-                            value={userAnswer}
-                            onChangeText={setUserAnswer}
-                            autoFocus
-                        />
+                    {/* Answer Input */}
+                    <TextInput
+                        style={styles.answerInput}
+                        placeholder="What is...?"
+                        placeholderTextColor={COLORS.textHint}
+                        value={userAnswer}
+                        onChangeText={setUserAnswer}
+                        autoFocus
+                    />
 
-                        {/* Buttons */}
-                        <TouchableOpacity 
-                            style={[styles.submitButton, !userAnswer.trim() && styles.disabledButton]}
-                            onPress={submitAnswer}
-                            disabled={!userAnswer.trim() || (showDailyDouble && dailyDoubleWager <= 0)}
-                        >
-                            <Text style={styles.submitText}>Submit Answer</Text>
-                        </TouchableOpacity>
+                    {/* Buttons */}
+                    <SquishyButton 
+                        onPress={submitAnswer}
+                        disabled={!userAnswer.trim() || (showDailyDouble && dailyDoubleWager <= 0)}
+                        variant="primary"
+                        size="large"
+                        style={styles.submitButton}
+                    >
+                        <Typography variant="button">Submit Answer</Typography>
+                    </SquishyButton>
 
-                        <TouchableOpacity style={styles.skipButton} onPress={skipClue}>
-                            <Text style={styles.skipText}>Skip (-${clue.value})</Text>
-                        </TouchableOpacity>
-                    </ScrollView>
-                </LinearGradient>
-            </View>
+                    <SquishyButton 
+                        onPress={skipClue}
+                        variant="ghost"
+                        size="medium"
+                    >
+                        <Typography variant="caption" style={styles.skipText}>Skip (-${clue.value})</Typography>
+                    </SquishyButton>
+                </ScrollView>
+            </ScreenLayout>
         );
     }
 
     // Game board view
     return (
-        <View style={styles.container}>
-            <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <Text style={styles.title}>Relational Jeopardy!</Text>
-                        <View style={styles.scoreRow}>
-                            <Text style={styles.scoreText}>Score: ${score}</Text>
-                            {isSyncing && <Text style={styles.syncText}>💾</Text>}
-                        </View>
-                        <Text style={styles.progressText}>
-                            {answeredClues} / {totalClues} clues
-                        </Text>
+        <ScreenLayout showHeader={false}>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                {/* Header */}
+                <View style={styles.header}>
+                    <Typography variant="h1" center>Relational Jeopardy!</Typography>
+                    <View style={styles.scoreRow}>
+                        <Typography variant="h2" style={styles.scoreText}>Score: ${score}</Typography>
+                        {isSyncing && <Typography variant="caption">💾</Typography>}
                     </View>
+                    <Typography variant="caption" style={styles.progressText}>
+                        {answeredClues} / {totalClues} clues
+                    </Typography>
+                </View>
 
-                    {/* Game Board */}
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <View style={styles.board}>
-                            {categories.map((category, catIndex) => (
-                                <View key={category.name} style={styles.categoryColumn}>
-                                    {/* Category Header */}
-                                    <View style={styles.categoryHeader}>
-                                        <Text style={styles.categoryName}>{category.name}</Text>
-                                    </View>
-                                    
-                                    {/* Clues */}
-                                    {category.clues.map((clue, clueIndex) => (
-                                        <TouchableOpacity
-                                            key={clue.value}
-                                            style={[
-                                                styles.clueCell,
-                                                clue.revealed && styles.clueRevealed,
-                                                clue.dailyDouble && !clue.revealed && styles.dailyDoubleCell
-                                            ]}
-                                            onPress={() => selectClue(catIndex, clueIndex)}
-                                            disabled={clue.revealed}
-                                        >
-                                            <Text style={[
-                                                styles.clueValue,
-                                                clue.revealed && styles.clueValueRevealed
-                                            ]}>
-                                                {clue.revealed ? '—' : `$${clue.value}`}
-                                            </Text>
-                                            {clue.dailyDouble && !clue.revealed && (
-                                                <Text style={styles.ddBadge}>DD</Text>
-                                            )}
-                                        </TouchableOpacity>
-                                    ))}
+                {/* Game Board */}
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <View style={styles.board}>
+                        {categories.map((category, catIndex) => (
+                            <View key={category.name} style={styles.categoryColumn}>
+                                {/* Category Header */}
+                                <View style={styles.categoryHeader}>
+                                    <Typography variant="caption" center style={styles.categoryName}>{category.name}</Typography>
                                 </View>
-                            ))}
-                        </View>
-                    </ScrollView>
-
-                    {/* Session Info */}
-                    {session && (
-                        <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
-                    )}
+                                
+                                {/* Clues */}
+                                {category.clues.map((clue, clueIndex) => (
+                                    <TouchableOpacity
+                                        key={clue.value}
+                                        style={[
+                                            styles.clueCell,
+                                            clue.revealed && styles.clueRevealed,
+                                            clue.dailyDouble && !clue.revealed && styles.dailyDoubleCell
+                                        ]}
+                                        onPress={() => selectClue(catIndex, clueIndex)}
+                                        disabled={clue.revealed}
+                                    >
+                                        <Typography variant="h3" style={[
+                                            styles.clueValue,
+                                            clue.revealed && styles.clueValueRevealed
+                                        ]}>
+                                            {clue.revealed ? '—' : `$${clue.value}`}
+                                        </Typography>
+                                        {clue.dailyDouble && !clue.revealed && (
+                                            <Typography variant="caption" style={styles.ddBadge}>DD</Typography>
+                                        )}
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        ))}
+                    </View>
                 </ScrollView>
-            </LinearGradient>
-        </View>
+
+                {/* Session Info */}
+                {session && (
+                    <Typography variant="caption" center style={styles.sessionInfo}>
+                        Session: {session.id.slice(0, 8)}...
+                    </Typography>
+                )}
+            </ScrollView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    centerContent: {
         flex: 1,
-    },
-    background: {
-        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     scrollContent: {
-        padding: 20,
-        paddingTop: 60,
+        padding: SPACING.screenPadding,
+        paddingTop: SPACING.xlarge,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#fff',
-        textAlign: 'center',
+        marginBottom: SPACING.xlarge,
     },
     scoreRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: SPACING.regular,
     },
     scoreText: {
-        fontSize: 24,
-        color: '#FFD700',
-        fontWeight: 'bold',
-    },
-    syncText: {
-        marginLeft: 8,
-        fontSize: 14,
+        color: COLORS.brightYellow,
+        marginRight: SPACING.small,
     },
     progressText: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 14,
-        marginTop: 5,
-    },
-    loadingText: {
-        color: '#fff',
-        fontSize: 18,
-        textAlign: 'center',
-        marginTop: 100,
+        color: COLORS.textHint,
+        marginTop: SPACING.small,
     },
     board: {
         flexDirection: 'row',
-        paddingVertical: 10,
+        paddingVertical: SPACING.regular,
     },
     categoryColumn: {
         width: 140,
-        marginRight: 10,
+        marginRight: SPACING.regular,
     },
     categoryHeader: {
         backgroundColor: '#060ce9',
-        padding: 10,
+        padding: SPACING.regular,
         height: 70,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 4,
-        marginBottom: 5,
+        borderRadius: BORDER_RADIUS.small,
+        marginBottom: SPACING.small,
     },
     categoryName: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 11,
-        textAlign: 'center',
+        color: COLORS.textPrimary,
         textTransform: 'uppercase',
     },
     clueCell: {
@@ -457,122 +442,86 @@ const styles = StyleSheet.create({
         height: 70,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 4,
-        marginBottom: 5,
+        borderRadius: BORDER_RADIUS.small,
+        marginBottom: SPACING.small,
     },
     clueRevealed: {
         backgroundColor: 'rgba(6, 12, 233, 0.3)',
     },
     dailyDoubleCell: {
         borderWidth: 2,
-        borderColor: '#FFD700',
+        borderColor: COLORS.brightYellow,
     },
     clueValue: {
-        color: '#FFD700',
-        fontSize: 22,
-        fontWeight: 'bold',
+        color: COLORS.brightYellow,
     },
     clueValueRevealed: {
-        color: 'rgba(255,255,255,0.3)',
+        color: COLORS.textHint,
     },
     ddBadge: {
         position: 'absolute',
         top: 2,
         right: 2,
-        backgroundColor: '#FFD700',
-        color: '#000',
-        fontSize: 8,
-        fontWeight: 'bold',
-        padding: 2,
-        borderRadius: 2,
+        backgroundColor: COLORS.brightYellow,
+        color: COLORS.backgroundPrimary,
+        padding: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.small,
     },
     dailyDoubleBanner: {
-        backgroundColor: '#FFD700',
-        padding: 20,
-        borderRadius: 10,
-        marginBottom: 20,
+        backgroundColor: COLORS.brightYellow,
+        padding: SPACING.xlarge,
+        borderRadius: BORDER_RADIUS.large,
+        marginBottom: SPACING.xlarge,
         alignItems: 'center',
     },
     dailyDoubleText: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#000',
+        color: COLORS.backgroundPrimary,
     },
     wagerText: {
-        fontSize: 16,
-        color: '#000',
-        marginTop: 10,
+        color: COLORS.backgroundPrimary,
+        marginTop: SPACING.regular,
     },
     wagerInput: {
-        backgroundColor: '#fff',
-        padding: 10,
-        borderRadius: 5,
+        backgroundColor: COLORS.textPrimary,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.medium,
         width: 150,
         textAlign: 'center',
-        fontSize: 18,
-        marginTop: 10,
+        marginTop: SPACING.regular,
+        color: COLORS.backgroundPrimary,
     },
     questionCard: {
-        padding: 20,
-        marginBottom: 20,
+        padding: SPACING.cardPadding,
+        marginBottom: SPACING.xlarge,
         minHeight: 200,
         justifyContent: 'center',
     },
     categoryLabel: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 12,
-        marginBottom: 5,
+        color: COLORS.textHint,
+        marginBottom: SPACING.small,
     },
     valueLabel: {
-        color: '#FFD700',
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 15,
-    },
-    questionText: {
-        fontSize: 20,
-        color: '#fff',
-        textAlign: 'center',
-        lineHeight: 28,
+        color: COLORS.brightYellow,
+        marginBottom: SPACING.regular,
     },
     answerInput: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 10,
-        padding: 15,
-        color: '#fff',
-        fontSize: 18,
-        marginBottom: 20,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular,
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.xlarge,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.3)',
+        borderColor: COLORS.borderSubtle,
     },
     submitButton: {
-        backgroundColor: '#060ce9',
-        paddingVertical: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    disabledButton: {
-        opacity: 0.5,
-    },
-    submitText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    skipButton: {
-        paddingVertical: 12,
-        alignItems: 'center',
+        marginBottom: SPACING.regular,
     },
     skipText: {
-        color: 'rgba(255,255,255,0.5)',
-        fontSize: 14,
+        color: COLORS.textHint,
     },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
-        textAlign: 'center',
-        marginTop: 20,
+        color: COLORS.textHint,
+        marginTop: SPACING.xlarge,
     },
 });
 

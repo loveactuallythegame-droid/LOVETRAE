@@ -1,54 +1,64 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function TheIcebergDive({ navigation }: any) {
-    useEffect(() => {
-        speakMarcie("You got to ‘I need to feel chosen’? Honey… grab tissues. And chocolate.");
-    }, []);
+  useEffect(() => {
+    speakMarcie("You got to 'I need to feel chosen'? Honey… grab tissues. And chocolate.");
+  }, []);
 
-    return (
-        <LinearGradient colors={['#2A0040', '#000000']} style={styles.container}>
-            <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.header}>
-                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-                        <Text variant="body">Back</Text>
-                    </SquishyButton>
-                    <Text variant="header" style={styles.title}>The Iceberg Dive</Text>
-                </View>
+  return (
+    <ScreenLayout showHeader={true} scrollable={true}>
+      <View style={{ gap: SPACING.regular }}>
+        <Typography variant="h1" center>The Love Arcade</Typography>
+        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Type: Nested dropdown</Text>
-                    <Text variant="body">Mechanics: Surface (“I’m annoyed”) → drill down → “Fear of invisibility” → unlock “Core Need” badge.</Text>
-                </GlassCard>
+        <View style={styles.header}>
+          <SquishyButton onPress={() => navigation.goBack()} variant="ghost" size="small">
+            <Typography variant="body">Back</Typography>
+          </SquishyButton>
+          <Typography variant="h2" style={styles.title}>The Iceberg Dive</Typography>
+        </View>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Scoring</Text>
-                    <Text variant="body">
-                        ✅ Reached core = +25{'\n'}
-                        ✅ Shared with partner = +10
-                    </Text>
-                </GlassCard>
+        <GlassCard>
+          <Typography variant="body" style={{ marginBottom: SPACING.regular }}>Type: Nested dropdown</Typography>
+          <Typography variant="body">Mechanics: Surface ("I'm annoyed") → drill down → "Fear of invisibility" → unlock "Core Need" badge.</Typography>
+        </GlassCard>
 
-                <View style={styles.actionArea}>
-                    <SquishyButton onPress={() => alert('Starting Dive...')} style={styles.playBtn}>
-                        <Text variant="header">Start Dive</Text>
-                    </SquishyButton>
-                </View>
-            </ScrollView>
-        </LinearGradient>
-    );
+        <GlassCard>
+          <Typography variant="body" style={{ marginBottom: SPACING.regular }}>Scoring</Typography>
+          <Typography variant="body">
+            Reached core = +25{'\n'}
+            Shared with partner = +10
+          </Typography>
+        </GlassCard>
+
+        <View style={styles.actionArea}>
+          <SquishyButton onPress={() => alert('Starting Dive...')} style={styles.playBtn}>
+            <Typography variant="h2">Start Dive</Typography>
+          </SquishyButton>
+        </View>
+      </View>
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
-    content: { padding: 20, gap: 20 },
-    header: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 40 },
-    backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-    title: { fontSize: 22, color: '#fff', flex: 1 },
-    card: { padding: 20 },
-    actionArea: { marginTop: 40, alignItems: 'center' },
-    playBtn: { width: '80%', paddingVertical: 15, backgroundColor: '#FA1F63', borderRadius: 20, alignItems: 'center' }
+  header: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: SPACING.regular,
+  },
+  title: { 
+    flex: 1,
+  },
+  actionArea: { 
+    marginTop: SPACING.xlarge, 
+    alignItems: 'center' 
+  },
+  playBtn: { 
+    width: '80%',
+  },
 });

@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, TextInput, AppState, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import ConfettiBurst from '../../components/effects/ConfettiBurst';
 import * as Haptics from 'expo-haptics';
 import { useAppStore } from '../../state/store';
+import { COLORS, SPACING, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 export default function ChallengeScreen({ route, navigation }: any) {
   const { title = 'Truth or Trust', duration = 600 } = route.params || {};
@@ -120,7 +121,7 @@ export default function ChallengeScreen({ route, navigation }: any) {
     addPoints(Math.round(finalScore));
     setShowConfetti(true);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setTimeout(() => setShowConfetti(false), 1500);
+    setTimeout(() => setShowConfetti(false), ANIMATIONS.duration.slower);
     useAppStore.getState().setGameInProgress(false);
     navigation.replace('Dashboard');
   }
@@ -132,88 +133,102 @@ export default function ChallengeScreen({ route, navigation }: any) {
   const focusStyle = focused ? styles.inputFocus : undefined;
 
   return (
-    <View style={{ flex: 1, padding: 16, gap: 12 }}>
-      <GlassCard>
-        {/* Dr. Marcie Section */}
-        <View style={styles.drMarcieSection}>
-          <View style={styles.avatarContainer}>
-            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <View style={{ flex: 1, padding: SPACING.regular, gap: SPACING.small }}>
+        <GlassCard>
+          {/* Dr. Marcie Section */}
+          <View style={styles.drMarcieSection}>
+            <View style={styles.avatarContainer}>
+              <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+            </View>
+            <View style={styles.quoteBox}>
+              <Typography variant="body">Deepen your connection through honest reflection! Share vulnerably and authentically.</Typography>
+            </View>
           </View>
-          <View style={styles.quoteBox}>
-            <Text style={styles.quoteText} variant="sass">Deepen your connection through honest reflection! Share vulnerably and authentically.</Text>
-          </View>
-        </View>
 
-        <View style={styles.header}>
-          <SquishyButton onPress={() => navigation.goBack()} style={styles.back}>
-            <Text variant="header">Back</Text>
-          </SquishyButton>
-          <Text variant="header">{title}</Text>
-          <Text variant="keyword" accessibilityLiveRegion="polite" style={{ color: warn ? '#E11637' : '#33DEA5' }}>{mm}:{ss}</Text>
-        </View>
-        <View style={styles.progress}>
-          <LinearGradient colors={['#db147c', '#f05d68']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.progressFill}>
-            <View style={{ width: `${barProgress}%`, height: '100%' }} />
-          </LinearGradient>
-          <Text variant="body">Question {questionIndex + 1} of 3</Text>
-        </View>
-        <View style={{ marginTop: 8 }}>
-          <Text variant="header">{questions[questionIndex].title}</Text>
-          <Text variant="body">{questions[questionIndex].text}</Text>
-          <Text variant="body" style={{ opacity: 0.8 }}>{questions[questionIndex].desc}</Text>
-        </View>
-        <View style={{ marginTop: 10 }}>
-          <TextInput
-            value={answer}
-            onChangeText={onAnswerChange}
-            placeholder="Type your reflection…"
-            multiline
-            style={[styles.input, focusStyle]}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-          />
-          <Text variant="keyword" style={{ alignSelf: 'flex-end' }}>{answer.length}/500</Text>
-        </View>
-        {!!score && (
-          <View style={{ marginTop: 8 }}>
-            <Text variant="header">Honesty Score</Text>
-            <Text variant="body" style={{ color: score > 75 ? '#37cf97' : score > 50 ? '#ffef1f' : '#E11637' }}>{score}</Text>
-          </View>
-        )}
-        {!!commentary && (
-          <View style={{ marginTop: 8 }}>
-            <Text variant="sass">{commentary}</Text>
-          </View>
-        )}
-        <View style={{ marginTop: 12 }}>
-          <LinearGradient colors={['#db147c', '#f05d68']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.primaryBtn}>
-            <SquishyButton onPress={nextQuestion} style={{ backgroundColor: 'transparent' }}>
-              <Text variant="header" style={{ color: '#ffffff' }}>{questionIndex < 2 ? 'Next' : 'Submit'}</Text>
+          <Typography variant="h1" center style={styles.gameTitle}>The Love Arcade</Typography>
+          <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
+
+          <View style={styles.header}>
+            <SquishyButton onPress={() => navigation.goBack()} style={styles.back}>
+              <Typography variant="body">Back</Typography>
             </SquishyButton>
-          </LinearGradient>
-        </View>
-      </GlassCard>
-      {showConfetti && <ConfettiBurst onEnd={() => setShowConfetti(false)} />}
-    </View>
+            <Typography variant="h2">{title}</Typography>
+            <Typography variant="caption" accessibilityLiveRegion="polite" style={{ color: warn ? COLORS.error : COLORS.success }}>{mm}:{ss}</Typography>
+          </View>
+          <View style={styles.progress}>
+            <LinearGradient colors={[COLORS.gradientStart, COLORS.gradientEnd]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.progressFill}>
+              <View style={{ width: `${barProgress}%`, height: '100%' }} />
+            </LinearGradient>
+            <Typography variant="caption">Question {questionIndex + 1} of 3</Typography>
+          </View>
+          <View style={{ marginTop: SPACING.small }}>
+            <Typography variant="h2">{questions[questionIndex].title}</Typography>
+            <Typography variant="body">{questions[questionIndex].text}</Typography>
+            <Typography variant="body" style={{ opacity: 0.8 }}>{questions[questionIndex].desc}</Typography>
+          </View>
+          <View style={{ marginTop: SPACING.small }}>
+            <TextInput
+              value={answer}
+              onChangeText={onAnswerChange}
+              placeholder="Type your reflection…"
+              multiline
+              style={[styles.input, focusStyle]}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+            />
+            <Typography variant="caption" style={{ alignSelf: 'flex-end' }}>{answer.length}/500</Typography>
+          </View>
+          {!!score && (
+            <View style={{ marginTop: SPACING.small }}>
+              <Typography variant="h2">Honesty Score</Typography>
+              <Typography variant="body" style={{ color: score > 75 ? COLORS.mintGreen : score > 50 ? COLORS.brightYellow : COLORS.error }}>{score}</Typography>
+            </View>
+          )}
+          {!!commentary && (
+            <View style={{ marginTop: SPACING.small }}>
+              <Typography variant="body" style={{ fontStyle: 'italic' }}>{commentary}</Typography>
+            </View>
+          )}
+          <View style={{ marginTop: SPACING.regular }}>
+            <SquishyButton onPress={nextQuestion}>
+              <Typography variant="button" style={{ color: COLORS.textPrimary }}>{questionIndex < 2 ? 'Next' : 'Submit'}</Typography>
+            </SquishyButton>
+          </View>
+        </GlassCard>
+        {showConfetti && <ConfettiBurst onEnd={() => setShowConfetti(false)} />}
+      </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  gameTitle: {
+    marginBottom: SPACING.small,
+  },
+  subtitle: {
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.regular,
+  },
+  header: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center' 
+  },
   back: { 
-    paddingHorizontal: 12, 
-    paddingVertical: 8, 
+    paddingHorizontal: SPACING.regular, 
+    paddingVertical: SPACING.small, 
     backgroundColor: 'rgba(219, 20, 124, 0.3)', 
-    borderRadius: 12,
+    borderRadius: BORDER_RADIUS.large,
     borderWidth: 1,
     borderColor: 'rgba(219, 20, 124, 0.5)',
   },
   progress: { 
-    height: 16, 
+    height: SPACING.regular, 
     backgroundColor: 'rgba(18, 0, 22, 0.5)', 
-    borderRadius: 8, 
+    borderRadius: BORDER_RADIUS.round, 
     overflow: 'hidden', 
-    marginTop: 8, 
+    marginTop: SPACING.small, 
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: 'rgba(219, 20, 124, 0.3)',
@@ -230,45 +245,39 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(26, 10, 31, 0.5)', 
     borderWidth: 1, 
     borderColor: 'rgba(219, 20, 124, 0.3)', 
-    borderRadius: 10, 
-    padding: 10, 
-    color: '#fff', 
+    borderRadius: BORDER_RADIUS.medium, 
+    padding: SPACING.small, 
+    color: COLORS.textPrimary, 
     textAlignVertical: 'top',
   },
-  inputFocus: { borderColor: '#db147c' },
-  primaryBtn: { borderRadius: 20, overflow: 'hidden' },
+  inputFocus: { borderColor: COLORS.gradientStart },
   drMarcieSection: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-    padding: 16,
-    marginBottom: 16
+    borderRadius: BORDER_RADIUS.xlarge,
+    padding: SPACING.regular,
+    marginBottom: SPACING.regular
   },
   avatarContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#fcc738',
+    width: SPACING.xxlarge + SPACING.medium,
+    height: SPACING.xxlarge + SPACING.medium,
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.brightYellow,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12
+    marginRight: SPACING.regular
   },
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: SPACING.xxlarge,
+    height: SPACING.xxlarge,
+    borderRadius: BORDER_RADIUS.round,
     resizeMode: 'cover'
   },
   quoteBox: {
     flex: 1,
     backgroundColor: 'rgba(252, 199, 56, 0.2)',
-    borderRadius: 12,
-    padding: 12
+    borderRadius: BORDER_RADIUS.large,
+    padding: SPACING.regular,
   },
-  quoteText: {
-    color: '#ffffff',
-    fontSize: 14,
-    lineHeight: 20
-  }
 });

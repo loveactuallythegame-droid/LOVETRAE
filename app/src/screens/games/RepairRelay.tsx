@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const ROUNDS = [
   { context: "They are stonewalling you.", options: ["Yell louder", "Take a 20m break", "Ignore them back"], correct: 1 },
@@ -35,14 +37,20 @@ export default function RepairRelay({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={styles.container}>
       <GlassCard>
-        <Text variant="header">Lap {index + 1}</Text>
-        <Text variant="body" style={styles.ctx}>{ROUNDS[index].context}</Text>
-        <View style={{ gap: 8 }}>
+        <Typography variant="h2">Lap {index + 1}</Typography>
+        <Typography variant="body" style={styles.context}>{ROUNDS[index].context}</Typography>
+        <View style={styles.optionsContainer}>
           {ROUNDS[index].options.map((opt, i) => (
-            <SquishyButton key={i} onPress={() => choose(i)} style={styles.btn}>
-              <Text variant="body">{opt}</Text>
+            <SquishyButton 
+              key={i} 
+              onPress={() => choose(i)} 
+              variant="secondary"
+              size="medium"
+              style={styles.btn}
+            >
+              <Typography variant="body">{opt}</Typography>
             </SquishyButton>
           ))}
         </View>
@@ -66,6 +74,17 @@ export default function RepairRelay({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  ctx: { fontSize: 18, textAlign: 'center', marginVertical: 16 },
-  btn: { backgroundColor: 'rgba(255,255,255,0.1)', padding: 16, borderRadius: 8, alignItems: 'center' },
+  container: {
+    gap: SPACING.regular,
+  },
+  context: { 
+    textAlign: 'center', 
+    marginVertical: SPACING.xlarge,
+  },
+  optionsContainer: {
+    gap: SPACING.regular,
+  },
+  btn: { 
+    backgroundColor: COLORS.backgroundInput,
+  },
 });

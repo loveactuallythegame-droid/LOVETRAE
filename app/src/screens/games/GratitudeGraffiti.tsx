@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, TextInput, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
-import { Text, GlassCard } from '../../components/ui';
+import { Typography, GlassCard, ScreenLayout, SquishyButton } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
-import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS } from '../../theme';
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 
@@ -91,26 +91,26 @@ export default function GratitudeGraffiti({ route, navigation }: any) {
   };
 
   const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: theme.SPACING.lg }}>
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: SPACING.xlarge }}>
       <GlassCard>
         <LinearGradient
-          colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
+          colors={[COLORS.backgroundCard, 'rgba(240, 93, 104, 0.1)']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.gradientContainer}
         >
-          <Text variant="header" style={{ marginBottom: theme.SPACING.md, color: theme.COLORS.textPrimary }}>
+          <Typography variant="h2" style={styles.wallTitle}>
             Gratitude Graffiti Wall
-          </Text>
-          <Text variant="body" style={{ marginBottom: theme.SPACING.md, color: theme.COLORS.textSecondary }}>
+          </Typography>
+          <Typography variant="body" style={styles.wallSubtitle}>
             Leave messages of appreciation for your partner
-          </Text>
+          </Typography>
 
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.textInput}
               placeholder="Write something appreciative..."
-              placeholderTextColor={theme.COLORS.textHint}
+              placeholderTextColor={COLORS.textHint}
               value={inputText}
               onChangeText={setInputText}
               multiline
@@ -118,55 +118,48 @@ export default function GratitudeGraffiti({ route, navigation }: any) {
             />
           </View>
 
-          <TouchableOpacity 
-            style={styles.addButton} 
+          <SquishyButton 
             onPress={addMessage}
             disabled={!inputText.trim()}
+            style={[
+              styles.addButton,
+              !inputText.trim() && styles.disabledButton
+            ]}
           >
-            <LinearGradient
-              colors={[
-                inputText.trim() ? theme.COLORS.primaryGradientStart : '#666',
-                inputText.trim() ? theme.COLORS.primaryGradientEnd : '#666'
-              ]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.gradientButton}
+            <Typography 
+              variant="h3" 
+              style={{ 
+                color: inputText.trim() ? COLORS.textPrimary : COLORS.textDisabled,
+                textAlign: 'center'
+              }}
             >
-              <Text 
-                variant="header" 
-                style={{ 
-                  color: inputText.trim() ? theme.COLORS.background : theme.COLORS.textHint,
-                  textAlign: 'center'
-                }}
-              >
-                Add Message
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+              Add Message
+            </Typography>
+          </SquishyButton>
         </LinearGradient>
       </GlassCard>
 
       <GlassCard style={styles.wallContainer}>
-        <Text variant="title" style={{ marginBottom: theme.SPACING.md, color: theme.COLORS.textPrimary }}>
+        <Typography variant="h3" style={styles.messagesTitle}>
           Messages
-        </Text>
+        </Typography>
         
         <ScrollView style={styles.messagesContainer}>
-          {messages.map((msg, index) => (
+          {messages.map((msg) => (
             <View key={msg.id} style={[styles.messageBubble, styles.myMessage]}>
-              <Text variant="body" style={{ color: theme.COLORS.textPrimary }}>{msg.text}</Text>
-              <Text variant="small" style={{ color: theme.COLORS.textHint, marginTop: theme.SPACING.sm, alignSelf: 'flex-end' }}>
+              <Typography variant="body" style={{ color: COLORS.textPrimary }}>{msg.text}</Typography>
+              <Typography variant="caption" style={{ color: COLORS.textHint, marginTop: SPACING.small, alignSelf: 'flex-end' }}>
                 Me
-              </Text>
+              </Typography>
             </View>
           ))}
           
           {partnerMessages.map((msg, index) => (
             <View key={`partner-${index}`} style={[styles.messageBubble, styles.partnerMessage]}>
-              <Text variant="body" style={{ color: theme.COLORS.textPrimary }}>{msg}</Text>
-              <Text variant="small" style={{ color: theme.COLORS.textHint, marginTop: theme.SPACING.sm, alignSelf: 'flex-end' }}>
+              <Typography variant="body" style={{ color: COLORS.textPrimary }}>{msg}</Typography>
+              <Typography variant="caption" style={{ color: COLORS.textHint, marginTop: SPACING.small, alignSelf: 'flex-end' }}>
                 Partner
-              </Text>
+              </Typography>
             </View>
           ))}
         </ScrollView>
@@ -214,54 +207,68 @@ export default function GratitudeGraffiti({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
   gradientContainer: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    padding: SPACING.medium,
+    borderRadius: BORDER_RADIUS.card,
+  },
+  wallTitle: {
+    marginBottom: SPACING.medium,
+    color: COLORS.textPrimary,
+  },
+  wallSubtitle: {
+    marginBottom: SPACING.medium,
+    color: COLORS.textSecondary,
   },
   inputContainer: {
-    marginBottom: theme.SPACING.md,
+    marginBottom: SPACING.medium,
   },
   textInput: {
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: COLORS.backgroundInput,
     borderWidth: 1,
-    borderColor: 'rgba(250, 31, 99, 0.3)',
-    borderRadius: theme.SIZES.borderRadius,
-    padding: theme.SPACING.md,
-    color: theme.COLORS.textPrimary,
+    borderColor: COLORS.borderSubtle,
+    borderRadius: BORDER_RADIUS.input,
+    padding: SPACING.medium,
+    color: COLORS.textPrimary,
     minHeight: 100,
     textAlignVertical: 'top',
   },
   addButton: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
+    borderRadius: BORDER_RADIUS.button,
     overflow: 'hidden',
+    backgroundColor: COLORS.gradientStart,
+    padding: SPACING.regular,
   },
-  gradientButton: {
-    padding: theme.SPACING.lg,
-    borderRadius: theme.SIZES.buttonBorderRadius,
+  disabledButton: {
+    backgroundColor: COLORS.textDisabled,
+    opacity: 0.5,
   },
   wallContainer: {
-    marginTop: theme.SPACING.md,
+    marginTop: SPACING.medium,
     flex: 1,
+  },
+  messagesTitle: {
+    marginBottom: SPACING.medium,
+    color: COLORS.textPrimary,
   },
   messagesContainer: {
     flex: 1,
   },
   messageBubble: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: theme.SIZES.borderRadius,
-    padding: theme.SPACING.md,
-    marginVertical: theme.SPACING.sm,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.large,
+    padding: SPACING.medium,
+    marginVertical: SPACING.small,
     maxWidth: '80%',
   },
   myMessage: {
     alignSelf: 'flex-end',
     backgroundColor: 'rgba(219, 20, 124, 0.2)',
-    borderLeftColor: theme.COLORS.primaryGradientStart,
+    borderLeftColor: COLORS.gradientStart,
     borderLeftWidth: 3,
   },
   partnerMessage: {
     alignSelf: 'flex-start',
     backgroundColor: 'rgba(198, 10, 179, 0.2)',
-    borderRightColor: theme.COLORS.profileRingEnd,
+    borderRightColor: COLORS.profileRingEnd,
     borderRightWidth: 3,
   },
 });

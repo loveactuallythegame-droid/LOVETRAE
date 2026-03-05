@@ -1,161 +1,103 @@
-
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
-import { Header } from '../../components/ui/Header';
-import { SquishyButton } from '../../components/ui';
+import { View, StyleSheet } from 'react-native';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const SixSecondKissResultsScreen = () => {
-  // Placeholder for results data
   const gameResults = {
     kissScore: 600,
     syncBonus: 250,
     totalScore: 850,
-    syncPercentage: 88, // Example percentage
+    syncPercentage: 88,
   };
 
-  // This function would be replaced by the actual calculateGameResults logic
-  const calculateGameResults = () => gameResults;
-
-  const { kissScore, syncBonus, totalScore, syncPercentage } = calculateGameResults();
+  const { kissScore, syncBonus, totalScore, syncPercentage } = gameResults;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#230f15', '#181114']} style={styles.background} />
-      <Header title="Results" />
+    <ScreenLayout showHeader={true} scrollable={true}>
       <View style={styles.content}>
-        <Text style={styles.mainTitle}>The 6-Second Kiss</Text>
-        <Text style={styles.subtitle}>Challenge Complete</Text>
+        <Typography variant="h1" center>The Love Arcade</Typography>
+        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
+
+        <Typography variant="h2" center style={styles.mainTitle}>The 6-Second Kiss</Typography>
+        <Typography variant="body" center>Challenge Complete</Typography>
 
         <View style={styles.resultsContainer}>
-            <View style={styles.scoreBox}>
-                <Text style={styles.scoreLabel}>Kiss Score</Text>
-                <Text style={styles.scoreValue}>{kissScore}</Text>
-            </View>
-            <View style={styles.scoreBox}>
-                <Text style={styles.scoreLabel}>Sync Bonus</Text>
-                <Text style={styles.scoreValue}>+{syncBonus}</Text>
-            </View>
+          <GlassCard style={styles.scoreBox}>
+            <Typography variant="caption">Kiss Score</Typography>
+            <Typography variant="h1">{kissScore}</Typography>
+          </GlassCard>
+          <GlassCard style={styles.scoreBox}>
+            <Typography variant="caption">Sync Bonus</Typography>
+            <Typography variant="h1">+{syncBonus}</Typography>
+          </GlassCard>
         </View>
 
-        <View style={styles.totalScoreContainer}>
-            <Text style={styles.totalScoreLabel}>Total Score</Text>
-            <Text style={styles.totalScoreValue}>{totalScore}</Text>
-        </View>
+        <GlassCard style={styles.totalScoreContainer}>
+          <Typography variant="caption">Total Score</Typography>
+          <Typography variant="h1" style={styles.totalScoreValue}>{totalScore}</Typography>
+        </GlassCard>
 
         <View style={styles.syncDisplay}>
-            <Text style={styles.syncPercentage}>{syncPercentage}%</Text>
-            <Text style={styles.syncLabel}>Synchronization</Text>
+          <Typography variant="h1" color={COLORS.success}>{syncPercentage}%</Typography>
+          <Typography variant="caption">Synchronization</Typography>
         </View>
 
         <View style={styles.buttonContainer}>
-            <SquishyButton style={styles.actionButton}>
-                <Text style={styles.buttonText}>Try Again</Text>
-            </SquishyButton>
-            <SquishyButton style={styles.actionButton}>
-                <Text style={styles.buttonText}>Next Challenge</Text>
-            </SquishyButton>
+          <SquishyButton style={styles.actionButton}>
+            <Typography variant="h2">Try Again</Typography>
+          </SquishyButton>
+          <SquishyButton style={styles.actionButton}>
+            <Typography variant="h2">Next Challenge</Typography>
+          </SquishyButton>
         </View>
       </View>
-      <GlobalMarcieOverlay quote="Not bad. For amateurs."/>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#181114' },
-  background: { ...StyleSheet.absoluteFillObject },
-  content: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 },
-  mainTitle: {
-    fontFamily: 'BarbieDream-Regular',
-    fontSize: 52,
-    color: '#FFF',
-    textShadowColor: '#ff0048',
-    textShadowRadius: 10,
-    marginBottom: 5,
+  content: { 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    paddingVertical: SPACING.regular,
   },
-  subtitle: {
-    fontFamily: 'SweetPink-Regular',
-    fontSize: 14,
-    color: '#ff0048',
-    textTransform: 'uppercase',
-    letterSpacing: 3,
-    marginBottom: 40,
+  mainTitle: {
+    marginTop: SPACING.xlarge,
+    marginBottom: SPACING.tiny,
   },
   resultsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    marginBottom: 30,
+    marginTop: SPACING.xlarge,
+    gap: SPACING.regular,
   },
   scoreBox: {
+    flex: 1,
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    padding: 20,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 0, 72, 0.3)',
-  },
-  scoreLabel: {
-    fontFamily: 'HolidayChristmas-Regular',
-    fontSize: 16,
-    color: '#FFF',
-    marginBottom: 5,
-  },
-  scoreValue: {
-    fontFamily: 'WonderfulSometimes-Regular',
-    fontSize: 42,
-    color: '#FFF',
   },
   totalScoreContainer: {
-      alignItems: 'center',
-      marginBottom: 30,
-  },
-  totalScoreLabel: {
-      fontFamily: 'HolidayChristmas-Regular',
-      fontSize: 20,
-      color: '#ff0048',
-      textTransform: 'uppercase',
-      letterSpacing: 2,
+    alignItems: 'center',
+    marginTop: SPACING.xlarge,
+    width: '100%',
   },
   totalScoreValue: {
-      fontFamily: 'BarbieDream-Regular',
-      fontSize: 80,
-      color: '#FFF',
-      textShadowColor: '#ff0048',
-      textShadowRadius: 20,
+    fontSize: TYPOGRAPHY.fontSize.displayLarge * 2,
+    color: COLORS.textPrimary,
   },
   syncDisplay: {
-      alignItems: 'center',
-      marginBottom: 40,
-  },
-  syncPercentage: {
-      fontFamily: 'WonderfulSometimes-Regular',
-      fontSize: 36,
-      color: '#33DEA5',
-  },
-  syncLabel: {
-      fontFamily: 'SweetPink-Regular',
-      fontSize: 14,
-      color: 'rgba(255,255,255,0.7)'
+    alignItems: 'center',
+    marginTop: SPACING.xlarge,
   },
   buttonContainer: {
-      flexDirection: 'row',
+    flexDirection: 'row',
+    marginTop: SPACING.xxlarge,
+    gap: SPACING.regular,
   },
   actionButton: {
-      marginHorizontal: 10,
-      backgroundColor: '#ff0048',
-      paddingVertical: 15,
-      paddingHorizontal: 30,
-      borderRadius: 30,
+    flex: 1,
   },
-  buttonText: {
-      fontFamily: 'BarbieDream-Regular',
-      color: '#FFF',
-      fontSize: 18,
-  }
 });
 
 export default SixSecondKissResultsScreen;

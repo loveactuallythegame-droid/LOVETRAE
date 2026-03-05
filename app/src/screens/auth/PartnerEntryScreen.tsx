@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { View, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton, RadialGradientBackground } from '../../components/ui';
+import { ScreenLayout } from '../../layout';
 import { supabase, getProfile, linkPartnersTransactional, subscribeCouple } from '../../lib/supabase';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 type PartnerEntryScreenProps = {
   onLinked: (code: string) => void;
@@ -54,23 +56,47 @@ export default function PartnerEntryScreen({ onLinked }: PartnerEntryScreenProps
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* Marcie overlay hidden during input fields; rendered globally at root elsewhere */}
-      <View style={{ padding: 16, gap: 12 }}>
-        <GlassCard>
-          <Text variant="header">Enter Partner Code</Text>
-          <TextInput value={code} onChangeText={setCode} placeholder="LA-XXXX-LOVE" style={styles.input} />
-          <Text variant="sass">{comment}</Text>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <RadialGradientBackground />
+      <View style={styles.content}>
+        <GlassCard variant="elevated">
+          <Typography variant="header">Enter Partner Code</Typography>
+          <TextInput 
+            value={code} 
+            onChangeText={setCode} 
+            placeholder="LA-XXXX-LOVE" 
+            style={styles.input}
+            placeholderTextColor={COLORS.textHint}
+          />
+          <Typography variant="marcieDialogue" style={styles.comment}>{comment}</Typography>
         </GlassCard>
-        <SquishyButton onPress={validate} style={styles.btn}>
-          {loading ? <ActivityIndicator color="#fff" /> : <Text variant="header">Validate</Text>}
+        <SquishyButton onPress={validate}>
+          {loading ? <ActivityIndicator color={COLORS.textPrimary} /> : <Typography variant="button">Validate</Typography>}
         </SquishyButton>
       </View>
-    </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  input: { backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 10, color: '#fff' },
-  btn: { alignSelf: 'flex-end', paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#33DEA5', borderRadius: 12 },
+  content: {
+    flex: 1,
+    padding: SPACING.screenPadding,
+    justifyContent: 'center',
+    gap: SPACING.regular,
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    borderRadius: BORDER_RADIUS.input, 
+    padding: SPACING.regular, 
+    color: COLORS.textPrimary,
+    marginTop: SPACING.regular,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+  },
+  comment: {
+    marginTop: SPACING.regular,
+    color: COLORS.textSecondary,
+  },
 });

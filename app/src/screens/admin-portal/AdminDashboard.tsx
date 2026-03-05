@@ -1,9 +1,12 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppStore } from '../../state/store';
 import { auth } from '../../firebase/firebaseConfig';
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const AdminDashboard = () => {
   const navigation = useNavigation();
@@ -24,39 +27,60 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+        </View>
+        <Typography variant="h1" center style={styles.title}>
+          Puppet Master Portal
+        </Typography>
+        <ScrollView contentContainerStyle={styles.menuContainer}>
+          {menuItems.map((item) => (
+            <SquishyButton
+              key={item.title}
+              onPress={() => navigation.navigate(item.screen)}
+              accessibilityLabel={item.title}
+              variant="secondary"
+              size="large"
+              style={styles.menuItem}
+            >
+              <View style={styles.menuItemContent}>
+                <Typography variant="body" style={styles.menuIcon}>
+                  {item.icon}
+                </Typography>
+                <Typography variant="body" style={styles.menuText}>
+                  {item.title}
+                </Typography>
+              </View>
+            </SquishyButton>
+          ))}
+        </ScrollView>
+        <SquishyButton
+          onPress={handleLogout}
+          accessibilityLabel="Logout"
+          variant="primary"
+          size="medium"
+          style={styles.logoutButton}
+        >
+          <Typography variant="button" color={COLORS.textPrimary}>
+            Logout
+          </Typography>
+        </SquishyButton>
       </View>
-      <Text style={styles.title}>Puppet Master Portal</Text>
-      <ScrollView contentContainerStyle={styles.menuContainer}>
-        {menuItems.map((item) => (
-          <TouchableOpacity
-            key={item.title}
-            style={styles.menuItem}
-            onPress={() => navigation.navigate(item.screen)}
-          >
-            <Text style={styles.menuIcon}>{item.icon}</Text>
-            <Text style={styles.menuText}>{item.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutButtonText}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5C1459', // Glam Noir
-    paddingTop: 60,
+    backgroundColor: COLORS.healingHospital,
+    paddingTop: SPACING.xxlarge,
   },
   header: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: SPACING.large,
   },
   logo: {
     width: 200,
@@ -64,48 +88,33 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   title: {
-    fontSize: 36,
     fontFamily: 'BarbieDream-Regular',
-    color: '#FA1F63', // Hot Pink
-    textAlign: 'center',
-    marginBottom: 30,
+    color: COLORS.emotionalConnection,
+    marginBottom: SPACING.xlarge,
   },
   menuContainer: {
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: SPACING.regular,
   },
   menuItem: {
     width: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginBottom: SPACING.regular,
+  },
+  menuItemContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 25,
-    borderRadius: 15,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: 'rgba(250, 31, 99, 0.3)',
+    width: '100%',
   },
   menuIcon: {
-    fontSize: 24,
-    marginRight: 20,
+    fontSize: TYPOGRAPHY.fontSize.headerMedium,
+    marginRight: SPACING.regular,
   },
   menuText: {
-    fontSize: 18,
     fontFamily: 'SweetPink-Regular',
-    color: '#fff',
+    color: COLORS.textPrimary,
   },
   logoutButton: {
-    backgroundColor: '#33DEA5', // Teal
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    margin: 20,
-  },
-  logoutButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
+    margin: SPACING.regular,
   },
 });
 

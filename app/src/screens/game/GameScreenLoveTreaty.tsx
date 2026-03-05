@@ -1,199 +1,217 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, TextInput, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { db, auth } from '../../lib/firebaseClient';
+
+const ARTICLES = [
+  { title: "Article I: Communication Protocols", prompt: "When disagreements arise, we will..." },
+  { title: "Article II: Shared Responsibilities", prompt: "To maintain a balanced home environment, we will..." },
+  { title: "Article III: Quality Time", prompt: "We will dedicate time to each other by..." },
+];
 
 const GameScreenLoveTreaty = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { gameId, coupleId } = route.params;
+  const { gameId, coupleId } = route.params as { gameId?: string; coupleId?: string } || {};
   
-  const [gameState, setGameState] = useState(null);
+  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
   const [player1Stance, setPlayer1Stance] = useState('');
   const [player2Stance, setPlayer2Stance] = useState('');
   const [mergedStance, setMergedStance] = useState('');
-  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
-  const currentUser = auth.currentUser;
+  const [gameStatus, setGameStatus] = useState<'drafting' | 'negotiating' | 'completed'>('drafting');
+  const currentArticle = ARTICLES[currentArticleIndex];
 
-  useEffect(() => {
-    const gameRef = doc(db, "games", gameId, "couples", coupleId);
-    const unsubscribe = onSnapshot(gameRef, (doc) => {
-      if (doc.exists()) {
-        const data = doc.data();
-        setGameState(data);
-        setCurrentArticleIndex(data.currentArticleIndex || 0);
-        setPlayer1Stance(data.player1Stance || '');
-        setPlayer2Stance(data.player2Stance || '');
-        setMergedStance(data.mergedStance || '');
-      } else {
-        // Initialize game state if it doesn't exist
-        const initialGameState = {
-          gameId,
-          coupleId,
-          currentArticleIndex: 0,
-          articles: [
-            { title: "Article I: Communication Protocols", prompt: "When disagreements arise, we will..." },
-            { title: "Article II: Shared Responsibilities", prompt: "To maintain a balanced home environment, we will..." },
-            { title: "Article III: Quality Time", prompt: "We will dedicate time to each other by..." },
-          ],
-          player1Stance: '',
-          player2Stance: '',
-          mergedStance: '',
-          status: 'drafting'
-        };
-        setDoc(gameRef, initialGameState);
-        setGameState(initialGameState)
-      }
-    });
-
-    return () => unsubscribe();
-  }, [gameId, coupleId]);
-
-  const handleStanceUpdate = async (stance) => {
-    const gameRef = doc(db, "games", gameId, "couples", coupleId);
-    if (currentUser.uid === gameState.player1) {
+  const handleStanceUpdate = (stance: string, player: 1 | 2) => {
+    if (player === 1) {
       setPlayer1Stance(stance);
-      await updateDoc(gameRef, { player1Stance: stance });
     } else {
       setPlayer2Stance(stance);
-      await updateDoc(gameRef, { player2Stance: stance });
     }
   };
 
-  const handleMergeUpdate = async (stance) => {
-    const gameRef = doc(db, "games", gameId, "couples", coupleId);
-    setMergedStance(stance)
-    await updateDoc(gameRef, { mergedStance: stance });
-  }
+  const handleMergeUpdate = (stance: string) => {
+    setMergedStance(stance);
+  };
 
-  const ratifyArticle = async () => {
-    const gameRef = doc(db, "games", gameId, "couples", coupleId);
+  const ratifyArticle = () => {
     const nextArticleIndex = currentArticleIndex + 1;
 
-    if (nextArticleIndex < gameState.articles.length) {
-      await updateDoc(gameRef, {
-        currentArticleIndex: nextArticleIndex,
-        player1Stance: '', // Reset for next article
-        player2Stance: '',
-        mergedStance: '',
-        status: 'drafting'
-      });
+    if (nextArticleIndex < ARTICLES.length) {
+      setCurrentArticleIndex(nextArticleIndex);
+      setPlayer1Stance('');
+      setPlayer2Stance('');
+      setMergedStance('');
+      setGameStatus('drafting');
     } else {
-      // Game over
-      await updateDoc(gameRef, { status: 'completed' });
+      setGameStatus('completed');
       Alert.alert("Congratulations!", "You have successfully ratified your Love Treaty.");
       navigation.goBack();
     }
   };
 
-  if (!gameState) {
-    return <View style={styles.container}><Text style={styles.loadingText}>Loading Game...</Text></View>;
-  }
-
-  const currentArticle = gameState.articles[currentArticleIndex];
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.articleTitle}>{currentArticle.title}</Text>
-      <Text style={styles.articlePrompt}>{currentArticle.prompt}</Text>
+    <ScreenLayout 
+      showMarcie={true} 
+      marcieQuote="Craft your Love Treaty together. Each article is a promise to each other."
+      marcieAnimation="listening"
+    >
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <View style={styles.content}>
+          <Typography variant="h1" style={styles.title}>
+            The Love Arcade
+          </Typography>
+          <Typography variant="body" style={styles.subtitle}>
+            +100 Games to Deepen Connection
+          </Typography>
 
-      <View style={styles.playerInputContainer}>
-        <Text style={styles.inputLabel}>Your Stance</Text>
-        <TextInput
-          style={styles.input}
-          multiline
-          placeholder="Write your personal clause..."
-          placeholderTextColor="rgba(255, 255, 255, 0.4)"
-          value={currentUser.uid === gameState.player1 ? player1Stance : player2Stance}
-          onChangeText={handleStanceUpdate}
-          editable={gameState.status === 'drafting'}
-        />
-      </View>
+          <Typography variant="h2" style={styles.articleTitle}>
+            Love Treaty
+          </Typography>
+          
+          <Typography variant="caption" style={styles.articleCounter}>
+            Article {currentArticleIndex + 1} of {ARTICLES.length}
+          </Typography>
 
-      {gameState.status === 'negotiating' && (
-        <View style={styles.playerInputContainer}>
-          <Text style={styles.inputLabel}>Partner's Stance</Text>
-          <Text style={styles.partnerStance}>{currentUser.uid === gameState.player1 ? player2Stance : player1Stance}</Text>
-          <Text style={styles.inputLabel}>Merged Stance</Text>
-          <TextInput
-            style={styles.input}
-            multiline
-            placeholder="Negotiate and merge your clauses..."
-            placeholderTextColor="rgba(255, 255, 255, 0.4)"
-            value={mergedStance}
-            onChangeText={handleMergeUpdate}
-          />
+          <GlassCard style={styles.articleCard}>
+            <Typography variant="h3" style={styles.articleName}>
+              {currentArticle.title}
+            </Typography>
+            <Typography variant="body" style={styles.articlePrompt}>
+              {currentArticle.prompt}
+            </Typography>
+          </GlassCard>
+
+          <View style={styles.inputContainer}>
+            <Typography variant="label" style={styles.inputLabel}>
+              Your Stance
+            </Typography>
+            <TextInput
+              style={styles.input}
+              multiline
+              placeholder="Write your personal clause..."
+              placeholderTextColor={COLORS.textHint}
+              value={player1Stance}
+              onChangeText={(text) => handleStanceUpdate(text, 1)}
+              editable={gameStatus === 'drafting'}
+            />
+          </View>
+
+          {gameStatus === 'negotiating' && (
+            <View style={styles.inputContainer}>
+              <Typography variant="label" style={styles.inputLabel}>
+                Partner's Stance
+              </Typography>
+              <View style={styles.partnerStance}>
+                <Typography variant="body" style={{ opacity: 0.7 }}>
+                  {player2Stance || "Waiting for partner's input..."}
+                </Typography>
+              </View>
+              <Typography variant="label" style={styles.inputLabel}>
+                Merged Stance
+              </Typography>
+              <TextInput
+                style={styles.input}
+                multiline
+                placeholder="Negotiate and merge your clauses..."
+                placeholderTextColor={COLORS.textHint}
+                value={mergedStance}
+                onChangeText={handleMergeUpdate}
+              />
+            </View>
+          )}
+
+          <SquishyButton
+            variant="primary"
+            size="large"
+            onPress={ratifyArticle}
+          >
+            <Typography variant="button" color={COLORS.textPrimary}>
+              {currentArticleIndex < ARTICLES.length - 1 ? 'Ratify & Continue' : 'Complete Treaty'}
+            </Typography>
+          </SquishyButton>
+
+          {gameStatus === 'drafting' && (
+            <SquishyButton
+              variant="ghost"
+              size="medium"
+              onPress={() => setGameStatus('negotiating')}
+              style={styles.switchButton}
+            >
+              <Typography variant="button" color={COLORS.textPrimary}>
+                Switch to Negotiation Mode
+              </Typography>
+            </SquishyButton>
+          )}
         </View>
-      )}
-
-      <TouchableOpacity style={styles.actionButton} onPress={ratifyArticle}>
-        <Text style={styles.actionButtonText}>Ratify Article</Text>
-      </TouchableOpacity>
-    </View>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1b192e',
-    padding: 24,
   },
-  loadingText: {
-    color: '#ffffff',
+  content: {
+    flex: 1,
+    padding: SPACING.lg,
+  },
+  title: {
     textAlign: 'center',
-    fontSize: 18,
+    marginBottom: SPACING.sm,
+  },
+  subtitle: {
+    textAlign: 'center',
+    opacity: 0.7,
+    marginBottom: SPACING.lg,
   },
   articleTitle: {
-    fontFamily: 'BarbieDream-Regular',
-    color: '#ffffff',
-    fontSize: 28,
-    fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: SPACING.xs,
+  },
+  articleCounter: {
+    textAlign: 'center',
+    opacity: 0.6,
+    marginBottom: SPACING.lg,
+  },
+  articleCard: {
+    marginBottom: SPACING.lg,
+  },
+  articleName: {
+    marginBottom: SPACING.sm,
   },
   articlePrompt: {
-    color: '#FF7ED4',
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 24,
+    color: COLORS.vibrantPink,
   },
-  playerInputContainer: {
-    marginBottom: 24,
+  inputContainer: {
+    marginBottom: SPACING.lg,
   },
   inputLabel: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 14,
-    marginBottom: 8,
+    marginBottom: SPACING.sm,
   },
   input: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 8,
-    padding: 16,
-    color: '#ffffff',
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.large,
+    padding: SPACING.lg,
+    color: COLORS.textPrimary,
     minHeight: 100,
     textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
   partnerStance: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: 8,
-    padding: 16,
-    color: 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: `${COLORS.backgroundPrimary}80`,
+    borderRadius: BORDER_RADIUS.large,
+    padding: SPACING.lg,
     minHeight: 100,
-    marginBottom: 16,
+    marginBottom: SPACING.lg,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
-  actionButton: {
-    backgroundColor: '#AC3AFF',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  actionButtonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 16,
+  switchButton: {
+    marginTop: SPACING.md,
   },
 });
 

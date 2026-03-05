@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { GlassCard, Text, TrustThermometer } from '../../components/ui';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard, TrustThermometer } from '../../components/ui';
 import { supabase } from '../../lib/supabase';
+import { COLORS, SPACING } from '../../theme';
 
 export default function PartnerDashboard() {
   const [me, setMe] = useState({ trust: 0.6, vulnerability: 50, games: 0, streak: 0, health: 'Stable' });
@@ -45,32 +47,43 @@ export default function PartnerDashboard() {
   }, []);
 
   return (
-    <View style={styles.root}>
-      <GlassCard>
-        <Text variant="header">Trust Comparison</Text>
-        <View style={styles.row}>
-          <View style={{ alignItems: 'center' }}>
-            <TrustThermometer width={48} height={180} level={me.trust} />
-            <Text variant="keyword">Me</Text>
+    <ScreenLayout showHeader={true}>
+      <View style={styles.content}>
+        <GlassCard>
+          <Typography variant="header">Trust Comparison</Typography>
+          <View style={styles.row}>
+            <View style={{ alignItems: 'center' }}>
+              <TrustThermometer width={48} height={180} level={me.trust} />
+              <Typography variant="label" style={{ marginTop: SPACING.small }}>Me</Typography>
+            </View>
+            <View style={{ alignItems: 'center' }}>
+              <TrustThermometer width={48} height={180} level={partner.trust} />
+              <Typography variant="label" style={{ marginTop: SPACING.small }}>Partner</Typography>
+            </View>
           </View>
-          <View style={{ alignItems: 'center' }}>
-            <TrustThermometer width={48} height={180} level={partner.trust} />
-            <Text variant="keyword">Partner</Text>
-          </View>
-        </View>
-      </GlassCard>
-      <GlassCard>
-        <Text variant="header">Summary</Text>
-        <Text variant="body">Vulnerability: {me.vulnerability}% vs {partner.vulnerability}%</Text>
-        <Text variant="body">Games Completed: {me.games} vs {partner.games}</Text>
-        <Text variant="body">Daily Streak: {me.streak} vs {partner.streak}</Text>
-        <Text variant="keyword">Relationship Health: {me.health}</Text>
-      </GlassCard>
-    </View>
+        </GlassCard>
+        
+        <GlassCard>
+          <Typography variant="header">Summary</Typography>
+          <Typography variant="body">Vulnerability: {me.vulnerability}% vs {partner.vulnerability}%</Typography>
+          <Typography variant="body">Games Completed: {me.games} vs {partner.games}</Typography>
+          <Typography variant="body">Daily Streak: {me.streak} vs {partner.streak}</Typography>
+          <Typography variant="label" style={{ marginTop: SPACING.regular }}>Relationship Health: {me.health}</Typography>
+        </GlassCard>
+      </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, padding: 16, gap: 12 },
-  row: { flexDirection: 'row', justifyContent: 'space-around', marginTop: 12 }
+  content: {
+    flex: 1,
+    padding: SPACING.screenPadding,
+    gap: SPACING.regular,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: SPACING.regular,
+  },
 });

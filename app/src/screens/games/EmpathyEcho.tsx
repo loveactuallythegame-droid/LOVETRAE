@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const WORRY = "I feel overwhelmed by my job insecurity right now.";
 
@@ -25,21 +26,24 @@ export default function EmpathyEcho({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Partner's Worry</Text>
+        <Text variant="h2" center style={styles.gameTitle}>The Love Arcade</Text>
+        <Text variant="h3" center style={styles.subtitle}>+100 Games to Deepen Connection</Text>
+        
+        <Text variant="h3" style={{ marginTop: SPACING.large }}>Partner's Worry</Text>
         <Text variant="sass" style={styles.worry}>"{WORRY}"</Text>
-        <Text variant="body">Respond with validation ONLY (no fixing):</Text>
+        <Text variant="instructions">Respond with validation ONLY (no fixing):</Text>
         <TextInput
             style={styles.input}
             placeholder="That sounds really hard..."
-            placeholderTextColor="#666"
+            placeholderTextColor={COLORS.textHint}
             value={response}
             onChangeText={setResponse}
             multiline
         />
         <SquishyButton onPress={check} style={styles.btn}>
-            <Text variant="header">Send Echo</Text>
+            <Text variant="button">Send Echo</Text>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -61,7 +65,29 @@ export default function EmpathyEcho({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  worry: { fontSize: 18, textAlign: 'center', marginVertical: 16, color: '#fff', fontStyle: 'italic' },
-  input: { backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', padding: 12, borderRadius: 8, minHeight: 80 },
-  btn: { marginTop: 16, backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
+  gameTitle: {
+    marginBottom: SPACING.small,
+  },
+  subtitle: {
+    marginBottom: SPACING.regular,
+  },
+  worry: { 
+    textAlign: 'center', 
+    marginVertical: SPACING.large, 
+    color: COLORS.textPrimary,
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    color: COLORS.textPrimary, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.medium, 
+    minHeight: 80,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+    marginTop: SPACING.regular,
+  },
+  btn: { 
+    marginTop: SPACING.large,
+  },
 });

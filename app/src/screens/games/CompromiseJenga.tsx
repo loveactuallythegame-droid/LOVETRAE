@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert, ScrollView, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Text, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 export default function CompromiseJenga({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -27,7 +29,7 @@ export default function CompromiseJenga({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
         {/* Dr. Marcie Section */}
         <View style={styles.drMarcieSection}>
@@ -35,21 +37,21 @@ export default function CompromiseJenga({ route, navigation }: any) {
             <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
           </View>
           <View style={styles.quoteBox}>
-            <Text style={styles.quoteText} variant="sass">Build a compromise tower! Stack concessions to create a stable solution together.</Text>
+            <Text variant="sass">Build a compromise tower! Stack concessions to create a stable solution together.</Text>
           </View>
         </View>
 
-        <Text variant="header">Compromise Tower</Text>
+        <Text variant="h2">Compromise Tower</Text>
         <View style={styles.tower}>
             {blocks.map((b, i) => (
                 <LinearGradient
                     key={i}
-                    colors={i % 2 === 0 ? ['#db147c', '#f05d68'] : ['#37cf97', '#b37dec']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
+                    colors={i % 2 === 0 ? GRADIENTS.primary.colors : [COLORS.mintGreen, COLORS.softViolet]}
+                    start={GRADIENTS.primary.start}
+                    end={GRADIENTS.primary.end}
                     style={styles.block}
                 >
-                    <Text variant="body" style={{ color: '#ffffff', textAlign: 'center' }}>{b}</Text>
+                    <Text variant="body" style={{ color: COLORS.textPrimary, textAlign: 'center' }}>{b}</Text>
                 </LinearGradient>
             ))}
             {blocks.length === 0 && <Text variant="body" style={{ textAlign: 'center', opacity: 0.5 }}>No blocks yet</Text>}
@@ -58,28 +60,28 @@ export default function CompromiseJenga({ route, navigation }: any) {
         <TextInput
             style={styles.input}
             placeholder="e.g. I will cook on Mon/Wed"
-            placeholderTextColor="#666"
+            placeholderTextColor={COLORS.textHint}
             value={offer}
             onChangeText={setOffer}
         />
         <SquishyButton onPress={addBlock} style={styles.btn}>
             <LinearGradient
-                colors={['#ffef1f', '#ff7600']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+                colors={[COLORS.brightYellow, COLORS.warmOrange]}
+                start={GRADIENTS.primary.start}
+                end={GRADIENTS.primary.end}
                 style={styles.gradientButton}
             >
-                <Text variant="header" style={{ color: '#000' }}>Stack Block</Text>
+                <Text variant="h2" style={{ color: COLORS.deepCosmic }}>Stack Block</Text>
             </LinearGradient>
         </SquishyButton>
         <SquishyButton onPress={finish} style={styles.done}>
             <LinearGradient
-                colors={['#db147c', '#f05d68']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+                colors={GRADIENTS.primary.colors}
+                start={GRADIENTS.primary.start}
+                end={GRADIENTS.primary.end}
                 style={styles.gradientButton}
             >
-                <Text variant="header" style={{ color: '#ffffff' }}>Finish Tower</Text>
+                <Text variant="h2" style={{ color: COLORS.textPrimary }}>Finish Tower</Text>
             </LinearGradient>
         </SquishyButton>
       </GlassCard>
@@ -102,88 +104,72 @@ export default function CompromiseJenga({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  tower: { minHeight: 100, justifyContent: 'flex-end', gap: 2, marginBottom: 12 },
+  tower: { minHeight: 100, justifyContent: 'flex-end', gap: SPACING.tiny, marginBottom: SPACING.regular },
   block: { 
-    padding: 10, 
-    borderRadius: 4, 
+    padding: SPACING.medium, 
+    borderRadius: BORDER_RADIUS.small, 
     width: '100%',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
+    borderColor: COLORS.borderSubtle,
+    ...SHADOWS.small,
   },
   input: { 
-    backgroundColor: 'rgba(255,255,255,0.1)', 
-    color: '#fff', 
-    padding: 12, 
-    borderRadius: 8,
+    backgroundColor: COLORS.backgroundInput, 
+    color: COLORS.textPrimary, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.medium,
     borderWidth: 1,
-    borderColor: 'rgba(219, 20, 124, 0.3)',
+    borderColor: COLORS.borderSubtle,
+    fontSize: TYPOGRAPHY.fontSize.bodyMedium,
   },
   btn: { 
-    marginTop: 12, 
-    padding: 16, 
-    borderRadius: 12, 
+    marginTop: SPACING.regular, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
+    ...SHADOWS.buttonGlow,
   },
   done: { 
-    marginTop: 12, 
-    padding: 16, 
-    borderRadius: 12, 
+    marginTop: SPACING.regular, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
+    ...SHADOWS.buttonGlow,
   },
   gradientButton: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 12,
-    paddingVertical: 16,
+    borderRadius: BORDER_RADIUS.large,
+    paddingVertical: SPACING.regular,
   },
   drMarcieSection: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-    padding: 16,
-    marginBottom: 16
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.xxlarge,
+    padding: SPACING.regular,
+    marginBottom: SPACING.regular,
   },
   avatarContainer: {
     width: 50,
     height: 50,
-    borderRadius: 25,
-    backgroundColor: '#fcc738',
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.brightYellow,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12
+    marginRight: SPACING.regular,
   },
   avatar: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    resizeMode: 'cover'
+    borderRadius: BORDER_RADIUS.round,
+    resizeMode: 'cover',
   },
   quoteBox: {
     flex: 1,
-    backgroundColor: 'rgba(252, 199, 56, 0.2)',
-    borderRadius: 12,
-    padding: 12
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.large,
+    padding: SPACING.regular,
   },
-  quoteText: {
-    color: '#ffffff',
-    fontSize: 14,
-    lineHeight: 20
-  }
 });

@@ -10,16 +10,15 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, TextInput } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
-
-// Components
-import { GlassCard } from '../../components/ui';
 
 // Game Constants
 const GAME_ID = 'couples-jeopardy';
@@ -225,8 +224,8 @@ const CouplesJeopardyGame: React.FC = () => {
     if (sessionLoading) {
         return (
             <SafeAreaView style={styles.container}>
-                <LinearGradient colors={['#1a0a10', '#2d132c']} style={styles.background}>
-                    <Text style={styles.loadingText}>Loading Jeopardy...</Text>
+                <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background}>
+                    <Text variant="h2" style={styles.loadingText}>Loading Jeopardy...</Text>
                 </LinearGradient>
             </SafeAreaView>
         );
@@ -238,15 +237,15 @@ const CouplesJeopardyGame: React.FC = () => {
         
         return (
             <SafeAreaView style={styles.container}>
-                <LinearGradient colors={['#1a0a10', '#2d132c']} style={styles.background}>
+                <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background}>
                     <ScrollView contentContainerStyle={styles.scrollContent}>
                         {showWager && (
                             <View style={styles.dailyDoubleBanner}>
-                                <Text style={styles.dailyDoubleText}>DAILY DOUBLE!</Text>
+                                <Text variant="h1">DAILY DOUBLE!</Text>
                                 <TextInput
                                     style={styles.wagerInput}
                                     placeholder={`Wager up to $${score}`}
-                                    placeholderTextColor="#999"
+                                    placeholderTextColor={COLORS.textHint}
                                     keyboardType="numeric"
                                     value={wager.toString()}
                                     onChangeText={(text) => setWager(Math.min(score, parseInt(text) || 0))}
@@ -255,27 +254,26 @@ const CouplesJeopardyGame: React.FC = () => {
                         )}
 
                         <GlassCard style={styles.questionCard}>
-                            <Text style={styles.categoryLabel}>{categories[selectedClue.catIndex].name}</Text>
-                            <Text style={styles.valueLabel}>${clue.value}</Text>
-                            <Text style={styles.questionText}>{clue.question}</Text>
+                            <Text variant="caption" style={styles.categoryLabel}>{categories[selectedClue.catIndex].name}</Text>
+                            <Text variant="h1" style={styles.valueLabel}>${clue.value}</Text>
+                            <Text variant="h2" style={styles.questionText}>{clue.question}</Text>
                         </GlassCard>
 
                         <TextInput
                             style={styles.answerInput}
                             placeholder="What is...?"
-                            placeholderTextColor="#999"
+                            placeholderTextColor={COLORS.textHint}
                             value={userAnswer}
                             onChangeText={setUserAnswer}
                             autoFocus
                         />
 
-                        <TouchableOpacity 
-                            style={[styles.submitButton, !userAnswer.trim() && styles.disabledButton]}
+                        <SquishyButton 
                             onPress={submitAnswer}
                             disabled={!userAnswer.trim() || (showWager && wager <= 0)}
                         >
-                            <Text style={styles.submitText}>Answer</Text>
-                        </TouchableOpacity>
+                            <Text variant="button">Answer</Text>
+                        </SquishyButton>
                     </ScrollView>
                 </LinearGradient>
             </SafeAreaView>
@@ -285,14 +283,14 @@ const CouplesJeopardyGame: React.FC = () => {
     // Game board
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#1a0a10', '#2d132c']} style={styles.background} />
+            <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background} />
             
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View style={styles.header}>
-                    <Text style={styles.mainTitle}>Couple's Jeopardy</Text>
+                    <Text variant="h1" style={styles.mainTitle}>Couple's Jeopardy</Text>
                     <View style={styles.scoreDisplay}>
-                        <Text style={styles.scoreText}>${score}</Text>
-                        {isSyncing && <Text style={styles.syncText}>💾</Text>}
+                        <Text variant="h1" style={styles.scoreText}>${score}</Text>
+                        {isSyncing && <Text variant="caption">💾</Text>}
                     </View>
                 </View>
 
@@ -303,41 +301,41 @@ const CouplesJeopardyGame: React.FC = () => {
                     {categories.map((category, catIndex) => (
                         <View key={category.name} style={styles.categoryColumn}>
                             <View style={styles.categoryHeader}>
-                                <Text style={styles.categoryTitle}>{category.name}</Text>
+                                <Text variant="caption" style={styles.categoryTitle}>{category.name}</Text>
                             </View>
                             {category.clues.map((clue, clueIndex) => (
-                                <TouchableOpacity
+                                <SquishyButton
                                     key={clue.value}
+                                    onPress={() => selectClue(catIndex, clueIndex)}
+                                    disabled={clue.revealed}
                                     style={[
                                         styles.card,
                                         clue.revealed && styles.playedCard,
                                         clue.dailyDouble && !clue.revealed && styles.dailyDoubleCard
                                     ]}
-                                    onPress={() => selectClue(catIndex, clueIndex)}
-                                    disabled={clue.revealed}
                                 >
                                     <LinearGradient
                                         colors={clue.revealed ? ['#000040', '#000040'] : ['#060ce9', '#000080']}
                                         style={styles.cardGradient}
                                     >
-                                        <Text style={[
+                                        <Text variant="h2" style={[
                                             styles.cardValue,
                                             clue.revealed && styles.playedCardValue
                                         ]}>
                                             {clue.revealed ? '—' : `$${clue.value}`}
                                         </Text>
                                         {clue.dailyDouble && !clue.revealed && (
-                                            <Text style={styles.ddBadge}>DD</Text>
+                                            <Text variant="caption" style={styles.ddBadge}>DD</Text>
                                         )}
                                     </LinearGradient>
-                                </TouchableOpacity>
+                                </SquishyButton>
                             ))}
                         </View>
                     ))}
                 </LinearGradient>
 
                 {session && (
-                    <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
+                    <Text variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
                 )}
             </ScrollView>
         </SafeAreaView>
@@ -352,69 +350,56 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
     },
     scrollContainer: {
-        padding: 20,
-        paddingTop: 60,
+        padding: SPACING.regular,
+        paddingTop: SPACING.xxxlarge,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: SPACING.xlarge,
     },
     mainTitle: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#fff',
-        marginBottom: 10,
+        marginBottom: SPACING.regular,
     },
     scoreDisplay: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     scoreText: {
-        fontSize: 32,
-        color: '#FFD700',
-        fontWeight: 'bold',
-    },
-    syncText: {
-        marginLeft: 8,
-        fontSize: 16,
+        color: COLORS.brightYellow,
     },
     loadingText: {
-        color: '#fff',
-        fontSize: 20,
         textAlign: 'center',
-        marginTop: 100,
+        marginTop: SPACING.xxxlarge * 3,
     },
     boardContainer: {
         flexDirection: 'row',
-        padding: 10,
-        borderRadius: 10,
+        padding: SPACING.small,
+        borderRadius: BORDER_RADIUS.medium,
     },
     categoryColumn: {
         flex: 1,
-        marginRight: 5,
+        marginRight: SPACING.tiny,
     },
     categoryHeader: {
         backgroundColor: '#060ce9',
-        padding: 8,
+        padding: SPACING.small,
         height: 60,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 4,
-        marginBottom: 5,
+        borderRadius: BORDER_RADIUS.small,
+        marginBottom: SPACING.tiny,
         borderWidth: 2,
-        borderColor: '#fff',
+        borderColor: COLORS.textPrimary,
     },
     categoryTitle: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 9,
+        color: COLORS.textPrimary,
         textAlign: 'center',
         textTransform: 'uppercase',
     },
     card: {
         height: 50,
-        marginBottom: 5,
-        borderRadius: 4,
+        marginBottom: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.small,
         overflow: 'hidden',
     },
     playedCard: {
@@ -422,7 +407,7 @@ const styles = StyleSheet.create({
     },
     dailyDoubleCard: {
         borderWidth: 2,
-        borderColor: '#FFD700',
+        borderColor: COLORS.brightYellow,
     },
     cardGradient: {
         flex: 1,
@@ -430,9 +415,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     cardValue: {
-        color: '#FFD700',
-        fontSize: 16,
-        fontWeight: 'bold',
+        color: COLORS.brightYellow,
     },
     playedCardValue: {
         color: 'rgba(255,215,0,0.3)',
@@ -441,86 +424,62 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 2,
         right: 2,
-        backgroundColor: '#FFD700',
-        color: '#000',
-        fontSize: 8,
-        fontWeight: 'bold',
+        backgroundColor: COLORS.brightYellow,
+        color: COLORS.deepCosmic,
         padding: 2,
-        borderRadius: 2,
+        borderRadius: BORDER_RADIUS.small,
     },
     dailyDoubleBanner: {
-        backgroundColor: '#FFD700',
-        padding: 20,
-        borderRadius: 10,
-        marginBottom: 20,
+        backgroundColor: COLORS.brightYellow,
+        padding: SPACING.xlarge,
+        borderRadius: BORDER_RADIUS.xlarge,
+        marginBottom: SPACING.xlarge,
         alignItems: 'center',
     },
-    dailyDoubleText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#000',
-    },
     wagerInput: {
-        backgroundColor: '#fff',
-        padding: 10,
-        borderRadius: 5,
+        backgroundColor: COLORS.textPrimary,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.small,
         width: 150,
         textAlign: 'center',
-        fontSize: 18,
-        marginTop: 10,
+        fontSize: TYPOGRAPHY.fontSize.headerMedium,
+        marginTop: SPACING.regular,
+        color: COLORS.deepCosmic,
     },
     questionCard: {
-        padding: 20,
-        marginBottom: 20,
+        padding: SPACING.xlarge,
+        marginBottom: SPACING.xlarge,
         minHeight: 150,
         justifyContent: 'center',
     },
     categoryLabel: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 12,
-        marginBottom: 5,
+        marginBottom: SPACING.small,
     },
     valueLabel: {
-        color: '#FFD700',
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 15,
+        color: COLORS.brightYellow,
+        marginBottom: SPACING.regular,
     },
     questionText: {
-        fontSize: 22,
-        color: '#fff',
         textAlign: 'center',
-        lineHeight: 30,
     },
     answerInput: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 10,
-        padding: 15,
-        color: '#fff',
-        fontSize: 18,
-        marginBottom: 20,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular,
+        color: COLORS.textPrimary,
+        fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+        marginBottom: SPACING.xlarge,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.3)',
-    },
-    submitButton: {
-        backgroundColor: '#060ce9',
-        paddingVertical: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-    },
-    disabledButton: {
-        opacity: 0.5,
-    },
-    submitText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
+        borderColor: COLORS.borderSubtle,
     },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
         textAlign: 'center',
-        marginTop: 20,
+        marginTop: SPACING.xlarge,
+        opacity: 0.3,
+    },
+    scrollContent: {
+        padding: SPACING.regular,
+        paddingTop: SPACING.xxxlarge,
     },
 });
 

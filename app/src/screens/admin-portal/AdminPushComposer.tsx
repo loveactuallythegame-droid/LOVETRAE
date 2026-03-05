@@ -1,6 +1,9 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, TextInput, StyleSheet, Image } from 'react-native';
+import ScreenLayout from '../../layout/ScreenLayout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 // In a real app, you'd use a Firebase function to send the push notification.
 // For this example, we'll just log the intended action.
 
@@ -23,42 +26,50 @@ const AdminPushComposer = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <View style={styles.container}>
         <View style={styles.header}>
-            <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+          <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
         </View>
-      <Text style={styles.title}>Push Composer</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Couple ID"
-        value={coupleId}
-        onChangeText={setCoupleId}
-      />
-      <TextInput
-        style={styles.textArea}
-        placeholder="Notification Message"
-        value={message}
-        onChangeText={setMessage}
-        multiline
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSend}>
-        <Text style={styles.buttonText}>Send Notification</Text>
-      </TouchableOpacity>
-      {feedback ? <Text style={styles.feedback}>{feedback}</Text> : null}
-    </View>
+        <Typography variant="h1" style={styles.title}>Push Composer</Typography>
+        <GlassCard style={styles.formCard} variant="elevated" padding="large">
+          <TextInput
+            style={styles.input}
+            placeholder="Couple ID"
+            placeholderTextColor={COLORS.textHint}
+            value={coupleId}
+            onChangeText={setCoupleId}
+          />
+          <TextInput
+            style={styles.textArea}
+            placeholder="Notification Message"
+            placeholderTextColor={COLORS.textHint}
+            value={message}
+            onChangeText={setMessage}
+            multiline
+          />
+          <SquishyButton onPress={handleSend} style={styles.button}>
+            <Typography variant="button" color={COLORS.textPrimary}>Send Notification</Typography>
+          </SquishyButton>
+          {feedback ? (
+            <Typography variant="body" color={COLORS.success} style={styles.feedback}>
+              {feedback}
+            </Typography>
+          ) : null}
+        </GlassCard>
+      </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5C1459',
-    padding: 20,
     alignItems: 'center',
   },
   header: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: SPACING.regular,
   },
   logo: {
     width: 150,
@@ -66,48 +77,38 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   title: {
-    fontSize: 32,
-    fontFamily: 'BarbieDream-Regular',
-    color: '#FA1F63',
-    marginBottom: 40,
+    marginBottom: SPACING.xlarge,
     textAlign: 'center',
   },
-  input: {
+  formCard: {
     width: '90%',
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 15,
-    color: '#000',
-    fontFamily: 'Cheese-Regular',
+  },
+  input: {
+    backgroundColor: COLORS.backgroundInput,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.medium,
+    marginBottom: SPACING.regular,
+    color: COLORS.textPrimary,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
   textArea: {
-    width: '90%',
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 15,
+    backgroundColor: COLORS.backgroundInput,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.medium,
+    marginBottom: SPACING.regular,
     height: 120,
     textAlignVertical: 'top',
-    color: '#000',
-    fontFamily: 'Cheese-Regular',
+    color: COLORS.textPrimary,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
   button: {
-    width: '90%',
-    backgroundColor: '#33DEA5',
-    padding: 20,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    width: '100%',
   },
   feedback: {
-    marginTop: 20,
-    color: '#33DEA5',
-    fontFamily: 'SweetPink-Regular',
-    fontSize: 16,
+    marginTop: SPACING.regular,
+    textAlign: 'center',
   },
 });
 

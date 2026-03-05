@@ -2,56 +2,78 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
-  ScrollView,
   FlatList,
 } from 'react-native';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const kpiData = [
-  { id: '1', title: 'Total Galactic Users', value: '128,402', change: '+5.2% this cycle', color: '#13ecec' },
-  { id: '2', title: 'Active SOS Alerts', value: '14', change: '3 critical status', color: '#fa5c38' },
-  { id: '3', title: 'Cosmic Subscriptions', value: '+12.5%', change: '$142k New ARR', color: '#a855f7' },
-  { id: '4', title: 'Avg. Session Duration', value: '42m 15s', change: '+1.5% retention', color: '#facc15' },
+  { id: '1', title: 'Total Galactic Users', value: '128,402', change: '+5.2% this cycle', color: COLORS.info },
+  { id: '2', title: 'Active SOS Alerts', value: '14', change: '3 critical status', color: COLORS.warning },
+  { id: '3', title: 'Cosmic Subscriptions', value: '+12.5%', change: '$142k New ARR', color: COLORS.lavenderPurple },
+  { id: '4', title: 'Avg. Session Duration', value: '42m 15s', change: '+1.5% retention', color: COLORS.brightYellow },
 ];
 
 const activityData = [
-    { id: '1', icon: 'warning', title: 'SOS Triggered: Sector 7G', description: 'Couple #8402 reported high emotional turbulence.', time: '2 MINUTES AGO', color: '#fa5c38' },
-    { id: '2', icon: 'workspace_premium', title: 'New Star Subscription', description: "User 'Vega_Lover' upgraded to Cosmic Tier.", time: '12 MINUTES AGO', color: '#fc0c84' },
-    { id: '3', icon: 'auto_awesome', title: 'Milestone Reached', description: "Couple 'Orion' completed the 'Nebula Trust' trial.", time: '45 MINUTES AGO', color: '#a855f7' },
-    { id: '4', icon: 'person_add', title: 'System Entrance', description: "New couple 'Starlight' initialized connection.", time: '1 HOUR AGO', color: '#fc0c84' },
-    { id: '5', icon: 'check_circle', title: 'SOS Resolved', description: 'AI Mediator closed Ticket #2041 successfully.', time: '2 HOURS AGO', color: '#0bda50' },
+    { id: '1', icon: 'warning', title: 'SOS Triggered: Sector 7G', description: 'Couple #8402 reported high emotional turbulence.', time: '2 MINUTES AGO', color: COLORS.warning },
+    { id: '2', icon: 'workspace_premium', title: 'New Star Subscription', description: "User 'Vega_Lover' upgraded to Cosmic Tier.", time: '12 MINUTES AGO', color: COLORS.vibrantPink },
+    { id: '3', icon: 'auto_awesome', title: 'Milestone Reached', description: "Couple 'Orion' completed the 'Nebula Trust' trial.", time: '45 MINUTES AGO', color: COLORS.lavenderPurple },
+    { id: '4', icon: 'person_add', title: 'System Entrance', description: "New couple 'Starlight' initialized connection.", time: '1 HOUR AGO', color: COLORS.vibrantPink },
+    { id: '5', icon: 'check_circle', title: 'SOS Resolved', description: 'AI Mediator closed Ticket #2041 successfully.', time: '2 HOURS AGO', color: COLORS.success },
 ];
 
 const AdminDashboardOverview = () => {
 
   const renderKpiItem = ({ item }) => (
-    <View style={[styles.kpiCard, { borderTopColor: item.color }]}>
-      <Text style={styles.kpiTitle}>{item.title}</Text>
-      <Text style={styles.kpiValue}>{item.value}</Text>
-      <Text style={[styles.kpiChange, { color: item.change.startsWith('+') ? '#0bda50' : '#fa5c38' }]}>{item.change}</Text>
-    </View>
+    <GlassCard style={[styles.kpiCard, { borderTopColor: item.color }]}>
+      <Typography variant="label" color={COLORS.textSecondary}>
+        {item.title}
+      </Typography>
+      <Typography variant="h2" color={COLORS.textPrimary}>
+        {item.value}
+      </Typography>
+      <Typography variant="caption" color={item.change.startsWith('+') ? COLORS.success : COLORS.error}>
+        {item.change}
+      </Typography>
+    </GlassCard>
   );
 
   const renderActivityItem = ({ item }) => (
-      <View style={styles.activityItem}>
+      <GlassCard style={styles.activityItem}>
         <View style={[styles.activityIcon, { backgroundColor: `${item.color}1A` }]}>
             {/* Using a text placeholder for icon */}
-            <Text style={{color: item.color, fontSize: 24}}>{item.icon.charAt(0)}</Text>
+            <Typography variant="h2" color={item.color}>
+              {item.icon.charAt(0)}
+            </Typography>
         </View>
         <View style={styles.activityDetails}>
-            <Text style={styles.activityTitle}>{item.title}</Text>
-            <Text style={styles.activityDescription}>{item.description}</Text>
-            <Text style={styles.activityTime}>{item.time}</Text>
+            <Typography variant="body" color={COLORS.textPrimary} style={{ fontWeight: TYPOGRAPHY.fontWeight.bold }}>
+              {item.title}
+            </Typography>
+            <Typography variant="caption" color={COLORS.textSecondary}>
+              {item.description}
+            </Typography>
+            <Typography variant="small" color={COLORS.vibrantPink} style={{ marginTop: SPACING.small }}>
+              {item.time}
+            </Typography>
         </View>
-      </View>
+      </GlassCard>
   )
 
   return (
-    <ScrollView style={styles.container}>
+    <ScreenLayout
+      showHeader={true}
+      scrollable={true}
+    >
       <View style={styles.headerContainer}>
-        <Text style={styles.headerTitle}>Cosmic Overview</Text>
-        <Text style={styles.headerSubtitle}>Real-time performance tracking for Love Actually system nodes.</Text>
+        <Typography variant="h1" color={COLORS.textPrimary}>
+          Cosmic Overview
+        </Typography>
+        <Typography variant="body" color={COLORS.textSecondary} style={{ marginTop: SPACING.tiny }}>
+          Real-time performance tracking for Love Actually system nodes.
+        </Typography>
       </View>
 
       <FlatList
@@ -63,15 +85,21 @@ const AdminDashboardOverview = () => {
         scrollEnabled={false}
       />
 
-        <View style={styles.chartContainer}>
-            <Text style={styles.chartTitle}>User Engagement Trend</Text>
+        <GlassCard style={styles.chartContainer}>
+            <Typography variant="h3" color={COLORS.textPrimary} style={{ marginBottom: SPACING.regular }}>
+              User Engagement Trend
+            </Typography>
             <View style={styles.chartPlaceholder}>
-                <Text style={{color: '#9db9b9'}}>Chart Placeholder</Text>
+                <Typography variant="body" color={COLORS.textSecondary}>
+                  Chart Placeholder
+                </Typography>
             </View>
-        </View>
+        </GlassCard>
 
         <View style={styles.activityFeedContainer}>
-            <Text style={styles.activityFeedTitle}>Live Activity</Text>
+            <Typography variant="label" color={COLORS.textPrimary} style={{ marginBottom: SPACING.regular }}>
+              Live Activity
+            </Typography>
             <FlatList
                 data={activityData}
                 renderItem={renderActivityItem}
@@ -79,129 +107,52 @@ const AdminDashboardOverview = () => {
                 scrollEnabled={false}
             />
         </View>
-
-    </ScrollView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0e0d1a',
-  },
   headerContainer: {
-      padding: 24,
-  },
-  headerTitle: {
-    fontFamily: 'BarbieDream-Regular',
-    color: '#ffffff',
-    fontSize: 32,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    fontStyle: 'italic',
-  },
-  headerSubtitle: {
-      color: '#9db9b9',
-      fontSize: 14,
-      marginTop: 4,
+      padding: SPACING.regular,
   },
   kpiRow: {
       justifyContent: 'space-between',
-      paddingHorizontal: 16,
+      paddingHorizontal: SPACING.regular,
   },
   kpiCard: {
-    backgroundColor: '#111818',
-    borderWidth: 1,
-    borderColor: '#3b5454',
     borderTopWidth: 3,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
+    marginBottom: SPACING.regular,
     width: '48%',
   },
-  kpiTitle: {
-    color: '#9db9b9',
-    fontSize: 12,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    marginBottom: 8,
-  },
-  kpiValue: {
-    color: '#ffffff',
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  kpiChange: {
-    fontSize: 12,
-    marginTop: 4,
-  },
   chartContainer: {
-      backgroundColor: '#111818',
-      borderWidth: 1,
-      borderColor: '#3b5454',
-      borderRadius: 16,
-      margin: 16,
-      padding: 20,
-  },
-  chartTitle: {
-      color: '#ffffff',
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginBottom: 16,
+      margin: SPACING.regular,
+      padding: SPACING.regular,
   },
   chartPlaceholder: {
       height: 200,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#283939',
-      borderRadius: 12,
+      backgroundColor: COLORS.backgroundCard,
+      borderRadius: BORDER_RADIUS.large,
   },
   activityFeedContainer: {
-      padding: 16,
-  },
-  activityFeedTitle: {
-      color: '#ffffff',
-      fontSize: 14,
-      fontWeight: 'bold',
-      textTransform: 'uppercase',
-      letterSpacing: 2,
-      marginBottom: 16,
+      padding: SPACING.regular,
   },
   activityItem: {
       flexDirection: 'row',
       alignItems: 'flex-start',
-      backgroundColor: '#1a111a',
-      borderRadius: 12,
-      padding: 16,
-      marginBottom: 12,
-      borderWidth: 1,
-      borderColor: '#3b5454'
+      marginBottom: SPACING.regular,
   },
   activityIcon: {
       width: 40,
       height: 40,
-      borderRadius: 8,
+      borderRadius: BORDER_RADIUS.medium,
       alignItems: 'center',
       justifyContent: 'center',
-      marginRight: 16,
+      marginRight: SPACING.regular,
   },
   activityDetails: {
       flex: 1,
-  },
-  activityTitle: {
-      color: '#ffffff',
-      fontWeight: 'bold',
-  },
-  activityDescription: {
-      color: '#9db9b9',
-      fontSize: 12,
-      marginTop: 2,
-  },
-  activityTime: {
-      color: '#fc0c84',
-      fontSize: 10,
-      fontWeight: 'bold',
-      marginTop: 8,
   },
 });
 

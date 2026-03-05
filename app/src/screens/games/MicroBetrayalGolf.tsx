@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import Slider from '@react-native-community/slider';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 export default function MicroBetrayalGolf({ navigation }: any) {
-  const [angle, setAngle] = useState(0); // -45 to 45
-  const [power, setPower] = useState(50); // 0 to 100
+  const [angle, setAngle] = useState(0);
+  const [power, setPower] = useState(50);
   const [strokes, setStrokes] = useState(0);
   const [hole, setHole] = useState(false);
   const [feedback, setFeedback] = useState("Aim for Repair.");
 
   function putt() {
     setStrokes(strokes + 1);
-    // Mock physics
     if (Math.abs(angle) < 10 && power > 40 && power < 80) {
       setHole(true);
       setFeedback("HOLE IN ONE (or close enough)!");
@@ -33,79 +33,130 @@ export default function MicroBetrayalGolf({ navigation }: any) {
   }
 
   return (
-    <LinearGradient colors={['#001000', '#000000']} style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.header}>
-          <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Text variant="body">Back</Text>
-          </SquishyButton>
-          <Text variant="header">Micro-Betrayal Golf</Text>
-        </View>
+    <ScreenLayout showMarcie={true} marcieQuote={hole ? "Sunk it? Impressive." : "Aim for Repair."}>
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.header}>
+            <SquishyButton 
+              variant="ghost" 
+              size="small"
+              onPress={() => navigation.goBack()}
+            >
+              <Typography variant="body">Back</Typography>
+            </SquishyButton>
+            <Typography variant="h2">Micro-Betrayal Golf</Typography>
+          </View>
 
-        <GlassCard style={styles.course}>
-           <View style={[styles.hole, hole ? {backgroundColor: '#33DEA5'} : {}]}>
-             <Text style={{fontSize: 10}}>REPAIR</Text>
-           </View>
+          <Typography variant="h1" style={styles.mainTitle}>
+            The Love Arcade
+          </Typography>
+          <Typography variant="body" style={styles.subtitle}>
+            +100 Games to Deepen Connection
+          </Typography>
 
-           {/* Visualization of "Ball" would be here */}
-           <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
-              <Text variant="header" style={{fontSize: 30}}>{hole ? '⛳️' : '⚪️'}</Text>
-           </View>
+          <GlassCard style={styles.course}>
+            <View style={[styles.hole, hole ? {backgroundColor: COLORS.success} : {}]}>
+              <Typography variant="caption">REPAIR</Typography>
+            </View>
 
-           <View style={styles.controls}>
-             <Text variant="body">Angle: {Math.round(angle)}°</Text>
-             <Slider
-               style={{ width: '100%', height: 40 }}
-               minimumValue={-45}
-               maximumValue={45}
-               value={angle}
-               onValueChange={setAngle}
-               minimumTrackTintColor="#33DEA5"
-             />
+            <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
+              <Typography variant="h1">{hole ? '⛳️' : '⚪️'}</Typography>
+            </View>
 
-             <Text variant="body">Power: {Math.round(power)}%</Text>
-             <Slider
-               style={{ width: '100%', height: 40 }}
-               minimumValue={0}
-               maximumValue={100}
-               value={power}
-               onValueChange={setPower}
-               minimumTrackTintColor="#FA1F63"
-             />
-           </View>
+            <View style={styles.controls}>
+              <Typography variant="body">Angle: {Math.round(angle)}°</Typography>
+              <Slider
+                style={{ width: '100%', height: 40 }}
+                minimumValue={-45}
+                maximumValue={45}
+                value={angle}
+                onValueChange={setAngle}
+                minimumTrackTintColor={COLORS.success}
+              />
 
-           {!hole ? (
-             <SquishyButton onPress={putt} style={styles.btn}>
-               <Text variant="header">PUTT</Text>
-             </SquishyButton>
-           ) : (
-             <SquishyButton onPress={reset} style={[styles.btn, {backgroundColor: '#33DEA5'}]}>
-               <Text variant="header">Next Hole</Text>
-             </SquishyButton>
-           )}
+              <Typography variant="body">Power: {Math.round(power)}%</Typography>
+              <Slider
+                style={{ width: '100%', height: 40 }}
+                minimumValue={0}
+                maximumValue={100}
+                value={power}
+                onValueChange={setPower}
+                minimumTrackTintColor={COLORS.vibrantPink}
+              />
+            </View>
 
-           <Text variant="body" style={{marginTop: 20, textAlign: 'center', color: hole ? '#33DEA5' : '#fff'}}>
+            {!hole ? (
+              <SquishyButton variant="primary" size="large" onPress={putt}>
+                <Typography variant="button" color={COLORS.textPrimary}>PUTT</Typography>
+              </SquishyButton>
+            ) : (
+              <SquishyButton variant="secondary" size="large" onPress={reset}>
+                <Typography variant="button" color={COLORS.textPrimary}>Next Hole</Typography>
+              </SquishyButton>
+            )}
+
+            <Typography 
+              variant="body" 
+              style={{
+                marginTop: SPACING.lg, 
+                textAlign: 'center', 
+                color: hole ? COLORS.success : COLORS.textPrimary
+              }}
+            >
               {feedback}
-           </Text>
+            </Typography>
 
-           {hole && (
-             <Text variant="body" style={{marginTop: 10, textAlign: 'center', fontStyle: 'italic'}}>
-               Marcie: "Sunk it in {strokes} strokes? Impressive."
-             </Text>
-           )}
-        </GlassCard>
-      </ScrollView>
-    </LinearGradient>
+            {hole && (
+              <Typography variant="sass" style={{marginTop: SPACING.md, textAlign: 'center'}}>
+                Marcie: "Sunk it in {strokes} strokes? Impressive."
+              </Typography>
+            )}
+          </GlassCard>
+        </ScrollView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { padding: 20, gap: 20 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-  course: { padding: 20, minHeight: 400 },
-  hole: { width: 50, height: 50, borderRadius: 25, borderWidth: 2, borderColor: '#fff', alignItems: 'center', justifyContent: 'center', alignSelf: 'center' },
-  controls: { gap: 10, marginVertical: 20 },
-  btn: { backgroundColor: '#fff', padding: 15, borderRadius: 12, alignItems: 'center' }
+  container: { 
+    flex: 1,
+    backgroundColor: COLORS.backgroundPrimary,
+  },
+  content: { 
+    padding: SPACING.lg, 
+    gap: SPACING.lg 
+  },
+  header: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: SPACING.sm 
+  },
+  mainTitle: {
+    textAlign: 'center',
+    marginBottom: SPACING.sm,
+  },
+  subtitle: {
+    textAlign: 'center',
+    opacity: 0.7,
+    marginBottom: SPACING.lg,
+  },
+  course: { 
+    padding: SPACING.lg, 
+    minHeight: 400 
+  },
+  hole: { 
+    width: 50, 
+    height: 50, 
+    borderRadius: BORDER_RADIUS.round, 
+    borderWidth: 2, 
+    borderColor: COLORS.textPrimary, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    alignSelf: 'center' 
+  },
+  controls: { 
+    gap: SPACING.sm, 
+    marginVertical: SPACING.lg 
+  },
 });

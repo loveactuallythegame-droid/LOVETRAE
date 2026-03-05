@@ -1,9 +1,12 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, TextInput, StyleSheet, ScrollView, Image } from 'react-native';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const AdminGameEditorScreen = () => {
   const route = useRoute();
@@ -28,87 +31,102 @@ const AdminGameEditorScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
-      </View>
-      <Text style={styles.title}>Edit Game</Text>
-      <TextInput
-        style={styles.input}
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Title"
-      />
-      <TextInput
-        style={styles.textArea}
-        value={instructions}
-        onChangeText={setInstructions}
-        placeholder="Instructions"
-        multiline
-      />
-      <TextInput
-        style={styles.textArea}
-        value={gradingKeys}
-        onChangeText={setGradingKeys}
-        placeholder="Grading Keys (JSON)"
-        multiline
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSave}>
-        <Text style={styles.buttonText}>Save</Text>
-      </TouchableOpacity>
-    </ScrollView>
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+        </View>
+        <Typography variant="h1" center style={styles.title}>
+          Edit Game
+        </Typography>
+        <GlassCard padding="medium" style={styles.formCard}>
+          <TextInput
+            style={styles.input}
+            value={title}
+            onChangeText={setTitle}
+            placeholder="Title"
+            placeholderTextColor={COLORS.textHint}
+          />
+          <TextInput
+            style={styles.textArea}
+            value={instructions}
+            onChangeText={setInstructions}
+            placeholder="Instructions"
+            placeholderTextColor={COLORS.textHint}
+            multiline
+          />
+          <TextInput
+            style={styles.textArea}
+            value={gradingKeys}
+            onChangeText={setGradingKeys}
+            placeholder="Grading Keys (JSON)"
+            placeholderTextColor={COLORS.textHint}
+            multiline
+          />
+        </GlassCard>
+        <SquishyButton
+          onPress={handleSave}
+          accessibilityLabel="Save game"
+          variant="primary"
+          size="medium"
+          style={styles.button}
+        >
+          <Typography variant="button" color={COLORS.textPrimary}>
+            Save
+          </Typography>
+        </SquishyButton>
+      </ScrollView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5C1459',
-    padding: 20,
+    backgroundColor: COLORS.healingHospital,
+    padding: SPACING.regular,
   },
-    header: {
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    logo: {
-        width: 150,
-        height: 50,
-        resizeMode: 'contain',
-    },
+  header: {
+    alignItems: 'center',
+    marginBottom: SPACING.large,
+  },
+  logo: {
+    width: 150,
+    height: 50,
+    resizeMode: 'contain',
+  },
   title: {
-    fontSize: 32,
     fontFamily: 'BarbieDream-Regular',
-    color: '#FA1F63',
-    marginBottom: 20,
-    textAlign: 'center',
+    color: COLORS.emotionalConnection,
+    marginBottom: SPACING.large,
+  },
+  formCard: {
+    marginBottom: SPACING.regular,
   },
   input: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 15,
-    color: '#000',
+    backgroundColor: COLORS.backgroundInput,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.input,
+    marginBottom: SPACING.regular,
+    color: COLORS.textPrimary,
     fontFamily: 'Cheese-Regular',
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
   textArea: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 15,
+    backgroundColor: COLORS.backgroundInput,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.input,
+    marginBottom: SPACING.regular,
     height: 150,
     textAlignVertical: 'top',
-    color: '#000',
+    color: COLORS.textPrimary,
     fontFamily: 'Cheese-Regular',
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
   button: {
-    backgroundColor: '#33DEA5',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    marginBottom: SPACING.xlarge,
   },
 });
 

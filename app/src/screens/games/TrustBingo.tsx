@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function TrustBingo({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -63,23 +66,33 @@ export default function TrustBingo({ route, navigation }: any) {
     ];
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.regular }}>
             <GlassCard>
-                <Text variant="header">This Week's Board</Text>
+                <Typography variant="h1" center style={styles.gameTitle}>
+                    The Love Arcade
+                </Typography>
+                <Typography variant="h2" center style={styles.subtitle}>
+                    +100 Games to Deepen Connection
+                </Typography>
+
+                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                    This Week's Board
+                </Typography>
                 <View style={styles.grid}>
                     {SQUARES.map((s, i) => (
                         <SquishyButton
                             key={i}
                             onPress={() => toggle(i)}
-                            style={[styles.square, marked.includes(i) ? styles.marked : {}]}
+                            variant={marked.includes(i) ? 'primary' : 'ghost'}
+                            style={styles.square}
                         >
-                            <Text variant="body" style={{ fontSize: 10, textAlign: 'center' }}>{s}</Text>
+                            <Typography variant="caption" center>{s}</Typography>
                         </SquishyButton>
                     ))}
                 </View>
 
-                <SquishyButton onPress={checkBingo} style={styles.submitBtn}>
-                    <Text variant="header">Call BINGO</Text>
+                <SquishyButton onPress={checkBingo} size="large" style={styles.submitBtn}>
+                    <Typography variant="button">Call BINGO</Typography>
                 </SquishyButton>
             </GlassCard>
         </ScrollView>
@@ -101,33 +114,27 @@ export default function TrustBingo({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    gameTitle: {
+        marginBottom: SPACING.small
+    },
+    subtitle: {
+        marginBottom: SPACING.xlarge
+    },
     grid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 8,
+        gap: SPACING.small,
         justifyContent: 'center'
     },
     square: {
         width: '30%',
         aspectRatio: 1,
-        backgroundColor: 'rgba(255,255,255,0.1)',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 4,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)'
-    },
-    marked: {
-        backgroundColor: '#FFD700',
-        borderColor: '#FFD700'
+        padding: SPACING.small,
     },
     submitBtn: {
-        marginTop: 20,
-        backgroundColor: '#FA1F63',
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20
+        marginTop: SPACING.xlarge,
+        marginBottom: SPACING.xlarge
     },
 });

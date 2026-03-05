@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 export default function TimelineDetective({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -32,7 +34,7 @@ export default function TimelineDetective({ route, navigation }: any) {
                 HapticFeedbackSystem.success();
                 speakMarcie("Pattern identified: 'Escalation after emotional neglect'.");
                 finish();
-            }, 1000);
+            }, ANIMATIONS.duration.slow);
         }
     }
 
@@ -50,28 +52,28 @@ export default function TimelineDetective({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.medium }}>
             <GlassCard>
-                <Text variant="header">Investigation Board</Text>
-                <Text variant="instructions">Place evidence on the timeline:</Text>
+                <Typography variant="h2">Investigation Board</Typography>
+                <Typography variant="instructions">Place evidence on the timeline:</Typography>
 
                 <View style={styles.timeline}>
                     {evidence.map((e, i) => (
                         <View key={i} style={styles.pin}>
-                            <Text variant="body" style={{ fontSize: 10 }}>{e}</Text>
+                            <Typography variant="caption">{e}</Typography>
                         </View>
                     ))}
                 </View>
 
                 <View style={styles.evidencePool}>
                     <SquishyButton onPress={() => addEvidence("Feb 12: Created Profile")} style={styles.evidenceBtn}>
-                        <Text variant="body">Feb 12: Created Profile</Text>
+                        <Typography variant="body">Feb 12: Created Profile</Typography>
                     </SquishyButton>
                     <SquishyButton onPress={() => addEvidence("April 15: First Coffee")} style={styles.evidenceBtn}>
-                        <Text variant="body">April 15: First Coffee</Text>
+                        <Typography variant="body">April 15: First Coffee</Typography>
                     </SquishyButton>
                     <SquishyButton onPress={() => addEvidence("May 20: Discovery Day")} style={styles.evidenceBtn}>
-                        <Text variant="body">May 20: Discovery Day</Text>
+                        <Typography variant="body">May 20: Discovery Day</Typography>
                     </SquishyButton>
                 </View>
 
@@ -97,27 +99,27 @@ export default function TimelineDetective({ route, navigation }: any) {
 const styles = StyleSheet.create({
     timeline: {
         height: 100,
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        borderRadius: 12,
-        marginBottom: 20,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        marginBottom: SPACING.large,
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
-        gap: 10
+        padding: SPACING.regular,
+        gap: SPACING.regular
     },
     pin: {
-        backgroundColor: '#FA1F63',
-        padding: 8,
-        borderRadius: 4
+        backgroundColor: COLORS.emotionalConnection,
+        padding: SPACING.small,
+        borderRadius: BORDER_RADIUS.small
     },
     evidencePool: {
-        gap: 10
+        gap: SPACING.regular
     },
     evidenceBtn: {
-        backgroundColor: '#2A1A31',
-        padding: 12,
-        borderRadius: 8,
+        backgroundColor: COLORS.backgroundCard,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.medium,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)'
+        borderColor: COLORS.borderSubtle
     }
 });

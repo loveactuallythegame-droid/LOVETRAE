@@ -1,8 +1,11 @@
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebaseClient';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const AdminAnalyticsDashboard = () => {
   const [dailyActiveUsers, setDailyActiveUsers] = useState(0);
@@ -40,71 +43,59 @@ const AdminAnalyticsDashboard = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Analytics Dashboard</Text>
-      <Text style={styles.subheader}>Real-time performance overview of the cosmic nebula ecosystem</Text>
+    <ScreenLayout
+      showHeader={true}
+      scrollable={true}
+    >
+      <Typography variant="h1" color={COLORS.textPrimary}>
+        Analytics Dashboard
+      </Typography>
+      <Typography variant="body" color={COLORS.textSecondary} style={{ marginBottom: SPACING.xlarge }}>
+        Real-time performance overview of the cosmic nebula ecosystem
+      </Typography>
 
       <View style={styles.kpiGrid}>
-        <View style={styles.kpiCard}>
-          <Text style={styles.kpiLabel}>Daily Active Users</Text>
-          <Text style={styles.kpiValue}>{dailyActiveUsers}</Text>
-        </View>
-        <View style={styles.kpiCard}>
-          <Text style={styles.kpiLabel}>Retention (D30)</Text>
-          <Text style={styles.kpiValue}>{retention}%</Text>
-        </View>
-        <View style={styles.kpiCard}>
-          <Text style={styles.kpiLabel}>Total Sessions</Text>
-          <Text style={styles.kpiValue}>{totalSessions}</Text>
-        </View>
+        <GlassCard style={styles.kpiCard}>
+          <Typography variant="label" color={COLORS.textSecondary}>
+            Daily Active Users
+          </Typography>
+          <Typography variant="h2" color={COLORS.textPrimary}>
+            {dailyActiveUsers}
+          </Typography>
+        </GlassCard>
+        <GlassCard style={styles.kpiCard}>
+          <Typography variant="label" color={COLORS.textSecondary}>
+            Retention (D30)
+          </Typography>
+          <Typography variant="h2" color={COLORS.textPrimary}>
+            {retention}%
+          </Typography>
+        </GlassCard>
+        <GlassCard style={styles.kpiCard}>
+          <Typography variant="label" color={COLORS.textSecondary}>
+            Total Sessions
+          </Typography>
+          <Typography variant="h2" color={COLORS.textPrimary}>
+            {totalSessions}
+          </Typography>
+        </GlassCard>
       </View>
-
-    </ScrollView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0a1414',
-    padding: 24,
-  },
-  header: {
-    fontFamily: 'BarbieDream-Regular',
-    color: '#ffffff',
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  subheader: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: 14,
-    marginBottom: 24,
-  },
   kpiGrid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 24,
+    marginBottom: SPACING.xlarge,
+    flexWrap: 'wrap',
   },
   kpiCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 16,
-    padding: 16,
     flex: 1,
-    marginHorizontal: 4,
-  },
-  kpiLabel: {
-    color: 'rgba(255, 255, 255, 0.6)',
-    fontSize: 12,
-    textTransform: 'uppercase',
-    marginBottom: 8,
-  },
-  kpiValue: {
-    color: '#ffffff',
-    fontSize: 28,
-    fontWeight: 'bold',
+    marginHorizontal: SPACING.tiny,
+    marginBottom: SPACING.regular,
+    minWidth: '30%',
   },
 });
 

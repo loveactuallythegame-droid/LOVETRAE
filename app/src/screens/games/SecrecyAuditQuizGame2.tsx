@@ -1,7 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 const SecrecyAuditQuizGame2 = () => {
     const [countdown, setCountdown] = useState(5);
@@ -22,74 +23,144 @@ const SecrecyAuditQuizGame2 = () => {
     }, []);
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#0a1413', '#230f18']} style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>SECRECY AUDIT</Text>
+                    <Typography variant="h2" style={styles.headerText}>SECRECY AUDIT</Typography>
                     <View style={styles.timerContainer}>
-                        <Text style={styles.timerText}>{`0${countdown}`}</Text>
+                        <Typography variant="h2" style={styles.timerText}>{`0${countdown}`}</Typography>
                     </View>
-                    <Text style={styles.headerText}>SYNC SCORE: 1,240</Text>
+                    <Typography variant="h2" style={styles.headerText}>SYNC SCORE: 1,240</Typography>
                 </View>
 
                 <View style={styles.gameArea}>
                     <View style={styles.hostSection}>
-                         <View style={styles.speechBubble}>
-                            <Text style={styles.speechText}>"Hmm, that delay is speaking volumes..."</Text>
-                        </View>
+                        <GlassCard style={styles.speechBubble}>
+                            <Typography variant="sass">"Hmm, that delay is speaking volumes..."</Typography>
+                        </GlassCard>
                     </View>
 
                     <View style={styles.quizSection}>
-                        <View style={styles.questionCard}>
-                            <Text style={styles.questionLabel}>Question 10 of 10</Text>
-                            <Text style={styles.questionText}>Have you ever kept a financial secret from your partner?</Text>
-                        </View>
+                        <GlassCard style={styles.questionCard}>
+                            <Typography variant="caption" style={styles.questionLabel}>Question 10 of 10</Typography>
+                            <Typography variant="h2" center>Have you ever kept a financial secret from your partner?</Typography>
+                        </GlassCard>
 
-                        <View style={styles.hesitationMeter}>
-                            <Text style={styles.hesitationLabel}>Response Latency: {latency}ms</Text>
+                        <GlassCard style={styles.hesitationMeter}>
+                            <Typography variant="body" style={styles.hesitationLabel}>Response Latency: {latency}ms</Typography>
                             <View style={styles.meterBar}>
                                 <View style={[styles.meterFill, { width: `${(latency / 1000) * 100}%` }]} />
                             </View>
-                        </View>
+                        </GlassCard>
 
                         <View style={styles.buttonRow}>
-                            <TouchableOpacity style={styles.trueButton}>
-                                <Text style={styles.buttonMainText}>TRUE</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.falseButton}>
-                                <Text style={styles.buttonMainText}>FALSE</Text>
-                            </TouchableOpacity>
+                            <SquishyButton onPress={() => {}} style={styles.trueButton}>
+                                <Typography variant="button" style={styles.buttonMainText}>TRUE</Typography>
+                            </SquishyButton>
+                            <SquishyButton onPress={() => {}} style={styles.falseButton}>
+                                <Typography variant="button" style={styles.buttonMainText}>FALSE</Typography>
+                            </SquishyButton>
                         </View>
                     </View>
                 </View>
-            </LinearGradient>
-        </SafeAreaView>
+            </View>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#0a1413' },
-    container: { flex: 1, padding: 16 },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
-    headerText: { color: '#fff', fontWeight: 'bold' },
-    timerContainer: { width: 60, height: 60, borderRadius: 30, borderWidth: 4, borderColor: '#ff006d', justifyContent: 'center', alignItems: 'center' },
-    timerText: { color: '#ff006d', fontSize: 24, fontWeight: 'bold' },
-    gameArea: { flexDirection: 'row', flex: 1, gap: 16 },
-    hostSection: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-    speechBubble: { backgroundColor: 'rgba(28, 39, 38, 0.7)', padding: 12, borderRadius: 12 },
-    speechText: { color: '#fff', fontStyle: 'italic' },
-    quizSection: { flex: 2, justifyContent: 'center' },
-    questionCard: { backgroundColor: 'rgba(28, 39, 38, 0.7)', padding: 24, borderRadius: 16, alignItems: 'center', marginBottom: 24 },
-    questionLabel: { color: '#ff006d', textTransform: 'uppercase', letterSpacing: 3, marginBottom: 8 },
-    questionText: { color: '#fff', fontSize: 28, fontWeight: 'bold', textAlign: 'center' },
-    hesitationMeter: { marginBottom: 24, backgroundColor: 'rgba(28, 39, 38, 0.7)', padding: 12, borderRadius: 12 },
-    hesitationLabel: { color: '#ff8c00', marginBottom: 8 },
-    meterBar: { height: 10, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 5 },
-    meterFill: { height: '100%', backgroundColor: '#ff8c00', borderRadius: 5 },
-    buttonRow: { flexDirection: 'row', gap: 16 },
-    trueButton: { flex: 1, height: 80, backgroundColor: '#ff006d', borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
-    falseButton: { flex: 1, height: 80, backgroundColor: '#ff007a', borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
-    buttonMainText: { color: '#fff', fontSize: 24, fontWeight: 'bold', fontStyle: 'italic' },
+    container: { 
+        flex: 1, 
+        padding: SPACING.regular 
+    },
+    header: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        marginBottom: SPACING.xlarge 
+    },
+    headerText: { 
+        color: COLORS.textPrimary 
+    },
+    timerContainer: { 
+        width: 60, 
+        height: 60, 
+        borderRadius: BORDER_RADIUS.round, 
+        borderWidth: 4, 
+        borderColor: COLORS.error, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    timerText: { 
+        color: COLORS.error 
+    },
+    gameArea: { 
+        flexDirection: 'row', 
+        flex: 1, 
+        gap: SPACING.regular 
+    },
+    hostSection: { 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+    },
+    speechBubble: { 
+        padding: SPACING.regular 
+    },
+    quizSection: { 
+        flex: 2, 
+        justifyContent: 'center' 
+    },
+    questionCard: { 
+        padding: SPACING.xlarge, 
+        alignItems: 'center', 
+        marginBottom: SPACING.xlarge 
+    },
+    questionLabel: { 
+        color: COLORS.error, 
+        marginBottom: SPACING.small 
+    },
+    hesitationMeter: { 
+        marginBottom: SPACING.xlarge, 
+        padding: SPACING.regular 
+    },
+    hesitationLabel: { 
+        color: COLORS.warmOrange, 
+        marginBottom: SPACING.small 
+    },
+    meterBar: { 
+        height: 10, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.small 
+    },
+    meterFill: { 
+        height: '100%', 
+        backgroundColor: COLORS.warmOrange, 
+        borderRadius: BORDER_RADIUS.small 
+    },
+    buttonRow: { 
+        flexDirection: 'row', 
+        gap: SPACING.regular 
+    },
+    trueButton: { 
+        flex: 1, 
+        height: 80, 
+        backgroundColor: COLORS.error, 
+        borderRadius: BORDER_RADIUS.large, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    falseButton: { 
+        flex: 1, 
+        height: 80, 
+        backgroundColor: COLORS.blushPink, 
+        borderRadius: BORDER_RADIUS.large, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    buttonMainText: { 
+        color: COLORS.textPrimary 
+    },
 });
 
 export default SecrecyAuditQuizGame2;

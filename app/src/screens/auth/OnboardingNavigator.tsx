@@ -11,6 +11,7 @@ import { navigationRef, navigate, getCurrentState } from '../../lib/navigation';
 import { useAppStore } from '../../state/store';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import Provider from '../../state/Provider';
+import { COLORS } from '../../theme';
 
 const SplashScreenLazy = React.lazy(() => import('./SplashScreen'));
 const OriginStoryScreenLazy = React.lazy(() => import('./OriginStoryScreen'));
@@ -273,8 +274,8 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function Loader() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <ActivityIndicator />
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: COLORS.backgroundPrimary }}>
+      <ActivityIndicator color={COLORS.vibrantPink} />
     </View>
   );
 }
@@ -294,7 +295,7 @@ export default function OnboardingNavigator() {
     <ErrorBoundary>
       <Provider>
         <NavigationContainer ref={navigationRef}>
-          <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }} initialRouteName="Splash">
+          <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade', contentStyle: { backgroundColor: COLORS.backgroundPrimary } }} initialRouteName="Splash">
             <Stack.Screen name="Splash" component={Splash} />
             <Stack.Screen name="OriginStory" component={Origin} options={{ animation: 'slide_from_bottom' }} />
             <Stack.Screen name="CoupleCode" component={CoupleCode} options={{ animation: 'slide_from_bottom' }} />

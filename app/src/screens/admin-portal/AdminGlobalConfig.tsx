@@ -1,8 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Slider, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Slider, Image } from 'react-native';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const AdminGlobalConfig = () => {
   const [sassLevel, setSassLevel] = useState(0);
@@ -28,39 +31,55 @@ const AdminGlobalConfig = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+        </View>
+        <Typography variant="h1" center style={styles.title}>
+          Global Config
+        </Typography>
+        <GlassCard padding="large" style={styles.configCard}>
+          <Typography variant="h3" center style={styles.label}>
+            Sass Level: {sassLevel.toFixed(1)}
+          </Typography>
+          <Slider
+            style={styles.slider}
+            minimumValue={0}
+            maximumValue={10}
+            value={sassLevel}
+            onValueChange={setSassLevel}
+            minimumTrackTintColor={COLORS.emotionalConnection}
+            maximumTrackTintColor={COLORS.textPrimary}
+          />
+          <SquishyButton
+            onPress={handleSave}
+            accessibilityLabel="Save configuration"
+            variant="primary"
+            size="medium"
+            style={styles.button}
+          >
+            <Typography variant="button" color={COLORS.textPrimary}>
+              Save
+            </Typography>
+          </SquishyButton>
+        </GlassCard>
       </View>
-      <Text style={styles.title}>Global Config</Text>
-      <Text style={styles.label}>Sass Level: {sassLevel.toFixed(1)}</Text>
-      <Slider
-        style={styles.slider}
-        minimumValue={0}
-        maximumValue={10}
-        value={sassLevel}
-        onValueChange={setSassLevel}
-        minimumTrackTintColor="#FA1F63"
-        maximumTrackTintColor="#fff"
-      />
-      <TouchableOpacity style={styles.button} onPress={handleSave}>
-        <Text style={styles.buttonText}>Save</Text>
-      </TouchableOpacity>
-    </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5C1459',
+    backgroundColor: COLORS.healingHospital,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: SPACING.regular,
   },
   header: {
     position: 'absolute',
-    top: 40,
+    top: SPACING.xlarge,
     alignItems: 'center',
   },
   logo: {
@@ -69,31 +88,25 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   title: {
-    fontSize: 32,
     fontFamily: 'BarbieDream-Regular',
-    color: '#FA1F63',
-    marginBottom: 40,
+    color: COLORS.emotionalConnection,
+    marginBottom: SPACING.xlarge,
+  },
+  configCard: {
+    width: '100%',
+    alignItems: 'center',
   },
   label: {
-    fontSize: 24,
     fontFamily: 'SweetPink-Regular',
-    color: '#fff',
-    marginBottom: 20,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.large,
   },
   slider: {
     width: '80%',
     height: 40,
   },
   button: {
-    backgroundColor: '#33DEA5',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 40,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    marginTop: SPACING.xlarge,
   },
 });
 

@@ -31,6 +31,6 @@ export default function ResultsScreen({ result, onDone }: Props) {
 
 const styles = StyleSheet.create({
   root: { flex: 1, padding: 16, gap: 12 },
-  btn: { alignSelf: 'flex-end', paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#33DEA5', borderRadius: 12 },
+  btn: { alignSelf: 'flex-end' },
 });
 

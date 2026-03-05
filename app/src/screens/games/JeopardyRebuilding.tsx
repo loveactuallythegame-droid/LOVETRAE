@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
 export default function JeopardyRebuilding({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -48,23 +49,23 @@ export default function JeopardyRebuilding({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.small }}>
             <GlassCard>
                 {!q ? (
                     <View style={styles.board}>
-                        <Text variant="header" style={{ textAlign: 'center', marginBottom: 10 }}>Linguistic Geneva Convention</Text>
+                        <Typography variant="h2" style={styles.boardTitle}>Linguistic Geneva Convention</Typography>
                         {[100, 200, 300, 400, 500].map(v => (
                             <SquishyButton key={v} onPress={() => selectClue(v)} style={styles.clue}>
-                                <Text variant="header" style={{ color: '#FFD700' }}>${v}</Text>
+                                <Typography variant="h2" style={styles.clueText}>${v}</Typography>
                             </SquishyButton>
                         ))}
                     </View>
                 ) : (
                     <View>
-                        <Text variant="header" style={{ color: '#FFD700' }}>${q.val}</Text>
-                        <Text variant="body" style={{ marginVertical: 20, fontSize: 18 }}>{q.text}</Text>
+                        <Typography variant="h2" style={styles.valueText}>${q.val}</Typography>
+                        <Typography variant="body" style={styles.questionText}>{q.text}</Typography>
                         <SquishyButton onPress={answer} style={styles.buzzBtn}>
-                            <Text variant="header">Buzz In: "What is..."</Text>
+                            <Typography variant="h3">Buzz In: "What is..."</Typography>
                         </SquishyButton>
                     </View>
                 )}
@@ -88,19 +89,35 @@ export default function JeopardyRebuilding({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-    board: { gap: 10 },
+    board: { 
+        gap: SPACING.small 
+    },
+    boardTitle: {
+        textAlign: 'center',
+        marginBottom: SPACING.medium,
+    },
     clue: {
-        backgroundColor: '#00008B',
-        padding: 16,
+        backgroundColor: COLORS.deepCosmic,
+        padding: SPACING.medium,
         alignItems: 'center',
-        borderRadius: 4,
+        borderRadius: BORDER_RADIUS.small,
         borderWidth: 1,
-        borderColor: '#FFD700'
+        borderColor: COLORS.brightYellow,
+    },
+    clueText: {
+        color: COLORS.brightYellow,
+    },
+    valueText: {
+        color: COLORS.brightYellow,
+    },
+    questionText: {
+        marginVertical: SPACING.large,
     },
     buzzBtn: {
-        backgroundColor: '#FA1F63',
-        padding: 20,
-        borderRadius: 12,
-        alignItems: 'center'
-    }
+        backgroundColor: COLORS.emotionalConnection,
+        padding: SPACING.large,
+        borderRadius: BORDER_RADIUS.large,
+        alignItems: 'center',
+        marginTop: SPACING.medium,
+    },
 });

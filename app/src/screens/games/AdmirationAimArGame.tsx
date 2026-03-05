@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
+
+import { ScreenLayout, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 const AdmirationAimArGame = () => {
 
@@ -11,179 +13,137 @@ const AdmirationAimArGame = () => {
         console.log("Compliment Launched!");
     }
 
-    const Target = ({ word, color, top, left, scale = 1 }: { word: string, color: string, top: any, left: any, scale?: number }) => (
+    const Target = ({ word, top, left, scale = 1 }: { word: string, top: any, left: any, scale?: number }) => (
         <LinearGradient
-            colors={['#db147c', '#f05d68']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+            colors={GRADIENTS.primary.colors}
+            start={GRADIENTS.primary.start}
+            end={GRADIENTS.primary.end}
             style={[styles.target, { top, left, transform: [{ scale }] }]}
         >
-            <Text style={[styles.targetText, { color: '#ffffff' }]}>{word}</Text>
+            <Typography variant="button" style={styles.targetText}>{word}</Typography>
         </LinearGradient>
     )
 
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#221017', '#0a0a0f']} style={styles.background} />
-            
-            {/* Dr. Marcie Section */}
-            <View style={styles.drMarcieSection}>
-                <View style={styles.avatarContainer}>
-                    <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+        <ScreenLayout showMarcie={true} marcieQuote="Aim for RESILIENT! Precision is key to a healthy relationship. Take the shot!">
+            <SafeAreaView style={styles.container} edges={['bottom']}>
+                <View style={styles.content}>
+                    <Typography variant="h1" style={styles.title}>
+                        The Love Arcade
+                    </Typography>
+                    <Typography variant="h2" style={styles.subtitle}>
+                        +100 Games to Deepen Connection
+                    </Typography>
+                    
+                    {/* AR background would be a camera view in a real app */}
+
+                    <View style={styles.hudHeader}>
+                        <Typography variant="h3" style={styles.hudTitle}>Admiration Aim AR</Typography>
+                        <LinearGradient
+                            colors={GRADIENTS.primary.colors}
+                            start={GRADIENTS.primary.start}
+                            end={GRADIENTS.primary.end}
+                            style={styles.hudScoreContainer}
+                        >
+                            <Typography variant="h2" style={styles.hudScore}>084,200</Typography>
+                        </LinearGradient>
+                    </View>
+
+                    <View style={styles.gameWorld}>
+                        <Target word="WITTY" top="20%" left="15%" />
+                        <Target word="PATIENT" top="70%" left="20%" />
+                        <Target word="RESILIENT" top="40%" left="55%" scale={1.25} />
+                        <Target word="STRONG" top="80%" left="60%" />
+                        <Target word="CALM" top="15%" left="70%" />
+
+                        {/* Central Crosshair */}
+                        <View style={styles.crosshairContainer}>
+                            <LinearGradient
+                                colors={COLORS.progress}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}
+                                style={styles.crosshair}
+                            />
+                            <LinearGradient
+                                colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}
+                                style={styles.crosshairInner}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={styles.controlsFooter}>
+                        <SquishyButton onPress={calculateGameResults}>
+                            <Typography variant="button">LAUNCH COMPLIMENT</Typography>
+                        </SquishyButton>
+                    </View>
                 </View>
-                <View style={styles.quoteBox}>
-                    <Text style={styles.quoteText}>In AR mode, aim for positive traits in your partner! This builds appreciation and strengthens your emotional connection.</Text>
-                </View>
-            </View>
-            
-            {/* AR background would be a camera view in a real app */}
-
-            <View style={styles.hudHeader}>
-                <Text style={styles.hudTitle}>Admiration Aim AR</Text>
-                <LinearGradient
-                    colors={['#db147c', '#f05d68']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.hudScoreContainer}
-                >
-                    <Text style={styles.hudScore}>084,200</Text>
-                </LinearGradient>
-            </View>
-
-            <View style={styles.gameWorld}>
-                <Target word="WITTY" color="#d946ef" top="20%" left="15%" />
-                <Target word="PATIENT" color="#8b5cf6" top="70%" left="20%" />
-                <Target word="RESILIENT" color="#f40b61" top="40%" left="55%" scale={1.25} />
-                <Target word="STRONG" color="#FFF" top="80%" left="60%" />
-                <Target word="CALM" color="#d946ef" top="15%" left="70%" />
-
-                {/* Central Crosshair */}
-                <View style={styles.crosshairContainer}>
-                    <LinearGradient
-                        colors={['#ef1b6e', '#c41e77', '#a22ac4', '#9056ef']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.crosshair}
-                    />
-                    <LinearGradient
-                        colors={['#ff7600', '#ffef1f']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.crosshairInner}
-                    />
-                </View>
-            </View>
-
-            <GlobalMarcieOverlay 
-                quote="Aim for RESILIENT! Precision is key to a healthy relationship. Take the shot!" 
-                characterImage={require('../../assets/marcieimages/marcie-tactical.png')} // Example image
-            />
-
-            <View style={styles.controlsFooter}>
-                <LinearGradient
-                    colors={['#db147c', '#f05d68']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.launchButton}
-                >
-                    <Text style={styles.launchButtonText} onPress={calculateGameResults}>LAUNCH COMPLIMENT</Text>
-                </LinearGradient>
-            </View>
-        </SafeAreaView>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#0a0a0f' },
-    background: { ...StyleSheet.absoluteFillObject },
-    drMarcieSection: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
     },
-    avatarContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 12
+    content: { 
+        flex: 1, 
+        padding: SPACING.lg 
     },
-    avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        resizeMode: 'cover'
+    title: { 
+        textAlign: 'center', 
+        marginBottom: SPACING.sm 
     },
-    quoteBox: {
-        flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
-    },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+    subtitle: { 
+        textAlign: 'center', 
+        opacity: 0.7, 
+        marginBottom: SPACING.lg 
     },
     hudHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 20,
-        backgroundColor: 'rgba(0,0,0,0.2)',
+        padding: SPACING.lg,
+        backgroundColor: COLORS.backgroundInput,
         borderBottomWidth: 1,
-        borderBottomColor: 'rgba(244, 11, 97, 0.1)',
+        borderBottomColor: COLORS.borderSubtle,
     },
     hudTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 20, 
-        color: '#db147c', 
+        color: COLORS.vibrantPink,
         textTransform: 'uppercase',
-        backgroundColor: 'rgba(219, 20, 124, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        backgroundColor: COLORS.backgroundInput,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
     hudScoreContainer: {
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 12,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        paddingHorizontal: SPACING.regular,
+        paddingVertical: SPACING.small,
+        borderRadius: BORDER_RADIUS.large,
+        ...SHADOWS.large,
     },
     hudScore: { 
-        fontFamily: 'WonderfulSometimes-Regular', 
-        fontSize: 24, 
-        color: '#ffffff',
-        fontWeight: 'bold',
+        color: COLORS.textPrimary,
     },
-    gameWorld: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    gameWorld: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
     target: {
         position: 'absolute',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderRadius: 20,
+        paddingHorizontal: SPACING.lg,
+        paddingVertical: SPACING.regular,
+        borderRadius: BORDER_RADIUS.xxlarge,
         borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     targetText: {
-        fontFamily: 'BarbieDream-Regular',
-        fontSize: 18,
-        fontWeight: 'bold',
+        color: COLORS.textPrimary,
     },
     crosshairContainer: {
         width: 150,
@@ -194,49 +154,25 @@ const styles = StyleSheet.create({
     crosshair: {
         width: '100%',
         height: '100%',
-        borderRadius: 75,
+        borderRadius: BORDER_RADIUS.round,
         borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     crosshairInner: {
         position: 'absolute',
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: BORDER_RADIUS.round,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.3)',
+        borderColor: COLORS.borderSubtle,
         justifyContent: 'center',
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        ...SHADOWS.large,
     },
     controlsFooter: {
-        padding: 20,
+        padding: SPACING.lg,
         alignItems: 'center',
-    },
-    launchButton: {
-        paddingVertical: 15,
-        paddingHorizontal: 30,
-        borderRadius: 15,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    launchButtonText: {
-        fontFamily: 'BarbieDream-Regular',
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: 'bold',
     },
 });
 

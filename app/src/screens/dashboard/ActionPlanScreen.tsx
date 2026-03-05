@@ -1,263 +1,221 @@
-
 import { useState } from 'react';
-import {
-  View, StyleSheet, ScrollView, Switch, Pressable, useWindowDimensions, Image, TouchableOpacity
-} from 'react-native';
-import { Text } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView, Switch } from 'react-native';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
-// Assuming a custom header component exists for dashboard screens
-const DashboardHeader = () => (
-    <View style={styles.headerContainer}>
-        <View style={styles.headerLogoContainer}>
-            <Image source={require('../../../public/logos/logo-symbol.png')} style={styles.headerLogo} />
-            <Text style={styles.headerTitleText}>Love Actually...</Text>
-        </View>
-        <View style={styles.headerNav}>
-            <TouchableOpacity><Text style={styles.navText}>Dashboard</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={styles.navText}>History</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={styles.navText}>Resources</Text></TouchableOpacity>
-            <Image source={require('../../../public/images/avatar-placeholder.png')} style={styles.avatar} />
-        </View>
-    </View>
-);
+const CustomToggle = ({ value, onValueChange }: { value: boolean, onValueChange: (v: boolean) => void }) => {
+  return (
+    <SquishyButton onPress={() => onValueChange(!value)} variant="ghost" size="small">
+      <View style={[styles.toggleBase, value && styles.toggleBaseActive]}>
+        <View style={[styles.toggleThumb, value && styles.toggleThumbActive]} />
+      </View>
+    </SquishyButton>
+  );
+};
 
-const CustomToggle = ({ value, onValueChange }) => {
-    return (
-        <TouchableOpacity onPress={() => onValueChange(!value)} activeOpacity={0.8}>
-            <View style={[styles.toggleBase, value && styles.toggleBaseActive]}>
-                <View style={[styles.toggleThumb, value && styles.toggleThumbActive]} />
-            </View>
-        </TouchableOpacity>
-    )
-}
-
-export default function ActionPlanScreen({ navigation, route }: any) {
+export default function ActionPlanScreen({ navigation }: any) {
   const [scheduleReflection, setScheduleReflection] = useState(true);
-  const { width } = useWindowDimensions();
-  const isMobile = width < 768; // md breakpoint
 
   const onCommit = () => {
-    // Logic to commit to the plan remains the same
     navigation.navigate('DashboardHome');
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#230f19', '#0f0a0c']} style={styles.background} />
-      <DashboardHeader />
+    <ScreenLayout showHeader={true}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.pageHeader}>
-            <View>
-                <View style={styles.resolutionFoundContainer}>
-                    <MaterialIcons name="auto-awesome" size={14} color="#fc0c84" />
-                    <Text style={styles.resolutionFoundText}>Resolution Found</Text>
-                </View>
-                <Text style={styles.mainTitle}>Your Action Plan</Text>
-                <Text style={styles.subtitle}>Concrete steps to honor your decoded connection</Text>
+          <View>
+            <View style={styles.resolutionFoundContainer}>
+              <MaterialIcons name="auto-awesome" size={14} color={COLORS.vibrantPink} />
+              <Typography variant="label" style={styles.resolutionFoundText}>Resolution Found</Typography>
             </View>
-            <TouchableOpacity style={styles.redoButton}>
-                <MaterialIcons name="refresh" size={18} color="white" />
-                <Text style={styles.redoButtonText}>Redo Translation</Text>
-            </TouchableOpacity>
-        </View>
-
-        <View style={[styles.actionCardsGrid, isMobile && styles.actionCardsGridMobile]}>
-          {/* Card 1 */}
-          <View style={[styles.actionCard, { borderColor: 'rgba(250, 204, 21, 0.3)' }]}>
-            <View style={styles.cardHeader}>
-              <View style={[styles.cardIconContainer, { backgroundColor: 'rgba(250, 204, 21, 0.1)' }]}>
-                <MaterialCommunityIcons name="brain" size={32} color="#facc15" />
-              </View>
-              <Text style={[styles.cardStep, { color: 'rgba(250, 204, 21, 0.4)' }]}>01</Text>
-            </View>
-            <Text style={styles.cardTitle}>The Approach</Text>
-            <Text style={styles.cardDescription}><Text style={{ color: '#facc15' }}>Active Listening:</Text> Shift your mindset to hear their needs without formulating a rebuttal.</Text>
-            <View style={styles.cardFooter}>
-              <Text style={[styles.cardFooterText, { color: '#facc15' }]}>Mindset Shift</Text>
-            </View>
-          </View>
-
-          {/* Card 2 */}
-          <View style={[styles.actionCard, { borderColor: 'rgba(45, 212, 191, 0.3)' }]}>
-            <View style={styles.cardHeader}>
-              <View style={[styles.cardIconContainer, { backgroundColor: 'rgba(45, 212, 191, 0.1)' }]}>
-                <MaterialIcons name="chat-bubble" size={32} color="#2dd4bf" />
-              </View>
-              <Text style={[styles.cardStep, { color: 'rgba(45, 212, 191, 0.4)' }]}>02</Text>
-            </View>
-            <Text style={styles.cardTitle}>The Action</Text>
-            <Text style={styles.cardDescription}><Text style={{ color: '#2dd4bf' }}>10-Minute Check-in:</Text> Set aside focused, phone-free time tonight to discuss how you feel.</Text>
-            <View style={styles.cardFooter}>
-              <Text style={[styles.cardFooterText, { color: '#2dd4bf' }]}>Behavioral Task</Text>
-            </View>
-          </View>
-
-          {/* Card 3 */}
-          <View style={[styles.actionCard, { borderColor: 'rgba(252, 12, 132, 0.3)' }]}>
-            <View style={styles.cardHeader}>
-              <View style={[styles.cardIconContainer, { backgroundColor: 'rgba(252, 12, 132, 0.1)' }]}>
-                <MaterialIcons name="favorite" size={32} color="#fc0c84" />
-              </View>
-              <Text style={[styles.cardStep, { color: 'rgba(252, 12, 132, 0.4)' }]}>03</Text>
-            </View>
-            <Text style={styles.cardTitle}>The Maintenance</Text>
-            <Text style={styles.cardDescription}><Text style={{ color: '#fc0c84' }}>Gratitude:</Text> Express one specific thing you appreciate about how they handled this talk.</Text>
-            <View style={styles.cardFooter}>
-              <Text style={[styles.cardFooterText, { color: '#fc0c84' }]}>Long-term Bond</Text>
-            </View>
+            <Typography variant="header" style={styles.mainTitle}>Your Action Plan</Typography>
+            <Typography variant="body" style={styles.subtitle}>Concrete steps to honor your decoded connection</Typography>
           </View>
         </View>
 
-        <View style={styles.actionPanelContainer}>
-            <View style={[styles.actionPanel, scheduleReflection && {borderColor: 'rgba(20, 184, 166, 0.6)'}]}>
-                <View style={styles.actionPanelIcon}>
-                    <MaterialIcons name="alarm-on" size={30} color="#14b8a6"/>
-                </View>
-                <View style={styles.actionPanelText}>
-                    <Text style={styles.actionPanelTitle}>Schedule Reflection</Text>
-                    <Text style={styles.actionPanelSubtitle}>Would you like a cosmic reminder to revisit this plan in 48 hours?</Text>
-                </View>
-                <CustomToggle value={scheduleReflection} onValueChange={setScheduleReflection} />
+        <View style={styles.actionCardsContainer}>
+          <GlassCard style={[styles.actionCard, { borderColor: COLORS.brightYellow }]}>
+            <View style={styles.cardHeader}>
+              <View style={[styles.cardIconContainer, { backgroundColor: COLORS.backgroundInput }]}>
+                <MaterialCommunityIcons name="brain" size={32} color={COLORS.brightYellow} />
+              </View>
+              <Typography variant="label" style={{ color: COLORS.brightYellow }}>01</Typography>
             </View>
+            <Typography variant="header" style={styles.cardTitle}>The Approach</Typography>
+            <Typography variant="body" style={styles.cardDescription}>
+              <Typography variant="body" style={{ color: COLORS.brightYellow }}>Active Listening:</Typography> Shift your mindset to hear their needs without formulating a rebuttal.
+            </Typography>
+            <View style={styles.cardFooter}>
+              <Typography variant="label" style={{ color: COLORS.brightYellow }}>Mindset Shift</Typography>
+            </View>
+          </GlassCard>
+
+          <GlassCard style={[styles.actionCard, { borderColor: COLORS.mintGreen }]}>
+            <View style={styles.cardHeader}>
+              <View style={[styles.cardIconContainer, { backgroundColor: COLORS.backgroundInput }]}>
+                <MaterialIcons name="chat-bubble" size={32} color={COLORS.mintGreen} />
+              </View>
+              <Typography variant="label" style={{ color: COLORS.mintGreen }}>02</Typography>
+            </View>
+            <Typography variant="header" style={styles.cardTitle}>The Action</Typography>
+            <Typography variant="body" style={styles.cardDescription}>
+              <Typography variant="body" style={{ color: COLORS.mintGreen }}>10-Minute Check-in:</Typography> Set aside focused, phone-free time tonight to discuss how you feel.
+            </Typography>
+            <View style={styles.cardFooter}>
+              <Typography variant="label" style={{ color: COLORS.mintGreen }}>Behavioral Task</Typography>
+            </View>
+          </GlassCard>
+
+          <GlassCard style={[styles.actionCard, { borderColor: COLORS.vibrantPink }]}>
+            <View style={styles.cardHeader}>
+              <View style={[styles.cardIconContainer, { backgroundColor: COLORS.backgroundInput }]}>
+                <MaterialIcons name="favorite" size={32} color={COLORS.vibrantPink} />
+              </View>
+              <Typography variant="label" style={{ color: COLORS.vibrantPink }}>03</Typography>
+            </View>
+            <Typography variant="header" style={styles.cardTitle}>The Maintenance</Typography>
+            <Typography variant="body" style={styles.cardDescription}>
+              <Typography variant="body" style={{ color: COLORS.vibrantPink }}>Gratitude:</Typography> Express one specific thing you appreciate about how they handled this talk.
+            </Typography>
+            <View style={styles.cardFooter}>
+              <Typography variant="label" style={{ color: COLORS.vibrantPink }}>Long-term Bond</Typography>
+            </View>
+          </GlassCard>
         </View>
 
+        <GlassCard style={[styles.actionPanel, scheduleReflection && {borderColor: COLORS.mintGreen}]}>
+          <View style={styles.actionPanelIcon}>
+            <MaterialIcons name="alarm-on" size={30} color={COLORS.mintGreen}/>
+          </View>
+          <View style={styles.actionPanelText}>
+            <Typography variant="header" style={styles.actionPanelTitle}>Schedule Reflection</Typography>
+            <Typography variant="body" style={styles.actionPanelSubtitle}>Would you like a cosmic reminder to revisit this plan in 48 hours?</Typography>
+          </View>
+          <CustomToggle value={scheduleReflection} onValueChange={setScheduleReflection} />
+        </GlassCard>
 
-        <View style={[styles.buttonGroup, isMobile && styles.buttonGroupMobile]}>
-          <TouchableOpacity style={styles.dashboardButton} onPress={() => navigation.navigate('DashboardHome')}>
-            <Text style={styles.buttonText}>Back to Dashboard</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.commitButton} onPress={onCommit}>
-            <MaterialIcons name="verified-user" size={20} color="white" />
-            <Text style={styles.buttonText}>Commit to Plan</Text>
-          </TouchableOpacity>
+        <View style={styles.buttonGroup}>
+          <SquishyButton onPress={() => navigation.navigate('DashboardHome')} variant="secondary">
+            <Typography variant="button">Back to Dashboard</Typography>
+          </SquishyButton>
+          <SquishyButton onPress={onCommit}>
+            <MaterialIcons name="verified-user" size={20} color={COLORS.textPrimary} style={{ marginRight: SPACING.small }} />
+            <Typography variant="button">Commit to Plan</Typography>
+          </SquishyButton>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0a0708' },
-  background: { ...StyleSheet.absoluteFillObject },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-    backgroundColor: 'rgba(34, 16, 25, 0.4)'
+  scrollContent: { 
+    padding: SPACING.screenPadding 
   },
-  headerLogoContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 10
-  },
-  headerLogo: { width: 24, height: 24, resizeMode: 'contain', tintColor: '#fc0c84' },
-  headerTitleText: { fontFamily: 'WorkSans-Bold', textTransform: 'uppercase', fontSize: 18, color: 'white' },
-  headerNav: { flexDirection: 'row', alignItems: 'center', gap: 20 },
-  navText: { color: 'rgba(255,255,255,0.7)', fontSize: 14, fontFamily: 'WorkSans-Regular' },
-  avatar: { width: 32, height: 32, borderRadius: 16, borderWidth: 1, borderColor: 'rgba(252, 12, 132, 0.5)' },
-  scrollContent: { padding: 24 },
   pageHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'flex-end',
-      marginBottom: 24
+    marginBottom: SPACING.xlarge,
   },
   resolutionFoundContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginBottom: 8
+    gap: SPACING.small,
+    marginBottom: SPACING.small,
   },
   resolutionFoundText: {
-    fontFamily: 'WorkSans-Bold',
-    color: '#fc0c84',
-    fontSize: 12,
+    color: COLORS.vibrantPink,
     textTransform: 'uppercase',
-    letterSpacing: 1.5
+    letterSpacing: 1.5,
   },
-  mainTitle: { fontFamily: 'WorkSans-Bold', fontSize: 44, color: 'white', letterSpacing: -1 },
-  subtitle: { fontFamily: 'WorkSans-Regular', fontSize: 18, color: '#c992ac' },
-  redoButton: { 
-      flexDirection: 'row', 
-      alignItems: 'center', 
-      gap: 8, 
-      paddingHorizontal: 20, 
-      paddingVertical: 12, 
-      borderRadius: 12, 
-      backgroundColor: 'rgba(255,255,255,0.05)',
-      borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.1)' 
-    },
-  redoButtonText: { color: 'white', fontFamily: 'WorkSans-Bold', fontSize: 14 },
-  actionCardsGrid: { flexDirection: 'row', gap: 16, marginBottom: 24 },
-  actionCardsGridMobile: { flexDirection: 'column' },
+  mainTitle: { 
+    marginBottom: SPACING.small,
+  },
+  subtitle: { 
+    color: COLORS.textSecondary,
+  },
+  actionCardsContainer: {
+    gap: SPACING.regular,
+    marginBottom: SPACING.xlarge,
+  },
   actionCard: {
-    flex: 1,
-    padding: 24,
-    borderRadius: 16,
-    backgroundColor: 'rgba(34, 16, 25, 0.6)',
+    padding: SPACING.xlarge,
     borderWidth: 1,
-    gap: 16
   },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  cardIconContainer: { width: 48, height: 48, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
-  cardStep: { fontFamily: 'WorkSans-Bold', fontSize: 24 },
-  cardTitle: { fontFamily: 'WorkSans-Bold', fontSize: 20, color: 'white' },
-  cardDescription: { fontFamily: 'WorkSans-Regular', fontSize: 16, color: '#c992ac', lineHeight: 24 },
-  cardFooter: { marginTop: 'auto', paddingTop: 16, borderTopWidth: 1, borderColor: 'rgba(255, 255, 255, 0.05)' },
-  cardFooterText: { fontFamily: 'WorkSans-Bold', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1.2 },
-  actionPanelContainer: { paddingHorizontal: 4, marginBottom: 24 },
+  cardHeader: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'flex-start',
+    marginBottom: SPACING.regular,
+  },
+  cardIconContainer: { 
+    width: 48, 
+    height: 48, 
+    borderRadius: BORDER_RADIUS.medium, 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+  cardTitle: { 
+    marginBottom: SPACING.small,
+  },
+  cardDescription: { 
+    color: COLORS.textSecondary,
+    lineHeight: TYPOGRAPHY.fontSize.bodyLarge * TYPOGRAPHY.lineHeight.normal,
+    marginBottom: SPACING.regular,
+  },
+  cardFooter: { 
+    marginTop: 'auto', 
+    paddingTop: SPACING.regular, 
+    borderTopWidth: 1, 
+    borderTopColor: COLORS.divider,
+  },
   actionPanel: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 16,
-      padding: 24,
-      borderRadius: 20,
-      borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.1)',
-      backgroundColor: 'rgba(34,16,25,0.8)'
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.regular,
+    padding: SPACING.xlarge,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    marginBottom: SPACING.xlarge,
   },
   actionPanelIcon: { 
-      padding: 12, 
-      borderRadius: 99, 
-      backgroundColor: 'rgba(20, 184, 166, 0.1)',
-      borderWidth: 1,
-      borderColor: 'rgba(20, 184, 166, 0.2)'
-    },
-  actionPanelText: { flex: 1 },
-  actionPanelTitle: { fontFamily: 'WorkSans-Bold', fontSize: 18, color: 'white', marginBottom: 2 },
-  actionPanelSubtitle: { fontFamily: 'WorkSans-Regular', fontSize: 14, color: '#c992ac' },
-  toggleBase: { width: 60, height: 32, borderRadius: 16, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'center', padding: 4 },
-  toggleBaseActive: { backgroundColor: '#14b8a6' },
-  toggleThumb: { width: 24, height: 24, borderRadius: 12, backgroundColor: 'white' },
-  toggleThumbActive: { transform: [{ translateX: 28 }] },
-  buttonGroup: { flexDirection: 'row', gap: 16, justifyContent: 'center' },
-  buttonGroupMobile: { flexDirection: 'column' },
-  dashboardButton: {
-    flex: 1,
-    paddingVertical: 16,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    padding: SPACING.small, 
+    borderRadius: BORDER_RADIUS.round, 
+    backgroundColor: COLORS.backgroundInput,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    alignItems: 'center'
+    borderColor: COLORS.borderSubtle,
   },
-  commitButton: {
-    flex: 1,
-    flexDirection: 'row',
-    gap: 8,
-    paddingVertical: 16,
-    borderRadius: 12,
-    backgroundColor: '#fc0c84',
-    alignItems: 'center',
-    justifyContent: 'center'
+  actionPanelText: { 
+    flex: 1 
   },
-  buttonText: { fontFamily: 'WorkSans-Bold', color: 'white', fontSize: 16 }
+  actionPanelTitle: { 
+    marginBottom: SPACING.tiny,
+  },
+  actionPanelSubtitle: { 
+    color: COLORS.textSecondary,
+  },
+  toggleBase: { 
+    width: 60, 
+    height: 32, 
+    borderRadius: 16, 
+    backgroundColor: COLORS.backgroundInput, 
+    justifyContent: 'center', 
+    padding: SPACING.tiny 
+  },
+  toggleBaseActive: { 
+    backgroundColor: COLORS.mintGreen 
+  },
+  toggleThumb: { 
+    width: 24, 
+    height: 24, 
+    borderRadius: 12, 
+    backgroundColor: COLORS.textPrimary 
+  },
+  toggleThumbActive: { 
+    transform: [{ translateX: 28 }] 
+  },
+  buttonGroup: { 
+    gap: SPACING.regular,
+  },
 });

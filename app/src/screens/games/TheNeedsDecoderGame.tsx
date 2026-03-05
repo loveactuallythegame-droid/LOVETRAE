@@ -1,8 +1,11 @@
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const options = [
     'Quiet + Caffeine + Support',
@@ -11,54 +14,89 @@ const options = [
 ];
 
 const TheNeedsDecoderGame = () => {
-    const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState<number | null>(null);
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#191022', '#230f15']} style={styles.container}>
-                <Text style={styles.header}>The Needs Decoder</Text>
-                <Text style={styles.subHeader}>Partner A sent:</Text>
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundSecondary]} style={styles.container}>
+                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+                    <Typography variant="h1" center>The Needs Decoder</Typography>
+                    <Typography variant="body" center style={styles.subHeader}>Partner A sent:</Typography>
 
-                <View style={styles.emojiContainer}>
-                    <Text style={styles.emoji}>☁️</Text>
-                    <Text style={styles.emoji}>☕</Text>
-                    <Text style={styles.emoji}>🐕</Text>
-                </View>
+                    <View style={styles.emojiContainer}>
+                        <Typography variant="h1" style={styles.emoji}>☁️</Typography>
+                        <Typography variant="h1" style={styles.emoji}>☕</Typography>
+                        <Typography variant="h1" style={styles.emoji}>🐕</Typography>
+                    </View>
 
-                <View style={styles.optionsContainer}>
-                    {options.map((option, i) => (
-                        <TouchableOpacity 
-                            key={i} 
-                            style={[styles.option, selected === i && styles.selectedOption]} 
-                            onPress={() => setSelected(i)}
-                        >
-                            <Text style={styles.optionText}>{option}</Text>
-                            {selected === i && <MaterialIcons name="check-circle" size={24} color="#ff034a" />}
-                        </TouchableOpacity>
-                    ))}
-                </View>
+                    <View style={styles.optionsContainer}>
+                        {options.map((option, i) => (
+                            <GlassCard 
+                                key={i} 
+                                onPress={() => setSelected(i)}
+                                style={[styles.option, selected === i && styles.selectedOption]}
+                                variant={selected === i ? 'default' : 'outlined'}
+                            >
+                                <Typography variant="body">{option}</Typography>
+                                {selected === i && <MaterialIcons name="check-circle" size={24} color={COLORS.vibrantPink} />}
+                            </GlassCard>
+                        ))}
+                    </View>
 
-                <TouchableOpacity style={styles.submitButton}>
-                    <Text style={styles.submitButtonText}>SUBMIT DECODING</Text>
-                </TouchableOpacity>
+                    <SquishyButton onPress={() => {}} size="large" style={styles.submitButton}>
+                        <Typography variant="button">SUBMIT DECODING</Typography>
+                    </SquishyButton>
+                </SafeAreaView>
             </LinearGradient>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#191022' },
-    container: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
-    header: { color: '#fff', fontSize: 32, fontWeight: 'bold', marginBottom: 8, textAlign: 'center' },
-    subHeader: { color: 'rgba(255,255,255,0.7)', fontSize: 16, marginBottom: 24 },
-    emojiContainer: { flexDirection: 'row', gap: 24, marginBottom: 32 },
-    emoji: { fontSize: 64 },
-    optionsContainer: { width: '100%', gap: 12, marginBottom: 32 },
-    option: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.05)', padding: 16, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    selectedOption: { backgroundColor: 'rgba(255, 3, 74, 0.2)', borderColor: '#ff034a' },
-    optionText: { color: '#fff', fontSize: 16 },
-    submitButton: { width: '100%', backgroundColor: '#ff034a', padding: 16, borderRadius: 12, alignItems: 'center' },
-    submitButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+    container: { 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        padding: SPACING.screenPadding 
+    },
+    safeArea: { 
+        flex: 1, 
+        backgroundColor: COLORS.deepCosmic,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    subHeader: { 
+        color: COLORS.textSecondary, 
+        marginTop: SPACING.small, 
+        marginBottom: SPACING.xlarge 
+    },
+    emojiContainer: { 
+        flexDirection: 'row', 
+        gap: SPACING.xlarge, 
+        marginBottom: SPACING.xxlarge 
+    },
+    emoji: { 
+        fontSize: TYPOGRAPHY.fontSize.displayMedium 
+    },
+    optionsContainer: { 
+        width: '100%', 
+        gap: SPACING.medium, 
+        marginBottom: SPACING.xxlarge 
+    },
+    option: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        padding: SPACING.regular, 
+    },
+    selectedOption: { 
+        backgroundColor: COLORS.backgroundInput, 
+        borderColor: COLORS.vibrantPink 
+    },
+    submitButton: { 
+        width: '100%' 
+    },
 });
 
 export default TheNeedsDecoderGame;

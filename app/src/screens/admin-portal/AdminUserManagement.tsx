@@ -1,8 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { View, FlatList, StyleSheet, Image } from 'react-native';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
+import ScreenLayout from '../../layout/ScreenLayout';
+import { Typography, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const AdminUserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -17,60 +20,53 @@ const AdminUserManagement = () => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <View style={styles.userItem}>
-      <Text style={styles.userInfo}>UID: {item.id}</Text>
-      <Text style={styles.userInfo}>Trust: {item.trust_thermometer}</Text>
-      <Text style={styles.userInfo}>Subscription: {item.subscription_status || 'N/A'}</Text>
-    </View>
+    <GlassCard style={styles.userItem} variant="elevated" padding="medium">
+      <Typography variant="body" color={COLORS.textPrimary}>UID: {item.id}</Typography>
+      <Typography variant="body" color={COLORS.textSecondary}>Trust: {item.trust_thermometer}</Typography>
+      <Typography variant="body" color={COLORS.textSecondary}>Subscription: {item.subscription_status || 'N/A'}</Typography>
+    </GlassCard>
   );
 
   return (
-    <View style={styles.container}>
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <View style={styles.container}>
         <View style={styles.header}>
-            <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+          <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
         </View>
-      <Text style={styles.title}>User Management</Text>
-      <FlatList
-        data={users}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-    </View>
+        <Typography variant="h1" style={styles.title}>User Management</Typography>
+        <FlatList
+          data={users}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.listContent}
+        />
+      </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5C1459',
-    padding: 20,
   },
-    header: {
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    logo: {
-        width: 150,
-        height: 50,
-        resizeMode: 'contain',
-    },
+  header: {
+    alignItems: 'center',
+    marginBottom: SPACING.regular,
+  },
+  logo: {
+    width: 150,
+    height: 50,
+    resizeMode: 'contain',
+  },
   title: {
-    fontSize: 32,
-    fontFamily: 'BarbieDream-Regular',
-    color: '#FA1F63',
-    marginBottom: 20,
+    marginBottom: SPACING.regular,
     textAlign: 'center',
   },
-  userItem: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 5,
-    marginBottom: 15,
+  listContent: {
+    paddingBottom: SPACING.xlarge,
   },
-  userInfo: {
-    fontSize: 16,
-    color: '#000',
-    fontFamily: 'Cheese-Regular',
+  userItem: {
+    marginBottom: SPACING.regular,
   },
 });
 

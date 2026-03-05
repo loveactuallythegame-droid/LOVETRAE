@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { Text, GlassCard, SquishyButton } from '../../components/ui';
-import { GameContainer } from '../../components/games/engine';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { encryptSensitive } from '../../lib/encryption';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 const DOMAINS = ['Money', 'Work', 'Family', 'Health'] as const;
 
@@ -47,39 +47,6 @@ export default function StressTest({ route, navigation }: any) {
   const spillover = useMemo(() => Math.round((Object.values(scores).reduce((a, b) => a + b, 0) / (DOMAINS.length * 100)) * 100), [scores]);
   useEffect(() => { if (spillover >= 70) speakMarcie('Your work stress is bleeding into your relationship like a bad dye job.'); }, [spillover]);
 
-  const inputArea = (
-    <View>
-      <GlassCard>
-        <Text variant="body">Rate external stressors</Text>
-        {DOMAINS.map((d) => (
-          <View key={d} style={styles.row}>
-            <Text variant="body">{d}</Text>
-            <View style={styles.barWrap}>
-              <Animated.View style={[styles.bar, useAnimatedStyle(() => ({ width: withTiming(`${scores[d]}%`) }))]} />
-            </View>
-            <View style={{ flexDirection: 'row', gap: 6 }}>
-              <SquishyButton onPress={() => set(d, scores[d] - 10)}><Text variant="header">-</Text></SquishyButton>
-              <SquishyButton onPress={() => set(d, scores[d] + 10)}><Text variant="header">+</Text></SquishyButton>
-            </View>
-          </View>
-        ))}
-        <Text variant="keyword">Spillover {spillover}%{partnerSpill !== null ? ` vs Partner ${partnerSpill}%` : ''}</Text>
-      </GlassCard>
-    </View>
-  );
-
-  const baseState = useMemo(() => ({
-    id: gameId,
-    title: 'Stress Test',
-    description: 'Rate stressors and visualize spillover',
-    category: 'conflict' as const,
-    difficulty: 'medium' as const,
-    xpReward: 75,
-    currentStep: 0,
-    totalTime: 60,
-    playerData: { vulnerabilityScore: spillover, honestyScore: 60, completionTime: 0, partnerSync: 0 },
-  }), [gameId, spillover]);
-
   async function onComplete(res: { score: number; xpEarned: number }) {
     const awarenessBonus = Math.min(25, Math.round(spillover * 0.25));
     const xp = Math.min(100, 75 + awarenessBonus);
@@ -89,11 +56,64 @@ export default function StressTest({ route, navigation }: any) {
     navigation.goBack();
   }
 
-  return <GameContainer state={baseState} inputs={["slider"]} inputArea={inputArea} onComplete={onComplete} />;
+  return (
+    <ScreenLayout showHeader={true} scrollable={true}>
+      <View style={{ gap: SPACING.regular }}>
+        <Typography variant="h1" center>The Love Arcade</Typography>
+        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
+
+        <GlassCard>
+          <Typography variant="body">Rate external stressors</Typography>
+          {DOMAINS.map((d) => (
+            <View key={d} style={styles.row}>
+              <Typography variant="body">{d}</Typography>
+              <View style={styles.barWrap}>
+                <Animated.View 
+                  style={[
+                    styles.bar, 
+                    useAnimatedStyle(() => ({ 
+                      width: withTiming(`${scores[d]}%`, { duration: ANIMATIONS.duration.normal }) 
+                    }))
+                  ]} 
+                />
+              </View>
+              <View style={{ flexDirection: 'row', gap: SPACING.small }}>
+                <SquishyButton onPress={() => set(d, scores[d] - 10)} variant="ghost" size="small">
+                  <Typography variant="h2">-</Typography>
+                </SquishyButton>
+                <SquishyButton onPress={() => set(d, scores[d] + 10)} variant="ghost" size="small">
+                  <Typography variant="h2">+</Typography>
+                </SquishyButton>
+              </View>
+            </View>
+          ))}
+          <Typography variant="caption" center>
+            Spillover {spillover}%{partnerSpill !== null ? ` vs Partner ${partnerSpill}%` : ''}
+          </Typography>
+        </GlassCard>
+
+        <SquishyButton onPress={() => onComplete({ score: spillover, xpEarned: 75 })}>
+          <Typography variant="h2">Complete</Typography>
+        </SquishyButton>
+      </View>
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  row: { marginTop: 8, gap: 6 },
-  barWrap: { height: 16, backgroundColor: '#120016', borderRadius: 8, overflow: 'hidden' },
-  bar: { height: 16, backgroundColor: '#33DEA5' },
+  row: { 
+    marginTop: SPACING.regular, 
+    gap: SPACING.small 
+  },
+  barWrap: { 
+    height: SPACING.regular, 
+    backgroundColor: COLORS.backgroundPrimary, 
+    borderRadius: BORDER_RADIUS.round, 
+    overflow: 'hidden' 
+  },
+  bar: { 
+    height: '100%', 
+    backgroundColor: COLORS.success,
+    borderRadius: BORDER_RADIUS.round,
+  },
 });

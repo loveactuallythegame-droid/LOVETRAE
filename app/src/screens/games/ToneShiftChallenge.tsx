@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 const TONES = ["Sarcastic", "Anxious", "Warm", "Playful"];
 const SENTENCE = "We need to talk about the budget.";
@@ -33,16 +35,16 @@ export default function ToneShiftChallenge({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Tone: {TONES[currentTone]}</Text>
-        <Text variant="body" style={styles.sentence}>{SENTENCE}</Text>
+        <Typography variant="h2">Tone: {TONES[currentTone]}</Typography>
+        <Typography variant="body" style={styles.sentence}>{SENTENCE}</Typography>
         <View style={styles.mic}>
-            <Text style={{ fontSize: 40 }}>🎙️</Text>
+            <Typography variant="h1">🎙️</Typography>
             {isRecording && <View style={styles.wave} />}
         </View>
-        <SquishyButton onPress={toggleRec} style={[styles.btn, isRecording ? styles.stop : {}]}>
-          <Text variant="header">{isRecording ? "Stop & Analyze" : "Record"}</Text>
+        <SquishyButton onPress={toggleRec} variant={isRecording ? 'secondary' : 'primary'} size="large">
+          <Typography variant="button">{isRecording ? "Stop & Analyze" : "Record"}</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -64,9 +66,23 @@ export default function ToneShiftChallenge({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  sentence: { fontSize: 18, textAlign: 'center', marginVertical: 20, fontStyle: 'italic' },
-  mic: { alignItems: 'center', justifyContent: 'center', height: 100 },
-  wave: { position: 'absolute', width: 80, height: 80, borderRadius: 40, borderWidth: 4, borderColor: '#FA1F63', opacity: 0.5 },
-  btn: { backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
-  stop: { backgroundColor: '#FA1F63' },
+  sentence: { 
+    textAlign: 'center', 
+    marginVertical: SPACING.xlarge, 
+    fontStyle: 'italic' 
+  },
+  mic: { 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    height: 100 
+  },
+  wave: { 
+    position: 'absolute', 
+    width: 80, 
+    height: 80, 
+    borderRadius: BORDER_RADIUS.xxlarge, 
+    borderWidth: 4, 
+    borderColor: COLORS.emotionalConnection, 
+    opacity: 0.5 
+  },
 });

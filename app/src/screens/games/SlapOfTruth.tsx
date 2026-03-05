@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, PanResponder, GestureResponderHandlers } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { Text, GlassCard } from '../../components/ui';
-import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 type Scenario = { text: string; expected: 'green' | 'red' };
 
@@ -45,7 +46,10 @@ export default function SlapOfTruth({ route, navigation }: any) {
 
   const x = useSharedValue(0);
   const rotate = useSharedValue(0);
-  const style = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }, { rotate: `${rotate.value}deg` }] }));
+  const style = useAnimatedStyle(() => ({ 
+    transform: [{ translateX: x.value }, { rotate: `${rotate.value}deg` }] 
+  }));
+  
   const pan = useMemo<GestureResponderHandlers>(() => {
     return PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -56,42 +60,24 @@ export default function SlapOfTruth({ route, navigation }: any) {
           const scenario = SCENARIOS[index];
           const correct = (choice === scenario.expected);
           setDecisions((d) => [...d, { choice, correct }]);
-          if (choice === 'green' && correct) HapticFeedbackSystem.success(); else if (choice === 'red' && correct) HapticFeedbackSystem.success(); else HapticFeedbackSystem.warning();
+          if (choice === 'green' && correct) HapticFeedbackSystem.success(); 
+          else if (choice === 'red' && correct) HapticFeedbackSystem.success(); 
+          else HapticFeedbackSystem.warning();
           if (!correct) speakMarcie('You swiped green on emotional unavailability? Let\'s unpack that.');
-          x.value = withTiming(0); rotate.value = withTiming(0);
+          x.value = withTiming(0, { duration: ANIMATIONS.duration.normal }); 
+          rotate.value = withTiming(0, { duration: ANIMATIONS.duration.normal });
           const next = Math.min(SCENARIOS.length - 1, index + 1);
           setIndex(next);
           if (sessionId.current) updateGameSession(sessionId.current, { state: JSON.stringify({ decisions: [...decisions, { choice, correct }] }) });
         } else {
-          x.value = withTiming(0); rotate.value = withTiming(0);
+          x.value = withTiming(0, { duration: ANIMATIONS.duration.normal }); 
+          rotate.value = withTiming(0, { duration: ANIMATIONS.duration.normal });
         }
       },
     }).panHandlers;
   }, [index, decisions]);
 
-  const inputArea = (
-    <View>
-      <GlassCard>
-        <Text variant="body">Swipe right for Green flag, left for Red flag</Text>
-        <Animated.View style={[styles.card, style]} {...pan}>
-          <Text variant="header">{SCENARIOS[index]?.text}</Text>
-        </Animated.View>
-      </GlassCard>
-    </View>
-  );
-
   const alignment = Math.min(100, Math.round((decisions.length && partnerDecisions.current.length) ? (decisions.filter((d, i) => partnerDecisions.current[i]?.choice === d.choice).length / Math.min(decisions.length, partnerDecisions.current.length)) * 100 : 0));
-  const baseState = useMemo(() => ({
-    id: gameId,
-    title: 'The Slap of Truth',
-    description: 'Swipe decisions on relationship scenarios',
-    category: 'conflict' as const,
-    difficulty: 'medium' as const,
-    xpReward: 80,
-    currentStep: index,
-    totalTime: 45,
-    playerData: { vulnerabilityScore: 50, honestyScore: 50, completionTime: index * 10, partnerSync: alignment },
-  }), [gameId, index, alignment]);
 
   function onComplete(res: { score: number; xpEarned: number }) {
     const bonus = Math.min(40, Math.round(alignment * 0.4));
@@ -100,10 +86,44 @@ export default function SlapOfTruth({ route, navigation }: any) {
     navigation.goBack();
   }
 
-  return <GameContainer state={baseState} inputs={["slider"]} inputArea={inputArea} onComplete={onComplete} />;
+  return (
+    <ScreenLayout showHeader={true} scrollable={true}>
+      <View style={{ gap: SPACING.regular }}>
+        <Typography variant="h1" center>The Love Arcade</Typography>
+        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
+
+        <GlassCard>
+          <Typography variant="body">Swipe right for Green flag, left for Red flag</Typography>
+          <Animated.View style={[styles.card, style]} {...pan}>
+            <Typography variant="h2" center>{SCENARIOS[index]?.text}</Typography>
+          </Animated.View>
+        </GlassCard>
+
+        <View style={styles.buttonContainer}>
+          <SquishyButton 
+            onPress={() => onComplete({ score: decisions.filter(d => d.correct).length * 10, xpEarned: 80 })} 
+            variant="primary"
+          >
+            <Typography variant="h2">Complete</Typography>
+          </SquishyButton>
+        </View>
+      </View>
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  card: { marginTop: 16, padding: 16, borderRadius: 12, backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)' },
+  card: { 
+    marginTop: SPACING.regular, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
+    backgroundColor: COLORS.backgroundSecondary, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle,
+    minHeight: 120,
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    marginTop: SPACING.large,
+  },
 });
-

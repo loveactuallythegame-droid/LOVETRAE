@@ -1,74 +1,110 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import ScreenLayout from '../layout/ScreenLayout';
 
-const WaveformBar = ({ height }) => (
-    <View style={[styles.waveformBar, { height }]} />
+interface WaveformBarProps {
+  height: number;
+}
+
+const WaveformBar = ({ height }: WaveformBarProps) => (
+  <View style={[styles.waveformBar, { height }]} />
 );
 
 const LeaderboardDetail6Screen = () => {
-    const waveformHeights = [48, 80, 128, 192, 96, 160, 224, 128, 256, 176, 208, 112, 192, 80, 144, 64, 32];
+  const waveformHeights = [48, 80, 128, 192, 96, 160, 224, 128, 256, 176, 208, 112, 192, 80, 144, 64, 32];
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
-            
-            <View style={styles.header}>
-                <Text style={styles.headerTitle}>VENTING FREQUENCIES...</Text>
-                <TouchableOpacity style={styles.headerButton}>
-                    <Text style={styles.headerButtonText}>PRIVATE SESSION</Text>
-                </TouchableOpacity>
-            </View>
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <LinearGradient colors={[COLORS.deepCosmic, COLORS.richPlum]} style={styles.background} />
+      
+      <View style={styles.header}>
+        <Typography variant="label" color={COLORS.textSecondary}>
+          VENTING FREQUENCIES...
+        </Typography>
+        <TouchableOpacity>
+          <GlassCard variant="outlined" padding="small">
+            <Typography variant="label" color={COLORS.textPrimary}>
+              PRIVATE SESSION
+            </Typography>
+          </GlassCard>
+        </TouchableOpacity>
+      </View>
 
-            <View style={styles.mainContent}>
-                <Text style={styles.title}>SOUNDPROOF BOOTH</Text>
-                <View style={styles.waveformContainer}>
-                    {waveformHeights.map((h, i) => <WaveformBar key={i} height={h} />)}
-                </View>
-                <Text style={styles.quote}>"Speak your truth without filters. Let the nebula absorb the weight of your words."</Text>
-            </View>
+      <View style={styles.mainContent}>
+        <Typography variant="gameTitle" color={COLORS.textPrimary} center>
+          SOUNDPROOF BOOTH
+        </Typography>
+        <View style={styles.waveformContainer}>
+          {waveformHeights.map((h, i) => <WaveformBar key={i} height={h} />)}
+        </View>
+        <Typography variant="body" color={COLORS.textSecondary} center style={styles.quote}>
+          "Speak your truth without filters. Let the nebula absorb the weight of your words."
+        </Typography>
+      </View>
 
-            <View style={styles.footer}>
-                <View style={styles.footerContent}>
-                    <Text style={styles.footerText}>INPUT GAIN: 75%</Text>
-                     <TouchableOpacity style={styles.releaseButton}>
-                        <Text style={styles.releaseButtonText}>RELEASE TO PARTNER</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-        </SafeAreaView>
-    );
+      <View style={styles.footer}>
+        <GlassCard variant="outlined" style={styles.footerContent} padding="medium">
+          <Typography variant="label" color={COLORS.textPrimary}>
+            INPUT GAIN: 75%
+          </Typography>
+          <SquishyButton variant="secondary">
+            <Typography variant="button" color={COLORS.textPrimary}>
+              RELEASE TO PARTNER
+            </Typography>
+          </SquishyButton>
+        </GlassCard>
+      </View>
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
-    background: { ...StyleSheet.absoluteFillObject },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, borderBottomWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', backgroundColor: 'rgba(255,255,255,0.1)'},
-    headerTitle: { color: '#D1C4E9', textTransform: 'uppercase', fontSize: 12, fontWeight: 'bold', letterSpacing: 2 },
-    headerButton: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.1)', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    headerButtonText: { color: '#FFF', fontSize: 12, fontWeight: 'bold', textTransform: 'uppercase' },
-    mainContent: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
-    title: { fontSize: 48, fontWeight: 'bold', color: '#FFF', marginBottom: 64, textTransform: 'uppercase' },
-    waveformContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: 256, gap: 6, marginBottom: 64 },
-    waveformBar: {
-        width: 4,
-        backgroundColor: '#00FFFF',
-        borderRadius: 2,
-    },
-    quote: { color: '#D1C4E9', fontSize: 18, fontStyle: 'italic', textAlign: 'center', maxWidth: 300 },
-    footer: { padding: 16 },
-    footerContent: { backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 20, padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    footerText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' },
-    releaseButton: {
-        paddingVertical: 16,
-        paddingHorizontal: 24,
-        borderRadius: 20,
-        backgroundColor: '#00FFFF',
-    },
-    releaseButtonText: { color: '#000', fontWeight: 'bold', fontSize: 16, textTransform: 'uppercase' }
+  background: { ...StyleSheet.absoluteFillObject },
+  header: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    padding: SPACING.regular, 
+    borderBottomWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    backgroundColor: COLORS.backgroundInput 
+  },
+  mainContent: { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    padding: SPACING.screenPadding 
+  },
+  waveformContainer: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    height: 256, 
+    gap: SPACING.small, 
+    marginVertical: SPACING.xxxlarge 
+  },
+  waveformBar: {
+    width: SPACING.tiny,
+    backgroundColor: COLORS.info,
+    borderRadius: BORDER_RADIUS.small,
+  },
+  quote: { 
+    maxWidth: 300,
+    fontStyle: 'italic'
+  },
+  footer: { 
+    padding: SPACING.regular 
+  },
+  footerContent: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center'
+  },
 });
 
 export default LeaderboardDetail6Screen;

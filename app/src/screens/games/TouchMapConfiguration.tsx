@@ -1,14 +1,14 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { MaterialIcons } from '@expo/vector-icons';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
-// Define the colors for the different states
+// Define the colors for the different states using theme tokens
 const stateColors = {
-    like: '#22c55e', // green-500
-    dislike: '#ef4444', // red-500
-    none: 'rgba(255, 255, 255, 0.2)',
+    like: COLORS.success,
+    dislike: COLORS.error,
+    none: COLORS.backgroundInput,
 };
 
 const bodyParts = [
@@ -24,15 +24,15 @@ const bodyParts = [
     { id: 'feet', label: 'Feet' },
 ];
 
-const TouchMapConfiguration = ({ navigation }) => {
-    const [touchMap, setTouchMap] = useState(
+const TouchMapConfiguration = ({ navigation }: any) => {
+    const [touchMap, setTouchMap] = useState<Record<string, keyof typeof stateColors>>(
         bodyParts.reduce((acc, part) => ({ ...acc, [part.id]: 'none' }), {})
     );
 
-    const toggleState = (partId) => {
+    const toggleState = (partId: string) => {
         setTouchMap(prevMap => {
             const currentState = prevMap[partId];
-            const nextState = currentState === 'none' ? 'like' : currentState === 'like' ? 'dislike' : 'none';
+            const nextState: keyof typeof stateColors = currentState === 'none' ? 'like' : currentState === 'like' ? 'dislike' : 'none';
             return { ...prevMap, [partId]: nextState };
         });
     };
@@ -44,22 +44,22 @@ const TouchMapConfiguration = ({ navigation }) => {
     };
 
     return (
-        <LinearGradient colors={['#230f19', '#0f0f12']} style={styles.container}>
-            <SafeAreaView style={{ flex: 1 }}>
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
                 <ScrollView contentContainerStyle={styles.scrollContent}>
                     <View style={styles.header}>
-                        <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <MaterialIcons name="arrow-back" size={24} color="white" />
-                        </TouchableOpacity>
-                        <Text style={styles.headerTitle}>Touch Map</Text>
+                        <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="ghost" size="small">
+                            <MaterialIcons name="arrow-back" size={24} color={COLORS.textPrimary} />
+                        </SquishyButton>
+                        <Typography variant="h1" style={styles.headerTitle}>Touch Map</Typography>
                         <View style={{ width: 24 }} />
                     </View>
 
-                    <Text style={styles.subtitle}>
+                    <Typography variant="body" center style={styles.subtitle}>
                         Tap each body part to cycle through your touch preferences.
-                    </Text>
+                    </Typography>
 
-                    <View style={styles.touchMapContainer}>
+                    <GlassCard style={styles.touchMapContainer}>
                         <TouchableOpacity style={[styles.bodyPart, styles.head, { backgroundColor: stateColors[touchMap.head] }]} onPress={() => toggleState('head')} />
                         <TouchableOpacity style={[styles.bodyPart, styles.neck, { backgroundColor: stateColors[touchMap.neck] }]} onPress={() => toggleState('neck')} />
                         <View style={styles.torsoContainer}>
@@ -73,38 +73,39 @@ const TouchMapConfiguration = ({ navigation }) => {
                         </View>
                         <TouchableOpacity style={[styles.bodyPart, styles.legs, { backgroundColor: stateColors[touchMap.legs] }]} onPress={() => toggleState('legs')} />
                         <TouchableOpacity style={[styles.bodyPart, styles.feet, { backgroundColor: stateColors[touchMap.feet] }]} onPress={() => toggleState('feet')} />
-                    </View>
+                    </GlassCard>
 
                     <View style={styles.legend}>
                         <View style={styles.legendItem}>
                             <View style={[styles.legendColor, { backgroundColor: stateColors.like }]} />
-                            <Text style={styles.legendText}>Like</Text>
+                            <Typography variant="body">Like</Typography>
                         </View>
                         <View style={styles.legendItem}>
                             <View style={[styles.legendColor, { backgroundColor: stateColors.dislike }]} />
-                            <Text style={styles.legendText}>Dislike</Text>
+                            <Typography variant="body">Dislike</Typography>
                         </View>
                         <View style={styles.legendItem}>
                             <View style={[styles.legendColor, { backgroundColor: stateColors.none }]} />
-                            <Text style={styles.legendText}>Neutral / Ask</Text>
+                            <Typography variant="body">Neutral / Ask</Typography>
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-                        <Text style={styles.saveButtonText}>Save Preferences</Text>
-                    </TouchableOpacity>
+                    <SquishyButton onPress={handleSave} style={styles.saveButton}>
+                        <Typography variant="h2" color={COLORS.textPrimary}>Save Preferences</Typography>
+                    </SquishyButton>
                 </ScrollView>
             </SafeAreaView>
-        </LinearGradient>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: COLORS.backgroundPrimary,
     },
     scrollContent: {
-        padding: 20,
+        padding: SPACING.screenPadding,
         alignItems: 'center',
     },
     header: {
@@ -112,39 +113,41 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        marginBottom: 10,
+        marginBottom: SPACING.regular,
+    },
+    backBtn: {
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.small,
     },
     headerTitle: {
-        color: 'white',
-        fontSize: 24,
-        fontWeight: 'bold',
+        flex: 1,
+        textAlign: 'center',
     },
     subtitle: {
-        color: 'rgba(255, 255, 255, 0.7)',
-        fontSize: 16,
-        textAlign: 'center',
-        marginBottom: 30,
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.xxlarge,
     },
     touchMapContainer: {
         alignItems: 'center',
-        marginBottom: 30,
+        marginBottom: SPACING.xxlarge,
+        padding: SPACING.xlarge,
         transform: [{ scale: 0.8 }]
     },
     bodyPart: {
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.5)',
-        borderRadius: 10,
+        borderColor: COLORS.borderSubtle,
+        borderRadius: BORDER_RADIUS.medium,
     },
     head: {
         width: 80,
         height: 80,
         borderRadius: 40,
-        marginBottom: 5,
+        marginBottom: SPACING.tiny,
     },
     neck: {
         width: 30,
         height: 20,
-        marginBottom: 5,
+        marginBottom: SPACING.tiny,
     },
     torsoContainer: {
         flexDirection: 'row',
@@ -158,8 +161,8 @@ const styles = StyleSheet.create({
         width: 140,
         height: 40,
         borderBottomWidth: 0,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: BORDER_RADIUS.xlarge,
+        borderTopRightRadius: BORDER_RADIUS.xlarge,
     },
     chest: {
         width: 120,
@@ -170,35 +173,35 @@ const styles = StyleSheet.create({
     stomach: {
         width: 110,
         height: 70,
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
+        borderBottomLeftRadius: BORDER_RADIUS.xlarge,
+        borderBottomRightRadius: BORDER_RADIUS.xlarge,
     },
     arms: {
         width: 40,
         height: 150,
-        marginHorizontal: 5,
-        marginTop: 40,
-        borderRadius: 20,
+        marginHorizontal: SPACING.tiny,
+        marginTop: SPACING.xlarge,
+        borderRadius: BORDER_RADIUS.xlarge,
     },
     legs: {
         width: 100,
         height: 180,
-        marginTop: 5,
+        marginTop: SPACING.tiny,
     },
     feet: {
         width: 120,
         height: 40,
-        marginTop: 5,
-        borderRadius: 20,
+        marginTop: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.xlarge,
     },
     legend: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%',
-        marginBottom: 30,
-        padding: 15,
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        borderRadius: 15,
+        marginBottom: SPACING.xxlarge,
+        padding: SPACING.regular,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xlarge,
     },
     legendItem: {
         flexDirection: 'row',
@@ -208,27 +211,10 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         borderRadius: 10,
-        marginRight: 10,
-    },
-    legendText: {
-        color: 'white',
-        fontSize: 14,
+        marginRight: SPACING.small,
     },
     saveButton: {
-        backgroundColor: '#fc0c84',
-        paddingVertical: 15,
-        paddingHorizontal: 40,
-        borderRadius: 30,
-        shadowColor: '#fc0c84',
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.5,
-        shadowRadius: 15,
-        elevation: 10,
-    },
-    saveButtonText: {
-        color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
+        width: '80%',
     },
 });
 

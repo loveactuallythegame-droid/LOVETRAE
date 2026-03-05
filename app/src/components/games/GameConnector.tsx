@@ -20,16 +20,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   ActivityIndicator,
   Alert,
-  TouchableOpacity,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { gamesApi, GameSession } from '../../lib/api';
 import { auth } from '../../lib/firebaseClient';
 import { useWebSocket } from '../../hooks/useWebSocket';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
+import { Typography, SquishyButton } from '../ui';
 
 interface GameConnectorProps {
   gameId: string;
@@ -140,9 +140,11 @@ export const GameConnector: React.FC<GameConnectorProps> = ({
   if (loading) {
     return (
       <View style={styles.container}>
-        <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-          <ActivityIndicator size="large" color="#db147c" />
-          <Text style={styles.loadingText}>Preparing your game...</Text>
+        <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background}>
+          <ActivityIndicator size="large" color={COLORS.vibrantPink} />
+          <Typography variant="body" center style={styles.loadingText}>
+            Preparing your game...
+          </Typography>
         </LinearGradient>
       </View>
     );
@@ -152,15 +154,21 @@ export const GameConnector: React.FC<GameConnectorProps> = ({
   if (error) {
     return (
       <View style={styles.container}>
-        <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-          <Text style={styles.errorText}>Failed to load game</Text>
-          <Text style={styles.errorSubtext}>{error.message}</Text>
-          <TouchableOpacity
-            style={styles.retryButton}
+        <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background}>
+          <Typography variant="h2" center color={COLORS.error}>
+            Failed to load game
+          </Typography>
+          <Typography variant="body" center color={COLORS.textSecondary} style={styles.errorSubtext}>
+            {error.message}
+          </Typography>
+          <SquishyButton
             onPress={() => window.location.reload()}
+            accessibilityLabel="Try Again"
           >
-            <Text style={styles.retryText}>Try Again</Text>
-          </TouchableOpacity>
+            <Typography variant="button" color={COLORS.textPrimary}>
+              Try Again
+            </Typography>
+          </SquishyButton>
         </LinearGradient>
       </View>
     );
@@ -182,35 +190,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: SPACING.screenPadding,
   },
   loadingText: {
-    color: '#fff',
-    fontSize: 16,
-    marginTop: 20,
-  },
-  errorText: {
-    color: '#ff6b6b',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    marginTop: SPACING.large,
   },
   errorSubtext: {
-    color: '#aaa',
-    fontSize: 14,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  retryButton: {
-    backgroundColor: '#db147c',
-    paddingHorizontal: 30,
-    paddingVertical: 12,
-    borderRadius: 25,
-  },
-  retryText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    marginBottom: SPACING.large,
   },
 });
 

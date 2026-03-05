@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { View, StyleSheet, Alert, ScrollView, Animated } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { View, StyleSheet, Alert, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function LegacyDash({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -56,46 +58,48 @@ export default function LegacyDash({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.regular }}>
             <GlassCard>
-                <Text variant="header">Leg {stage}/4</Text>
+                <Typography variant="h2">Leg {stage}/4</Typography>
 
                 {stage === 1 && (
                     <View>
-                        <Text variant="body">Task: Match accountability actions to goals.</Text>
+                        <Typography variant="body">Task: Match accountability actions to goals.</Typography>
                         <SquishyButton onPress={completeTask} style={styles.actionBtn}>
-                            <Text variant="body">Match: Annual Check-in → Team Feeling</Text>
+                            <Typography variant="body">Match: Annual Check-in → Team Feeling</Typography>
                         </SquishyButton>
                     </View>
                 )}
 
                 {stage === 2 && (
                     <View>
-                        <Text variant="body">Task: Design Family Emblem.</Text>
+                        <Typography variant="body">Task: Design Family Emblem.</Typography>
                         <SquishyButton onPress={completeTask} style={styles.actionBtn}>
-                            <Text variant="body">Assemble: Shield + Sprout + Spark</Text>
+                            <Typography variant="body">Assemble: Shield + Sprout + Spark</Typography>
                         </SquishyButton>
                     </View>
                 )}
 
                 {stage === 3 && (
                     <View>
-                        <Text variant="body">Task: Order the Origin Story Sentence.</Text>
+                        <Typography variant="body">Task: Order the Origin Story Sentence.</Typography>
                         {puzzle.map((p, i) => (
-                            <View key={i} style={styles.puzzlePiece}><Text variant="body" style={{ fontSize: 12 }}>{p}</Text></View>
+                            <View key={i} style={styles.puzzlePiece}>
+                                <Typography variant="caption">{p}</Typography>
+                            </View>
                         ))}
                         <SquishyButton onPress={completeTask} style={styles.actionBtn}>
-                            <Text variant="body">Confirm Order</Text>
+                            <Typography variant="body">Confirm Order</Typography>
                         </SquishyButton>
                     </View>
                 )}
 
                 {stage === 4 && (
                     <View>
-                        <Text variant="body">Final Task: Record Legacy Message.</Text>
-                        <Text variant="instructions">"To our child: You are ours. We chose you."</Text>
+                        <Typography variant="body">Final Task: Record Legacy Message.</Typography>
+                        <Typography variant="instructions">"To our child: You are ours. We chose you."</Typography>
                         <SquishyButton onPress={completeTask} style={styles.actionBtn}>
-                            <Text variant="body">Record Together</Text>
+                            <Typography variant="body">Record Together</Typography>
                         </SquishyButton>
                     </View>
                 )}
@@ -116,22 +120,22 @@ export default function LegacyDash({ route, navigation }: any) {
         playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
     }), [gameId, stage]);
 
-    return <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />;
+    return (
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />
+        </ScreenLayout>
+    );
 }
 
 const styles = StyleSheet.create({
     actionBtn: {
-        marginTop: 20,
-        backgroundColor: '#00BFFF',
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20
+        marginTop: SPACING.large,
+        marginBottom: SPACING.large,
     },
     puzzlePiece: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 8,
-        marginVertical: 4,
-        borderRadius: 4
+        backgroundColor: COLORS.backgroundInput,
+        padding: SPACING.small,
+        marginVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.small,
     }
 });

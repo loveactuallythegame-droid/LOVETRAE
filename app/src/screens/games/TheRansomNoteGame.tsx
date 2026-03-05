@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-// Using a library like react-native-draggable-flatlist would be ideal for drag & drop
+import { View, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
 const wordBank = [
     { text: 'TONIGHT', style: 'ransom' },
@@ -15,70 +14,149 @@ const wordBank = [
     { text: 'YOU', style: 'spooky' },
 ];
 
-const RansomWord = ({ word, onSelect }) => (
-    <TouchableOpacity style={[styles.clipping, styles[word.style]]} onPress={() => onSelect(word)}>
-        <Text style={styles.clippingText}>{word.text}</Text>
+const RansomWord = ({ word, onSelect }: { word: any, onSelect: (word: any) => void }) => (
+    <TouchableOpacity style={[styles.clipping, styles[word.style as keyof typeof styles]]} onPress={() => onSelect(word)}>
+        <Typography variant="body" style={styles.clippingText}>{word.text}</Typography>
     </TouchableOpacity>
 );
 
-const TheRansomNoteGame = () => {
-    const [note, setNote] = useState([]);
+const TheRansomNoteGame = ({ navigation }: any) => {
+    const [note, setNote] = useState<any[]>([]);
 
-    const addWordToNote = (word) => {
+    const addWordToNote = (word: any) => {
         setNote([...note, word]);
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#191022', '#191022']} style={styles.container}>
-                <Text style={styles.header}>The Ransom Note</Text>
-                <Text style={styles.objective}>Invite your partner on a date... or else.</Text>
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
+                    <View style={styles.header}>
+                        <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
+                            <Typography variant="body">Back</Typography>
+                        </SquishyButton>
+                        <Typography variant="h1" style={styles.headerTitle}>The Ransom Note</Typography>
+                        <View style={{ width: 24 }} />
+                    </View>
 
-                <View style={styles.canvas}>
-                    {note.length > 0 ? (
-                        note.map((word, i) => <Text key={i} style={[styles.noteText, styles[word.style]]}>{word.text}</Text>)
-                    ) : (
-                        <Text style={styles.placeholder}>Drag words here</Text>
-                    )}
-                </View>
+                    <Typography variant="h2" style={styles.objective}>Invite your partner on a date... or else.</Typography>
 
-                <ScrollView horizontal contentContainerStyle={styles.wordBank}>
-                    {wordBank.map((word, i) => <RansomWord key={i} word={word} onSelect={addWordToNote} />)}
+                    <GlassCard style={styles.canvas}>
+                        {note.length > 0 ? (
+                            <View style={styles.noteContainer}>
+                                {note.map((word, i) => (
+                                    <View key={i} style={[styles.noteWord, styles[word.style as keyof typeof styles]]}>
+                                        <Typography variant="body" style={styles.noteText}>{word.text}</Typography>
+                                    </View>
+                                ))}
+                            </View>
+                        ) : (
+                            <Typography variant="body" style={styles.placeholder}>Tap words to add them here</Typography>
+                        )}
+                    </GlassCard>
+
+                    <ScrollView horizontal contentContainerStyle={styles.wordBank} showsHorizontalScrollIndicator={false}>
+                        {wordBank.map((word, i) => <RansomWord key={i} word={word} onSelect={addWordToNote} />)}
+                    </ScrollView>
+
+                    <SquishyButton onPress={() => setNote([])} style={styles.clearBtn} variant="secondary">
+                        <Typography variant="body">Clear Note</Typography>
+                    </SquishyButton>
                 </ScrollView>
-
-            </LinearGradient>
-        </SafeAreaView>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#191022' },
-    container: { flex: 1, padding: 24, alignItems: 'center' },
-    header: { fontSize: 36, fontWeight: 'bold', color: '#fff', marginBottom: 8 },
-    objective: { color: '#ab9db9', fontSize: 18, marginBottom: 24 },
+    safeArea: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
+    },
+    scrollContent: {
+        padding: SPACING.screenPadding,
+        alignItems: 'center',
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        marginBottom: SPACING.regular,
+    },
+    backBtn: {
+        paddingHorizontal: SPACING.regular,
+        paddingVertical: SPACING.small,
+    },
+    headerTitle: {
+        flex: 1,
+        textAlign: 'center',
+    },
+    objective: { 
+        color: COLORS.textSecondary, 
+        marginBottom: SPACING.xlarge,
+        textAlign: 'center',
+    },
     canvas: {
         width: '100%',
         height: 300,
-        backgroundColor: '#f3f4f6',
-        borderRadius: 12,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
         borderWidth: 8,
-        borderColor: '#211c27',
-        padding: 16,
+        borderColor: COLORS.backgroundSecondary,
+        padding: SPACING.regular,
+        marginBottom: SPACING.xlarge,
+        justifyContent: 'center',
+    },
+    noteContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 8,
+        gap: SPACING.small,
         alignItems: 'flex-start',
         justifyContent: 'center',
-        marginBottom: 24
     },
-    noteText: { paddingHorizontal: 8, paddingVertical: 4 },
-    placeholder: { color: '#ccc', fontSize: 18, fontStyle: 'italic', alignSelf: 'center' },
-    wordBank: { gap: 12, paddingVertical: 16 },
-    clipping: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 4, elevation: 3 },
-    clippingText: { color: '#000', fontSize: 18 },
-    ransom: { backgroundColor: '#fff', fontFamily: 'monospace' }, // Using generic fonts
-    marker: { backgroundColor: '#a5f3fc', fontFamily: 'sans-serif-medium' },
-    spooky: { backgroundColor: '#fca5a5', fontFamily: 'serif' },
+    noteWord: {
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+    },
+    noteText: { 
+        color: COLORS.backgroundPrimary,
+        fontWeight: TYPOGRAPHY.fontWeight.bold,
+    },
+    placeholder: { 
+        color: COLORS.textHint, 
+        fontStyle: 'italic', 
+        alignSelf: 'center',
+        textAlign: 'center',
+    },
+    wordBank: { 
+        gap: SPACING.regular, 
+        paddingVertical: SPACING.regular 
+    },
+    clipping: { 
+        paddingHorizontal: SPACING.regular, 
+        paddingVertical: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.small, 
+        elevation: 3,
+        marginRight: SPACING.small,
+    },
+    clippingText: { 
+        color: COLORS.backgroundPrimary,
+        fontWeight: TYPOGRAPHY.fontWeight.bold,
+    },
+    ransom: { 
+        backgroundColor: COLORS.textPrimary, 
+    },
+    marker: { 
+        backgroundColor: COLORS.info,
+    },
+    spooky: { 
+        backgroundColor: COLORS.error,
+    },
+    clearBtn: {
+        marginTop: SPACING.xlarge,
+        width: '60%',
+    },
 });
 
 export default TheRansomNoteGame;

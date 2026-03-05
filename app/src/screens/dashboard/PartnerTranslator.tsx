@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, TextInput, Pressable, ActivityIndicator } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { MarcieHost } from '../../components/ai-host';
+import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { speakMarcie } from '../../lib/voice-engine';
 import { analyzeFight, generateQuestions } from '../../lib/ai-engine';
 import { getProfile, supabase } from '../../lib/supabase';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { setJSON, getJSON } from '../../lib/cache';
-import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
 export default function PartnerTranslator({ navigation }: any) {
   const [desc, setDesc] = useState('');
@@ -32,7 +32,6 @@ export default function PartnerTranslator({ navigation }: any) {
     setLoading(true);
     speakMarcie('Investigating... hold tight.');
 
-    // AI Generate Questions
     const generatedQs = await generateQuestions(desc);
     setQs(generatedQs);
     setLoading(false);
@@ -56,7 +55,6 @@ export default function PartnerTranslator({ navigation }: any) {
     const origin = prof?.data?.origin_story || '';
     const red = prof?.data?.first_red_flag || '';
 
-    // Construct a rich input for the AI
     const qAndA = qs.map((q, i) => `Q: ${q} A: ${list[i] ? 'Yes' : 'No'}`).join('\n');
     const aInput = `Situation: ${desc}\nContext:\n${qAndA}`;
 
@@ -86,107 +84,165 @@ export default function PartnerTranslator({ navigation }: any) {
   }
 
   return (
-    <View style={styles.root}>
-      <View style={styles.headerRow}>
-        <SquishyButton onPress={() => navigation.goBack()} style={styles.back}><Text variant="header">Back</Text></SquishyButton>
-        <Text variant="header">Partner Translator</Text>
-        <Text variant="keyword">🌐</Text>
-      </View>
-      <GlassCard>
-        {!result && !showQs && (
-          <Text variant="body">Describe the conflict. I'll translate their nonsense into logic.</Text>
-        )}
+    <ScreenLayout showHeader={true}>
+      <View style={styles.content}>
+        <View style={styles.headerRow}>
+          <SquishyButton onPress={() => navigation.goBack()} variant="secondary" size="small">
+            <Typography variant="button">Back</Typography>
+          </SquishyButton>
+          <Typography variant="header">Partner Translator</Typography>
+          <Typography variant="label">🌐</Typography>
+        </View>
+        
+        <GlassCard>
+          {!result && !showQs && (
+            <Typography variant="body" style={{ marginBottom: SPACING.regular }}>
+              Describe the conflict. I'll translate their nonsense into logic.
+            </Typography>
+          )}
 
-        {!showQs && !result && (
-          <TextInput
-            placeholder="My partner said they're 'fine' but slammed the door..."
-            style={[styles.input, focused ? styles.inputFocus : undefined]}
-            value={desc}
-            onChangeText={(t) => setDesc(t.slice(0, 500))}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            accessibilityLabel="Describe behavior"
-            multiline
-          />
-        )}
+          {!showQs && !result && (
+            <TextInput
+              placeholder="My partner said they're 'fine' but slammed the door..."
+              style={[styles.input, focused ? styles.inputFocus : undefined]}
+              value={desc}
+              onChangeText={(t) => setDesc(t.slice(0, 500))}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              accessibilityLabel="Describe behavior"
+              multiline
+              placeholderTextColor={COLORS.textHint}
+            />
+          )}
 
-        {!showQs && !result && (
-          <View style={styles.counterRow}>
-            <SquishyButton onPress={() => setDesc('')} style={styles.clear}><Text variant="header">Clear</Text></SquishyButton>
-            <Text variant="keyword">{desc.length}/500</Text>
-          </View>
-        )}
+          {!showQs && !result && (
+            <View style={styles.counterRow}>
+              <SquishyButton onPress={() => setDesc('')} variant="ghost" size="small">
+                <Typography variant="button">Clear</Typography>
+              </SquishyButton>
+              <Typography variant="label">{desc.length}/500</Typography>
+            </View>
+          )}
 
-        {loading && (
-          <View style={{ padding: 20, alignItems: 'center' }}>
-            <ActivityIndicator size="large" color="#FA1F63" />
-            <Text variant="body" style={{ marginTop: 10 }}>Analyzing conversational ballistics...</Text>
-          </View>
-        )}
+          {loading && (
+            <View style={{ padding: SPACING.xlarge, alignItems: 'center' }}>
+              <ActivityIndicator size="large" color={COLORS.vibrantPink} />
+              <Typography variant="body" style={{ marginTop: SPACING.regular }}>Analyzing conversational ballistics...</Typography>
+            </View>
+          )}
 
-        {!result && !showQs && !loading && (
-          <LinearGradient colors={['#FA1F63', '#BE1980']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.primaryBtn}>
-            <SquishyButton onPress={startInvestigation} style={{ backgroundColor: 'transparent' }}><Text variant="header">Start Investigation</Text></SquishyButton>
-          </LinearGradient>
-        )}
+          {!result && !showQs && !loading && (
+            <SquishyButton onPress={startInvestigation}>
+              <Typography variant="button">Start Investigation</Typography>
+            </SquishyButton>
+          )}
 
-        {!result && showQs && !loading && qs.length > 0 && (
-          <View style={styles.cardsRow}>
-            <Text variant="body" style={{ marginBottom: 12, textAlign: 'center' }}>CLARIFYING QUESTION {qIndex + 1}/{qs.length}</Text>
-            <View style={styles.card}>
-              <Text variant="body" style={{ fontSize: 18, textAlign: 'center' }}>{qs[qIndex]}</Text>
-              <View style={styles.actions}>
-                <SquishyButton onPress={() => next(true)} style={styles.btn}><Text variant="header">YES</Text></SquishyButton>
-                <SquishyButton onPress={() => next(false)} style={[styles.btn, { backgroundColor: '#E11637' }]}><Text variant="header">NO</Text></SquishyButton>
+          {!result && showQs && !loading && qs.length > 0 && (
+            <View style={styles.cardsRow}>
+              <Typography variant="label" style={{ marginBottom: SPACING.regular, textAlign: 'center' }}>
+                CLARIFYING QUESTION {qIndex + 1}/{qs.length}
+              </Typography>
+              <View style={styles.card}>
+                <Typography variant="body" style={{ fontSize: TYPOGRAPHY.fontSize.headerSmall, textAlign: 'center' }}>{qs[qIndex]}</Typography>
+                <View style={styles.actions}>
+                  <SquishyButton onPress={() => next(true)}>
+                    <Typography variant="button">YES</Typography>
+                  </SquishyButton>
+                  <SquishyButton onPress={() => next(false)} variant="ghost">
+                    <Typography variant="button">NO</Typography>
+                  </SquishyButton>
+                </View>
               </View>
             </View>
-          </View>
-        )}
+          )}
 
-        {result && (
-          <Animated.View style={[styles.translation, style]}>
-            <LinearGradient colors={['rgba(51, 222, 165, 0.18)', 'rgba(190, 24, 128, 0.18)']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.translationGrad}>
-              <Text variant="header" style={{ marginBottom: 8, color: '#33DEA5' }}>OFFICIAL TRANSLATION</Text>
-              <Text variant="sass" style={{ textAlign: 'center', fontSize: 20, lineHeight: 28 }}>"{result.translation}"</Text>
+          {result && (
+            <Animated.View style={[styles.translation, style]}>
+              <GlassCard variant="elevated">
+                <Typography variant="label" style={{ marginBottom: SPACING.small, color: COLORS.mintGreen }}>
+                  OFFICIAL TRANSLATION
+                </Typography>
+                <Typography variant="marcieDialogue" style={{ textAlign: 'center' }}>
+                  "{result.translation}"
+                </Typography>
 
-              <Text variant="header" style={{ marginTop: 20, marginBottom: 8 }}>RECOMMENDED ACTION PLAN</Text>
-              {result.plan.map((p, i) => (
-                <View key={i} style={{ flexDirection: 'row', marginBottom: 6 }}>
-                  <Text variant="keyword" style={{ marginRight: 8 }}>{i + 1}.</Text>
-                  <Text variant="body" style={{ flex: 1 }}>{p}</Text>
+                <Typography variant="label" style={{ marginTop: SPACING.large, marginBottom: SPACING.small }}>
+                  RECOMMENDED ACTION PLAN
+                </Typography>
+                {result.plan.map((p, i) => (
+                  <View key={i} style={{ flexDirection: 'row', marginBottom: SPACING.small }}>
+                    <Typography variant="label" style={{ marginRight: SPACING.small }}>{i + 1}.</Typography>
+                    <Typography variant="body" style={{ flex: 1 }}>{p}</Typography>
+                  </View>
+                ))}
+
+                <View style={{ flexDirection: 'row', gap: SPACING.regular, marginTop: SPACING.xlarge, justifyContent: 'center' }}>
+                  <SquishyButton onPress={markReported} disabled={reportDone}>
+                    <Typography variant="button">{reportDone ? 'Reported' : 'Report Success'}</Typography>
+                  </SquishyButton>
+                  <SquishyButton 
+                    onPress={() => { setShowQs(false); setResult(null); setDesc(''); }} 
+                    variant="secondary"
+                  >
+                    <Typography variant="button">New Case</Typography>
+                  </SquishyButton>
                 </View>
-              ))}
-
-              <View style={{ flexDirection: 'row', gap: 12, marginTop: 24, justifyContent: 'center' }}>
-                <SquishyButton onPress={markReported} style={[styles.btn, { opacity: reportDone ? 0.5 : 1 }]} disabled={reportDone}>
-                  <Text variant="header">{reportDone ? 'Reported' : 'Report Success'}</Text>
-                </SquishyButton>
-                <SquishyButton onPress={() => { setShowQs(false); setResult(null); setDesc(''); }} style={[styles.btn, { backgroundColor: '#5C1459' }]}>
-                  <Text variant="header">New Case</Text>
-                </SquishyButton>
-              </View>
-            </LinearGradient>
-          </Animated.View>
-        )}
-      </GlassCard>
-    </View>
+              </GlassCard>
+            </Animated.View>
+          )}
+        </GlassCard>
+      </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, padding: 16 },
-  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  back: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: '#5C1459', borderRadius: 12 },
-  input: { backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 10, color: '#fff', marginTop: 8, minHeight: 128, textAlignVertical: 'top' },
-  inputFocus: { borderColor: '#FA1F63' },
-  counterRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6 },
-  clear: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: '#5C1459', borderRadius: 12 },
-  cardsRow: { marginTop: 12 },
-  card: { padding: 12, borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.08)' },
-  answered: { borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)' },
-  actions: { flexDirection: 'row', gap: 12, marginTop: 12, justifyContent: 'center' },
-  btn: { paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#33DEA5', borderRadius: 12 },
-  translation: { marginTop: 12 },
-  translationGrad: { padding: 12, borderRadius: 12 },
-  primaryBtn: { borderRadius: 20, overflow: 'hidden', marginTop: 8 },
+  content: {
+    flex: 1,
+    padding: SPACING.screenPadding,
+  },
+  headerRow: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    marginBottom: SPACING.regular 
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    borderRadius: BORDER_RADIUS.input, 
+    padding: SPACING.regular, 
+    color: COLORS.textPrimary, 
+    marginTop: SPACING.regular, 
+    minHeight: 128, 
+    textAlignVertical: 'top' 
+  },
+  inputFocus: { 
+    borderColor: COLORS.vibrantPink 
+  },
+  counterRow: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    marginTop: SPACING.small 
+  },
+  cardsRow: { 
+    marginTop: SPACING.regular 
+  },
+  card: { 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
+    backgroundColor: COLORS.backgroundInput,
+    gap: SPACING.regular,
+  },
+  actions: { 
+    flexDirection: 'row', 
+    gap: SPACING.regular, 
+    marginTop: SPACING.regular, 
+    justifyContent: 'center' 
+  },
+  translation: { 
+    marginTop: SPACING.regular 
+  },
 });

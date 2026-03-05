@@ -1,43 +1,69 @@
 
 import React from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { RadialGradientBackground } from "../../components/ui/RadialGradientBackground";
-import { Header } from "../../components/ui/Header";
+import { View, FlatList, StyleSheet } from "react-native";
+import { ScreenLayout } from "../../layout";
+import { Typography, SquishyButton, GlassCard } from "../../components/ui";
+import { COLORS, SPACING } from "../../theme";
 
 const AdminFightModeration = ({ fights }) => {
 
   const renderItem = ({ item }) => (
-    <View className="p-4 my-2 bg-white/20 rounded-lg">
-      <Text className="text-white font-barbie-dream text-lg">{item.user1} vs {item.user2}</Text>
-      <Text className="text-white font-holiday-christmas">{item.issue}</Text>
-      <View className="flex-row mt-4">
-        <TouchableOpacity className="bg-green-500 p-2 rounded-lg mr-2">
-          <Text className="text-white">Approve</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="bg-red-500 p-2 rounded-lg">
-          <Text className="text-white">Deny</Text>
-        </TouchableOpacity>
+    <GlassCard style={styles.fightCard}>
+      <Typography variant="h3" color={COLORS.textPrimary}>
+        {item.user1} vs {item.user2}
+      </Typography>
+      <Typography variant="body" color={COLORS.textSecondary}>
+        {item.issue}
+      </Typography>
+      <View style={styles.buttonRow}>
+        <SquishyButton
+          onPress={() => {}}
+          variant="primary"
+          size="small"
+          style={{ marginRight: SPACING.regular }}
+        >
+          <Typography variant="button" color={COLORS.textPrimary}>
+            Approve
+          </Typography>
+        </SquishyButton>
+        <SquishyButton
+          onPress={() => {}}
+          variant="secondary"
+          size="small"
+        >
+          <Typography variant="button" color={COLORS.textPrimary}>
+            Deny
+          </Typography>
+        </SquishyButton>
       </View>
-    </View>
+    </GlassCard>
   );
 
   return (
-    <RadialGradientBackground
-      colors={["#5C1459", "#FA1F63"]}
+    <ScreenLayout
+      showHeader={true}
+      scrollable={true}
     >
-      <Header
-        logoSource={require("../../../assets/logo/mainlogoone.png")}
+      <Typography variant="h1" color={COLORS.textPrimary} center style={{ marginBottom: SPACING.regular }}>
+        Fight Moderation
+      </Typography>
+      <FlatList
+        data={fights}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
       />
-      <View className="flex-1 p-4">
-        <Text className="text-white text-4xl text-center my-4 font-wonderful-sometimes">Fight Moderation</Text>
-        <FlatList
-          data={fights}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-    </RadialGradientBackground>
+    </ScreenLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  fightCard: {
+    marginBottom: SPACING.regular,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    marginTop: SPACING.regular,
+  },
+});
 
 export default AdminFightModeration;

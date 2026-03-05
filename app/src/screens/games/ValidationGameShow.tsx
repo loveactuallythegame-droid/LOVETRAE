@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const ROUNDS = [
     {
@@ -60,24 +62,24 @@ export default function ValidationGameShow({ route, navigation }: any) {
     const current = ROUNDS[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.regular }}>
             <GlassCard>
-                <Text variant="header">Round {round + 1}</Text>
-                <Text variant="sass" style={{ marginBottom: 16 }}>Partner A says: "{current.statement}"</Text>
+                <Typography variant="h2" center>Round {round + 1}</Typography>
+                <Typography variant="sass" center style={{ marginBottom: SPACING.regular }}>Partner A says: "{current.statement}"</Typography>
 
-                <Text variant="instructions">Partner B, choose your response:</Text>
+                <Typography variant="instructions" center style={{ marginBottom: SPACING.regular }}>Partner B, choose your response:</Typography>
                 {current.options.map(o => (
                     <SquishyButton
                         key={o.id}
                         onPress={() => setChoice(o.id)}
                         style={[styles.opt, choice === o.id ? styles.selected : {}]}
                     >
-                        <Text variant="body" style={{ color: choice === o.id ? '#120016' : '#fff' }}>{o.text}</Text>
+                        <Typography variant="body" style={{ color: choice === o.id ? COLORS.backgroundPrimary : COLORS.textPrimary }}>{o.text}</Typography>
                     </SquishyButton>
                 ))}
 
                 <SquishyButton onPress={submit} style={styles.submitBtn}>
-                    <Text variant="header">Lock In Response</Text>
+                    <Typography variant="button">Lock In Response</Typography>
                 </SquishyButton>
             </GlassCard>
         </ScrollView>
@@ -100,23 +102,23 @@ export default function ValidationGameShow({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
     opt: {
-        padding: 14,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 8,
-        marginBottom: 8,
+        padding: SPACING.regular,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.medium,
+        marginBottom: SPACING.small,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)'
+        borderColor: COLORS.borderSubtle
     },
     selected: {
-        backgroundColor: '#FFD700',
-        borderColor: '#FFD700'
+        backgroundColor: COLORS.brightYellow,
+        borderColor: COLORS.brightYellow
     },
     submitBtn: {
-        marginTop: 20,
-        backgroundColor: '#FA1F63',
-        padding: 16,
-        borderRadius: 12,
+        marginTop: SPACING.xlarge,
+        backgroundColor: COLORS.emotionalConnection,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.button,
         alignItems: 'center',
-        marginBottom: 20
+        marginBottom: SPACING.xlarge
     },
 });

@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert, TextInput } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
 export default function MemoryLaneDash({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -19,19 +21,19 @@ export default function MemoryLaneDash({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Recall Challenge</Text>
-        <Text variant="body">Where did you have your first proper date?</Text>
+        <Typography variant="h2">Recall Challenge</Typography>
+        <Typography variant="body">Where did you have your first proper date?</Typography>
         <TextInput
             style={styles.input}
             placeholder="e.g. That Italian place..."
-            placeholderTextColor="#666"
+            placeholderTextColor={COLORS.textHint}
             value={memory}
             onChangeText={setMemory}
         />
         <SquishyButton onPress={submit} style={styles.btn}>
-            <Text variant="header">Lock In Answer</Text>
+            <Typography variant="h2">Lock In Answer</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -49,10 +51,23 @@ export default function MemoryLaneDash({ route, navigation }: any) {
     playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
   }), [gameId]);
 
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => submit()} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => submit()} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  input: { backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', padding: 12, borderRadius: 8, marginTop: 12 },
-  btn: { marginTop: 16, backgroundColor: '#BE1980', padding: 16, borderRadius: 12, alignItems: 'center' },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    color: COLORS.textPrimary, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.medium, 
+    marginTop: SPACING.regular,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+  },
+  btn: { 
+    marginTop: SPACING.regular,
+  },
 });

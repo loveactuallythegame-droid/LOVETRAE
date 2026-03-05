@@ -1,15 +1,25 @@
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
+import ScreenLayout from '../layout/ScreenLayout';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../theme';
 
 const StarRating = ({ rating, setRating }) => (
     <View style={styles.starContainer}>
         {[1, 2, 3, 4, 5].map(i => (
-            <TouchableOpacity key={i} onPress={() => setRating(i)}>
-                <Text style={[styles.star, {opacity: i <= rating ? 1 : 0.2}]}>★</Text>
-            </TouchableOpacity>
+            <SquishyButton 
+                key={i} 
+                onPress={() => setRating(i)}
+                variant="ghost"
+                size="small"
+                style={styles.starButton}
+            >
+                <Typography style={[styles.star, {opacity: i <= rating ? 1 : 0.2}]}>★</Typography>
+            </SquishyButton>
         ))}
     </View>
 );
@@ -17,13 +27,15 @@ const StarRating = ({ rating, setRating }) => (
 const OptionButtons = ({ options, selected, setSelected }) => (
     <View style={styles.optionsContainer}>
         {options.map(option => (
-            <TouchableOpacity
+            <SquishyButton
                 key={option}
-                style={[styles.optionButton, selected === option && styles.optionButtonSelected]}
+                variant={selected === option ? 'primary' : 'ghost'}
+                size="small"
                 onPress={() => setSelected(option)}
+                style={styles.optionButton}
             >
-                <Text style={styles.optionButtonText}>{option}</Text>
-            </TouchableOpacity>
+                <Typography variant="button">{option}</Typography>
+            </SquishyButton>
         ))}
     </View>
 );
@@ -34,75 +46,108 @@ const RelationshipDiagnosisCard1 = () => {
     const [temperature, setTemperature] = useState(0.5);
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    <Text style={styles.header}>EMOTIONAL RE-ENTRY</Text>
-                    <Text style={styles.subHeader}>A QUICK ALIGNMENT CHECK BEFORE WE CONCLUDE.</Text>
+        <ScreenLayout scrollable={true} showHeader={false}>
+            <Typography variant="h1" center style={styles.header}>EMOTIONAL RE-ENTRY</Typography>
+            <Typography variant="label" center color={COLORS.textSecondary} style={styles.subHeader}>
+                A QUICK ALIGNMENT CHECK BEFORE WE CONCLUDE.
+            </Typography>
 
-                    <View style={styles.glassPanel}>
-                        <View style={styles.questionBlock}>
-                            <Text style={styles.questionText}>1. DO YOU FEEL HEARD BY YOUR PARTNER?</Text>
-                            <StarRating rating={rating} setRating={setRating} />
-                        </View>
+            <GlassCard style={styles.glassPanel}>
+                <View style={styles.questionBlock}>
+                    <Typography variant="h3" style={styles.questionText}>1. DO YOU FEEL HEARD BY YOUR PARTNER?</Typography>
+                    <StarRating rating={rating} setRating={setRating} />
+                </View>
 
-                        <View style={styles.questionBlock}>
-                            <Text style={styles.questionText}>2. IS THE INITIAL TENSION RESOLVED?</Text>
-                            <OptionButtons options={['COMPLETELY', 'MOSTLY', 'A LITTLE', 'NOT REALLY']} selected={resolution} setSelected={setResolution} />
-                        </View>
+                <View style={styles.questionBlock}>
+                    <Typography variant="h3" style={styles.questionText}>2. IS THE INITIAL TENSION RESOLVED?</Typography>
+                    <OptionButtons options={['COMPLETELY', 'MOSTLY', 'A LITTLE', 'NOT REALLY']} selected={resolution} setSelected={setResolution} />
+                </View>
 
-                        <View style={styles.questionBlock}>
-                            <Text style={styles.questionText}>3. CURRENT EMOTIONAL TEMPERATURE?</Text>
-                            <Slider
-                                style={styles.slider}
-                                minimumValue={0}
-                                maximumValue={1}
-                                value={temperature}
-                                onValueChange={setTemperature}
-                                minimumTrackTintColor="#00FFFF"
-                                maximumTrackTintColor="rgba(0,0,0,0.3)"
-                                thumbTintColor="#00FFFF"
-                            />
-                             <View style={styles.sliderLabels}>
-                                <Text style={styles.sliderLabel}>COOL / DISTANT</Text>
-                                <Text style={styles.sliderLabel}>WARM / CONNECTED</Text>
-                            </View>
-                        </View>
+                <View style={styles.questionBlock}>
+                    <Typography variant="h3" style={styles.questionText}>3. CURRENT EMOTIONAL TEMPERATURE?</Typography>
+                    <Slider
+                        style={styles.slider}
+                        minimumValue={0}
+                        maximumValue={1}
+                        value={temperature}
+                        onValueChange={setTemperature}
+                        minimumTrackTintColor={COLORS.info}
+                        maximumTrackTintColor={COLORS.borderSubtle}
+                        thumbTintColor={COLORS.info}
+                    />
+                     <View style={styles.sliderLabels}>
+                        <Typography variant="caption" color={COLORS.textSecondary}>COOL / DISTANT</Typography>
+                        <Typography variant="caption" color={COLORS.textSecondary}>WARM / CONNECTED</Typography>
                     </View>
+                </View>
+            </GlassCard>
 
-                    <TouchableOpacity style={styles.finishButton}>
-                        <LinearGradient colors={['#FF4081', '#E040FB']} start={{x:0, y:0}} end={{x:1, y:0}} style={styles.finishButtonGradient}>
-                            <Text style={styles.finishButtonText}>FINISH SOS SESSION</Text>
-                            <Text>✅</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+            <SquishyButton 
+                style={styles.finishButton}
+                onPress={() => {}}
+            >
+                <Typography variant="button">FINISH SOS SESSION</Typography>
+                <Typography>✅</Typography>
+            </SquishyButton>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#2A002A' },
-    container: { flex: 1 },
-    scrollContent: { alignItems: 'center', padding: 20 },
-    header: { color: '#fff', fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginTop: 20, textTransform: 'uppercase' },
-    subHeader: { color: '#D1C4E9', fontSize: 16, textAlign: 'center', marginBottom: 20, textTransform: 'uppercase', fontWeight: 'bold' },
-    glassPanel: { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 24, padding: 24, width: '100%', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    questionBlock: { marginBottom: 32 },
-    questionText: { color: '#fff', fontSize: 20, fontWeight: 'bold', marginBottom: 16, textTransform: 'uppercase' },
-    starContainer: { flexDirection: 'row', justifyContent: 'center', gap: 12 },
-    star: { fontSize: 40, color: '#FFD700', textShadowColor: '#FFD700', textShadowRadius: 10 },
-    optionsContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
-    optionButton: { paddingHorizontal: 16, paddingVertical: 10, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', backgroundColor: 'rgba(255,255,255,0.1)' },
-    optionButtonSelected: { borderColor: '#00FFFF', backgroundColor: 'rgba(0, 255, 255, 0.2)' },
-    optionButtonText: { color: '#fff', fontWeight: 'bold', textTransform: 'uppercase' },
-    slider: { width: '100%', height: 40 },
-    sliderLabels: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10 },
-    sliderLabel: { color: '#D1C4E9', fontSize: 10, textTransform: 'uppercase', fontWeight: 'bold' },
-    finishButton: { width: '90%', marginTop: 32 },
-    finishButtonGradient: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 16, borderRadius: 28, gap: 12 },
-    finishButtonText: { color: '#fff', fontSize: 16, fontWeight: 'bold', letterSpacing: 1, textTransform: 'uppercase' },
+    header: { 
+        marginTop: SPACING.large,
+        textTransform: 'uppercase' 
+    },
+    subHeader: { 
+        marginBottom: SPACING.large,
+        textTransform: 'uppercase' 
+    },
+    glassPanel: { 
+        width: '100%',
+        marginBottom: SPACING.xlarge,
+    },
+    questionBlock: { 
+        marginBottom: SPACING.xxlarge 
+    },
+    questionText: { 
+        marginBottom: SPACING.regular,
+        textTransform: 'uppercase' 
+    },
+    starContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'center', 
+        gap: SPACING.small 
+    },
+    starButton: {
+        width: 50,
+        height: 50,
+        minHeight: 50,
+    },
+    star: { 
+        fontSize: TYPOGRAPHY.fontSize.displayMedium, 
+        color: COLORS.brightYellow,
+    },
+    optionsContainer: { 
+        flexDirection: 'row', 
+        flexWrap: 'wrap', 
+        gap: SPACING.small 
+    },
+    optionButton: {
+        marginVertical: SPACING.tiny,
+    },
+    slider: { 
+        width: '100%', 
+        height: 40 
+    },
+    sliderLabels: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        paddingHorizontal: SPACING.small 
+    },
+    finishButton: { 
+        marginTop: SPACING.xlarge,
+        alignSelf: 'center',
+    },
 });
 
 export default RelationshipDiagnosisCard1;

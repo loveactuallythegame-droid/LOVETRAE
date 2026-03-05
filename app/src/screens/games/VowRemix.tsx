@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 export default function VowRemix({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -19,21 +21,21 @@ export default function VowRemix({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Vow Remix</Text>
-        <Text variant="body">Complete the sentence:</Text>
-        <Text variant="sass" style={styles.prompt}>"I vow to love you even when..."</Text>
+        <Typography variant="h2" center>Vow Remix</Typography>
+        <Typography variant="body" center>Complete the sentence:</Typography>
+        <Typography variant="sass" center style={styles.prompt}>"I vow to love you even when..."</Typography>
         <TextInput
             style={styles.input}
             placeholder="e.g. you eat all the chips"
-            placeholderTextColor="#666"
+            placeholderTextColor={COLORS.textHint}
             value={vow}
             onChangeText={setVow}
             multiline
         />
         <SquishyButton onPress={submit} style={styles.btn}>
-            <Text variant="header">Seal Vow</Text>
+            <Typography variant="button">Seal Vow</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -55,7 +57,26 @@ export default function VowRemix({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  prompt: { fontSize: 20, textAlign: 'center', marginVertical: 16, color: '#33DEA5' },
-  input: { backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', padding: 12, borderRadius: 8, minHeight: 80 },
-  btn: { marginTop: 16, backgroundColor: '#FA1F63', padding: 16, borderRadius: 12, alignItems: 'center' },
+  prompt: { 
+    fontSize: TYPOGRAPHY.fontSize.headerMedium, 
+    textAlign: 'center', 
+    marginVertical: SPACING.regular, 
+    color: COLORS.success 
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    color: COLORS.textPrimary, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.medium, 
+    minHeight: 80,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+    fontFamily: TYPOGRAPHY.fontFamily.regular,
+  },
+  btn: { 
+    marginTop: SPACING.regular, 
+    backgroundColor: COLORS.emotionalConnection, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.button, 
+    alignItems: 'center' 
+  },
 });

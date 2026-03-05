@@ -1,12 +1,7 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
-import { Header } from '../../components/ui/Header';
-import { SquishyButton } from '../../components/ui';
-import { COLORS, TYPOGRAPHY, SIZES, SPACING, GLOWS, moderateScale } from '../../theme';
+import { View, StyleSheet, Animated } from 'react-native';
+import { ScreenLayout, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, ANIMATIONS, BORDER_RADIUS } from '../../theme';
 
 const SIX_SECONDS = 6000;
 
@@ -26,13 +21,8 @@ const SixSecondKissScreen = () => {
       Animated.timing(timerAnimation, {
         toValue: 1,
         duration: SIX_SECONDS,
-        easing: Easing.linear,
         useNativeDriver: false,
-      }).start(({ finished }) => {
-        if (finished) {
-          // calculateGameResults();
-        }
-      });
+      }).start();
 
       interval = setInterval(() => {
         setTimer(prev => {
@@ -58,198 +48,92 @@ const SixSecondKissScreen = () => {
 
   const timerDisplay = (timer / 1000).toFixed(2);
 
-  const circleProgress = timerAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 360],
-  });
-
   const syncProgress = timerAnimation.interpolate({
     inputRange: [0, 1],
     outputRange: ['0%', '100%'],
   });
 
   const TouchZone = ({ player, onStateChange, isActive }: { player: string, onStateChange: (active: boolean) => void, isActive: boolean }) => (
-    <View
-      onMouseDown={() => onStateChange(true)}
-      onMouseUp={() => onStateChange(false)}
-      onTouchStart={() => onStateChange(true)}
-      onTouchEnd={() => onStateChange(false)}
-      style={[styles.touchZone, isActive && styles.touchZoneActive]}
+    <SquishyButton
+      onPress={() => {}}
+      onPressIn={() => onStateChange(true)}
+      onPressOut={() => onStateChange(false)}
+      variant={isActive ? 'primary' : 'ghost'}
+      style={styles.touchZone}
     >
-      <View style={[styles.touchIconContainer, isActive && styles.touchIconActive]}>
-        <Text style={styles.touchIcon}>touch_app</Text>
-      </View>
-      <Text style={styles.playerLabel}>{player}</Text>
-      {isActive && <Text style={styles.connectedText}>Connected</Text>}
-    </View>
+      <Typography variant="body" center>{player}</Typography>
+      {isActive && <Typography variant="caption" color={COLORS.vibrantPink} center>Connected</Typography>}
+    </SquishyButton>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient
-        colors={[COLORS.deepCosmicPurple, COLORS.richPlum]}
-        style={styles.background}
-      />
-      <Header title="6-Second Kiss Challenge" />
+    <ScreenLayout showHeader={true} scrollable={false}>
       <View style={styles.content}>
-        <Text style={styles.title}>6-Second Kiss Challenge</Text>
-        <Text style={styles.subtitle}>Hold to ignite the spark</Text>
+        <Typography variant="h1" center>The Love Arcade</Typography>
+        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
 
         <View style={styles.gameArea}>
           <TouchZone player="Player 1" onStateChange={setPlayer1Active} isActive={player1Active} />
 
           <View style={styles.timerContainer}>
-            <Animated.View style={styles.timerCircle}>
-              {/* Animated circle would go here */}
-            </Animated.View>
-            <Text style={styles.timerText}>{timerDisplay}</Text>
-            <Text style={styles.secondsText}>Seconds</Text>
+            <Typography variant="h1" style={styles.timerText}>{timerDisplay}</Typography>
+            <Typography variant="caption" center>Seconds</Typography>
           </View>
 
           <TouchZone player="Player 2" onStateChange={setPlayer2Active} isActive={player2Active} />
         </View>
 
-         <View style={styles.syncBarContainer}>
-            <Text style={styles.syncLabel}>Synchronization</Text>
-            <View style={styles.syncBar}>
-                <Animated.View style={[styles.syncBarProgress, {width: syncProgress}]} />
-            </View>
+        <View style={styles.syncBarContainer}>
+          <Typography variant="caption" center>Synchronization</Typography>
+          <View style={styles.syncBar}>
+            <Animated.View style={[styles.syncBarProgress, { width: syncProgress }]} />
+          </View>
         </View>
-
       </View>
-      <GlobalMarcieOverlay quote="A six-second kiss creates a psychological bridge that words cannot build." />
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#181116' },
-  background: { ...StyleSheet.absoluteFillObject },
-  content: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 },
-  title: {
-    fontFamily: 'BarbieDream-Regular',
-    fontSize: 48,
-    color: '#FFF',
-    textAlign: 'center',
-    marginBottom: 5,
-  },
-  subtitle: {
-    fontFamily: 'SweetPink-Regular',
-    fontSize: 18,
-    color: '#ff006d',
-    opacity: 0.8,
-    marginBottom: 40,
+  content: { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center'
   },
   gameArea: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
+    marginTop: SPACING.xxlarge,
   },
   touchZone: {
-    width: 150,
-    height: 250,
-    borderRadius: 16,
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  touchZoneActive: {
-    borderColor: '#f20da6',
-    backgroundColor: 'rgba(242, 13, 166, 0.1)',
-  },
-  touchIconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10,
-  },
-   touchIconActive: {
-      borderColor: '#f20da6',
-      shadowColor: '#f20da6',
-      shadowRadius: 15,
-  },
-  touchIcon: {
-    fontFamily: 'Material Icons', // This would need to be a custom font or icon set
-    fontSize: 40,
-    color: 'rgba(255, 255, 255, 0.4)',
-  },
-  playerLabel: {
-    fontFamily: 'HolidayChristmas-Regular',
-    fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.4)',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-  },
-  connectedText: {
-      marginTop: 10,
-      fontFamily: 'SweetPink-Regular',
-      fontSize: 10,
-      color: '#f20da6',
-      backgroundColor: 'rgba(242, 13, 166, 0.2)',
-      paddingHorizontal: 10,
-      paddingVertical: 4,
-      borderRadius: 15,
-      borderWidth: 1,
-      borderColor: 'rgba(242, 13, 166, 0.3)',
-      textTransform: 'uppercase'
+    width: 120,
+    height: 200,
   },
   timerContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 40,
-  },
-  timerCircle: {
-      width: 200,
-      height: 200,
-      borderRadius: 100,
-      borderWidth: 8,
-      borderColor: 'rgba(255,255,255,0.05)',
-      position: 'absolute'
+    marginHorizontal: SPACING.regular,
   },
   timerText: {
-    fontFamily: 'WonderfulSometimes-Regular',
-    fontSize: 72,
-    color: '#FFF',
-  },
-  secondsText: {
-    fontFamily: 'HolidayChristmas-Regular',
-    fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.4)',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-    marginTop: -10,
+    fontSize: TYPOGRAPHY.fontSize.displayLarge * 2,
+    color: COLORS.textPrimary,
   },
   syncBarContainer: {
-      marginTop: 40,
-      width: '60%',
-  },
-  syncLabel: {
-      color: 'rgba(255,255,255,0.6)',
-      fontSize: 12,
-      fontFamily: 'HolidayChristmas-Regular',
-      textTransform: 'uppercase',
-      textAlign: 'center',
-      marginBottom: 5,
+    marginTop: SPACING.xxlarge,
+    width: '60%',
   },
   syncBar: {
-      height: 6,
-      backgroundColor: 'rgba(255,255,255,0.05)',
-      borderRadius: 3,
+    height: 6,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.small,
+    marginTop: SPACING.tiny,
   },
   syncBarProgress: {
-      height: '100%',
-      backgroundColor: '#f20da6',
-      borderRadius: 3,
-      shadowColor: '#f20da6',
-      shadowRadius: 10,
+    height: '100%',
+    backgroundColor: COLORS.vibrantPink,
+    borderRadius: BORDER_RADIUS.small,
   }
 });
 

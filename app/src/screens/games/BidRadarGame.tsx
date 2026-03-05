@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, TextInput, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header } from '../../components/ui/Header';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 const BidRadarGameScreen = () => {
     const [myBid, setMyBid] = useState('');
@@ -16,327 +17,244 @@ const BidRadarGameScreen = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#0a0a0f', '#0a0a0f']} style={styles.background} />
-            
-            {/* Dr. Marcie Section */}
-            <View style={styles.drMarcieSection}>
-                <View style={styles.avatarContainer}>
-                    <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
-                </View>
-                <View style={styles.quoteBox}>
-                    <Text style={styles.quoteText}>Log emotional bids to track connection attempts! Recognize when you make or receive bids for attention.</Text>
-                </View>
-            </View>
-            
-            <Header title="Bid Radar" />
-            <ScrollView contentContainerStyle={styles.content}>
-                <LinearGradient
-                    colors={['#db147c', '#f05d68']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.gameConsole}
-                >
-                    <LinearGradient
-                        colors={['#a22ac4', '#9056ef']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.inputSide}
-                    >
-                        <Text style={styles.sideTitle}>Log Your Emotional Bid</Text>
-                        <Text style={styles.sideDescription}>What was an action you took today that had hidden emotional meaning?</Text>
-                        <TextInput
-                            style={styles.bidInput}
-                            value={myBid}
-                            onChangeText={setMyBid}
-                            placeholder="e.g., I sighed loudly while I was doing the dishes..."
-                            placeholderTextColor="rgba(255,255,255,0.2)"
-                            multiline
-                        />
-                        <TouchableOpacity style={styles.lockButton} onPress={lockBid}>
-                            <LinearGradient
-                                colors={['#ffffff', '#ffffff']}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={styles.gradientButton}
-                            >
-                                <Text style={styles.lockButtonText}>Lock Bid</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-                    </LinearGradient>
-
-                    <LinearGradient
-                        colors={['#37cf97', '#b37dec']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.revealSide}
-                    >
-                        <Text style={styles.sideTitle}>The Reveal</Text>
-                        <Text style={styles.perceptionLabel}>Sarah's Perception</Text>
-                        <Text style={styles.perceptionText}>{partnerPerception}</Text>
-                        
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <SafeAreaView style={styles.container}>
+                {/* Dr. Marcie Section */}
+                <GlassCard style={styles.drMarcieSection} variant="outlined">
+                    <View style={styles.avatarContainer}>
+                        <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+                    </View>
+                    <View style={styles.quoteBox}>
+                        <Typography variant="body">Log emotional bids to track connection attempts! Recognize when you make or receive bids for attention.</Typography>
+                    </View>
+                </GlassCard>
+                
+                <Typography variant="h1" center style={styles.gameTitle}>The Love Arcade</Typography>
+                <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
+                
+                <ScrollView contentContainerStyle={styles.content}>
+                    <GlassCard style={styles.gameConsole}>
                         <LinearGradient
-                            colors={['#ff7600', '#ffef1f']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
-                            style={styles.resultContainer}
+                            colors={GRADIENTS.primary.colors}
+                            start={GRADIENTS.primary.start}
+                            end={GRADIENTS.primary.end}
+                            style={styles.inputSide}
                         >
-                           <Text style={styles.resultLabel}>{result}</Text>
-                           <Text style={styles.explanationText}>{explanation}</Text>
+                            <Typography variant="h2" style={styles.sideTitle}>Log Your Emotional Bid</Typography>
+                            <Typography variant="body" style={styles.sideDescription}>What was an action you took today that had hidden emotional meaning?</Typography>
+                            <TextInput
+                                style={styles.bidInput}
+                                value={myBid}
+                                onChangeText={setMyBid}
+                                placeholder="e.g., I sighed loudly while I was doing the dishes..."
+                                placeholderTextColor={COLORS.textHint}
+                                multiline
+                            />
+                            <SquishyButton onPress={lockBid} style={styles.lockButton}>
+                                <Typography variant="button" style={{ color: COLORS.gradientStart }}>Lock Bid</Typography>
+                            </SquishyButton>
                         </LinearGradient>
 
-                         <View style={styles.statsContainer}>
-                            <Text style={styles.statText}>Accuracy: 62%</Text>
-                            <Text style={styles.statText}>Bonus: +150</Text>
-                        </View>
-                    </LinearGradient>
-                </LinearGradient>
+                        <LinearGradient
+                            colors={[COLORS.mintGreen, COLORS.softViolet]}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 1 }}
+                            style={styles.revealSide}
+                        >
+                            <Typography variant="h2" style={styles.sideTitle}>The Reveal</Typography>
+                            <Typography variant="label" style={styles.perceptionLabel}>Sarah's Perception</Typography>
+                            <Typography variant="body" style={styles.perceptionText}>{partnerPerception}</Typography>
+                            
+                            <LinearGradient
+                                colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 1 }}
+                                style={styles.resultContainer}
+                            >
+                               <Typography variant="label" style={styles.resultLabel}>{result}</Typography>
+                               <Typography variant="body" style={styles.explanationText}>{explanation}</Typography>
+                            </LinearGradient>
 
-                <LinearGradient
-                    colors={['#ff7600', '#ffef1f']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.marcieContainer}
-                >
-                    <Text style={styles.marcieQuote}>"Oh, you thought that was a sigh for help? Cute. Marcus, honey, next time try using your words or just collapsing dramatically on the floor like a normal person."</Text>
-                    <Text style={styles.marcieSignature}>Dr. Marcie Liss, Host</Text>
-                </LinearGradient>
+                             <View style={styles.statsContainer}>
+                                <Typography variant="caption">Accuracy: 62%</Typography>
+                                <Typography variant="caption">Bonus: +150</Typography>
+                            </View>
+                        </LinearGradient>
+                    </GlassCard>
 
-            </ScrollView>
-        </SafeAreaView>
+                    <GlassCard style={styles.marcieContainer}>
+                        <Typography variant="body" style={styles.marcieQuote}>"Oh, you thought that was a sigh for help? Cute. Marcus, honey, next time try using your words or just collapsing dramatically on the floor like a normal person."</Typography>
+                        <Typography variant="caption" style={styles.marcieSignature}>Dr. Marcie Liss, Host</Typography>
+                    </GlassCard>
+
+                </ScrollView>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#0a0a0f' },
-    background: { ...StyleSheet.absoluteFillObject },
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
+    },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+        marginBottom: SPACING.regular,
+        padding: SPACING.regular,
     },
     avatarContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        width: SPACING.xxlarge + SPACING.medium,
+        height: SPACING.xxlarge + SPACING.medium,
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular,
     },
     avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: SPACING.xxlarge,
+        height: SPACING.xxlarge,
+        borderRadius: BORDER_RADIUS.round,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
         backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular,
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+    gameTitle: {
+        marginBottom: SPACING.small,
     },
-    content: { padding: 20 },
+    subtitle: {
+        marginBottom: SPACING.regular,
+        color: COLORS.textSecondary,
+    },
+    content: { 
+        padding: SPACING.regular 
+    },
     gameConsole: { 
         flexDirection: 'row', 
-        gap: 20, 
-        marginBottom: 30,
-        borderRadius: 16,
+        gap: SPACING.regular, 
+        marginBottom: SPACING.xxlarge,
+        borderRadius: BORDER_RADIUS.xlarge,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     inputSide: { 
         flex: 1, 
-        borderRadius: 16, 
-        padding: 20,
+        borderRadius: BORDER_RADIUS.xlarge, 
+        padding: SPACING.regular,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     revealSide: { 
         flex: 1, 
-        borderRadius: 16, 
-        padding: 20, 
+        borderRadius: BORDER_RADIUS.xlarge, 
+        padding: SPACING.regular, 
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     sideTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        color: '#ffffff', 
-        fontSize: 22, 
-        marginBottom: 10,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.small,
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.medium,
     },
     sideDescription: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
-        fontSize: 14, 
-        marginBottom: 20,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.regular,
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 8,
-        borderRadius: 8,
+        padding: SPACING.small,
+        borderRadius: BORDER_RADIUS.medium,
     },
     bidInput: { 
         backgroundColor: 'transparent', 
         borderWidth: 2, 
         borderColor: 'rgba(219, 20, 124, 0.3)', 
-        borderRadius: 12,
-        padding: 15,
-        color: '#FFF',
-        fontSize: 16,
-        minHeight: 120,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular,
+        color: COLORS.textPrimary,
+        minHeight: SPACING.xxxlarge * 3,
         textAlignVertical: 'top',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
     },
     lockButton: { 
-        padding: 15, 
-        borderRadius: 12, 
-        alignItems: 'center', 
-        marginTop: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    gradientButton: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 12,
-        paddingVertical: 15,
-    },
-    lockButtonText: { 
-        fontFamily: 'BarbieDream-Regular', 
-        color: '#db147c', 
-        fontSize: 16, 
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
+        marginTop: SPACING.regular,
+        backgroundColor: COLORS.textPrimary,
     },
     perceptionLabel: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
-        textTransform: 'uppercase', 
-        letterSpacing: 3, 
-        marginBottom: 5,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.tiny,
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 8,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.micro,
+        borderRadius: BORDER_RADIUS.medium,
     },
     perceptionText: { 
-        fontFamily: 'WonderfulSometimes-Regular', 
-        color: '#ffffff', 
-        fontSize: 24, 
+        color: COLORS.textPrimary, 
         fontStyle: 'italic', 
-        marginBottom: 20,
+        marginBottom: SPACING.regular,
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 12,
-        borderRadius: 8,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.medium,
     },
     resultContainer: { 
-        borderRadius: 12, 
-        padding: 15, 
-        marginBottom: 20,
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular, 
+        marginBottom: SPACING.regular,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     resultLabel: { 
-        fontFamily: 'BarbieDream-Regular', 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         textAlign: 'center', 
-        fontSize: 14, 
-        textTransform: 'uppercase', 
-        marginBottom: 5,
+        marginBottom: SPACING.tiny,
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        padding: 4,
-        borderRadius: 8,
+        padding: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.medium,
     },
     explanationText: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
-        fontSize: 16, 
+        color: COLORS.textPrimary, 
         textAlign: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 8,
-        borderRadius: 8,
+        padding: SPACING.small,
+        borderRadius: BORDER_RADIUS.medium,
     },
     statsContainer: { 
         flexDirection: 'row', 
         justifyContent: 'space-around' 
     },
-    statText: {
-        color: '#ffffff',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 8,
-    },
     marcieContainer: { 
-        borderRadius: 16, 
-        padding: 20, 
         borderLeftWidth: 4, 
-        borderColor: '#ffffff',
+        borderColor: COLORS.textPrimary,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     marcieQuote: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
-        fontSize: 18, 
         fontStyle: 'italic', 
-        lineHeight: 26,
+        lineHeight: SPACING.xlarge,
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 12,
-        borderRadius: 8,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.medium,
     },
     marcieSignature: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
-        fontSize: 12, 
-        textTransform: 'uppercase', 
-        marginTop: 15, 
+        color: COLORS.textSecondary, 
+        marginTop: SPACING.regular, 
         textAlign: 'right',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 6,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.micro,
+        borderRadius: BORDER_RADIUS.small,
     }
 });
 

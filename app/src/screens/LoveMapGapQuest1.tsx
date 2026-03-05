@@ -1,79 +1,127 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout } from '../layout';
+import { Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
 const LoveMapGapQuest1Screen = () => {
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <LinearGradient colors={[COLORS.deepCosmicPurple, COLORS.midPurple]} style={styles.background} />
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                <Text style={styles.title}>DISCOVERY NEEDED: THE POTTERY VOID</Text>
-                <Text style={styles.subtitle}>PARTNER A: CRAFT A 'CURIOUS QUESTION' TO REVEAL THIS HIDDEN PASSION.</Text>
+                <Typography variant="header" style={styles.title}>DISCOVERY NEEDED: THE POTTERY VOID</Typography>
+                <Typography variant="body" style={styles.subtitle}>PARTNER A: CRAFT A 'CURIOUS QUESTION' TO REVEAL THIS HIDDEN PASSION.</Typography>
 
-                <View style={styles.mapContainer}>
+                <GlassCard style={styles.mapContainer} variant="default">
                     <View style={styles.crater}>
-                        <Text style={styles.craterText}>POTTERY CRATER</Text>
+                        <Typography variant="label" style={styles.craterText}>POTTERY CRATER</Typography>
                     </View>
 
                     <View style={styles.inputContainer}>
                         <TextInput
                             style={styles.input}
                             placeholder="TYPE YOUR CURIOUS QUESTION HERE..."
-                            placeholderTextColor="#D1C4E9"
+                            placeholderTextColor={COLORS.textSecondary}
                             multiline
                         />
-                        <TouchableOpacity style={styles.submitButton}>
-                            <Text style={styles.submitButtonText}>DEPLOY BRIDGE</Text>
-                        </TouchableOpacity>
+                        <SquishyButton variant="primary" size="medium" onPress={() => {}}>
+                            <Typography variant="button" color={COLORS.textPrimary}>DEPLOY BRIDGE</Typography>
+                        </SquishyButton>
                     </View>
-                </View>
+                </GlassCard>
 
-                <View style={styles.progressContainer}>
-                    <Text style={styles.progressTitle}>MAP PROGRESS</Text>
+                <GlassCard style={styles.progressContainer} variant="outlined">
+                    <Typography variant="label" style={styles.progressTitle}>MAP PROGRESS</Typography>
                     <View style={styles.progressBarContainer}>
-                        <LinearGradient colors={['#FF4081', '#E040FB']} start={{x:0, y:0}} end={{x:1, y:0}} style={styles.progressBar} />
+                        <LinearGradient colors={[COLORS.vibrantPink, COLORS.lavenderPurple]} start={{x:0, y:0}} end={{x:1, y:0}} style={styles.progressBar} />
                     </View>
-                    <Text style={styles.progressText}>2 OF 10 GAP QUEST JOURNEY</Text>
-                </View>
+                    <Typography variant="caption" style={styles.progressText}>2 OF 10 GAP QUEST JOURNEY</Typography>
+                </GlassCard>
 
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
     background: { ...StyleSheet.absoluteFillObject },
-    scrollContent: { padding: 24, alignItems: 'center' },
-    title: { fontSize: 32, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 8, textTransform: 'uppercase' },
-    subtitle: { color: '#D1C4E9', textAlign: 'center', marginBottom: 24, maxWidth: 300, textTransform: 'uppercase', fontWeight: 'bold' },
-    mapContainer: { width: '100%', minHeight: 400, backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', alignItems: 'center', justifyContent: 'center', padding: 16 },
+    scrollContent: { padding: SPACING.screenPadding, alignItems: 'center' },
+    title: { 
+        color: COLORS.textPrimary, 
+        textAlign: 'center', 
+        marginBottom: SPACING.small, 
+        textTransform: 'uppercase' 
+    },
+    subtitle: { 
+        color: COLORS.textSecondary, 
+        textAlign: 'center', 
+        marginBottom: SPACING.xlarge, 
+        maxWidth: 300, 
+        textTransform: 'uppercase', 
+        fontWeight: 'bold' 
+    },
+    mapContainer: { 
+        width: '100%', 
+        minHeight: 400, 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        padding: SPACING.regular 
+    },
     crater: {
         width: 150,
         height: 150,
-        borderRadius: 75,
-        backgroundColor: 'rgba(255, 64, 129, 0.2)',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: 'rgba(252, 12, 132, 0.2)',
         borderWidth: 2,
-        borderColor: '#E040FB',
+        borderColor: COLORS.lavenderPurple,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#E040FB',
-        shadowRadius: 20,
-        shadowOpacity: 1,
-        marginBottom: 24
+        ...SHADOWS.neonSoft,
+        marginBottom: SPACING.xlarge
     },
-    craterText: { color: '#FF4081', fontWeight: 'bold', textTransform: 'uppercase' },
-    inputContainer: { width: '100%', backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: 16, borderColor: '#FF4081', borderWidth: 1 },
-    input: { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 8, padding: 16, color: '#FFF', minHeight: 100, marginBottom: 16, textAlignVertical: 'top', fontWeight: 'bold', textTransform: 'uppercase' },
-    submitButton: { backgroundColor: '#FF4081', padding: 16, borderRadius: 8, alignItems: 'center' },
-    submitButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' },
-    progressContainer: { marginTop: 24, width: '100%', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12, padding: 16, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    progressTitle: { color: '#FFF', fontWeight: 'bold', marginBottom: 8, textTransform: 'uppercase' },
-    progressBarContainer: { height: 12, backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 6, overflow: 'hidden' },
-    progressBar: { width: '20%', height: '100%', borderRadius: 6 },
-    progressText: { color: '#D1C4E9', fontSize: 10, textTransform: 'uppercase', marginTop: 8, fontWeight: 'bold' }
+    craterText: { color: COLORS.vibrantPink },
+    inputContainer: { 
+        width: '100%', 
+        backgroundColor: 'rgba(0,0,0,0.3)', 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular, 
+        borderColor: COLORS.vibrantPink, 
+        borderWidth: 1 
+    },
+    input: { 
+        backgroundColor: 'rgba(0,0,0,0.3)', 
+        borderRadius: BORDER_RADIUS.medium, 
+        padding: SPACING.regular, 
+        color: COLORS.textPrimary, 
+        minHeight: 100, 
+        marginBottom: SPACING.regular, 
+        textAlignVertical: 'top', 
+        fontWeight: 'bold', 
+        textTransform: 'uppercase' 
+    },
+    progressContainer: { 
+        marginTop: SPACING.xlarge, 
+        width: '100%',
+    },
+    progressTitle: { 
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.small,
+    },
+    progressBarContainer: { 
+        height: 12, 
+        backgroundColor: 'rgba(0,0,0,0.3)', 
+        borderRadius: BORDER_RADIUS.large, 
+        overflow: 'hidden' 
+    },
+    progressBar: { width: '20%', height: '100%', borderRadius: BORDER_RADIUS.large },
+    progressText: { 
+        color: COLORS.textSecondary, 
+        textTransform: 'uppercase', 
+        marginTop: SPACING.small, 
+        fontWeight: 'bold' 
+    }
 });
 
 export default LoveMapGapQuest1Screen;

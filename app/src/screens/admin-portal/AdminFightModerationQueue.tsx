@@ -1,8 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, FlatList, Image } from 'react-native';
 import { collection, onSnapshot, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const AdminFightModerationQueue = () => {
   const [fights, setFights] = useState([]);
@@ -28,73 +31,80 @@ const AdminFightModerationQueue = () => {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.fightItem}>
-      <Text style={styles.fightInfo}>Couple ID: {item.couple_id}</Text>
-      <Text style={styles.fightInfo}>Status: {item.status}</Text>
-      <TouchableOpacity style={styles.button} onPress={() => resolveFight(item.id)}>
-        <Text style={styles.buttonText}>Resolve</Text>
-      </TouchableOpacity>
-    </View>
+    <GlassCard style={styles.fightItem} padding="medium">
+      <Typography variant="body" style={styles.fightInfo}>
+        Couple ID: {item.couple_id}
+      </Typography>
+      <Typography variant="body" style={styles.fightInfo}>
+        Status: {item.status}
+      </Typography>
+      <SquishyButton
+        onPress={() => resolveFight(item.id)}
+        accessibilityLabel="Resolve fight"
+        variant="primary"
+        size="small"
+        style={styles.button}
+      >
+        <Typography variant="button" color={COLORS.textPrimary}>
+          Resolve
+        </Typography>
+      </SquishyButton>
+    </GlassCard>
   );
 
   return (
-    <View style={styles.container}>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <View style={styles.container}>
         <View style={styles.header}>
-            <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+          <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
         </View>
-      <Text style={styles.title}>SOS Fight Queue</Text>
-      <FlatList
-        data={fights}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-    </View>
+        <Typography variant="h1" center style={styles.title}>
+          SOS Fight Queue
+        </Typography>
+        <FlatList
+          data={fights}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.listContent}
+        />
+      </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5C1459',
-    padding: 20,
+    backgroundColor: COLORS.healingHospital,
+    padding: SPACING.regular,
   },
-    header: {
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    logo: {
-        width: 150,
-        height: 50,
-        resizeMode: 'contain',
-    },
+  header: {
+    alignItems: 'center',
+    marginBottom: SPACING.large,
+  },
+  logo: {
+    width: 150,
+    height: 50,
+    resizeMode: 'contain',
+  },
   title: {
-    fontSize: 32,
     fontFamily: 'BarbieDream-Regular',
-    color: '#FA1F63',
-    marginBottom: 20,
-    textAlign: 'center',
+    color: COLORS.emotionalConnection,
+    marginBottom: SPACING.large,
+  },
+  listContent: {
+    paddingBottom: SPACING.xlarge,
   },
   fightItem: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 5,
-    marginBottom: 15,
+    marginBottom: SPACING.regular,
   },
   fightInfo: {
-    fontSize: 16,
     fontFamily: 'SweetPink-Regular',
-    color: '#000',
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.small,
   },
   button: {
-    backgroundColor: '#33DEA5',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    marginTop: SPACING.small,
   },
 });
 

@@ -1,106 +1,125 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
+import ScreenLayout from '../layout/ScreenLayout';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
-const ToolCard = ({ icon, title, description, color }) => (
-    <TouchableOpacity style={styles.toolCard}>
-        <Text style={{fontSize: 24, marginBottom: 8}}>{icon}</Text>
-        <Text style={styles.toolTitle}>{title}</Text>
-        <Text style={styles.toolDescription}>{description}</Text>
-    </TouchableOpacity>
+const ToolCard = ({ icon, title, description }) => (
+    <SquishyButton variant="ghost" style={styles.toolCard}>
+        <Typography style={{fontSize: TYPOGRAPHY.fontSize.headerLarge, marginBottom: SPACING.small}}>{icon}</Typography>
+        <Typography variant="h4" style={styles.toolTitle}>{title}</Typography>
+        <Typography variant="caption" color={COLORS.textSecondary} style={styles.toolDescription}>{description}</Typography>
+    </SquishyButton>
 );
 
 const TheHarborAndStormGuide = () => {
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    <View style={styles.header}>
-                        <Text style={styles.headerTitle}>NAVIGATE YOUR CONNECTION</Text>
-                        <Text style={styles.headerSubtitle}>DR. MARCIE LISS IS HERE TO GUIDE YOUR JOURNEY.</Text>
+        <ScreenLayout scrollable={true} showHeader={false}>
+            <View style={styles.header}>
+                <Typography variant="h1" center>NAVIGATE YOUR CONNECTION</Typography>
+                <Typography variant="label" center color={COLORS.textSecondary} style={styles.headerSubtitle}>
+                    DR. MARCIE LISS IS HERE TO GUIDE YOUR JOURNEY.
+                </Typography>
+            </View>
+
+            <View style={styles.dashboardContainer}>
+                {/* The Storm Section */}
+                <GlassCard style={[styles.section, styles.stormSection]}>
+                    <View style={styles.sectionHeader}>
+                        <Typography style={{fontSize: TYPOGRAPHY.fontSize.displaySmall}}>⚡️</Typography>
+                        <Typography variant="h2" style={styles.sectionTitle}>THE STORM</Typography>
                     </View>
+                    <ToolCard icon="⏱️" title="THE 5-MINUTE PAUSE" description="Instant de-escalation protocol." />
+                    <ToolCard icon="🗺️" title="CONFLICT MAPPING" description="Identify argument patterns." />
+                </GlassCard>
 
-                    <View style={styles.dashboardContainer}>
-                        {/* The Storm Section */}
-                        <View style={[styles.section, styles.stormSection]}>
-                            <View style={styles.sectionHeader}>
-                                <Text style={{fontSize: 32}}>⚡️</Text>
-                                <Text style={styles.sectionTitle}>THE STORM</Text>
-                            </View>
-                            <ToolCard icon="⏱️" title="THE 5-MINUTE PAUSE" description="Instant de-escalation protocol." />
-                            <ToolCard icon="🗺️" title="CONFLICT MAPPING" description="Identify argument patterns." />
-                        </View>
-
-                        {/* The Harbor Section */}
-                        <View style={[styles.section, styles.harborSection]}>
-                            <View style={styles.sectionHeader}>
-                                <Text style={{fontSize: 32}}>⚓</Text>
-                                <Text style={styles.sectionTitle}>THE HARBOR</Text>
-                            </View>
-                            <ToolCard icon="👁️" title="EYE-CONTACT MEDITATION" description="2-minute grounding exercise." />
-                            <ToolCard icon="💖" title="APPRECIATION ANCHOR" description="Log your gratitude." />
-                        </View>
+                {/* The Harbor Section */}
+                <GlassCard style={[styles.section, styles.harborSection]}>
+                    <View style={styles.sectionHeader}>
+                        <Typography style={{fontSize: TYPOGRAPHY.fontSize.displaySmall}}>⚓</Typography>
+                        <Typography variant="h2" style={styles.sectionTitle}>THE HARBOR</Typography>
                     </View>
+                    <ToolCard icon="👁️" title="EYE-CONTACT MEDITATION" description="2-minute grounding exercise." />
+                    <ToolCard icon="💖" title="APPRECIATION ANCHOR" description="Log your gratitude." />
+                </GlassCard>
+            </View>
 
-                    <View style={styles.signalFlareContainer}>
-                        <TouchableOpacity style={styles.signalFlareButton}>
-                            <Text style={{fontSize: 40}}>🚨</Text>
-                        </TouchableOpacity>
-                        <Text style={styles.signalFlareText}>SIGNAL FLARE</Text>
-                    </View>
-
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+            <View style={styles.signalFlareContainer}>
+                <SquishyButton 
+                    onPress={() => {}}
+                    style={styles.signalFlareButton}
+                >
+                    <Typography style={{fontSize: TYPOGRAPHY.fontSize.displayLarge}}>🚨</Typography>
+                </SquishyButton>
+                <Typography variant="label" color={COLORS.vibrantPink} style={styles.signalFlareText}>SIGNAL FLARE</Typography>
+            </View>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#2A002A' },
-    container: { flex: 1 },
-    scrollContent: { padding: 24 },
-    header: { marginBottom: 24 },
-    headerTitle: { fontSize: 36, fontWeight: 'bold', color: '#fff', textAlign: 'center', textTransform: 'uppercase' },
-    headerSubtitle: { fontSize: 16, color: '#D1C4E9', textAlign: 'center', marginTop: 8, fontWeight: 'bold', textTransform: 'uppercase' },
-    dashboardContainer: { flexDirection: 'row', justifyContent: 'space-around', gap: 16 },
+    header: { 
+        marginBottom: SPACING.xlarge 
+    },
+    headerSubtitle: { 
+        marginTop: SPACING.small,
+        textTransform: 'uppercase',
+    },
+    dashboardContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        gap: SPACING.regular 
+    },
     section: {
         flex: 1,
-        padding: 16,
-        borderRadius: 24,
-        borderWidth: 1,
+        padding: SPACING.regular,
     },
     stormSection: {
-        backgroundColor: 'rgba(255, 145, 0, 0.2)',
-        borderColor: 'rgba(255, 145, 0, 0.5)',
+        backgroundColor: `${COLORS.peachOrange}20`,
+        borderColor: `${COLORS.peachOrange}80`,
     },
     harborSection: {
-        backgroundColor: 'rgba(0, 255, 255, 0.2)',
-        borderColor: 'rgba(0, 255, 255, 0.5)',
+        backgroundColor: `${COLORS.info}20`,
+        borderColor: `${COLORS.info}80`,
     },
-    sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 },
-    sectionTitle: { fontSize: 22, fontWeight: 'bold', color: '#fff', textTransform: 'uppercase' },
+    sectionHeader: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        gap: SPACING.small, 
+        marginBottom: SPACING.regular 
+    },
+    sectionTitle: { 
+        textTransform: 'uppercase' 
+    },
     toolCard: {
-        backgroundColor: 'rgba(0,0,0,0.3)',
-        padding: 12,
-        borderRadius: 16,
-        marginBottom: 12,
+        backgroundColor: `${COLORS.backgroundPrimary}40`,
+        padding: SPACING.medium,
+        marginBottom: SPACING.regular,
+        borderRadius: BORDER_RADIUS.large,
     },
-    toolTitle: { fontSize: 16, fontWeight: 'bold', color: '#fff', textTransform: 'uppercase' },
-    toolDescription: { fontSize: 12, color: '#D1C4E9', marginTop: 4 },
-    signalFlareContainer: { alignItems: 'center', marginVertical: 40 },
+    toolTitle: { 
+        textTransform: 'uppercase' 
+    },
+    toolDescription: { 
+        marginTop: SPACING.tiny 
+    },
+    signalFlareContainer: { 
+        alignItems: 'center', 
+        marginVertical: SPACING.xxxlarge 
+    },
     signalFlareButton: {
         width: 80,
         height: 80,
-        borderRadius: 40,
-        backgroundColor: '#FF4081',
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowColor: '#FF4081',
-        shadowRadius: 15,
-        shadowOpacity: 0.7,
+        borderRadius: BORDER_RADIUS.round,
+        ...SHADOWS.neon,
     },
-    signalFlareText: { color: '#FF4081', fontWeight: 'bold', marginTop: 12, textTransform: 'uppercase' },
+    signalFlareText: { 
+        marginTop: SPACING.regular,
+        textTransform: 'uppercase' 
+    },
 });
 
 export default TheHarborAndStormGuide;

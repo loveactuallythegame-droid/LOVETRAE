@@ -1,6 +1,9 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, TextInput, StyleSheet, ScrollView } from 'react-native';
+import ScreenLayout from '../../layout/ScreenLayout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const luminousPersona = {
   id: '1',
@@ -24,40 +27,50 @@ const AdminPromptEngineeringConsole = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.sidebar}>
-        <Text style={styles.sidebarTitle}>Personas</Text>
-        <ScrollView>
-          {personas.map((persona) => (
-            <TouchableOpacity key={persona.id} onPress={() => setSelectedPersona(persona)}>
-              <Text style={styles.personaItem}>{persona.name}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-      <View style={styles.mainContent}>
-        <Text style={styles.title}>Prompt Engineering Console</Text>
-        <TextInput
-          style={styles.promptEditor}
-          value={prompt}
-          onChangeText={setPrompt}
-          multiline
-        />
-        <View style={styles.testPanel}>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <View style={styles.container}>
+        <GlassCard style={styles.sidebar} variant="elevated" padding="medium">
+          <Typography variant="h2" style={styles.sidebarTitle}>Personas</Typography>
+          <ScrollView>
+            {personas.map((persona) => (
+              <SquishyButton
+                key={persona.id}
+                variant="ghost"
+                size="small"
+                onPress={() => setSelectedPersona(persona)}
+                style={styles.personaButton}
+              >
+                <Typography variant="body" style={styles.personaItem}>{persona.name}</Typography>
+              </SquishyButton>
+            ))}
+          </ScrollView>
+        </GlassCard>
+        <View style={styles.mainContent}>
+          <Typography variant="h1" style={styles.title}>Prompt Engineering Console</Typography>
           <TextInput
-            style={styles.testInput}
-            placeholder="Test user input..."
-            placeholderTextColor="#999"
-            value={testInput}
-            onChangeText={setTestInput}
+            style={styles.promptEditor}
+            value={prompt}
+            onChangeText={setPrompt}
+            multiline
           />
-          <TouchableOpacity style={styles.testButton} onPress={handleTestPrompt}>
-            <Text style={styles.testButtonText}>Test Prompt</Text>
-          </TouchableOpacity>
-          <Text style={styles.testOutput}>{testOutput}</Text>
+          <GlassCard style={styles.testPanel} variant="elevated" padding="medium">
+            <TextInput
+              style={styles.testInput}
+              placeholder="Test user input..."
+              placeholderTextColor={COLORS.textHint}
+              value={testInput}
+              onChangeText={setTestInput}
+            />
+            <SquishyButton onPress={handleTestPrompt} style={styles.testButton}>
+              <Typography variant="button" color={COLORS.textPrimary}>Test Prompt</Typography>
+            </SquishyButton>
+            <GlassCard style={styles.testOutputContainer} variant="outlined" padding="small">
+              <Typography variant="body" color={COLORS.textPrimary}>{testOutput}</Typography>
+            </GlassCard>
+          </GlassCard>
         </View>
       </View>
-    </View>
+    </ScreenLayout>
   );
 };
 
@@ -65,74 +78,54 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#5C1459',
   },
   sidebar: {
     width: 200,
-    backgroundColor: '#4A1049',
-    padding: 20,
+    marginRight: SPACING.regular,
   },
   sidebarTitle: {
-    fontSize: 24,
-    fontFamily: 'BarbieDream-Regular',
-    color: '#FA1F63',
-    marginBottom: 20,
+    marginBottom: SPACING.regular,
+  },
+  personaButton: {
+    marginBottom: SPACING.tiny,
   },
   personaItem: {
-    fontSize: 18,
-    fontFamily: 'SweetPink-Regular',
-    color: '#fff',
-    paddingVertical: 10,
+    paddingVertical: SPACING.small,
   },
   mainContent: {
     flex: 1,
-    padding: 20,
   },
   title: {
-    fontSize: 32,
-    fontFamily: 'BarbieDream-Regular',
-    color: '#FA1F63',
-    marginBottom: 20,
+    marginBottom: SPACING.regular,
   },
   promptEditor: {
     flex: 1,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 20,
-    color: '#000',
-    fontFamily: 'Cheese-Regular',
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.medium,
+    padding: SPACING.regular,
+    marginBottom: SPACING.regular,
+    color: COLORS.textPrimary,
     textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
   testPanel: {
     flex: 1,
   },
   testInput: {
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-    color: '#000',
-    fontFamily: 'Cheese-Regular',
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.medium,
+    padding: SPACING.regular,
+    marginBottom: SPACING.regular,
+    color: COLORS.textPrimary,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
   testButton: {
-    backgroundColor: '#33DEA5',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: SPACING.regular,
   },
-  testButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  testOutput: {
-    backgroundColor: '#eee',
-    borderRadius: 5,
-    padding: 10,
+  testOutputContainer: {
     flex: 1,
-    color: '#000',
-    fontFamily: 'Cheese-Regular',
   },
 });
 

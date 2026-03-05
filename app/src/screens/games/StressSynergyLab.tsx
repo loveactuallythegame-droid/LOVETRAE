@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const STRESSORS = ["Work Deadlines", "Money", "Family Drama", "Health", "Chores", "Sleep"];
 
@@ -25,47 +26,53 @@ export default function StressSynergyLab({ route, navigation }: any) {
     Alert.alert("Lab Results", rx, [{ text: "Apply Treatment", onPress: () => navigation.goBack() }]);
   }
 
-  const inputArea = (
-    <View style={{ gap: 12 }}>
-      <GlassCard>
-        <Text variant="header">Analyze Stressors</Text>
-        <Text variant="body">What is weighing on you today?</Text>
-        <View style={styles.grid}>
-          {STRESSORS.map((s) => (
-            <SquishyButton
-              key={s}
-              onPress={() => toggle(s)}
-              style={[styles.item, selected.includes(s) ? styles.active : {}]}
-            >
-              <Text variant="body" style={{ color: selected.includes(s) ? '#000' : '#fff' }}>{s}</Text>
-            </SquishyButton>
-          ))}
-        </View>
-        <SquishyButton onPress={submit} style={styles.btn}>
-            <Text variant="header">Synthesize Plan</Text>
-        </SquishyButton>
-      </GlassCard>
-    </View>
+  return (
+    <ScreenLayout showHeader={true} scrollable={true}>
+      <View style={{ gap: SPACING.regular }}>
+        <Typography variant="h1" center>The Love Arcade</Typography>
+        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
+
+        <GlassCard>
+          <Typography variant="h2">Analyze Stressors</Typography>
+          <Typography variant="body">What is weighing on you today?</Typography>
+          <View style={styles.grid}>
+            {STRESSORS.map((s) => (
+              <SquishyButton
+                key={s}
+                onPress={() => toggle(s)}
+                variant={selected.includes(s) ? 'primary' : 'ghost'}
+                style={styles.item}
+              >
+                <Typography 
+                  variant="body" 
+                  color={selected.includes(s) ? COLORS.deepCosmic : COLORS.textPrimary}
+                >
+                  {s}
+                </Typography>
+              </SquishyButton>
+            ))}
+          </View>
+          <SquishyButton onPress={submit} style={styles.btn}>
+            <Typography variant="h2">Synthesize Plan</Typography>
+          </SquishyButton>
+        </GlassCard>
+      </View>
+    </ScreenLayout>
   );
-
-  const baseState = useMemo(() => ({
-    id: gameId,
-    title: 'Stress Synergy Lab',
-    description: 'Coordinate stress management',
-    category: 'emotional' as const,
-    difficulty: 'medium' as const,
-    xpReward: 250,
-    currentStep: 0,
-    totalTime: 60,
-    playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
-  }), [gameId]);
-
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => submit()} />;
 }
 
 const styles = StyleSheet.create({
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
-  item: { padding: 12, borderRadius: 20, borderWidth: 1, borderColor: '#fff' },
-  active: { backgroundColor: '#E4E831', borderColor: '#E4E831' },
-  btn: { marginTop: 16, backgroundColor: '#FA1F63', padding: 16, borderRadius: 12, alignItems: 'center' },
+  grid: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    gap: SPACING.small, 
+    marginTop: SPACING.regular 
+  },
+  item: { 
+    flex: 1,
+    minWidth: '45%',
+  },
+  btn: { 
+    marginTop: SPACING.regular 
+  },
 });

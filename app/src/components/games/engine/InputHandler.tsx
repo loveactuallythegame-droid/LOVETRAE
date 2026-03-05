@@ -89,9 +89,9 @@ export default function InputHandler({ type, value, onChange, onVoiceData }: Pro
 }
 
 const styles = StyleSheet.create({
-  input: { backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 10, color: '#fff' },
-  btn: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: '#5C1459', borderRadius: 10 },
-  slider: { height: 24, backgroundColor: '#120016', borderRadius: 12, overflow: 'hidden', marginTop: 8 },
-  knob: { position: 'absolute', width: 24, height: 24, borderRadius: 12, backgroundColor: '#FA1F63' },
+  input: { backgroundColor: 'rgba(26, 10, 31, 1)', borderWidth: 1, borderColor: 'rgba(252, 12, 132, 0.2)', borderRadius: 10, padding: 10, color: 'rgba(255, 255, 255, 1)' },
+  btn: { paddingHorizontal: 12, paddingVertical: 8 },
+  slider: { height: 24, backgroundColor: 'rgba(18, 0, 22, 1)', borderRadius: 12, overflow: 'hidden', marginTop: 8 },
+  knob: { position: 'absolute', width: 24, height: 24, borderRadius: 12, backgroundColor: 'rgba(252, 12, 132, 1)' },
 });
 

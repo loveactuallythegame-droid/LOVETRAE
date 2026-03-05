@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { GlassCard, Typography, ScreenLayout } from '../../components/ui';
 import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
-import { Header } from '../../components/ui/Header';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 const VibeSyncScreen = () => {
   const [syncProgress, setSyncProgress] = useState(new Animated.Value(0));
@@ -13,7 +12,7 @@ const VibeSyncScreen = () => {
     // Animate the sync progress
     Animated.timing(syncProgress, {
       toValue: 100,
-      duration: 2000,
+      duration: ANIMATIONS.duration.slower * 3, // 2100ms, close to original 2000ms
       useNativeDriver: false, // Cannot use native driver for color interpolation
     }).start();
   }, []);
@@ -30,16 +29,14 @@ const VibeSyncScreen = () => {
 
   const syncColor = syncProgress.interpolate({
       inputRange: [0, 50, 100],
-      outputRange: ['#FA1F63', '#FACC15', '#33DEA5']
+      outputRange: [COLORS.emotionalConnection, COLORS.warning, COLORS.success]
   })
 
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#1a0a1a', '#5C1459']} style={styles.background} />
-      <Header title="Vibe Sync" />
+    <ScreenLayout showHeader={true} scrollable={false}>
       <View style={styles.content}>
-        <Text style={styles.title}>Synchronize Your Vibes</Text>
-        <Text style={styles.instruction}>Tap and hold when you feel the connection</Text>
+        <Typography variant="h1" center>Synchronize Your Vibes</Typography>
+        <Typography variant="body" center style={{ marginBottom: SPACING.xxlarge }}>Tap and hold when you feel the connection</Typography>
 
         <View style={styles.syncContainer}>
           <Animated.View style={[styles.ring, { transform: [{ rotate: ring1Rotation }] }]} />
@@ -51,36 +48,29 @@ const VibeSyncScreen = () => {
         </View>
 
         <View style={styles.playerTagsContainer}>
-            <Text style={styles.playerTag}>You</Text>
-            <Text style={styles.playerTag}>Partner</Text>
+            <View style={styles.playerTag}>
+              <Typography variant="caption">You</Typography>
+            </View>
+            <View style={styles.playerTag}>
+              <Typography variant="caption">Partner</Typography>
+            </View>
         </View>
       </View>
       <GlobalMarcieOverlay quote="Feel the rhythm? That's your connection strengthening."/>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#1a0a1a' },
-  background: { ...StyleSheet.absoluteFillObject },
-  content: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 },
-  title: {
-    fontFamily: 'BarbieDream-Regular',
-    color: '#FFF',
-    fontSize: 40,
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  instruction: {
-    fontFamily: 'HolidayChristmas-Regular',
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 60,
+  content: { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    padding: SPACING.screenPadding 
   },
   syncContainer: {
-    width: 300,
-    height: 300,
+    width: '80%',
+    aspectRatio: 1,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
@@ -89,39 +79,36 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    borderRadius: 150,
+    borderRadius: BORDER_RADIUS.round,
     borderWidth: 5,
-    borderColor: '#FA1F63',
+    borderColor: COLORS.emotionalConnection,
     borderTopColor: 'transparent',
-    borderBottomColor: '#33DEA5',
+    borderBottomColor: COLORS.success,
   },
   ring2: {
       width: '80%',
       height: '80%',
-      borderRadius: 120,
-      borderColor: '#33DEA5',
-      borderTopColor: '#FA1F63',
+      borderRadius: BORDER_RADIUS.round,
+      borderColor: COLORS.success,
+      borderTopColor: COLORS.emotionalConnection,
       borderBottomColor: 'transparent',
   },
   syncPercentage: {
-    fontFamily: 'WonderfulSometimes-Regular',
-    fontSize: 72,
+    fontFamily: TYPOGRAPHY.fontFamily.bold,
+    fontSize: TYPOGRAPHY.fontSize.displayLarge * 2.25,
   },
   playerTagsContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       width: '100%',
-      paddingHorizontal: 40,
-      marginTop: 60,
+      paddingHorizontal: SPACING.xlarge,
+      marginTop: SPACING.xxlarge,
   },
   playerTag: {
-      fontFamily: 'SweetPink-Regular',
-      fontSize: 16,
-      color: '#FFF',
-      backgroundColor: 'rgba(255,255,255,0.1)',
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      borderRadius: 20,
+      backgroundColor: COLORS.backgroundInput,
+      paddingHorizontal: SPACING.xlarge,
+      paddingVertical: SPACING.small,
+      borderRadius: BORDER_RADIUS.xlarge,
   }
 });
 

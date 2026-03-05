@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import Slider from '@react-native-community/slider'; // Example slider component
-import { Header } from '../../components/ui/Header';
+import Slider from '@react-native-community/slider';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 const ApologyAuctionGameScreen = () => {
     const [partnerARating, setPartnerARating] = useState(42);
@@ -13,7 +14,7 @@ const ApologyAuctionGameScreen = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#13070c', '#2e1021']} style={styles.background} />
+            <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.deepCosmic]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
             <View style={styles.drMarcieSection}>
@@ -21,29 +22,30 @@ const ApologyAuctionGameScreen = () => {
                     <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                 </View>
                 <View style={styles.quoteBox}>
-                    <Text style={styles.quoteText}>Evaluate apologies based on authenticity! Genuine remorse is the key to healing.</Text>
+                    <Typography variant="body">Evaluate apologies based on authenticity! Genuine remorse is the key to healing.</Typography>
                 </View>
             </View>
             
-            <Header title="Apology Auction" />
+            <Typography variant="h1" center style={styles.title}>Apology Auction</Typography>
+            
             <View style={styles.content}>
                 <LinearGradient
-                    colors={['#db147c', '#f05d68']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
+                    colors={GRADIENTS.primary.colors}
+                    start={GRADIENTS.primary.start}
+                    end={GRADIENTS.primary.end}
                     style={styles.auctionItemContainer}
                 >
-                    <Text style={styles.auctionItemText}>"{auctionItem}"</Text>
+                    <Typography variant="h2" center>"{auctionItem}"</Typography>
                 </LinearGradient>
 
                 <View style={styles.biddingContainer}>
                     <LinearGradient
-                        colors={['#a22ac4', '#9056ef']}
+                        colors={[COLORS.lavenderPurple, COLORS.softViolet]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.sliderContainer}
                     >
-                        <Text style={styles.partnerLabel}>Partner A</Text>
+                        <Typography variant="caption" style={styles.partnerLabel}>Partner A</Typography>
                         <Slider
                             style={{width: '100%', height: 40}}
                             minimumValue={0}
@@ -51,19 +53,19 @@ const ApologyAuctionGameScreen = () => {
                             step={1}
                             value={partnerARating}
                             onValueChange={setPartnerARating}
-                            minimumTrackTintColor="#ffffff"
-                            maximumTrackTintColor="rgba(255, 255, 255, 0.1)"
-                            thumbTintColor="#db147c"
+                            minimumTrackTintColor={COLORS.textPrimary}
+                            maximumTrackTintColor={COLORS.borderSubtle}
+                            thumbTintColor={COLORS.vibrantPink}
                         />
-                        <Text style={styles.ratingText}>{partnerARating}%</Text>
+                        <Typography variant="caption" style={styles.ratingText}>{partnerARating}%</Typography>
                     </LinearGradient>
                     <LinearGradient
-                        colors={['#37cf97', '#b37dec']}
+                        colors={[COLORS.mintGreen, COLORS.softViolet]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.sliderContainer}
                     >
-                        <Text style={styles.partnerLabel}>Partner B</Text>
+                        <Typography variant="caption" style={styles.partnerLabel}>Partner B</Typography>
                         <Slider
                             style={{width: '100%', height: 40}}
                             minimumValue={0}
@@ -71,189 +73,134 @@ const ApologyAuctionGameScreen = () => {
                             step={1}
                             value={partnerBRating}
                             onValueChange={setPartnerBRating}
-                            minimumTrackTintColor="#ffffff"
-                            maximumTrackTintColor="rgba(255, 255, 255, 0.1)"
-                            thumbTintColor="#db147c"
+                            minimumTrackTintColor={COLORS.textPrimary}
+                            maximumTrackTintColor={COLORS.borderSubtle}
+                            thumbTintColor={COLORS.vibrantPink}
                         />
-                        <Text style={styles.ratingText}>{partnerBRating}%</Text>
+                        <Typography variant="caption" style={styles.ratingText}>{partnerBRating}%</Typography>
                     </LinearGradient>
                 </View>
 
                 <LinearGradient
-                    colors={['#ff7600', '#ffef1f']}
+                    colors={[COLORS.warmOrange, COLORS.brightYellow]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     style={styles.hostContainer}
                 >
-                    <Text style={styles.hostQuote}>"That apology smells like week-old fish."</Text>
-                    <Text style={styles.hostName}>Dr. Marcie Liss</Text>
+                    <Typography variant="body" style={styles.hostQuote}>"That apology smells like week-old fish."</Typography>
+                    <Typography variant="caption">Dr. Marcie Liss</Typography>
                 </LinearGradient>
 
-                 <TouchableOpacity style={styles.nextButton}>
-                    <LinearGradient
-                        colors={['#db147c', '#f05d68']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.gradientButton}
-                    >
-                        <Text style={styles.nextButtonText}>Next Auction</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
+                <SquishyButton onPress={() => {}} style={styles.nextButton}>
+                    <Typography variant="button" style={{ color: COLORS.textPrimary }}>Next Auction</Typography>
+                </SquishyButton>
             </View>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#13070c' },
-    background: { ...StyleSheet.absoluteFillObject },
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
+    },
+    background: { 
+        ...StyleSheet.absoluteFillObject 
+    },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        margin: SPACING.regular,
+        marginBottom: SPACING.small
     },
     avatarContainer: {
         width: 50,
         height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular
     },
     avatar: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: BORDER_RADIUS.round,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+    title: {
+        marginVertical: SPACING.regular,
     },
-    content: { flex: 1, padding: 20, justifyContent: 'space-around' },
+    content: { 
+        flex: 1, 
+        padding: SPACING.regular, 
+        justifyContent: 'space-around' 
+    },
     auctionItemContainer: {
-        padding: 40,
-        borderRadius: 30,
+        padding: SPACING.xlarge,
+        borderRadius: BORDER_RADIUS.xxlarge,
         alignItems: 'center',
-        marginBottom: 20,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        marginBottom: SPACING.regular,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
-    auctionItemText: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 32, 
-        color: '#ffffff', 
-        textAlign: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 20,
+    biddingContainer: { 
+        marginBottom: SPACING.regular 
     },
-    biddingContainer: { marginBottom: 20 },
     sliderContainer: {
-        padding: 20,
-        borderRadius: 20,
-        marginBottom: 15,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.xlarge,
+        marginBottom: SPACING.regular,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     partnerLabel: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 16, 
-        color: '#ffffff', 
-        marginBottom: 10,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.small,
+        backgroundColor: COLORS.backgroundInput,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.medium,
+        alignSelf: 'flex-start',
     },
     ratingText: { 
-        fontFamily: 'WonderfulSometimes-Regular', 
-        fontSize: 18, 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         textAlign: 'right',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 2,
-        borderRadius: 10,
+        backgroundColor: COLORS.backgroundInput,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.medium,
+        alignSelf: 'flex-end',
     },
     hostContainer: {
-        padding: 20,
-        borderRadius: 20,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.xlarge,
         alignItems: 'center',
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     hostQuote: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontStyle: 'italic', 
-        fontSize: 18, 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         textAlign: 'center', 
-        marginBottom: 10,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 12,
-        borderRadius: 12,
-    },
-    hostName: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 16, 
-        color: '#ffffff',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        marginBottom: SPACING.small,
+        backgroundColor: COLORS.backgroundInput,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.large,
     },
     nextButton: {
-        padding: 20,
-        borderRadius: 15,
-        alignItems: 'center',
-        marginTop: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    gradientButton: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 15,
-    },
-    nextButtonText: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 18, 
-        color: '#ffffff', 
-        textTransform: 'uppercase',
-        fontWeight: 'bold',
+        marginTop: SPACING.regular,
     },
 });
 

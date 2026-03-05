@@ -1,9 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, FlatList, StyleSheet, Image } from 'react-native';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const AdminGameCMSListView = () => {
   const [games, setGames] = useState([]);
@@ -19,62 +22,67 @@ const AdminGameCMSListView = () => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('AdminGameEditor', { game: item })}>
-        <View style={styles.gameItem}>
-            <Text style={styles.gameTitle}>{item.title}</Text>
-        </View>
-    </TouchableOpacity>
+    <GlassCard
+      onPress={() => navigation.navigate('AdminGameEditor', { game: item })}
+      padding="medium"
+      style={styles.gameItem}
+    >
+      <Typography variant="h4" style={styles.gameTitle}>
+        {item.title}
+      </Typography>
+    </GlassCard>
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+        </View>
+        <Typography variant="h1" center style={styles.title}>
+          Game CMS
+        </Typography>
+        <FlatList
+          data={games}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.listContent}
+        />
       </View>
-      <Text style={styles.title}>Game CMS</Text>
-      <FlatList
-        data={games}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-    </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#5C1459',
-        padding: 20,
-    },
-    header: {
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    logo: {
-        width: 150,
-        height: 50,
-        resizeMode: 'contain',
-    },
-    title: {
-        fontSize: 32,
-        fontFamily: 'BarbieDream-Regular',
-        color: '#FA1F63',
-        marginBottom: 20,
-        textAlign: 'center',
-    },
-    gameItem: {
-        backgroundColor: '#fff',
-        padding: 20,
-        borderRadius: 5,
-        marginBottom: 15,
-    },
-    gameTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        fontFamily: 'SweetPink-Regular',
-        color: '#000',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.healingHospital,
+    padding: SPACING.regular,
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: SPACING.large,
+  },
+  logo: {
+    width: 150,
+    height: 50,
+    resizeMode: 'contain',
+  },
+  title: {
+    fontFamily: 'BarbieDream-Regular',
+    color: COLORS.emotionalConnection,
+    marginBottom: SPACING.large,
+  },
+  listContent: {
+    paddingBottom: SPACING.xlarge,
+  },
+  gameItem: {
+    marginBottom: SPACING.regular,
+  },
+  gameTitle: {
+    fontFamily: 'SweetPink-Regular',
+    color: COLORS.textPrimary,
+  },
 });
 
 export default AdminGameCMSListView;

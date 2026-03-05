@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Modal, View, StyleSheet, TextInput, Pressable, Platform } from 'react-native';
+import { Modal, View, StyleSheet, TextInput, Platform } from 'react-native';
 import { Text, SquishyButton } from '../ui';
 import { supabase } from '../../lib/supabase';
 import { navigationRef } from '../../lib/navigation';
 import { ENV } from '../../lib/env';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function FeedbackFab() {
   const [open, setOpen] = useState(false);
@@ -24,12 +25,12 @@ export default function FeedbackFab() {
   }
   return (
     <>
-      <Pressable onPress={() => setOpen(true)} style={styles.fab}><Text variant="header">✍️</Text></Pressable>
+      <SquishyButton onPress={() => setOpen(true)} style={styles.fab}><Text variant="header">✍️</Text></SquishyButton>
       <Modal visible={open} transparent animationType="slide" onRequestClose={() => setOpen(false)}>
         <View style={styles.backdrop}>
           <View style={styles.card}>
             <Text variant="header">Beta Feedback</Text>
-            <TextInput multiline placeholder="What happened?" value={message} onChangeText={setMessage} style={styles.input} />
+            <TextInput multiline placeholder="What happened?" value={message} onChangeText={setMessage} style={styles.input} placeholderTextColor={COLORS.textHint} />
             <View style={styles.row}>
               {(['low','medium','high','critical'] as const).map((p) => (
                 <SquishyButton key={p} style={styles.btn} onPress={() => setPriority(p)}><Text variant="header">{p}</Text></SquishyButton>
@@ -47,10 +48,10 @@ export default function FeedbackFab() {
 }
 
 const styles = StyleSheet.create({
-  fab: { position: 'absolute', left: 20, bottom: 20, zIndex: 1001, paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#33DEA5', borderRadius: 20 },
-  backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center' },
-  card: { width: '88%', backgroundColor: '#1a0a1f', borderRadius: 16, borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', padding: 16 },
-  input: { minHeight: 120, backgroundColor: '#0d0610', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 10, color: '#fff', marginTop: 8 },
-  row: { flexDirection: 'row', gap: 12, justifyContent: 'flex-end', marginTop: 12 },
-  btn: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: '#5C1459', borderRadius: 10 }
+  fab: { position: 'absolute', left: SPACING.large, bottom: SPACING.large, zIndex: 1001, paddingHorizontal: SPACING.regular, paddingVertical: SPACING.small, backgroundColor: COLORS.mintGreen, borderRadius: BORDER_RADIUS.xxlarge },
+  backdrop: { flex: 1, backgroundColor: 'rgba(15, 10, 12, 0.6)', alignItems: 'center', justifyContent: 'center' },
+  card: { width: '88%', backgroundColor: COLORS.backgroundSecondary, borderRadius: BORDER_RADIUS.xlarge, borderWidth: 1, borderColor: 'rgba(252, 12, 132, 0.2)', padding: SPACING.regular },
+  input: { minHeight: 120, backgroundColor: COLORS.backgroundPrimary, borderWidth: 1, borderColor: 'rgba(252, 12, 132, 0.2)', borderRadius: BORDER_RADIUS.medium, padding: SPACING.small, color: COLORS.textPrimary, marginTop: SPACING.small },
+  row: { flexDirection: 'row', gap: SPACING.medium, justifyContent: 'flex-end', marginTop: SPACING.medium },
+  btn: { paddingHorizontal: SPACING.medium, paddingVertical: SPACING.small, backgroundColor: COLORS.healingHospital, borderRadius: BORDER_RADIUS.medium }
 });

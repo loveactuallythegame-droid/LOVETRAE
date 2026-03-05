@@ -9,15 +9,18 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
 
 // Components
-import { GlassCard, Text } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+
+// Theme
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 // Game Constants
 const GAME_ID = 'family-forge';
@@ -205,179 +208,175 @@ const ChoppedFamily: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <View style={styles.container}>
-                <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                    <Text style={styles.loadingText}>Preparing the Kitchen...</Text>
-                </LinearGradient>
-            </View>
+            <ScreenLayout showHeader={false} scrollable={true}>
+                <SafeAreaView style={styles.container}>
+                    <Typography variant="h1" center style={styles.loadingText}>The Love Arcade</Typography>
+                    <Typography variant="body" center>Preparing the Kitchen...</Typography>
+                </SafeAreaView>
+            </ScreenLayout>
         );
     }
 
     return (
-        <View style={styles.container}>
-            <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={styles.scrollContent}>
+                    <Typography variant="h1" center style={styles.gameTitle}>The Love Arcade</Typography>
+                    <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
+
                     {/* Header */}
                     <View style={styles.header}>
-                        <Text style={styles.title}>Chopped: Family Forge</Text>
-                        <Text style={styles.subtitle}>Cook the perfect response</Text>
+                        <Typography variant="h2" center>Chopped: Family Forge</Typography>
+                        <Typography variant="body" center style={styles.subtitleText}>Cook the perfect response</Typography>
                         <View style={styles.scoreRow}>
-                            <Text style={styles.scoreText}>Score: {score}</Text>
-                            {isSyncing && <Text style={styles.syncText}>💾</Text>}
+                            <Typography variant="caption" style={styles.scoreText}>Score: {score}</Typography>
+                            {isSyncing && <Typography variant="caption">💾</Typography>}
                         </View>
-                        <Text style={styles.roundText}>
+                        <Typography variant="caption" center style={styles.roundText}>
                             Round {round + 1} of {BASKETS.length}
-                        </Text>
+                        </Typography>
                     </View>
 
                     {/* Basket Card */}
                     <GlassCard style={styles.basketCard}>
                         <View style={styles.basketHeader}>
-                            <Text style={styles.basketEmoji}>🧺</Text>
-                            <Text style={styles.basketName}>{currentBasket.name}</Text>
+                            <Typography variant="h2" style={styles.basketEmoji}>🧺</Typography>
+                            <Typography variant="h3">{currentBasket.name}</Typography>
                         </View>
-                        <Text style={styles.scenario}>{currentBasket.scenario}</Text>
+                        <Typography variant="body" style={styles.scenario}>{currentBasket.scenario}</Typography>
                     </GlassCard>
 
                     {/* Base Ingredients */}
-                    <Text style={styles.sectionTitle}>Base (Core Action):</Text>
+                    <Typography variant="label" style={styles.sectionTitle}>Base (Core Action):</Typography>
                     <View style={styles.ingredientsContainer}>
                         {currentBasket.baseIngredients.map((ingredient) => (
-                            <TouchableOpacity
+                            <SquishyButton
                                 key={`base-${ingredient.id}`}
+                                variant={baseChoice === ingredient.id ? 'primary' : 'secondary'}
+                                onPress={() => setBaseChoice(ingredient.id)}
                                 style={[
                                     styles.ingredientButton,
                                     baseChoice === ingredient.id && styles.selectedIngredient
                                 ]}
-                                onPress={() => setBaseChoice(ingredient.id)}
                             >
-                                <Text style={[
+                                <Typography variant="body" style={[
                                     styles.ingredientText,
                                     baseChoice === ingredient.id && styles.selectedText
                                 ]}>
                                     {ingredient.text}
-                                </Text>
-                                <Text style={styles.pointsText}>+{ingredient.points} pts</Text>
-                            </TouchableOpacity>
+                                </Typography>
+                                <Typography variant="caption" style={styles.pointsText}>+{ingredient.points} pts</Typography>
+                            </SquishyButton>
                         ))}
                     </View>
 
                     {/* Seasoning Ingredients */}
-                    <Text style={styles.sectionTitle}>Seasoning (Tone/Delivery):</Text>
+                    <Typography variant="label" style={styles.sectionTitle}>Seasoning (Tone/Delivery):</Typography>
                     <View style={styles.ingredientsContainer}>
                         {currentBasket.seasoningIngredients.map((ingredient) => (
-                            <TouchableOpacity
+                            <SquishyButton
                                 key={`season-${ingredient.id}`}
+                                variant={seasoningChoice === ingredient.id ? 'primary' : 'secondary'}
+                                onPress={() => setSeasoningChoice(ingredient.id)}
                                 style={[
                                     styles.ingredientButton,
                                     seasoningChoice === ingredient.id && styles.selectedSeasoning
                                 ]}
-                                onPress={() => setSeasoningChoice(ingredient.id)}
                             >
-                                <Text style={[
+                                <Typography variant="body" style={[
                                     styles.ingredientText,
                                     seasoningChoice === ingredient.id && styles.selectedText
                                 ]}>
                                     {ingredient.text}
-                                </Text>
-                                <Text style={styles.pointsText}>+{ingredient.points} pts</Text>
-                            </TouchableOpacity>
+                                </Typography>
+                                <Typography variant="caption" style={styles.pointsText}>+{ingredient.points} pts</Typography>
+                            </SquishyButton>
                         ))}
                     </View>
 
                     {/* Preview */}
                     {baseChoice && seasoningChoice && (
                         <GlassCard style={styles.previewCard}>
-                            <Text style={styles.previewTitle}>Your Dish Preview:</Text>
-                            <Text style={styles.previewText}>
+                            <Typography variant="label" style={styles.previewTitle}>Your Dish Preview:</Typography>
+                            <Typography variant="body" style={styles.previewText}>
                                 {currentBasket.baseIngredients.find(b => b.id === baseChoice)?.text}
-                            </Text>
-                            <Text style={styles.previewPlus}>+</Text>
-                            <Text style={styles.previewText}>
+                            </Typography>
+                            <Typography variant="h2" center style={styles.previewPlus}>+</Typography>
+                            <Typography variant="body" style={styles.previewText}>
                                 {currentBasket.seasoningIngredients.find(s => s.id === seasoningChoice)?.text}
-                            </Text>
-                            <Text style={styles.previewScore}>
+                            </Typography>
+                            <Typography variant="caption" center style={styles.previewScore}>
                                 Estimated: {calculateRoundScore()} points
-                            </Text>
+                            </Typography>
                         </GlassCard>
                     )}
 
                     {/* Submit Button */}
-                    <TouchableOpacity
-                        style={[styles.submitButton, (!baseChoice || !seasoningChoice) && styles.disabledButton]}
+                    <SquishyButton
                         onPress={submitDish}
                         disabled={!baseChoice || !seasoningChoice}
+                        style={[styles.submitButton, (!baseChoice || !seasoningChoice) && styles.disabledButton]}
                     >
-                        <Text style={styles.submitText}>
+                        <Typography variant="button" style={{ color: COLORS.textPrimary }}>
                             {round < BASKETS.length - 1 ? 'Plate the Dish' : 'Complete Service'}
-                        </Text>
-                    </TouchableOpacity>
+                        </Typography>
+                    </SquishyButton>
 
                     {/* Session Info */}
                     {session && (
-                        <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
+                        <Typography variant="caption" center style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Typography>
                     )}
                 </ScrollView>
-            </LinearGradient>
-        </View>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    background: {
-        flex: 1,
+        backgroundColor: COLORS.backgroundPrimary,
     },
     scrollContent: {
-        padding: 20,
-        paddingTop: 60,
+        padding: SPACING.regular,
+        paddingTop: SPACING.xlarge,
+    },
+    gameTitle: {
+        marginBottom: SPACING.small,
+    },
+    subtitle: {
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.regular,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: SPACING.regular,
     },
-    title: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        color: '#fff',
-        textAlign: 'center',
-    },
-    subtitle: {
-        fontSize: 14,
-        color: 'rgba(255,255,255,0.7)',
-        marginTop: 5,
+    subtitleText: {
+        color: COLORS.textSecondary,
+        marginTop: SPACING.tiny,
         fontStyle: 'italic',
     },
     scoreRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: SPACING.small,
     },
     scoreText: {
-        fontSize: 20,
-        color: '#db147c',
+        color: COLORS.gradientStart,
         fontWeight: 'bold',
     },
-    syncText: {
-        marginLeft: 8,
-        fontSize: 14,
-    },
     roundText: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 14,
-        marginTop: 5,
+        color: COLORS.textSecondary,
+        marginTop: SPACING.tiny,
     },
     loadingText: {
-        color: '#fff',
-        fontSize: 18,
-        textAlign: 'center',
-        marginTop: 100,
+        marginTop: SPACING.xxxlarge,
+        marginBottom: SPACING.regular,
     },
     basketCard: {
-        padding: 20,
-        marginBottom: 20,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular,
         backgroundColor: 'rgba(139, 69, 19, 0.3)',
         borderColor: '#8B4513',
         borderWidth: 2,
@@ -385,108 +384,73 @@ const styles = StyleSheet.create({
     basketHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 10,
+        marginBottom: SPACING.small,
     },
     basketEmoji: {
-        fontSize: 30,
-        marginRight: 10,
-    },
-    basketName: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#fff',
+        marginRight: SPACING.small,
     },
     scenario: {
-        fontSize: 14,
-        color: 'rgba(255,255,255,0.8)',
+        color: COLORS.textSecondary,
         fontStyle: 'italic',
     },
     sectionTitle: {
-        fontSize: 16,
-        color: '#FFD700',
-        marginBottom: 12,
-        fontWeight: '600',
+        color: COLORS.brightYellow,
+        marginBottom: SPACING.regular,
     },
     ingredientsContainer: {
-        marginBottom: 20,
+        marginBottom: SPACING.regular,
     },
     ingredientButton: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 15,
-        borderRadius: 12,
-        marginBottom: 8,
-        borderWidth: 2,
-        borderColor: 'transparent',
+        marginBottom: SPACING.small,
     },
     selectedIngredient: {
-        borderColor: '#db147c',
+        borderColor: COLORS.gradientStart,
         backgroundColor: 'rgba(219, 20, 124, 0.2)',
     },
     selectedSeasoning: {
-        borderColor: '#FFD700',
+        borderColor: COLORS.brightYellow,
         backgroundColor: 'rgba(255, 215, 0, 0.2)',
     },
     ingredientText: {
-        color: '#fff',
-        fontSize: 14,
-        marginBottom: 4,
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.micro,
     },
     selectedText: {
         fontWeight: 'bold',
     },
     pointsText: {
-        color: 'rgba(255,255,255,0.5)',
-        fontSize: 12,
+        color: COLORS.textHint,
     },
     previewCard: {
-        padding: 15,
-        marginBottom: 20,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular,
         backgroundColor: 'rgba(51, 222, 165, 0.1)',
     },
     previewTitle: {
-        color: '#33DEA5',
-        fontSize: 14,
-        fontWeight: 'bold',
-        marginBottom: 10,
+        color: COLORS.success,
+        marginBottom: SPACING.small,
     },
     previewText: {
-        color: '#fff',
-        fontSize: 14,
+        color: COLORS.textPrimary,
         fontStyle: 'italic',
     },
     previewPlus: {
-        color: '#33DEA5',
-        fontSize: 18,
-        textAlign: 'center',
-        marginVertical: 5,
+        color: COLORS.success,
+        marginVertical: SPACING.tiny,
     },
     previewScore: {
-        color: '#FFD700',
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginTop: 10,
-        textAlign: 'center',
+        color: COLORS.brightYellow,
+        marginTop: SPACING.small,
     },
     submitButton: {
-        backgroundColor: '#8B4513',
-        paddingVertical: 15,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginTop: 10,
+        marginTop: SPACING.small,
     },
     disabledButton: {
         opacity: 0.5,
     },
-    submitText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
-        textAlign: 'center',
-        marginTop: 20,
+        color: COLORS.textHint,
+        marginTop: SPACING.regular,
     },
 });
 

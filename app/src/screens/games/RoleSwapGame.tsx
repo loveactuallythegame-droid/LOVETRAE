@@ -1,16 +1,17 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 // Mock data for the chat
 const initialMessages = [
     {
-        id: 1, user: 'Partner A', as: 'Alex', text: "Why do you always leave your socks on the nebula floor? It's like a black hole of laundry!", userColor: '#f40b61'
+        id: 1, user: 'Partner A', as: 'Alex', text: "Why do you always leave your socks on the nebula floor? It's like a black hole of laundry!", userColor: COLORS.emotionalConnection
     },
     {
-        id: 2, user: 'Partner B', as: 'Jordan', text: "I'm just creating a gravitational pull for the washing machine, honey! It's 'functional space clutter'.", userColor: '#d946ef', isSelf: true
+        id: 2, user: 'Partner B', as: 'Jordan', text: "I'm just creating a gravitational pull for the washing machine, honey! It's 'functional space clutter'.", userColor: COLORS.lavenderPurple, isSelf: true
     },
 ];
 
@@ -21,77 +22,133 @@ const RoleSwapGame = () => {
 
     const handleSend = () => {
         if (inputText.trim()) {
-            const newMessage = { id: messages.length + 1, user: 'Partner B', as: 'Jordan', text: inputText, userColor: '#d946ef', isSelf: true };
+            const newMessage = { 
+                id: messages.length + 1, 
+                user: 'Partner B', 
+                as: 'Jordan', 
+                text: inputText, 
+                userColor: COLORS.lavenderPurple, 
+                isSelf: true 
+            };
             setMessages([...messages, newMessage]);
             setInputText('');
         }
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#102220', '#0f0720']} style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Role Swap</Text>
-                    <Text style={styles.headerSubtitle}>Step Into Their Shoes</Text>
-                </View>
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <View style={styles.header}>
+                <Typography variant="h1" center>Role Swap</Typography>
+                <Typography variant="h2" center style={{ color: COLORS.lavenderPurple }}>Step Into Their Shoes</Typography>
+            </View>
 
-                <ScrollView style={styles.chatContainer}>
-                    {messages.map(msg => (
-                        <View key={msg.id} style={[styles.messageRow, msg.isSelf ? styles.messageRowSelf : {}]}>
-                            <View style={[styles.messageBubble, msg.isSelf ? styles.messageBubbleSelf : {}, { borderColor: msg.userColor }]}>
-                                <Text style={[styles.messageUser, { color: msg.userColor }]}>{msg.user} as {msg.as}</Text>
-                                <Text style={styles.messageText}>{msg.text}</Text>
-                            </View>
-                        </View>
-                    ))}
-                </ScrollView>
-
-                <View style={styles.inputSection}>
-                    <View style={styles.scoreBarContainer}>
-                        <Text style={styles.scoreLabel}>AI Perspective Score: {score}%</Text>
-                        <View style={styles.scoreBarBackground}>
-                            <View style={[styles.scoreBar, { width: `${score}%` }]} />
-                        </View>
+            <ScrollView style={styles.chatContainer}>
+                {messages.map(msg => (
+                    <View key={msg.id} style={[styles.messageRow, msg.isSelf ? styles.messageRowSelf : {}]}>
+                        <GlassCard style={[styles.messageBubble, msg.isSelf ? styles.messageBubbleSelf : {}, { borderColor: msg.userColor }]}>
+                            <Typography variant="caption" style={{ color: msg.userColor }}>{msg.user} as {msg.as}</Typography>
+                            <Typography variant="body">{msg.text}</Typography>
+                        </GlassCard>
                     </View>
-                    <View style={styles.inputRow}>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder="Type your performance..."
-                            placeholderTextColor="rgba(255,255,255,0.3)"
-                            value={inputText}
-                            onChangeText={setInputText}
-                        />
-                        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-                             <MaterialIcons name="send" size={22} color="#102220" />
-                        </TouchableOpacity>
+                ))}
+            </ScrollView>
+
+            <View style={styles.inputSection}>
+                <View style={styles.scoreBarContainer}>
+                    <Typography variant="caption" style={styles.scoreLabel}>AI Perspective Score: {score}%</Typography>
+                    <View style={styles.scoreBarBackground}>
+                        <View style={[styles.scoreBar, { width: `${score}%` }]} />
                     </View>
                 </View>
-            </LinearGradient>
-        </SafeAreaView>
+                <View style={styles.inputRow}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Type your performance..."
+                        placeholderTextColor={COLORS.textHint}
+                        value={inputText}
+                        onChangeText={setInputText}
+                    />
+                    <SquishyButton onPress={handleSend} style={styles.sendButton}>
+                        <MaterialIcons name="send" size={22} color={COLORS.backgroundPrimary} />
+                    </SquishyButton>
+                </View>
+            </View>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#102220' },
-    container: { flex: 1 },
-    header: { padding: 20, alignItems: 'center', borderBottomWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    headerTitle: { color: '#fff', fontSize: 24, fontWeight: 'bold' },
-    headerSubtitle: { color: '#d946ef', fontStyle: 'italic' },
-    chatContainer: { flex: 1, padding: 16 },
-    messageRow: { flexDirection: 'row', marginBottom: 16 },
-    messageRowSelf: { justifyContent: 'flex-end' },
-    messageBubble: { backgroundColor: 'rgba(35, 72, 69, 0.4)', borderRadius: 16, padding: 12, maxWidth: '80%', borderLeftWidth: 4, borderLeftColor: '#f40b61' },
-    messageBubbleSelf: { backgroundColor: 'rgba(217, 70, 239, 0.2)', borderLeftWidth: 0, borderRightWidth: 4, borderRightColor: '#d946ef' },
-    messageUser: { fontSize: 12, fontWeight: 'bold', marginBottom: 4, textTransform: 'uppercase' },
-    messageText: { color: '#fff', fontSize: 16 },
-    inputSection: { padding: 16, borderTopWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    scoreBarContainer: { marginBottom: 16 },
-    scoreLabel: { color: '#f40b61', fontSize: 12, fontWeight: 'bold', textTransform: 'uppercase', marginBottom: 4 },
-    scoreBarBackground: { height: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 4 },
-    scoreBar: { height: '100%', backgroundColor: '#f40b61', borderRadius: 4 },
-    inputRow: { flexDirection: 'row', gap: 12 },
-    textInput: { flex: 1, height: 50, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, paddingHorizontal: 16, color: '#fff' },
-    sendButton: { width: 50, height: 50, borderRadius: 12, backgroundColor: '#f40b61', justifyContent: 'center', alignItems: 'center' },
+    header: { 
+        padding: SPACING.large, 
+        alignItems: 'center', 
+        borderBottomWidth: 1, 
+        borderColor: COLORS.borderSubtle 
+    },
+    chatContainer: { 
+        flex: 1, 
+        padding: SPACING.regular 
+    },
+    messageRow: { 
+        flexDirection: 'row', 
+        marginBottom: SPACING.regular 
+    },
+    messageRowSelf: { 
+        justifyContent: 'flex-end' 
+    },
+    messageBubble: { 
+        maxWidth: '80%', 
+        borderLeftWidth: 4, 
+        borderLeftColor: COLORS.emotionalConnection 
+    },
+    messageBubbleSelf: { 
+        borderLeftWidth: 0, 
+        borderRightWidth: 4, 
+        borderRightColor: COLORS.lavenderPurple 
+    },
+    inputSection: { 
+        padding: SPACING.regular, 
+        borderTopWidth: 1, 
+        borderColor: COLORS.borderSubtle 
+    },
+    scoreBarContainer: { 
+        marginBottom: SPACING.regular 
+    },
+    scoreLabel: { 
+        color: COLORS.emotionalConnection, 
+        marginBottom: SPACING.tiny 
+    },
+    scoreBarBackground: { 
+        height: 8, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.small 
+    },
+    scoreBar: { 
+        height: '100%', 
+        backgroundColor: COLORS.emotionalConnection, 
+        borderRadius: BORDER_RADIUS.small 
+    },
+    inputRow: { 
+        flexDirection: 'row', 
+        gap: SPACING.regular 
+    },
+    textInput: { 
+        flex: 1, 
+        height: 50, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.large, 
+        paddingHorizontal: SPACING.regular, 
+        color: COLORS.textPrimary 
+    },
+    sendButton: { 
+        width: 50, 
+        height: 50, 
+        borderRadius: BORDER_RADIUS.large, 
+        backgroundColor: COLORS.emotionalConnection, 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        padding: SPACING.none,
+        minHeight: 50
+    },
 });
 
 export default RoleSwapGame;

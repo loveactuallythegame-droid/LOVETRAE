@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
   Alert,
   Platform,
   KeyboardAvoidingView,
   ScrollView,
-  Dimensions
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
-
-const { width, height } = Dimensions.get('window');
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton, RadialGradientBackground, GlassCard } from '../../components/ui';
+import { COLORS, GRADIENTS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 const CoupleLinkingScreen = () => {
   const [partnerCode, setPartnerCode] = useState('');
@@ -37,7 +33,6 @@ const CoupleLinkingScreen = () => {
         return;
       }
 
-      // Find partner by couple code
       const partnerProfileRef = doc(db, 'profiles', partnerCode.toUpperCase());
       const partnerProfileSnap = await getDoc(partnerProfileRef);
 
@@ -54,16 +49,13 @@ const CoupleLinkingScreen = () => {
         return;
       }
 
-      // Check if partner is already linked to someone else
       if (partnerData.partnerId) {
         Alert.alert('Error', 'This partner is already linked to someone else.');
         return;
       }
 
-      // Create/update couple relationship
-      const coupleId = `${currentUser.uid}_${partnerUserId}`.split('').sort().join(''); // deterministic id
+      const coupleId = `${currentUser.uid}_${partnerUserId}`.split('').sort().join('');
       
-      // Update both user profiles
       const currentUserProfileRef = doc(db, 'profiles', currentUser.uid);
       await updateDoc(currentUserProfileRef, {
         partnerId: partnerUserId,
@@ -78,7 +70,6 @@ const CoupleLinkingScreen = () => {
         updatedAt: serverTimestamp()
       });
 
-      // Create/update couple document
       const coupleRef = doc(db, 'couples', coupleId);
       const coupleExists = await getDoc(coupleRef);
       
@@ -116,134 +107,89 @@ const CoupleLinkingScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <LinearGradient
-        colors={[theme.COLORS.background, '#392830', theme.COLORS.background]}
-        style={styles.container}
+    <ScreenLayout>
+      <RadialGradientBackground />
+      <KeyboardAvoidingView
+        style={styles.keyboardView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.mainTitle}>Link Your Cosmic Connection</Text>
-          <Text style={styles.subtitle}>Enter your partner's cosmic code to sync your journey.</Text>
+          <Typography variant="header" style={styles.mainTitle}>Link Your Cosmic Connection</Typography>
+          <Typography variant="body" style={styles.subtitle}>Enter your partner's cosmic code to sync your journey.</Typography>
 
-          <BlurView intensity={20} tint="dark" style={styles.glassPanel}>
-            <Text style={styles.inputLabel}>Partner's Cosmic Code</Text>
+          <GlassCard style={styles.glassPanel}>
+            <Typography variant="label" style={styles.inputLabel}>Partner's Cosmic Code</Typography>
             <TextInput
               style={styles.input}
               placeholder="XXXX-XXXX"
-              placeholderTextColor="rgba(255, 255, 255, 0.2)"
+              placeholderTextColor={COLORS.textHint}
               value={partnerCode}
               onChangeText={setPartnerCode}
               autoCapitalize="characters"
-              maxLength={9} // XXXX-XXXX
+              maxLength={9}
             />
 
-            <TouchableOpacity style={styles.authButton} onPress={handleLinkCouple}>
-              <Text style={styles.authButtonText}>Link Cosmic Connection</Text>
-            </TouchableOpacity>
+            <SquishyButton onPress={handleLinkCouple}>
+              <Typography variant="button">Link Cosmic Connection</Typography>
+            </SquishyButton>
 
-            <TouchableOpacity 
-              style={[styles.secondaryButton]}
-              onPress={() => navigation.navigate('OnboardingCurrentVibe' as never)}>
-              <Text style={[styles.secondaryButtonText]}>Generate My Code</Text>
-            </TouchableOpacity>
-          </BlurView>
+            <SquishyButton 
+              variant="secondary"
+              onPress={() => navigation.navigate('OnboardingCurrentVibe' as never)}
+            >
+              <Typography variant="button">Generate My Code</Typography>
+            </SquishyButton>
+          </GlassCard>
         </ScrollView>
-      </LinearGradient>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  keyboardView: {
     flex: 1,
   },
   scrollContainer: {
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.SPACING.lg,
+    padding: SPACING.screenPadding,
   },
   mainTitle: {
-    fontFamily: theme.TYPOGRAPHY.header.fontFamily || 'BarbieDream-Regular',
-    color: theme.COLORS.textPrimary,
-    fontSize: theme.TYPOGRAPHY.title.fontSize,
-    fontWeight: theme.TYPOGRAPHY.header.fontWeight,
     textAlign: 'center',
-    marginBottom: theme.SPACING.sm,
-    paddingHorizontal: theme.SPACING.md,
+    marginBottom: SPACING.small,
+    paddingHorizontal: SPACING.regular,
   },
   subtitle: {
-    color: theme.COLORS.textSecondary,
-    fontSize: theme.TYPOGRAPHY.body.fontSize,
+    color: COLORS.textSecondary,
     textAlign: 'center',
-    marginBottom: theme.SPACING.xxl,
+    marginBottom: SPACING.xxlarge,
   },
   glassPanel: {
     width: '100%',
-    maxWidth: 480,
-    borderRadius: theme.SIZES.borderRadius * 1.5,
-    padding: theme.SPACING.xl,
+    maxWidth: 400,
+    borderRadius: BORDER_RADIUS.xlarge,
+    padding: SPACING.xlarge,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: COLORS.borderSubtle,
     overflow: 'hidden',
+    backgroundColor: COLORS.backgroundPrimary + '99',
   },
   inputLabel: {
-    color: theme.COLORS.textSecondary,
-    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
-    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
-    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
-    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
-    marginBottom: theme.SPACING.sm,
+    marginBottom: SPACING.small,
   },
   input: {
-    height: theme.SIZES.inputHeight,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: theme.SIZES.borderRadius,
+    height: 48,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.input,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: theme.SPACING.md,
-    color: theme.COLORS.textPrimary,
-    fontSize: theme.TYPOGRAPHY.body.fontSize,
-    marginBottom: theme.SPACING.lg,
+    borderColor: COLORS.borderSubtle,
+    paddingHorizontal: SPACING.regular,
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+    marginBottom: SPACING.large,
     textAlign: 'center',
-  },
-  authButton: {
-    backgroundColor: theme.COLORS.accentPink,
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    paddingVertical: theme.SPACING.lg,
-    alignItems: 'center',
-    marginTop: theme.SPACING.md,
-    shadowColor: theme.COLORS.accentPink,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
-    elevation: 10, // for Android
-  },
-  secondaryButton: {
-    backgroundColor: 'transparent',
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    paddingVertical: theme.SPACING.lg,
-    alignItems: 'center',
-    marginTop: theme.SPACING.md,
-    borderWidth: 1,
-    borderColor: theme.COLORS.accentPink,
-  },
-  authButtonText: {
-    color: theme.COLORS.textPrimary,
-    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
-    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
-    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
-    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
-  },
-  secondaryButtonText: {
-    color: theme.COLORS.accentPink,
-    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
-    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
-    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
-    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
   },
 });
 

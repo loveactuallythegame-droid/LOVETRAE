@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 export default function TurningTowardTally({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -19,16 +21,16 @@ export default function TurningTowardTally({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Turning Toward Tally</Text>
-        <Text variant="body">Did you respond to a bid (text/call/look) in {"<"}5 min?</Text>
-        <Text variant="keyword" style={styles.count}>{streak}</Text>
+        <Typography variant="h2" center>Turning Toward Tally</Typography>
+        <Typography variant="body" center>Did you respond to a bid (text/call/look) in {'<'}5 min?</Typography>
+        <Typography variant="h1" center style={styles.count}>{streak}</Typography>
         <SquishyButton onPress={logResponse} style={styles.btn}>
-            <Text variant="header">Yes, I Turned Toward</Text>
+            <Typography variant="button">Yes, I Turned Toward</Typography>
         </SquishyButton>
         <SquishyButton onPress={finish} style={styles.done}>
-            <Text variant="header">Finish Logging</Text>
+            <Typography variant="button">Finish Logging</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -50,7 +52,23 @@ export default function TurningTowardTally({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  count: { fontSize: 60, textAlign: 'center', marginVertical: 20 },
-  btn: { backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
-  done: { marginTop: 12, backgroundColor: '#5C1459', padding: 16, borderRadius: 12, alignItems: 'center' },
+  count: { 
+    fontSize: TYPOGRAPHY.fontSize.displayLarge * 2, 
+    textAlign: 'center', 
+    marginVertical: SPACING.large,
+    color: COLORS.success,
+  },
+  btn: { 
+    backgroundColor: COLORS.success, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.button, 
+    alignItems: 'center' 
+  },
+  done: { 
+    marginTop: SPACING.regular, 
+    backgroundColor: COLORS.healingHospital, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.button, 
+    alignItems: 'center' 
+  },
 });

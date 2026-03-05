@@ -8,18 +8,14 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  SafeAreaView, 
-  TouchableOpacity, 
-  Image,
-  Alert 
-} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Alert, Animated } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, ANIMATIONS, GRADIENTS } from '../../theme';
 
 // Backend API imports
 import { GameConnector } from '../../components/games/GameConnector';
@@ -44,6 +40,7 @@ const SixSecondKissGame: React.FC<GameProps> = ({ session, updateScore, isSyncin
   const [countdown, setCountdown] = useState(6);
   const [isRunning, setIsRunning] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const scaleAnim = React.useRef(new Animated.Value(1)).current;
 
   // Timer effect
   useEffect(() => {
@@ -107,102 +104,107 @@ const SixSecondKissGame: React.FC<GameProps> = ({ session, updateScore, isSyncin
     player: string; 
     onHold: (val: boolean) => void; 
     isHolding: boolean;
-  }) => (
-    <LinearGradient
-      colors={['#db147c', '#f05d68']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={[styles.touchZone, isHolding && styles.touchZoneActive]}
-    >
-      <TouchableOpacity
-        style={styles.touchZoneInner}
-        onPressIn={() => onHold(true)}
-        onPressOut={() => onHold(false)}
-        disabled={completed}
-      >
-        <MaterialIcons 
-          name="touch_app" 
-          size={40} 
-          color={isHolding ? '#ffffff' : 'rgba(255,255,255,0.7)'} 
-        />
-        <Text style={styles.touchZoneText}>{player}</Text>
-        {isHolding && <Text style={styles.connectedText}>Connected</Text>}
-      </TouchableOpacity>
-    </LinearGradient>
-  );
+  }) => {
+    useEffect(() => {
+      Animated.spring(scaleAnim, {
+        toValue: isHolding ? 1.05 : 1,
+        friction: 8,
+        tension: 100,
+        useNativeDriver: true,
+      }).start();
+    }, [isHolding]);
+
+    return (
+      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+        <LinearGradient
+          colors={GRADIENTS.primary.colors}
+          start={GRADIENTS.primary.start}
+          end={GRADIENTS.primary.end}
+          style={[styles.touchZone, isHolding && styles.touchZoneActive]}
+        >
+          <TouchableOpacity
+            style={styles.touchZoneInner}
+            onPressIn={() => onHold(true)}
+            onPressOut={() => onHold(false)}
+            disabled={completed}
+          >
+            <MaterialIcons 
+              name="touch_app" 
+              size={40} 
+              color={isHolding ? COLORS.textPrimary : COLORS.textSecondary} 
+            />
+            <Typography variant="body" style={styles.touchZoneText}>{player}</Typography>
+            {isHolding && <Typography variant="caption" style={styles.connectedText}>Connected</Typography>}
+          </TouchableOpacity>
+        </LinearGradient>
+      </Animated.View>
+    );
+  };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <LinearGradient colors={['#181116', '#230f18']} style={styles.container}>
-        {/* Dr. Marcie Section */}
-        <View style={styles.drMarcieSection}>
-          <View style={styles.avatarContainer}>
-            <Image 
-              source={require('../../../assets/images/MarcieAvatar.png')} 
-              style={styles.avatar} 
+    <ScreenLayout showMarcie={true} marcieQuote="Ready to share some intimate moments? The 6-second kiss challenge helps couples connect deeply through sustained eye contact and physical touch.">
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <View style={styles.content}>
+          <Typography variant="h1" style={styles.title}>
+            The Love Arcade
+          </Typography>
+          <Typography variant="h2" style={styles.subtitle}>
+            +100 Games to Deepen Connection
+          </Typography>
+
+          {/* Sync indicator */}
+          {isSyncing && (
+            <View style={styles.syncIndicator}>
+              <Typography variant="caption" style={styles.syncText}>💾 Saving...</Typography>
+            </View>
+          )}
+
+          <View style={styles.gameArea}>
+            <TouchZone 
+              player="Player 1" 
+              onHold={setPlayer1Hold} 
+              isHolding={player1Hold} 
+            />
+            
+            <View style={styles.timerContainer}>
+              <LinearGradient
+                colors={COLORS.progress}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.timerGradient}
+              >
+                <Typography variant="h1" style={styles.timerText}>
+                  {countdown.toFixed(2)}s
+                </Typography>
+              </LinearGradient>
+            </View>
+
+            <TouchZone 
+              player="Player 2" 
+              onHold={setPlayer2Hold} 
+              isHolding={player2Hold} 
             />
           </View>
-          <View style={styles.quoteBox}>
-            <Text style={styles.quoteText}>
-              Ready to share some intimate moments? The 6-second kiss challenge 
-              helps couples connect deeply through sustained eye contact and physical touch.
-            </Text>
-          </View>
+
+          <GlassCard style={styles.instructionsContainer}>
+            <Typography variant="body" style={styles.instructions}>
+              Both partners must hold their buttons simultaneously for 6 seconds
+            </Typography>
+          </GlassCard>
+
+          <SquishyButton onPress={resetGame} style={styles.resetButton}>
+            <Typography variant="button">Reset Challenge</Typography>
+          </SquishyButton>
+
+          {/* Session info (debug) */}
+          {session && (
+            <Typography variant="caption" style={styles.sessionInfo}>
+              Session: {session.id.slice(0, 8)}...
+            </Typography>
+          )}
         </View>
-
-        <Text style={styles.title}>6-Second Kiss Challenge</Text>
-        <Text style={styles.subtitle}>Hold to ignite the spark</Text>
-
-        {/* Sync indicator */}
-        {isSyncing && (
-          <View style={styles.syncIndicator}>
-            <Text style={styles.syncText}>💾 Saving...</Text>
-          </View>
-        )}
-
-        <View style={styles.gameArea}>
-          <TouchZone 
-            player="Player 1" 
-            onHold={setPlayer1Hold} 
-            isHolding={player1Hold} 
-          />
-          
-          <View style={styles.timerContainer}>
-            <LinearGradient
-              colors={['#ef1b6e', '#c41e77', '#a22ac4', '#9056ef']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.timerGradient}
-            >
-              <Text style={styles.timerText}>
-                {countdown.toFixed(2)}s
-              </Text>
-            </LinearGradient>
-          </View>
-
-          <TouchZone 
-            player="Player 2" 
-            onHold={setPlayer2Hold} 
-            isHolding={player2Hold} 
-          />
-        </View>
-
-        <View style={styles.instructionsContainer}>
-          <Text style={styles.instructions}>
-            Both partners must hold their buttons simultaneously for 6 seconds
-          </Text>
-        </View>
-
-        <TouchableOpacity style={styles.resetButton} onPress={resetGame}>
-          <Text style={styles.resetButtonText}>Reset Challenge</Text>
-        </TouchableOpacity>
-
-        {/* Session info (debug) */}
-        {session && (
-          <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
-        )}
-      </LinearGradient>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
@@ -238,145 +240,90 @@ const SixSecondKissChallenge1: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#181116',
-  },
   container: {
     flex: 1,
-    padding: 20,
   },
-  drMarcieSection: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 20,
-    padding: 15,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: 15,
-  },
-  avatarContainer: {
-    marginRight: 15,
-  },
-  avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-  },
-  quoteBox: {
+  content: {
     flex: 1,
-  },
-  quoteText: {
-    color: '#fff',
-    fontSize: 14,
-    lineHeight: 20,
-    fontStyle: 'italic',
+    padding: SPACING.lg,
   },
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: SPACING.sm,
   },
   subtitle: {
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.7)',
     textAlign: 'center',
-    marginBottom: 20,
+    opacity: 0.7,
+    marginBottom: SPACING.lg,
   },
   syncIndicator: {
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: SPACING.sm,
   },
   syncText: {
-    color: '#db147c',
-    fontSize: 12,
+    color: COLORS.vibrantPink,
   },
   gameArea: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: SPACING.sm,
   },
   touchZone: {
     width: 120,
     height: 180,
-    borderRadius: 20,
-    padding: 3,
+    borderRadius: BORDER_RADIUS.xxlarge,
+    padding: SPACING.micro,
     opacity: 0.8,
   },
   touchZoneActive: {
     opacity: 1,
-    transform: [{ scale: 1.05 }],
-    shadowColor: '#db147c',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 20,
-    elevation: 10,
+    ...SHADOWS.neon,
   },
   touchZoneInner: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    borderRadius: 17,
+    backgroundColor: COLORS.backgroundPrimary,
+    borderRadius: BORDER_RADIUS.xxlarge - 3,
     justifyContent: 'center',
     alignItems: 'center',
   },
   touchZoneText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginTop: 10,
+    color: COLORS.textPrimary,
+    marginTop: SPACING.sm,
+    fontWeight: TYPOGRAPHY.fontWeight.bold as any,
   },
   connectedText: {
-    color: '#fff',
-    fontSize: 12,
-    marginTop: 5,
+    color: COLORS.textPrimary,
+    marginTop: SPACING.xs,
     opacity: 0.8,
   },
   timerContainer: {
     alignItems: 'center',
   },
   timerGradient: {
-    paddingHorizontal: 30,
-    paddingVertical: 15,
-    borderRadius: 25,
+    paddingHorizontal: SPACING.xlarge,
+    paddingVertical: SPACING.regular,
+    borderRadius: BORDER_RADIUS.round,
   },
   timerText: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#fff',
+    color: COLORS.textPrimary,
     fontVariant: ['tabular-nums'],
   },
   instructionsContainer: {
-    marginVertical: 20,
-    padding: 15,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    borderRadius: 12,
+    marginVertical: SPACING.lg,
+    padding: SPACING.regular,
   },
   instructions: {
-    color: 'rgba(255,255,255,0.8)',
-    fontSize: 14,
     textAlign: 'center',
-    lineHeight: 20,
   },
   resetButton: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 25,
     alignSelf: 'center',
-    marginBottom: 10,
-  },
-  resetButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
+    marginBottom: SPACING.sm,
   },
   sessionInfo: {
-    color: 'rgba(255,255,255,0.3)',
-    fontSize: 10,
     textAlign: 'center',
+    opacity: 0.3,
   },
 });
 

@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGameStore } from '../../lib/game-store';
 import { vertexAIService } from '../../lib/vertex-ai-service';
 import { GameTemplateProps, GameState, MarcieAnimation } from '../../lib/game-types';
-import EnhancedMarcieHost from '../ai-host/EnhancedMarcieHost';
+import DrMarcieOverlay from '../DrMarcieOverlay';
 import GameHeader from '../layout/GameHeader';
 import GameFeedback from './GameFeedback';
 import ResultsScreen from './ResultsScreen';
 import * as Haptics from 'expo-haptics';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
+import { Typography, SquishyButton } from '../ui';
 
 interface GameRunnerProps extends GameTemplateProps {
   children: React.ReactNode;
@@ -262,14 +264,16 @@ const GameRunner: React.FC<GameRunnerProps> = ({
   if (loading || isContentLoading) {
     return (
       <SafeAreaView style={styles.container}>
-        <LinearGradient colors={['#1a0033', '#330066']} style={styles.background} />
+        <LinearGradient colors={[COLORS.deepCosmic, COLORS.richPlum]} style={styles.background} />
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#ef1b6e" />
-          <Text style={styles.loadingText}>
+          <ActivityIndicator size="large" color={COLORS.vibrantPink} />
+          <Typography variant="body" style={styles.loadingText}>
             {gameState === 'loading_content' ? 'Generating personalized content...' : 'Starting game...'}
-          </Text>
+          </Typography>
           {gameState === 'waiting_for_partner' && (
-            <Text style={styles.waitingText}>Waiting for partner to join...</Text>
+            <Typography variant="caption" color={COLORS.vibrantPink} style={styles.waitingText}>
+              Waiting for partner to join...
+            </Typography>
           )}
         </View>
       </SafeAreaView>
@@ -280,15 +284,17 @@ const GameRunner: React.FC<GameRunnerProps> = ({
   if (error) {
     return (
       <SafeAreaView style={styles.container}>
-        <LinearGradient colors={['#1a0033', '#330066']} style={styles.background} />
+        <LinearGradient colors={[COLORS.deepCosmic, COLORS.richPlum]} style={styles.background} />
         <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={() => initializeGame(coupleId, gameId)}>
-            <Text style={styles.retryButtonText}>Try Again</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.exitButton} onPress={handleExit}>
-            <Text style={styles.exitButtonText}>Exit Game</Text>
-          </TouchableOpacity>
+          <Typography variant="body" color={COLORS.error} style={styles.errorText}>
+            {error}
+          </Typography>
+          <SquishyButton onPress={() => initializeGame(coupleId, gameId)} style={styles.retryButton}>
+            <Typography variant="button" color={COLORS.textPrimary}>Try Again</Typography>
+          </SquishyButton>
+          <SquishyButton onPress={handleExit} variant="ghost" style={styles.exitButton}>
+            <Typography variant="button" color={COLORS.textPrimary}>Exit Game</Typography>
+          </SquishyButton>
         </View>
       </SafeAreaView>
     );
@@ -310,7 +316,7 @@ const GameRunner: React.FC<GameRunnerProps> = ({
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient 
-        colors={['#1a0033', '#330066', '#4d0099']} 
+        colors={[COLORS.deepCosmic, COLORS.richPlum, COLORS.midPurple]} 
         style={styles.background} 
       />
       
@@ -325,13 +331,13 @@ const GameRunner: React.FC<GameRunnerProps> = ({
 
       {/* Dr. Marcie Overlay */}
       {showMarcie && marcieVisible && (
-        <EnhancedMarcieHost
-          animation={currentMarcieAnimation}
-          position={{ x: 20, y: 100 }}
-          size={180}
-          cosmicGlow={true}
-          neonRing={true}
-          float={true}
+        <DrMarcieOverlay
+          animation={currentMarcieAnimation?.type || 'idle'}
+          quote={currentMarcieAnimation?.speech}
+          showBubble={!!currentMarcieAnimation?.speech}
+          position="bottom-right"
+          visible={true}
+          size="medium"
         />
       )}
 
@@ -387,7 +393,7 @@ const getMarcieModeFromAnimation = (animation: MarcieAnimation | null): any => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a0033',
+    backgroundColor: COLORS.deepCosmic,
   },
   background: {
     ...StyleSheet.absoluteFillObject,
@@ -398,15 +404,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: '#ffffff',
-    fontSize: 18,
-    marginTop: 20,
+    marginTop: SPACING.large,
     textAlign: 'center',
   },
   waitingText: {
-    color: '#ef1b6e',
-    fontSize: 14,
-    marginTop: 10,
+    marginTop: SPACING.small,
     textAlign: 'center',
     fontStyle: 'italic',
   },
@@ -414,42 +416,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: SPACING.large,
   },
   errorText: {
-    color: '#ff6b6b',
-    fontSize: 16,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: SPACING.large,
   },
   retryButton: {
-    backgroundColor: '#ef1b6e',
-    paddingHorizontal: 30,
-    paddingVertical: 15,
-    borderRadius: 25,
-    marginBottom: 10,
-  },
-  retryButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    marginBottom: SPACING.small,
   },
   exitButton: {
-    backgroundColor: 'transparent',
-    paddingHorizontal: 30,
-    paddingVertical: 15,
-    borderRadius: 25,
     borderWidth: 2,
-    borderColor: '#ffffff',
-  },
-  exitButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    borderColor: COLORS.textPrimary,
   },
   gameContent: {
     flex: 1,
-    marginTop: 20,
+    marginTop: SPACING.large,
   },
 });
 

@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, ANIMATIONS } from '../../theme';
 
 export default function DealOrNoDealAccountability({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -50,28 +52,27 @@ export default function DealOrNoDealAccountability({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
-            <GlassCard>
-                <Text variant="header">The Banker's Offer</Text>
-                <Text variant="body" style={{ marginBottom: 16 }}>
+        <ScrollView style={{ gap: SPACING.regular }} showsVerticalScrollIndicator={false}>
+            <GlassCard padding="large">
+                <Typography variant="h2" style={styles.cardTitle}>The Banker's Offer</Typography>
+                <Typography variant="body" style={{ marginBottom: SPACING.regular }}>
                     "I offer the Full Responsibility Declaration:
                     1. Naming the crime as verbal violence.
                     2. Specificity of harm.
                     3. 100% ownership.
                     4. Commitment to transformation."
-                </Text>
+                </Typography>
 
-                <Text variant="instructions">Will you accept full, unilateral responsibility?</Text>
+                <Typography variant="instructions" style={styles.question}>Will you accept full, unilateral responsibility?</Typography>
 
                 <View style={styles.opts}>
                     <SquishyButton onPress={() => chooseDeal(true)} style={[styles.btn, styles.deal]}>
-                        <Text variant="header">DEAL</Text>
+                        <Typography variant="h3" style={styles.dealText}>DEAL</Typography>
                     </SquishyButton>
                     <SquishyButton onPress={() => chooseDeal(false)} style={[styles.btn, styles.nodeal]}>
-                        <Text variant="header">NO DEAL</Text>
+                        <Typography variant="h3" style={styles.nodealText}>NO DEAL</Typography>
                     </SquishyButton>
                 </View>
-
             </GlassCard>
         </ScrollView>
     );
@@ -88,12 +89,47 @@ export default function DealOrNoDealAccountability({ route, navigation }: any) {
         playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
     }), [gameId, round]);
 
-    return <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />;
+    return (
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+            <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-    opts: { flexDirection: 'row', gap: 16, marginTop: 20 },
-    btn: { flex: 1, padding: 20, borderRadius: 12, alignItems: 'center' },
-    deal: { backgroundColor: '#33DEA5' },
-    nodeal: { backgroundColor: '#FA1F63' }
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.backgroundPrimary,
+    },
+    cardTitle: {
+        marginBottom: SPACING.small,
+    },
+    question: {
+        marginTop: SPACING.regular,
+        marginBottom: SPACING.small,
+    },
+    opts: { 
+        flexDirection: 'row', 
+        gap: SPACING.regular, 
+        marginTop: SPACING.xlarge 
+    },
+    btn: { 
+        flex: 1, 
+        padding: SPACING.large, 
+        borderRadius: BORDER_RADIUS.large, 
+        alignItems: 'center',
+        ...SHADOWS.buttonGlow
+    },
+    deal: { 
+        backgroundColor: COLORS.success 
+    },
+    nodeal: { 
+        backgroundColor: COLORS.error 
+    },
+    dealText: {
+        color: COLORS.backgroundPrimary,
+    },
+    nodealText: {
+        color: COLORS.textPrimary,
+    }
 });

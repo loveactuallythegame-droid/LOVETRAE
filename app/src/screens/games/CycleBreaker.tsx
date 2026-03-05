@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Text, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 export default function CycleBreaker({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -53,7 +55,7 @@ export default function CycleBreaker({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.regular }}>
             <GlassCard>
                 {/* Dr. Marcie Section */}
                 <View style={styles.drMarcieSection}>
@@ -61,11 +63,11 @@ export default function CycleBreaker({ route, navigation }: any) {
                         <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                     </View>
                     <View style={styles.quoteBox}>
-                        <Text style={styles.quoteText} variant="sass">Break free from destructive cycles! Identify triggers and rewrite reactions.</Text>
+                        <Text variant="sass">Break free from destructive cycles! Identify triggers and rewrite reactions.</Text>
                     </View>
                 </View>
 
-                <Text variant="header">Current Space: {pos}</Text>
+                <Text variant="h2">Current Space: {pos}</Text>
 
                 {pos === 0 && <Text variant="body">Start. Roll to move.</Text>}
 
@@ -90,12 +92,12 @@ export default function CycleBreaker({ route, navigation }: any) {
                 {pos === 0 && (
                     <SquishyButton onPress={roll} style={styles.rollBtn}>
                         <LinearGradient
-                            colors={['#db147c', '#f05d68']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
+                            colors={GRADIENTS.primary.colors}
+                            start={GRADIENTS.primary.start}
+                            end={GRADIENTS.primary.end}
                             style={styles.gradientButton}
                         >
-                            <Text variant="header" style={{ color: '#ffffff' }}>Roll Die</Text>
+                            <Text variant="h2" style={{ color: COLORS.textPrimary }}>Roll Die</Text>
                         </LinearGradient>
                     </SquishyButton>
                 )}
@@ -121,72 +123,59 @@ export default function CycleBreaker({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
     rollBtn: {
-        padding: 20,
+        padding: SPACING.xlarge,
         alignItems: 'center',
-        borderRadius: 50,
+        borderRadius: BORDER_RADIUS.round,
         width: 100,
         height: 100,
         justifyContent: 'center',
         alignSelf: 'center',
-        marginTop: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        marginTop: SPACING.xlarge,
+        ...SHADOWS.buttonGlow,
     },
     gradientButton: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 50,
-        paddingVertical: 20,
+        borderRadius: BORDER_RADIUS.round,
+        paddingVertical: SPACING.xlarge,
     },
     actionBtn: {
-        marginTop: 20,
-        backgroundColor: '#37cf97',
-        padding: 16,
-        borderRadius: 12,
+        marginTop: SPACING.xlarge,
+        backgroundColor: COLORS.mintGreen,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.large,
         alignItems: 'center',
-        marginBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        marginBottom: SPACING.xlarge,
+        ...SHADOWS.buttonGlow,
     },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        marginBottom: 16
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xxlarge,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular,
     },
     avatarContainer: {
         width: 50,
         height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular,
     },
     avatar: {
         width: 40,
         height: 40,
-        borderRadius: 20,
-        resizeMode: 'cover'
+        borderRadius: BORDER_RADIUS.round,
+        resizeMode: 'cover',
     },
     quoteBox: {
         flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular,
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
-    }
 });

@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { 
   View, 
-  Text, 
   StyleSheet, 
   ScrollView, 
-  TouchableOpacity,
   ActivityIndicator,
   Alert,
-  Dimensions
+  Dimensions,
+  TextInput,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { COLORS, TYPOGRAPHY, SPACING, SIZES } from '../theme';
 import { useGameStore } from '../lib/game-store';
 import { gamesApi, marcieApi } from '../lib/api';
 import { useAuth } from '../hooks/useAuth';
@@ -21,7 +19,7 @@ const { width: screenWidth } = Dimensions.get('window');
 
 interface GameState {
   currentQuestion: string;
-  partnerA Revelation: string;
+  partnerARevelation: string;
   partnerBRevelation: string;
   alignmentPercentage: number;
   gamePhase: 'intro' | 'question' | 'revelation' | 'analysis' | 'results';
@@ -32,14 +30,12 @@ interface GameState {
 }
 
 const HeartOfTheMatterGameScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
   const { user } = useAuth();
-  const { updateGameProgress, currentGameSession } = useGameStore();
+  const { updateGameProgress } = useGameStore();
   
   const [gameState, setGameState] = useState<GameState>({
     currentQuestion: '',
-    partnerA Revelation: '',
+    partnerARevelation: '',
     partnerBRevelation: '',
     alignmentPercentage: 0,
     gamePhase: 'intro',
@@ -65,7 +61,6 @@ const HeartOfTheMatterGameScreen = () => {
   const initializeGame = async () => {
     if (!user) {
       Alert.alert('Authentication Required', 'Please log in to play this game.');
-      navigation.goBack();
       return;
     }
 
@@ -145,7 +140,7 @@ const HeartOfTheMatterGameScreen = () => {
       setGameState(prev => ({ ...prev, isLoading: true }));
 
       // Simple semantic analysis (in real app, this would use AI)
-      const revelationA = gameState.partnerA Revelation.toLowerCase();
+      const revelationA = gameState.partnerARevelation.toLowerCase();
       const revelationB = gameState.partnerBRevelation.toLowerCase();
       
       // Calculate alignment based on semantic similarity
@@ -176,7 +171,7 @@ const HeartOfTheMatterGameScreen = () => {
         [
           {
             partner: 'A',
-            revelation: gameState.partnerA Revelation,
+            revelation: gameState.partnerARevelation,
             timestamp: new Date().toISOString()
           },
           {
@@ -198,134 +193,110 @@ const HeartOfTheMatterGameScreen = () => {
   };
 
   const finishGame = () => {
-    navigation.navigate('GameResultsScreen', {
-      gameId: 'heart-of-the-matter',
-      score: gameState.alignmentPercentage,
-      sessionId: gameState.sessionId
-    });
+    // navigation.navigate('GameResultsScreen', {
+    //   gameId: 'heart-of-the-matter',
+    //   score: gameState.alignmentPercentage,
+    //   sessionId: gameState.sessionId
+    // });
   };
 
   // Loading state
   if (gameState.isLoading) {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout showHeader={false}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.primaryGradientStart} />
-          <Text style={styles.loadingText}>Processing your revelation...</Text>
+          <Typography variant="body" style={styles.loadingText}>
+            Processing your revelation...
+          </Typography>
         </View>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Intro phase
-  if (gamePhase === 'intro') {
+  if (gameState.gamePhase === 'intro') {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout showHeader={false}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.introContainer}>
-            <Text style={styles.gameTitle}>HEART OF THE MATTER</Text>
-            <Text style={styles.gameSubtitle}>The Deepest Word-Wound Revelation</Text>
+            <Typography variant="h1" style={styles.gameTitle} center>
+              HEART OF THE MATTER
+            </Typography>
+            <Typography variant="title" style={styles.gameSubtitle} center>
+              The Deepest Word-Wound Revelation
+            </Typography>
             
-            <View style={styles.introCard}>
-              <Text style={styles.introText}>
+            <GlassCard style={styles.introCard}>
+              <Typography variant="body" style={styles.introText}>
                 In this game, you and your partner will reveal the deepest emotional wounds 
                 you've never fully confessed. Dr. Marcie will guide you through this vulnerable 
                 process with her signature therapeutic insight.
-              </Text>
+              </Typography>
               
-              <Text style={styles.introWarning}>
+              <Typography variant="caption" style={styles.introWarning}>
                 ⚠️ This game requires emotional safety and trust. Ensure you're both ready 
                 for deep vulnerability before proceeding.
-              </Text>
-            </View>
+              </Typography>
+            </GlassCard>
 
-            <TouchableOpacity 
-              style={styles.startButton}
-              onPress={startGame}
-              activeOpacity={0.8}
-            >
-              <LinearGradient
-                colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-                style={styles.startButtonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.startButtonText}>BEGIN REVELATION</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            <SquishyButton onPress={startGame}>
+              <Typography variant="button">BEGIN REVELATION</Typography>
+            </SquishyButton>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Question phase
-  if (gamePhase === 'question') {
+  if (gameState.gamePhase === 'question') {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout showHeader={false}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.questionContainer}>
-            <Text style={styles.questionTitle}>THE INQUIRY</Text>
-            <Text style={styles.mainQuestion}>
+            <Typography variant="h1" style={styles.questionTitle} center>
+              THE INQUIRY
+            </Typography>
+            <Typography variant="h1" style={styles.mainQuestion} center>
               WHAT WAS THE DEEPEST{' '}
-              <Text style={styles.italicPrimary}>WORD-WOUND</Text>?
-            </Text>
+              <Typography variant="h1" style={styles.italicPrimary}>WORD-WOUND</Typography>?
+            </Typography>
             
-            <View style={styles.questionCard}>
-              <Text style={styles.questionText}>{gameState.currentQuestion}</Text>
-            </View>
+            <GlassCard style={styles.questionCard}>
+              <Typography variant="body" style={styles.questionText} center>
+                {gameState.currentQuestion}
+              </Typography>
+            </GlassCard>
 
-            <Text style={styles.instructionText}>
+            <Typography variant="body" style={styles.instructionText} center>
               Take a moment to reflect on this question. When you're ready, 
               share your revelation with your partner.
-            </Text>
+            </Typography>
 
-            <TouchableOpacity 
-              style={styles.continueButton}
+            <SquishyButton 
               onPress={() => setGameState(prev => ({ ...prev, gamePhase: 'revelation' }))}
-              activeOpacity={0.8}
             >
-              <LinearGradient
-                colors={[COLORS.accentViolet, COLORS.accentRose]}
-                style={styles.continueButtonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.continueButtonText}>I'M READY TO SHARE</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+              <Typography variant="button">I'M READY TO SHARE</Typography>
+            </SquishyButton>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Revelation phase
-  if (gamePhase === 'revelation') {
+  if (gameState.gamePhase === 'revelation') {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout showHeader={false}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.revelationContainer}>
-            <Text style={styles.revelationTitle}>YOUR REVELATION</Text>
-            <Text style={styles.revelationPrompt}>
+            <Typography variant="h1" style={styles.revelationTitle} center>
+              YOUR REVELATION
+            </Typography>
+            <Typography variant="body" style={styles.revelationPrompt} center>
               Share your deepest word-wound below:
-            </Text>
+            </Typography>
             
             <View style={styles.revelationInputContainer}>
               <TextInput
@@ -334,109 +305,90 @@ const HeartOfTheMatterGameScreen = () => {
                 placeholderTextColor={COLORS.textSecondary}
                 multiline
                 numberOfLines={4}
-                value={gameState.partnerA Revelation}
+                value={gameState.partnerARevelation}
                 onChangeText={(text) => setGameState(prev => ({ 
                   ...prev, 
-                  partnerA Revelation: text 
+                  partnerARevelation: text 
                 }))}
               />
             </View>
 
-            <TouchableOpacity 
-              style={[
-                styles.submitButton,
-                !gameState.partnerA Revelation.trim() && styles.submitButtonDisabled
-              ]}
-              onPress={() => handleRevelationSubmit('A', gameState.partnerA Revelation)}
-              disabled={!gameState.partnerA Revelation.trim()}
-              activeOpacity={0.8}
+            <SquishyButton 
+              onPress={() => handleRevelationSubmit('A', gameState.partnerARevelation)}
+              disabled={!gameState.partnerARevelation.trim()}
             >
-              <LinearGradient
-                colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-                style={styles.submitButtonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.submitButtonText}>SUBMIT REVELATION</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+              <Typography variant="button">SUBMIT REVELATION</Typography>
+            </SquishyButton>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Analysis phase
-  if (gamePhase === 'analysis') {
+  if (gameState.gamePhase === 'analysis') {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout showHeader={false}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.analysisContainer}>
-            <Text style={styles.analysisTitle}>DR. MARCIE'S ANALYSIS</Text>
+            <Typography variant="h1" style={styles.analysisTitle} center>
+              DR. MARCIE'S ANALYSIS
+            </Typography>
             
             <View style={styles.marcieContainer}>
-              <Text style={styles.marcieAvatar}>👩‍⚕️</Text>
-              <Text style={styles.marcieName}>DR. MARCIE LISS</Text>
-              <View style={styles.marcieFeedbackContainer}>
-                <Text style={styles.marcieFeedback}>
+              <Typography variant="h1" style={styles.marcieAvatar}>👩‍⚕️</Typography>
+              <Typography variant="title" style={styles.marcieName} center>
+                DR. MARCIE LISS
+              </Typography>
+              <GlassCard style={styles.marcieFeedbackContainer}>
+                <Typography variant="body" style={styles.marcieFeedback} center>
                   "{gameState.marcieFeedback}"
-                </Text>
-              </View>
+                </Typography>
+              </GlassCard>
             </View>
 
             <View style={styles.revelationsContainer}>
-              <View style={styles.revelationCard}>
-                <Text style={styles.revelationPartner}>PARTNER A</Text>
-                <Text style={styles.revelationText}>
-                  "{gameState.partnerA Revelation}"
-                </Text>
-              </View>
+              <GlassCard style={styles.revelationCard}>
+                <Typography variant="caption" style={styles.revelationPartner}>
+                  PARTNER A
+                </Typography>
+                <Typography variant="body" style={styles.revelationText}>
+                  "{gameState.partnerARevelation}"
+                </Typography>
+              </GlassCard>
               
-              <View style={styles.revelationCard}>
-                <Text style={styles.revelationPartner}>PARTNER B</Text>
-                <Text style={styles.revelationText}>
+              <GlassCard style={styles.revelationCard}>
+                <Typography variant="caption" style={styles.revelationPartner}>
+                  PARTNER B
+                </Typography>
+                <Typography variant="body" style={styles.revelationText}>
                   "{gameState.partnerBRevelation}"
-                </Text>
-              </View>
+                </Typography>
+              </GlassCard>
             </View>
 
-            <TouchableOpacity 
-              style={styles.calculateButton}
-              onPress={calculateAlignment}
-              activeOpacity={0.8}
-            >
-              <LinearGradient
-                colors={[COLORS.accentTeal, COLORS.accentViolet]}
-                style={styles.calculateButtonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.calculateButtonText}>CALCULATE ALIGNMENT</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            <SquishyButton onPress={calculateAlignment}>
+              <Typography variant="button">CALCULATE ALIGNMENT</Typography>
+            </SquishyButton>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Results phase
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <LinearGradient 
-        colors={[COLORS.background, COLORS.surface]} 
-        style={styles.backgroundGradient}
-      />
+    <ScreenLayout showHeader={false}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.resultsContainer}>
-          <Text style={styles.resultsTitle}>ALIGNMENT RESULTS</Text>
+          <Typography variant="h1" style={styles.resultsTitle} center>
+            ALIGNMENT RESULTS
+          </Typography>
           
-          <View style={styles.alignmentMeterContainer}>
-            <Text style={styles.meterTitle}>SEMANTIC ALIGNMENT METER</Text>
+          <GlassCard style={styles.alignmentMeterContainer}>
+            <Typography variant="title" style={styles.meterTitle} center>
+              SEMANTIC ALIGNMENT METER
+            </Typography>
             <View style={styles.meterTrack}>
               <LinearGradient
                 colors={[COLORS.innerLineStart, COLORS.innerLineEnd]}
@@ -445,57 +397,43 @@ const HeartOfTheMatterGameScreen = () => {
                 end={{ x: 1, y: 0 }}
               />
             </View>
-            <Text style={styles.alignmentPercentage}>
+            <Typography variant="h1" style={styles.alignmentPercentage} center>
               {gameState.alignmentPercentage}%
-            </Text>
+            </Typography>
             <View style={styles.meterLabels}>
-              <Text style={styles.meterLabelText}>DISSONANCE</Text>
-              <Text style={styles.meterLabelText}>NEUTRAL</Text>
-              <Text style={[styles.meterLabelText, { color: COLORS.accentPink }]}>
+              <Typography variant="small" style={styles.meterLabelText}>
+                DISSONANCE
+              </Typography>
+              <Typography variant="small" style={styles.meterLabelText}>
+                NEUTRAL
+              </Typography>
+              <Typography variant="small" style={[styles.meterLabelText, { color: COLORS.accentPink }]}>
                 TRANSCENDENCE
-              </Text>
+              </Typography>
             </View>
-          </View>
+          </GlassCard>
 
-          <View style={styles.resultsCard}>
-            <Text style={styles.resultsText}>
+          <GlassCard style={styles.resultsCard}>
+            <Typography variant="body" style={styles.resultsText} center>
               {gameState.alignmentPercentage >= 80 
                 ? "Remarkable alignment! Your revelations show deep emotional resonance."
                 : gameState.alignmentPercentage >= 60
                 ? "Good alignment detected. There's meaningful connection in your truths."
                 : "Alignment challenges identified. This reveals important growth opportunities."
               }
-            </Text>
-          </View>
+            </Typography>
+          </GlassCard>
 
-          <TouchableOpacity 
-            style={styles.finishButton}
-            onPress={finishGame}
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-              style={styles.finishButtonGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            >
-              <Text style={styles.finishButtonText}>COMPLETE GAME</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+          <SquishyButton onPress={finishGame}>
+            <Typography variant="button">COMPLETE GAME</Typography>
+          </SquishyButton>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  backgroundGradient: {
-    ...StyleSheet.absoluteFillObject,
-  },
   scrollContent: {
     paddingBottom: SPACING.xl,
   },
@@ -505,7 +443,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
     marginTop: SPACING.md,
   },
@@ -517,57 +454,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gameTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.xs,
-    textTransform: 'uppercase',
   },
   gameSubtitle: {
-    ...TYPOGRAPHY.title,
     color: COLORS.textSecondary,
-    textAlign: 'center',
     marginBottom: SPACING.xl,
   },
   introCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
     marginBottom: SPACING.lg,
   },
   introText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textPrimary,
     marginBottom: SPACING.md,
-    lineHeight: 22,
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
   },
   introWarning: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.accentYellow,
-    fontWeight: '600',
-  },
-  startButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 5,
-    shadowColor: COLORS.primaryGradientStart,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-  },
-  startButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  startButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
   },
   
   // Question styles
@@ -577,64 +480,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   questionTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.sm,
-    textTransform: 'uppercase',
   },
   mainQuestion: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.xl,
-    textTransform: 'uppercase',
   },
   italicPrimary: {
     fontStyle: 'italic',
     color: COLORS.primaryGradientStart,
   },
   questionCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
     marginBottom: SPACING.lg,
   },
   questionText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textPrimary,
-    textAlign: 'center',
-    lineHeight: 22,
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
   },
   instructionText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
-    textAlign: 'center',
     marginBottom: SPACING.xl,
-    lineHeight: 22,
-  },
-  continueButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 4,
-    shadowColor: COLORS.accentViolet,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-  },
-  continueButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  continueButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
   },
   
   // Revelation styles
@@ -643,55 +508,26 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.xl,
   },
   revelationTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.sm,
-    textTransform: 'uppercase',
   },
   revelationPrompt: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
-    textAlign: 'center',
     marginBottom: SPACING.lg,
   },
   revelationInputContainer: {
     marginBottom: SPACING.xl,
   },
   revelationInput: {
-    ...TYPOGRAPHY.body,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    ...TYPOGRAPHY.fontFamily.regular,
+    backgroundColor: COLORS.backgroundInput,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: SIZES.borderRadius * 2,
+    borderColor: COLORS.borderSubtle,
+    borderRadius: BORDER_RADIUS.xlarge,
     padding: SPACING.lg,
     color: COLORS.textPrimary,
-    minHeight: 120,
+    minHeight: SPACING.xxxlarge * 2.5,
     textAlignVertical: 'top',
-  },
-  submitButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 5,
-    shadowColor: COLORS.primaryGradientStart,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-  },
-  submitButtonDisabled: {
-    opacity: 0.6,
-  },
-  submitButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  submitButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
   },
   
   // Analysis styles
@@ -700,82 +536,41 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.xl,
   },
   analysisTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.lg,
-    textTransform: 'uppercase',
   },
   marcieContainer: {
     alignItems: 'center',
     marginBottom: SPACING.lg,
   },
   marcieAvatar: {
-    fontSize: 48,
     marginBottom: SPACING.sm,
   },
   marcieName: {
-    ...TYPOGRAPHY.title,
-    color: COLORS.textPrimary,
     marginBottom: SPACING.sm,
-    textTransform: 'uppercase',
   },
   marcieFeedbackContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    padding: SPACING.md,
-    borderRadius: SIZES.borderRadius * 2,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: COLORS.borderSubtle,
   },
   marcieFeedback: {
-    ...TYPOGRAPHY.body,
     color: COLORS.accentRose,
     fontStyle: 'italic',
-    textAlign: 'center',
-    lineHeight: 22,
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
   },
   revelationsContainer: {
     marginBottom: SPACING.xl,
   },
   revelationCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.md,
     marginBottom: SPACING.md,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   revelationPartner: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.textSecondary,
     marginBottom: SPACING.xs,
-    textTransform: 'uppercase',
   },
   revelationText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textPrimary,
     fontStyle: 'italic',
-  },
-  calculateButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 4,
-    shadowColor: COLORS.accentTeal,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-  },
-  calculateButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  calculateButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
   },
   
   // Results styles
@@ -784,31 +579,18 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.xl,
   },
   resultsTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.lg,
-    textTransform: 'uppercase',
   },
   alignmentMeterContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
     marginBottom: SPACING.lg,
   },
   meterTitle: {
-    ...TYPOGRAPHY.title,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.md,
-    textTransform: 'uppercase',
   },
   meterTrack: {
-    height: 24,
+    height: SPACING.lg,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    borderRadius: 12,
+    borderRadius: BORDER_RADIUS.xlarge,
     overflow: 'hidden',
     marginBottom: SPACING.sm,
   },
@@ -816,10 +598,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   alignmentPercentage: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    fontSize: 32,
-    textAlign: 'center',
+    fontSize: TYPOGRAPHY.fontSize.displayLarge,
     marginBottom: SPACING.sm,
   },
   meterLabels: {
@@ -827,45 +606,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   meterLabelText: {
-    ...TYPOGRAPHY.small,
     color: COLORS.textSecondary,
-    textTransform: 'uppercase',
-    fontWeight: '600',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
   },
   resultsCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
     marginBottom: SPACING.xl,
   },
   resultsText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textPrimary,
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  finishButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 5,
-    shadowColor: COLORS.primaryGradientStart,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-  },
-  finishButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  finishButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
   },
 });
 

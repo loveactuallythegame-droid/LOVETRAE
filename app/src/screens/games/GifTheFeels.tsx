@@ -1,54 +1,94 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 export default function GifTheFeels({ navigation }: any) {
     useEffect(() => {
-        speakMarcie("You chose Distracted Boyfriend but swapped him for ‘Me ignoring my boundaries’? I respect it.");
+        speakMarcie("You chose Distracted Boyfriend but swapped him for 'Me ignoring my boundaries'? I respect it.");
     }, []);
 
     return (
-        <LinearGradient colors={['#2A0040', '#000000']} style={styles.container}>
-            <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.header}>
-                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-                        <Text variant="body">Back</Text>
-                    </SquishyButton>
-                    <Text variant="header" style={styles.title}>GIF the Feels</Text>
-                </View>
+        <ScreenLayout 
+            showHeader={false} 
+            scrollable={true}
+            contentStyle={styles.content}
+        >
+            <View style={styles.header}>
+                <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
+                    <Typography variant="body">Back</Typography>
+                </SquishyButton>
+                <Typography variant="h1" style={styles.title}>The Love Arcade</Typography>
+            </View>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Type: Giphy integration</Text>
-                    <Text variant="body">Mechanics: Prompt: “My face when you actually listen.” Submit best GIF.</Text>
-                </GlassCard>
+            <Typography variant="h2" style={styles.subtitle}>
+                +100 Games to Deepen Connection
+            </Typography>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Scoring</Text>
-                    <Text variant="body">
-                        ✅ Marcie picks “Most Relatable” = +15{'\n'}
-                        ✅ “Most Extra” = +10
-                    </Text>
-                </GlassCard>
+            <GlassCard style={styles.card}>
+                <Typography variant="caption" style={styles.cardLabel}>Type: Giphy integration</Typography>
+                <Typography variant="body">Mechanics: Prompt: "My face when you actually listen." Submit best GIF.</Typography>
+            </GlassCard>
 
-                <View style={styles.actionArea}>
-                    <SquishyButton onPress={() => alert('Opening Giphy...')} style={styles.playBtn}>
-                        <Text variant="header">Search GIFs</Text>
-                    </SquishyButton>
-                </View>
-            </ScrollView>
-        </LinearGradient>
+            <GlassCard style={styles.card}>
+                <Typography variant="caption" style={styles.cardLabel}>Scoring</Typography>
+                <Typography variant="body">
+                    ✅ Marcie picks "Most Relatable" = +15{'\n'}
+                    ✅ "Most Extra" = +10
+                </Typography>
+            </GlassCard>
+
+            <View style={styles.actionArea}>
+                <SquishyButton onPress={() => alert('Opening Giphy...')} style={styles.playBtn}>
+                    <Typography variant="h2">Search GIFs</Typography>
+                </SquishyButton>
+            </View>
+        </ScreenLayout>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
-    content: { padding: 20, gap: 20 },
-    header: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 40 },
-    backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-    title: { fontSize: 22, color: '#fff', flex: 1 },
-    card: { padding: 20 },
-    actionArea: { marginTop: 40, alignItems: 'center' },
-    playBtn: { width: '80%', paddingVertical: 15, backgroundColor: '#FA1F63', borderRadius: 20, alignItems: 'center' }
+    content: {
+        padding: SPACING.screenPadding,
+        gap: SPACING.large,
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.small,
+        marginTop: SPACING.xlarge,
+    },
+    backBtn: {
+        paddingHorizontal: SPACING.regular,
+        paddingVertical: SPACING.small,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+    },
+    title: {
+        color: COLORS.textPrimary,
+        flex: 1,
+    },
+    subtitle: {
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.medium,
+    },
+    card: {
+        padding: SPACING.cardPadding,
+    },
+    cardLabel: {
+        marginBottom: SPACING.small,
+        color: COLORS.textSecondary,
+    },
+    actionArea: {
+        marginTop: SPACING.xxlarge,
+        alignItems: 'center',
+    },
+    playBtn: {
+        width: '80%',
+        paddingVertical: SPACING.regular,
+        backgroundColor: COLORS.emotionalConnection,
+        borderRadius: BORDER_RADIUS.xxlarge,
+        alignItems: 'center',
+    },
 });

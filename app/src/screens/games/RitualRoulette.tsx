@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 const COMBOS = [
   "Wine + Stargazing + Poetry",
@@ -24,7 +26,7 @@ export default function RitualRoulette({ route, navigation }: any) {
         setResult(COMBOS[i % COMBOS.length]);
         i++;
         HapticFeedbackSystem.selection();
-    }, 100);
+    }, ANIMATIONS.duration.fast);
 
     setTimeout(() => {
         clearInterval(t);
@@ -33,7 +35,7 @@ export default function RitualRoulette({ route, navigation }: any) {
         setSpinning(false);
         speakMarcie(final);
         HapticFeedbackSystem.success();
-    }, 2000);
+    }, ANIMATIONS.duration.slower * 3);
   }
 
   function accept() {
@@ -41,17 +43,17 @@ export default function RitualRoulette({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <View style={{ alignItems: 'center', padding: 20 }}>
-            <Text variant="header" style={{ fontSize: 60 }}>🎰</Text>
-            <Text variant="sass" style={styles.res}>{result || "?"}</Text>
+        <View style={{ alignItems: 'center', padding: SPACING.large }}>
+            <Typography variant="h1" style={{ fontSize: TYPOGRAPHY.fontSize.displayLarge }}>🎰</Typography>
+            <Typography variant="sass" style={styles.res}>{result || "?"}</Typography>
             <SquishyButton onPress={spin} style={styles.btn} disabled={spinning}>
-                <Text variant="header">{spinning ? "Spinning..." : "Spin Wheel"}</Text>
+                <Typography variant="h2">{spinning ? "Spinning..." : "Spin Wheel"}</Typography>
             </SquishyButton>
             {result && !spinning && (
                 <SquishyButton onPress={accept} style={styles.accept}>
-                    <Text variant="header">Accept Fate</Text>
+                    <Typography variant="h2">Accept Fate</Typography>
                 </SquishyButton>
             )}
         </View>
@@ -71,11 +73,33 @@ export default function RitualRoulette({ route, navigation }: any) {
     playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
   }), [gameId]);
 
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  res: { fontSize: 24, textAlign: 'center', marginVertical: 20, color: '#E4E831', height: 60 },
-  btn: { backgroundColor: '#5C1459', padding: 16, borderRadius: 12, width: '100%', alignItems: 'center' },
-  accept: { marginTop: 12, backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, width: '100%', alignItems: 'center' },
+  res: { 
+    textAlign: 'center', 
+    marginVertical: SPACING.large, 
+    color: COLORS.creativeChaos, 
+    height: SPACING.xxxlarge 
+  },
+  btn: { 
+    backgroundColor: COLORS.healingHospital, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
+    width: '100%', 
+    alignItems: 'center' 
+  },
+  accept: { 
+    marginTop: SPACING.regular, 
+    backgroundColor: COLORS.success, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
+    width: '100%', 
+    alignItems: 'center' 
+  },
 });

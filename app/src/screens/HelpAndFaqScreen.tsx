@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
-  Text, 
   StyleSheet, 
   TextInput, 
-  TouchableOpacity, 
   ScrollView,
   Dimensions,
   Alert,
   Linking,
-  Platform
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS, TYPOGRAPHY, SPACING, SIZES } from '../theme';
-import { useNavigation } from '@react-navigation/native';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -44,38 +39,38 @@ const FaqItemComponent = ({
   onToggle: () => void; 
 }) => {
   return (
-    <View style={styles.faqItemContainer}>
-      <TouchableOpacity 
-        onPress={onToggle} 
+    <GlassCard style={styles.faqItemContainer} padding="none">
+      <SquishyButton 
+        variant="ghost"
         style={styles.faqQuestionRow}
-        activeOpacity={0.8}
-        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        onPress={onToggle}
       >
         <View style={styles.faqIconContainer}>
-          <Text style={[styles.faqIcon, { color: item.color }]}>{item.icon}</Text>
+          <Typography variant="h3" style={[styles.faqIcon, { color: item.color }]}>
+            {item.icon}
+          </Typography>
         </View>
-        <Text style={styles.faqQuestion} numberOfLines={2}>
+        <Typography variant="body" style={styles.faqQuestion} numberOfLines={2}>
           {item.question}
-        </Text>
-        <Text style={[
+        </Typography>
+        <Typography variant="body" style={[
           styles.faqToggle,
           isOpen && styles.faqToggleOpen
         ]}>
           {isOpen ? '▲' : '▼'}
-        </Text>
-      </TouchableOpacity>
+        </Typography>
+      </SquishyButton>
       
       {isOpen && (
         <View style={styles.faqAnswerContainer}>
-          <Text style={styles.faqAnswer}>{item.answer}</Text>
+          <Typography variant="body" style={styles.faqAnswer}>{item.answer}</Typography>
         </View>
       )}
-    </View>
+    </GlassCard>
   );
 };
 
 const HelpAndFaqScreen = () => {
-  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [openFaqId, setOpenFaqId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -203,133 +198,101 @@ const HelpAndFaqScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <LinearGradient
-        colors={[COLORS.background, COLORS.surface]}
-        style={styles.backgroundGradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+    <ScreenLayout showHeader={false}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
       >
-        <ScrollView 
-          contentContainerStyle={styles.scrollContainer}
-          showsVerticalScrollIndicator={false}
+        {/* Header */}
+        <View style={styles.header}>
+          <Typography variant="h1" style={styles.title} center>
+            HELP & FAQ
+          </Typography>
+          <Typography variant="body" style={styles.subtitle} center>
+            Find answers in the stars. Our cosmic support guide is here to help.
+          </Typography>
+        </View>
+
+        {/* Search Bar */}
+        <View style={styles.searchBar}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="SEARCH FOR ANSWERS..."
+            placeholderTextColor={COLORS.textHint}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            returnKeyType="search"
+          />
+        </View>
+
+        {/* Category Filter */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.categoryContainer}
+          contentContainerStyle={styles.categoryContent}
         >
-          {/* Header */}
-          <View style={styles.header}>
-            <Text style={styles.title}>HELP & FAQ</Text>
-            <Text style={styles.subtitle}>
-              Find answers in the stars. Our cosmic support guide is here to help.
-            </Text>
-          </View>
-
-          {/* Search Bar */}
-          <View style={styles.searchBar}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="SEARCH FOR ANSWERS..."
-              placeholderTextColor={COLORS.textSecondary}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              returnKeyType="search"
-            />
-          </View>
-
-          {/* Category Filter */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.categoryContainer}
-            contentContainerStyle={styles.categoryContent}
-          >
-            {categories.map(category => (
-              <TouchableOpacity
-                key={category.id}
-                style={[
-                  styles.categoryButton,
-                  selectedCategory === category.name && styles.activeCategoryButton
-                ]}
-                onPress={() => setSelectedCategory(category.name)}
-                activeOpacity={0.8}
-              >
-                <Text style={[
-                  styles.categoryIcon,
-                  { color: category.color }
-                ]}>
-                  {category.icon}
-                </Text>
-                <Text style={[
-                  styles.categoryText,
-                  selectedCategory === category.name && styles.activeCategoryText
-                ]}>
-                  {category.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-
-          {/* FAQ Items */}
-          <View style={styles.faqsContainer}>
-            {filteredFaqs.map(faq => (
-              <FaqItemComponent
-                key={faq.id}
-                item={faq}
-                isOpen={openFaqId === faq.id}
-                onToggle={() => handleFaqToggle(faq.id)}
-              />
-            ))}
-          </View>
-
-          {/* Contact Support Section */}
-          <View style={styles.contactSection}>
-            <Text style={styles.contactTitle}>STILL ORBITING THE ANSWER?</Text>
-            <Text style={styles.contactSubtitle}>
-              Our support team is active 24/7.
-            </Text>
-            <TouchableOpacity 
-              style={styles.contactButton}
-              onPress={handleContactSupport}
-              activeOpacity={0.8}
+          {categories.map(category => (
+            <SquishyButton
+              key={category.id}
+              variant={selectedCategory === category.name ? 'primary' : 'ghost'}
+              size="small"
+              onPress={() => setSelectedCategory(category.name)}
             >
-              <LinearGradient
-                colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-                style={styles.contactButtonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.contactButtonText}>EMAIL SUPPORT</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
+              <Typography variant="h3" style={[
+                styles.categoryIcon,
+                { color: category.color }
+              ]}>
+                {category.icon}
+              </Typography>
+              <Typography variant="caption" style={[
+                styles.categoryText,
+                selectedCategory === category.name && styles.activeCategoryText
+              ]}>
+                {category.name}
+              </Typography>
+            </SquishyButton>
+          ))}
         </ScrollView>
 
-        {/* Floating Chat Button */}
-        <TouchableOpacity
-          style={styles.chatButton}
-          onPress={handleChatPress}
-          activeOpacity={0.8}
-        >
-          <LinearGradient
-            colors={[COLORS.accentViolet, COLORS.accentRose]}
-            style={styles.chatButtonGradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            <Text style={styles.chatButtonText}>💬</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      </LinearGradient>
-    </SafeAreaView>
+        {/* FAQ Items */}
+        <View style={styles.faqsContainer}>
+          {filteredFaqs.map(faq => (
+            <FaqItemComponent
+              key={faq.id}
+              item={faq}
+              isOpen={openFaqId === faq.id}
+              onToggle={() => handleFaqToggle(faq.id)}
+            />
+          ))}
+        </View>
+
+        {/* Contact Support Section */}
+        <GlassCard style={styles.contactSection}>
+          <Typography variant="title" style={styles.contactTitle} center>
+            STILL ORBITING THE ANSWER?
+          </Typography>
+          <Typography variant="body" style={styles.contactSubtitle} center>
+            Our support team is active 24/7.
+          </Typography>
+          <SquishyButton onPress={handleContactSupport}>
+            <Typography variant="button">EMAIL SUPPORT</Typography>
+          </SquishyButton>
+        </GlassCard>
+      </ScrollView>
+
+      {/* Floating Chat Button */}
+      <SquishyButton
+        style={styles.chatButton}
+        onPress={handleChatPress}
+      >
+        <Typography variant="h2" style={styles.chatButtonText}>💬</Typography>
+      </SquishyButton>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  backgroundGradient: {
-    flex: 1,
-  },
   scrollContainer: {
     paddingBottom: SPACING.xxl,
   },
@@ -342,78 +305,56 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.sm,
-    textTransform: 'uppercase',
   },
   subtitle: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
-    textAlign: 'center',
     maxWidth: 300,
     alignSelf: 'center',
-    lineHeight: 22,
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
   },
   
   // Search Bar
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.xlarge,
     paddingHorizontal: SPACING.lg,
     marginHorizontal: SPACING.lg,
     marginBottom: SPACING.lg,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: COLORS.borderSubtle,
   },
   searchInput: {
-    ...TYPOGRAPHY.body,
+    ...TYPOGRAPHY.fontFamily.regular,
     flex: 1,
     color: COLORS.textPrimary,
-    height: 56, // Accessibility requirement
-    fontWeight: '600',
+    height: SPACING.xxlarge + SPACING.md,
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
     textTransform: 'uppercase',
+    fontSize: TYPOGRAPHY.fontSize.bodyMedium,
   },
   
   // Category Filter
   categoryContainer: {
-    maxHeight: 80,
+    maxHeight: SPACING.xxlarge * 2,
     marginBottom: SPACING.lg,
   },
   categoryContent: {
     paddingHorizontal: SPACING.lg,
   },
-  categoryButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    marginRight: SPACING.sm,
-    borderRadius: SIZES.borderRadius,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    minHeight: 44, // Accessibility requirement
-  },
-  activeCategoryButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderColor: COLORS.primaryGradientStart,
-  },
   categoryIcon: {
-    fontSize: 16,
+    fontSize: TYPOGRAPHY.fontSize.headerSmall,
     marginRight: SPACING.xs,
   },
   categoryText: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.textSecondary,
-    fontWeight: '500',
+    fontWeight: TYPOGRAPHY.fontWeight.medium,
   },
   activeCategoryText: {
     color: COLORS.textPrimary,
-    fontWeight: '600',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
   },
   
   // FAQ Items
@@ -422,10 +363,6 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   faqItemContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
     marginBottom: SPACING.md,
     overflow: 'hidden',
   },
@@ -434,25 +371,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: SPACING.md,
-    minHeight: 60, // Accessibility requirement
+    minHeight: SPACING.xxlarge + SPACING.md,
   },
   faqIconContainer: {
     marginRight: SPACING.sm,
   },
-  faqIcon: {
-    fontSize: 20,
-  },
+  faqIcon: {},
   faqQuestion: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textPrimary,
-    fontWeight: '600',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
     flex: 1,
     flexWrap: 'wrap',
   },
   faqToggle: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
-    fontSize: 16,
+    fontSize: TYPOGRAPHY.fontSize.bodyMedium,
     marginLeft: SPACING.sm,
   },
   faqToggleOpen: {
@@ -464,81 +397,35 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   faqAnswer: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
-    lineHeight: 22,
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
   },
   
   // Contact Section
   contactSection: {
     marginHorizontal: SPACING.lg,
     padding: SPACING.xl,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   contactTitle: {
-    ...TYPOGRAPHY.title,
-    color: COLORS.textPrimary,
     marginBottom: SPACING.xs,
-    textAlign: 'center',
-    textTransform: 'uppercase',
   },
   contactSubtitle: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
     marginBottom: SPACING.lg,
-    textAlign: 'center',
-  },
-  contactButton: {
-    borderRadius: SIZES.borderRadius * 2,
-    overflow: 'hidden',
-    elevation: 4,
-    shadowColor: COLORS.primaryGradientStart,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  contactButtonGradient: {
-    paddingHorizontal: SPACING.xl,
-    paddingVertical: SPACING.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 56, // Accessibility requirement
-  },
-  contactButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
   },
   
   // Floating Chat Button
   chatButton: {
     position: 'absolute',
-    bottom: 30,
-    right: 20,
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    overflow: 'hidden',
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    bottom: SPACING.xl,
+    right: SPACING.lg,
+    width: SPACING.xxlarge * 2,
+    height: SPACING.xxlarge * 2,
+    borderRadius: BORDER_RADIUS.round,
+    ...SHADOWS.large,
   },
-  chatButtonGradient: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  chatButtonText: {
-    fontSize: 24,
-  },
+  chatButtonText: {},
 });
 
 export default HelpAndFaqScreen;

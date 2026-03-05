@@ -1,8 +1,11 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { GlobalMarcieOverlay } from '../../components/GlobalMarcieOverlay';
 import { functions } from '../../services/firebase';
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 const AdminGlobalConfiguration = () => {
   const handleSaveChanges = async () => {
@@ -16,11 +19,15 @@ const AdminGlobalConfiguration = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Admin Global Configuration</Text>
-      <Button title="Save Changes" onPress={handleSaveChanges} />
-      <GlobalMarcieOverlay />
-    </View>
+    <ScreenLayout scrollable={false} showHeader={false}>
+      <View style={styles.container}>
+        <Typography variant="header" style={styles.title}>Admin Global Configuration</Typography>
+        <SquishyButton onPress={handleSaveChanges}>
+          <Typography variant="button">Save Changes</Typography>
+        </SquishyButton>
+        <GlobalMarcieOverlay />
+      </View>
+    </ScreenLayout>
   );
 };
 
@@ -32,8 +39,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'BarbieDream-Regular',
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: TYPOGRAPHY.fontSize.displaySmall,
+    marginBottom: SPACING.large,
   },
 });
 

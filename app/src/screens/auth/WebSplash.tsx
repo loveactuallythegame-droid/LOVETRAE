@@ -1,96 +1,59 @@
-
 import React from 'react';
-import { View, Image, StyleSheet, Pressable, Text, Linking } from 'react-native';
+import { View, Image, StyleSheet, Linking } from 'react-native';
 import { LOGO_IMAGES } from '../../constants/assetManifest';
-import { LinearGradient } from 'expo-linear-gradient';
-import { MarcieHost } from '../../components/ai-host';
+import { Typography, SquishyButton, RadialGradientBackground } from '../../components/ui';
+import { ScreenLayout } from '../../layout';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function WebSplash() {
   return (
-    <View style={styles.container}>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <RadialGradientBackground />
       <View style={styles.content}>
         <Image source={LOGO_IMAGES[0]} style={styles.logo} resizeMode="contain" />
-        <Text style={styles.title}>Love, Actually... The Game</Text>
-        <Text style={styles.subtitle}>How About We Don't Break Up?</Text>
+        <Typography variant="header" style={styles.title}>Love, Actually... The Game</Typography>
+        <Typography variant="body" style={styles.subtitle}>How About We Don't Break Up?</Typography>
         
         <View style={styles.buttons}>
-          <Pressable 
-            onPress={() => Linking.openURL('https://trae.ai')}
-            style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
-          >
-            <LinearGradient
-              colors={['#FA1F63', '#BE1980']}
-              start={{ x: 0, y: 0.5 }}
-              end={{ x: 1, y: 0.5 }}
-              style={styles.gradient}
-            >
-              <Text style={styles.buttonText}>Download App</Text>
-            </LinearGradient>
-          </Pressable>
+          <SquishyButton onPress={() => Linking.openURL('https://trae.ai')}>
+            <Typography variant="button">Download App</Typography>
+          </SquishyButton>
         </View>
         
-        <Text style={styles.footer}>Preview Mode • Web</Text>
+        <Typography variant="caption" style={styles.footer}>Preview Mode • Web</Typography>
       </View>
-      <MarcieHost mode={'idle'} size={180} float position={{ x: 0, y: 150 }} />
-    </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  content: {
     flex: 1,
-    backgroundColor: '#120016',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  content: {
-    alignItems: 'center',
-    gap: 24,
-    padding: 20,
+    gap: SPACING.xlarge,
+    padding: SPACING.screenPadding,
   },
   logo: {
     width: 200,
     height: 200,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FA1F63',
+    color: COLORS.vibrantPink,
     textAlign: 'center',
-    fontFamily: 'System', 
   },
   subtitle: {
-    fontSize: 18,
-    color: '#BE1980',
+    color: COLORS.romanceHub,
     textAlign: 'center',
-    marginBottom: 20,
-    fontFamily: 'System',
+    marginBottom: SPACING.large,
   },
   buttons: {
-    gap: 16,
+    gap: SPACING.regular,
     width: '100%',
     maxWidth: 300,
   },
-  button: {
-    borderRadius: 25,
-    overflow: 'hidden',
-  },
-  buttonPressed: {
-    opacity: 0.8,
-  },
-  gradient: {
-    paddingVertical: 14,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-  },
   footer: {
-    marginTop: 40,
-    color: 'rgba(255,255,255,0.3)',
-    fontSize: 12,
+    marginTop: SPACING.xxlarge,
+    color: COLORS.textHint,
   },
 });

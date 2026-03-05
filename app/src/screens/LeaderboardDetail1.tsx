@@ -1,101 +1,131 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import ScreenLayout from '../layout/ScreenLayout';
 
-const XPDisplay = ({ label, value, color, icon }) => (
-    <View style={styles.xpBox}>
-        <Text style={{fontSize: 20}}>{icon}</Text>
-        <View>
-            <Text style={styles.xpLabel}>{label}</Text>
-            <Text style={[styles.xpValue, { color }]}>{value}</Text>
-        </View>
+interface XPDisplayProps {
+  label: string;
+  value: string;
+  color: string;
+  icon: string;
+}
+
+const XPDisplay = ({ label, value, color, icon }: XPDisplayProps) => (
+  <GlassCard variant="outlined" style={styles.xpBox} padding="small">
+    <Typography variant="h3" center>{icon}</Typography>
+    <View>
+      <Typography variant="label" color={COLORS.textSecondary} center>{label}</Typography>
+      <Typography variant="body" color={color} center style={{ marginTop: SPACING.tiny }}>{value}</Typography>
     </View>
+  </GlassCard>
 );
 
 const PostRepairScreen = () => {
-    const rating = 4;
+  const rating = 4;
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient
-                colors={['#2A002A', '#5A005A']}
-                style={styles.background}
-            />
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <LinearGradient
+        colors={[COLORS.deepCosmic, COLORS.richPlum]}
+        style={styles.background}
+      />
 
-            <View style={styles.mainContent}>
-                <View style={styles.glassPanel}>
-                    <Text style={styles.subHeader}>REPAIR SESSION COMPLETE</Text>
-                    <Text style={styles.mainHeader}>DO YOU FEEL BETTER?</Text>
-                    <Text style={styles.description}>Take a moment to reflect on your progress together.</Text>
+      <View style={styles.mainContent}>
+        <GlassCard style={styles.glassPanel} padding="large">
+          <Typography variant="label" color={COLORS.textSecondary} center>
+            REPAIR SESSION COMPLETE
+          </Typography>
+          <Typography variant="h1" color={COLORS.textPrimary} center style={styles.mainHeader}>
+            DO YOU FEEL BETTER?
+          </Typography>
+          <Typography variant="body" color={COLORS.textSecondary} center style={styles.description}>
+            Take a moment to reflect on your progress together.
+          </Typography>
 
-                    <View style={styles.ratingContainer}>
-                        {[1, 2, 3, 4, 5].map((i) => (
-                            <TouchableOpacity key={i}>
-                                <Text style={[styles.star, i <= rating ? styles.filledStar : {}]}>★</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+          <View style={styles.ratingContainer}>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Typography 
+                key={i} 
+                variant="h1" 
+                color={i <= rating ? COLORS.brightYellow : COLORS.textDisabled}
+                center
+                style={i <= rating ? styles.filledStar : {}}
+              >
+                ★
+              </Typography>
+            ))}
+          </View>
 
-                    <TouchableOpacity style={styles.finishButton}>
-                        <Text style={styles.finishButtonText}>FINISH SESSION</Text>
-                    </TouchableOpacity>
-                     <TouchableOpacity>
-                        <Text style={styles.noteButton}>ADD A PRIVATE NOTE</Text>
-                    </TouchableOpacity>
-                </View>
+          <SquishyButton style={styles.finishButton}>
+            <Typography variant="button" color={COLORS.textPrimary} center>
+              FINISH SESSION
+            </Typography>
+          </SquishyButton>
+          
+          <SquishyButton variant="ghost" style={styles.noteButton}>
+            <Typography variant="label" color={COLORS.textSecondary} center>
+              ADD A PRIVATE NOTE
+            </Typography>
+          </SquishyButton>
+        </GlassCard>
 
-                <View style={styles.xpContainer}>
-                    <XPDisplay label="CONNECTION" value="+250 XP" color="#FFD700" icon="🤝"/>
-                    <XPDisplay label="INSIGHT" value="+120 XP" color="#00FFFF" icon="💡"/>
-                    <XPDisplay label="HARMONY" value="LEVEL UP!" color="#FF4081" icon="🎶"/>
-                </View>
-            </View>
-        </SafeAreaView>
-    );
+        <View style={styles.xpContainer}>
+          <XPDisplay label="CONNECTION" value="+250 XP" color={COLORS.brightYellow} icon="🤝"/>
+          <XPDisplay label="INSIGHT" value="+120 XP" color={COLORS.info} icon="💡"/>
+          <XPDisplay label="HARMONY" value="LEVEL UP!" color={COLORS.vibrantPink} icon="🎶"/>
+        </View>
+      </View>
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
-    background: { ...StyleSheet.absoluteFillObject },
-    mainContent: { flex: 1, justifyContent: 'center', padding: 24 },
-    glassPanel: {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 24,
-        padding: 32,
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'rgba(255, 64, 129, 0.5)',
-    },
-    subHeader: { color: '#D1C4E9', textTransform: 'uppercase', letterSpacing: 3, marginBottom: 8, fontWeight: 'bold' },
-    mainHeader: { color: '#FFF', fontSize: 36, fontWeight: 'bold', marginBottom: 8, textTransform: 'uppercase' },
-    description: { color: '#D1C4E9', fontSize: 16, textAlign: 'center', marginBottom: 24 },
-    ratingContainer: { flexDirection: 'row', gap: 16, marginBottom: 24 },
-    star: { fontSize: 40, color: 'rgba(255,255,255,0.2)' },
-    filledStar: { color: '#FFD700', textShadowColor: '#FFD700', textShadowRadius: 8 },
-    finishButton: {
-        width: '100%',
-        padding: 20,
-        borderRadius: 16,
-        backgroundColor: '#FF4081',
-    },
-    finishButtonText: { color: '#FFF', fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', letterSpacing: 1 },
-    noteButton: { color: '#D1C4E9', marginTop: 16, textTransform: 'uppercase', letterSpacing: 1, fontSize: 12, fontWeight: 'bold' },
-    xpContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 24, gap: 16 },
-    xpBox: {
-        flex: 1,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 12,
-        padding: 16,
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'rgba(255, 64, 129, 0.5)',
-        flexDirection: 'row',
-        gap: 8,
-    },
-    xpLabel: { color: '#D1C4E9', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 'bold' },
-    xpValue: { fontSize: 14, fontWeight: 'bold', marginTop: 4 },
+  background: { ...StyleSheet.absoluteFillObject },
+  mainContent: { 
+    flex: 1, 
+    justifyContent: 'center', 
+    padding: SPACING.screenPadding 
+  },
+  glassPanel: {
+    alignItems: 'center',
+  },
+  mainHeader: { 
+    marginTop: SPACING.regular,
+    marginBottom: SPACING.small 
+  },
+  description: { 
+    marginBottom: SPACING.xlarge 
+  },
+  ratingContainer: { 
+    flexDirection: 'row', 
+    gap: SPACING.regular, 
+    marginBottom: SPACING.xlarge 
+  },
+  filledStar: { 
+    textShadowColor: COLORS.brightYellow, 
+    textShadowRadius: SPACING.small 
+  },
+  finishButton: {
+    width: '100%',
+    marginBottom: SPACING.regular,
+  },
+  noteButton: {
+    marginTop: SPACING.regular,
+  },
+  xpContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    marginTop: SPACING.xlarge, 
+    gap: SPACING.regular 
+  },
+  xpBox: {
+    flex: 1,
+    alignItems: 'center',
+  },
 });
 
 export default PostRepairScreen;

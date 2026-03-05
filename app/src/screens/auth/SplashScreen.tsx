@@ -1,16 +1,13 @@
-
 import { useEffect, useState, useRef } from 'react';
-import { View, Image, StyleSheet, Platform, Pressable } from 'react-native';
+import { View, Image, StyleSheet, Platform } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
 import { Asset } from 'expo-asset';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing, FadeIn } from 'react-native-reanimated';
-import { GlassCard, Text } from '../../components/ui';
-import { MarcieHost } from '../../components/ai-host';
-import { LOGO_IMAGES, INTRO_VIDEO } from '../../constants/assetManifest';
+import { GlassCard, Typography, RadialGradientBackground, SquishyButton } from '../../components/ui';
+import { ScreenLayout } from '../../layout';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 type SplashScreenProps = {
   onStart: () => void;
@@ -46,11 +43,8 @@ export default function SplashScreen({ onStart, onLogin }: SplashScreenProps) {
   const animatedFloatStyle = useAnimatedStyle(() => ({ transform: [{ translateY: float.value }] }));
 
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={['#0f0a0c', '#230f19', '#392830']}
-        style={styles.background}
-      />
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <RadialGradientBackground />
       
       {!videoFinished ? (
         <Video
@@ -69,51 +63,40 @@ export default function SplashScreen({ onStart, onLogin }: SplashScreenProps) {
       ) : (
         <Animated.View style={styles.contentContainer} entering={FadeIn.duration(1000)}>
             <View style={styles.header}>
-                <Image source={require('../../../public/logos/logo-light.png')} style={styles.headerLogo} />
+                <Image source={require('../../../public/logos/logo-light.png')} style={styles.headerLogo} resizeMode="contain" />
             </View>
 
             <View style={styles.centerContent}>
                 <Animated.View style={[styles.logoContainer, animatedFloatStyle]}>
                     <Image source={require('../../../public/logos/logo-symbol-glow.png')} style={styles.logo} resizeMode="contain" />
                 </Animated.View>
-                <Text style={styles.gameTitle}>LOVE ACTUALLY...</Text>
-                <Text style={styles.tagline}>The game for couples who want to fight better.</Text>
+                <Typography variant="gameTitle" style={styles.gameTitle}>LOVE ACTUALLY...</Typography>
+                <Typography variant="body" style={styles.tagline}>The game for couples who want to fight better.</Typography>
             </View>
 
-            <Pressable onPress={() => { Haptics.selectionAsync(); onStart(); }} style={styles.startButton}>
+            <SquishyButton onPress={() => { Haptics.selectionAsync(); onStart(); }} style={styles.startButton}>
                 <Animated.View style={animatedPulseStyle}>
-                    <Text style={styles.pressStart}>PRESS TO START</Text>
+                    <Typography variant="button" style={styles.pressStart}>PRESS TO START</Typography>
                 </Animated.View>
-            </Pressable>
-
-            <MarcieHost mode={'idle'} size={150} float position={{ x: 0, y: 120 }} />
+            </SquishyButton>
 
             <View style={styles.footer}>
-                <Text style={styles.footerText}>A new way to connect.</Text>
+                <Typography variant="caption" style={styles.footerText}>A new way to connect.</Typography>
             </View>
         </Animated.View>
       )}
-    </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0a0708',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  background: {
-    ...StyleSheet.absoluteFillObject,
-  },
   contentContainer: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '100%',
-      paddingVertical: 50,
-      paddingHorizontal: 24,
+      paddingVertical: SPACING.xxlarge,
+      paddingHorizontal: SPACING.screenPadding,
   },
   header: {
       position: 'absolute',
@@ -131,39 +114,28 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
   },
   logoContainer: {
-    shadowColor: '#ee2b8c',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 30,
+    ...SHADOWS.neonStrong,
   },
   logo: {
     width: 200,
     height: 200,
   },
   gameTitle: {
-    fontFamily: 'WorkSans-Bold',
-    fontSize: 24,
+    marginTop: SPACING.large,
     letterSpacing: 8,
-    color: 'rgba(255,255,255,0.9)',
-    marginTop: 20,
   },
   tagline: {
-    fontFamily: 'SpaceGrotesk-Regular',
-    fontSize: 18,
-    color: 'rgba(255,255,255,0.6)',
-    marginTop: 10,
-    textAlign: 'center'
+    marginTop: SPACING.small,
+    textAlign: 'center',
+    color: COLORS.textSecondary,
   },
   startButton: {
       position: 'absolute',
       bottom: 120,
   },
   pressStart: {
-    fontFamily: 'SpaceGrotesk-Bold',
-    fontSize: 20,
-    letterSpacing: 4,
-    color: '#FFD700',
-    textShadowColor: '#FF8C00',
+    color: COLORS.brightYellow,
+    textShadowColor: COLORS.warmOrange,
     textShadowRadius: 15,
   },
   footer: {
@@ -171,8 +143,6 @@ const styles = StyleSheet.create({
       bottom: 50,
   },
   footerText: {
-      fontFamily: 'SpaceGrotesk-Regular',
-      fontSize: 12,
-      color: 'rgba(255,255,255,0.4)',
+      color: COLORS.textHint,
   }
 });

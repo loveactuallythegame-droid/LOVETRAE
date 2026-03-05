@@ -1,23 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   View, 
-  Text, 
   StyleSheet, 
-  SafeAreaView, 
   FlatList, 
-  TouchableOpacity, 
   ImageBackground, 
   TextInput,
   Dimensions,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  ScrollView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
-import { COLORS, TYPOGRAPHY, SPACING, SIZES } from '../theme';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 import { useGameStore } from '../lib/game-store';
 import { gamesApi } from '../lib/api';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -62,10 +59,10 @@ const GameCard = ({ item, onPress }: { item: Game; onPress: (game: Game) => void
   };
 
   return (
-    <TouchableOpacity 
+    <SquishyButton 
+      variant="ghost"
       style={styles.card}
       onPress={() => onPress(item)}
-      activeOpacity={0.8}
     >
       <ImageBackground 
         source={{ uri: item.image }} 
@@ -85,44 +82,49 @@ const GameCard = ({ item, onPress }: { item: Game; onPress: (game: Game) => void
             styles.statusBadge, 
             { backgroundColor: getStatusColor(item.status) }
           ]}>
-            <Text style={styles.statusText}>{item.status.toUpperCase()}</Text>
+            <Typography variant="small" style={styles.statusText}>
+              {item.status.toUpperCase()}
+            </Typography>
           </View>
         )}
 
         {/* Premium Badge */}
         {item.isPremium && (
           <View style={styles.premiumBadge}>
-            <Text style={styles.premiumText}>⭐ PREMIUM</Text>
+            <Typography variant="small" style={styles.premiumText}>
+              ⭐ PREMIUM
+            </Typography>
           </View>
         )}
         
         {/* Card Content */}
         <View style={styles.cardContent}>
-          <Text style={styles.cardTitle} numberOfLines={2}>
+          <Typography variant="h4" style={styles.cardTitle} numberOfLines={2}>
             {item.title.toUpperCase()}
-          </Text>
-          <Text style={styles.cardCategory} numberOfLines={1}>
+          </Typography>
+          <Typography variant="caption" style={styles.cardCategory} numberOfLines={1}>
             {item.category.toUpperCase()}
-          </Text>
+          </Typography>
           <View style={styles.cardFooter}>
-            <Text style={styles.cardTime}>⏱ {item.time} MIN</Text>
+            <Typography variant="small" style={styles.cardTime}>
+              ⏱ {item.time} MIN
+            </Typography>
             {item.difficulty && (
-              <Text style={[
+              <Typography variant="small" style={[
                 styles.cardDifficulty, 
                 { color: getDifficultyColor(item.difficulty) }
               ]}>
                 {item.difficulty.toUpperCase()}
-              </Text>
+              </Typography>
             )}
           </View>
         </View>
       </ImageBackground>
-    </TouchableOpacity>
+    </SquishyButton>
   );
 };
 
 const GameLibraryGridView = () => {
-  const navigation = useNavigation();
   const { gamesProgress, userStats } = useGameStore();
   
   const [activeTab, setActiveTab] = useState('All');
@@ -235,128 +237,103 @@ const GameLibraryGridView = () => {
   };
 
   const handleGamePress = (game: Game) => {
-    navigation.navigate('GamePlayScreen', { 
-      gameId: game.id,
-      gameTitle: game.title,
-      gameCategory: game.category
-    });
+    // navigation.navigate('GamePlayScreen', { 
+    //   gameId: game.id,
+    //   gameTitle: game.title,
+    //   gameCategory: game.category
+    // });
   };
 
   const renderTab = (tabName: string) => (
-    <TouchableOpacity
+    <SquishyButton
       key={tabName}
-      style={[
-        styles.tab, 
-        activeTab === tabName && styles.activeTab
-      ]}
+      variant={activeTab === tabName ? 'primary' : 'ghost'}
+      size="small"
       onPress={() => setActiveTab(tabName)}
-      activeOpacity={0.8}
-      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
     >
-      <Text style={[
-        styles.tabText, 
-        activeTab === tabName && styles.activeTabText
-      ]}>
+      <Typography variant="caption" style={activeTab === tabName ? styles.activeTabText : styles.tabText}>
         {tabName.toUpperCase()}
-      </Text>
-    </TouchableOpacity>
+      </Typography>
+    </SquishyButton>
   );
 
   const renderEmptyState = () => (
     <View style={styles.emptyState}>
-      <Text style={styles.emptyStateTitle}>No Games Found</Text>
-      <Text style={styles.emptyStateText}>
+      <Typography variant="h3" style={styles.emptyStateTitle}>No Games Found</Typography>
+      <Typography variant="body" style={styles.emptyStateText}>
         Try adjusting your search or browse a different category
-      </Text>
+      </Typography>
     </View>
   );
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient
-          colors={[COLORS.deepCosmicPurple, COLORS.richPlum]}
-          style={styles.backgroundGradient}
-        >
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={COLORS.primaryGradientStart} />
-            <Text style={styles.loadingText}>Loading games...</Text>
-          </View>
-        </LinearGradient>
-      </SafeAreaView>
+      <ScreenLayout showHeader={false}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.primaryGradientStart} />
+          <Typography variant="body" style={styles.loadingText}>Loading games...</Typography>
+        </View>
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <LinearGradient
-        colors={[COLORS.deepCosmicPurple, COLORS.richPlum]}
-        style={styles.backgroundGradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
-        {/* Header with Search */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Game Library</Text>
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="FIND A MINI-GAME..."
-              placeholderTextColor="rgba(255, 255, 255, 0.4)"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              returnKeyType="search"
-            />
-          </View>
+    <ScreenLayout showHeader={false}>
+      {/* Header with Search */}
+      <View style={styles.header}>
+        <Typography variant="h1" style={styles.headerTitle} center>
+          Game Library
+        </Typography>
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="FIND A MINI-GAME..."
+            placeholderTextColor={COLORS.textHint}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            returnKeyType="search"
+          />
         </View>
+      </View>
 
-        {/* Category Tabs */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.tabsContainer}
-          contentContainerStyle={styles.tabsContent}
-        >
-          {categories.map(renderTab)}
-        </ScrollView>
+      {/* Category Tabs */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.tabsContainer}
+        contentContainerStyle={styles.tabsContent}
+      >
+        {categories.map(renderTab)}
+      </ScrollView>
 
-        {/* Games Grid */}
-        <FlatList
-          data={filteredGames}
-          renderItem={({ item }) => (
-            <GameCard item={item} onPress={handleGamePress} />
-          )}
-          keyExtractor={item => item.id}
-          numColumns={2}
-          contentContainerStyle={[
-            styles.grid,
-            filteredGames.length === 0 && styles.emptyGrid
-          ]}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={handleRefresh}
-              colors={[COLORS.primaryGradientStart]}
-              tintColor={COLORS.primaryGradientStart}
-            />
-          }
-          ListEmptyComponent={renderEmptyState}
-        />
-      </LinearGradient>
-    </SafeAreaView>
+      {/* Games Grid */}
+      <FlatList
+        data={filteredGames}
+        renderItem={({ item }) => (
+          <GameCard item={item} onPress={handleGamePress} />
+        )}
+        keyExtractor={item => item.id}
+        numColumns={2}
+        contentContainerStyle={[
+          styles.grid,
+          filteredGames.length === 0 && styles.emptyGrid
+        ]}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            colors={[COLORS.primaryGradientStart]}
+            tintColor={COLORS.primaryGradientStart}
+          />
+        }
+        ListEmptyComponent={renderEmptyState}
+      />
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  backgroundGradient: {
-    flex: 1,
-  },
-  
   // Header
   header: {
     paddingHorizontal: SPACING.lg,
@@ -364,52 +341,37 @@ const styles = StyleSheet.create({
     paddingBottom: SPACING.md,
   },
   headerTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.md,
   },
   searchContainer: {
     position: 'relative',
   },
   searchInput: {
-    ...TYPOGRAPHY.body,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    ...TYPOGRAPHY.fontFamily.regular,
+    backgroundColor: COLORS.backgroundInput,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: SIZES.borderRadius * 2,
+    borderColor: COLORS.borderSubtle,
+    borderRadius: BORDER_RADIUS.xlarge,
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
     color: COLORS.textPrimary,
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: TYPOGRAPHY.fontSize.bodyMedium,
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
     textTransform: 'uppercase',
-    minHeight: 56, // Accessibility requirement
+    minHeight: SPACING.xxlarge + SPACING.md,
   },
   
   // Tabs
   tabsContainer: {
-    maxHeight: 60,
+    maxHeight: SPACING.xxlarge + SPACING.md,
   },
   tabsContent: {
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.sm,
   },
-  tab: {
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    marginRight: SPACING.sm,
-    borderRadius: SIZES.borderRadius,
-    minHeight: 44, // Accessibility requirement
-    justifyContent: 'center',
-  },
-  activeTab: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
   tabText: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.textSecondary,
-    fontWeight: '600',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
     textAlign: 'center',
   },
   activeTabText: {
@@ -430,22 +392,18 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     margin: SPACING.sm,
-    borderRadius: SIZES.borderRadius * 2,
+    borderRadius: BORDER_RADIUS.xlarge,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    borderColor: COLORS.borderSubtle,
+    ...SHADOWS.medium,
   },
   cardImage: {
-    height: 180,
+    height: SPACING.xxxlarge * 3.75,
     justifyContent: 'flex-end',
   },
   cardImageStyle: {
-    borderRadius: SIZES.borderRadius * 2,
+    borderRadius: BORDER_RADIUS.xlarge,
   },
   imageOverlay: {
     position: 'absolute',
@@ -453,19 +411,17 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    borderRadius: SIZES.borderRadius * 2,
+    borderRadius: BORDER_RADIUS.xlarge,
   },
   cardContent: {
     padding: SPACING.md,
   },
   cardTitle: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textPrimary,
-    fontWeight: 'bold',
-    marginBottom: 2,
+    fontWeight: TYPOGRAPHY.fontWeight.bold,
+    marginBottom: SPACING.xs / 2,
   },
   cardCategory: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.textSecondary,
     marginBottom: SPACING.xs,
   },
@@ -475,12 +431,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardTime: {
-    ...TYPOGRAPHY.small,
     color: COLORS.textSecondary,
   },
   cardDifficulty: {
-    ...TYPOGRAPHY.small,
-    fontWeight: '600',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
   },
   
   // Status Badge
@@ -489,18 +443,13 @@ const styles = StyleSheet.create({
     top: SPACING.sm,
     right: SPACING.sm,
     paddingHorizontal: SPACING.sm,
-    paddingVertical: 4,
-    borderRadius: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    paddingVertical: SPACING.tiny,
+    borderRadius: SPACING.md,
+    ...SHADOWS.small,
   },
   statusText: {
-    ...TYPOGRAPHY.small,
-    color: COLORS.background,
-    fontWeight: 'bold',
+    color: COLORS.backgroundPrimary,
+    fontWeight: TYPOGRAPHY.fontWeight.bold,
   },
   
   // Premium Badge
@@ -509,19 +458,14 @@ const styles = StyleSheet.create({
     top: SPACING.sm,
     left: SPACING.sm,
     paddingHorizontal: SPACING.sm,
-    paddingVertical: 4,
-    borderRadius: 12,
-    backgroundColor: COLORS.accentYellow,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    paddingVertical: SPACING.tiny,
+    borderRadius: SPACING.md,
+    backgroundColor: COLORS.brightYellow,
+    ...SHADOWS.small,
   },
   premiumText: {
-    ...TYPOGRAPHY.small,
-    color: COLORS.background,
-    fontWeight: 'bold',
+    color: COLORS.backgroundPrimary,
+    fontWeight: TYPOGRAPHY.fontWeight.bold,
   },
   
   // Loading State
@@ -531,7 +475,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
     marginTop: SPACING.md,
   },
@@ -544,16 +487,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.xl,
   },
   emptyStateTitle: {
-    ...TYPOGRAPHY.title,
     color: COLORS.textPrimary,
     marginBottom: SPACING.sm,
     textAlign: 'center',
   },
   emptyStateText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
     textAlign: 'center',
-    lineHeight: 22,
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyMedium,
   },
 });
 

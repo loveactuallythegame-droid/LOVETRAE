@@ -1,41 +1,238 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-  Alert
+  Alert,
+  Animated as RNAnimated,
+  Easing,
+  Image,
+  Dimensions,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 
-// Backend API imports
 import { userApi, coupleApi, gamesApi, User, Couple, GameCategory } from '../lib/api';
 import { auth } from '../lib/firebaseClient';
 
-// Component
+import TrustThermometer from '../components/ui/TrustThermometer';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import ScreenLayout from '../layout/ScreenLayout';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, ANIMATIONS, SHADOWS } from '../theme';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const AnimatedCard = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => {
+  const fadeAnim = useRef(new RNAnimated.Value(0)).current;
+  const slideAnim = useRef(new RNAnimated.Value(SPACING.xxlarge)).current;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      RNAnimated.parallel([
+        RNAnimated.timing(fadeAnim, {
+          toValue: 1,
+          duration: ANIMATIONS.duration.normal,
+          easing: Easing.out(Easing.cubic),
+          useNativeDriver: true,
+        }),
+        RNAnimated.timing(slideAnim, {
+          toValue: 0,
+          duration: ANIMATIONS.duration.normal,
+          easing: Easing.out(Easing.cubic),
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  return (
+    <RNAnimated.View
+      style={{
+        opacity: fadeAnim,
+        transform: [{ translateY: slideAnim }],
+      }}
+    >
+      {children}
+    </RNAnimated.View>
+  );
+};
+
+const AvatarWithRing = ({ 
+  imageUrl, 
+  size = SPACING.xxxlarge + SPACING.large, 
+  isOnline = false 
+}: { 
+  imageUrl?: string; 
+  size?: number;
+  isOnline?: boolean;
+}) => {
+  return (
+    <View style={[styles.avatarContainer, { width: size, height: size }]}>
+      <LinearGradient
+        colors={COLORS.connection}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[
+          styles.avatarRing,
+          { width: size, height: size, borderRadius: size / 2 },
+        ]}
+      />
+      
+      <View
+        style={[
+          styles.avatarInner,
+          { 
+            width: size - SPACING.tiny, 
+            height: size - SPACING.tiny, 
+            borderRadius: (size - SPACING.tiny) / 2,
+          },
+        ]}
+      >
+        {imageUrl ? (
+          <Image
+            source={{ uri: imageUrl }}
+            style={{ width: '100%', height: '100%', borderRadius: (size - SPACING.tiny) / 2 }}
+          />
+        ) : (
+          <View style={[styles.avatarPlaceholder, { backgroundColor: COLORS.midPurple }]}>
+            <Typography variant="h3" color={COLORS.textPrimary}>?</Typography>
+          </View>
+        )}
+      </View>
+      
+      {isOnline && (
+        <View style={[styles.onlineIndicator, { right: SPACING.tiny, bottom: SPACING.tiny }]} />
+      )}
+    </View>
+  );
+};
+
+const DailyQuestCard = ({ onPress }: { onPress?: () => void }) => {
+  return (
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
+      <GlassCard variant="elevated" style={styles.dailyQuestCard} padding="none">
+        <LinearGradient
+          colors={[COLORS.richPlum, COLORS.backgroundCard]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+        
+        <View style={styles.dailyQuestContent}>
+          <View style={styles.dailyQuestHeader}>
+            <View style={styles.dailyQuestIcon}>
+              <Typography variant="h3" center>⭐</Typography>
+            </View>
+            <View style={styles.dailyQuestText}>
+              <Typography variant="label" color={COLORS.textPrimary}>DAILY QUEST</Typography>
+              <Typography variant="caption" color={COLORS.textSecondary}>Complete to earn rewards</Typography>
+            </View>
+          </View>
+          
+          <View style={styles.questProgress}>
+            <View style={styles.questProgressBar}>
+              <LinearGradient
+                colors={COLORS.progress}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={[styles.questProgressFill, { width: '60%' }]}
+              />
+            </View>
+            <Typography variant="caption" color={COLORS.textSecondary}>3/5 completed</Typography>
+          </View>
+        </View>
+      </GlassCard>
+    </TouchableOpacity>
+  );
+};
+
+const TabItem = ({ 
+  icon, 
+  label, 
+  isActive = false, 
+  onPress 
+}: { 
+  icon: string; 
+  label: string; 
+  isActive?: boolean;
+  onPress?: () => void;
+}) => (
+  <TouchableOpacity 
+    style={[styles.tabItem, isActive && styles.tabItemActive]} 
+    onPress={onPress}
+  >
+    <Typography variant="body" color={isActive ? COLORS.textPrimary : COLORS.textSecondary} center>{icon}</Typography>
+    <Typography 
+      variant="caption" 
+      color={isActive ? COLORS.vibrantPink : COLORS.textSecondary} 
+      center
+      style={{ marginTop: SPACING.tiny }}
+    >
+      {label}
+    </Typography>
+    {isActive && <View style={styles.tabIndicator} />}
+  </TouchableOpacity>
+);
+
+const SOSButton = ({ onPress }: { onPress?: () => void }) => {
+  const pulseAnim = useRef(new RNAnimated.Value(1)).current;
+
+  useEffect(() => {
+    RNAnimated.loop(
+      RNAnimated.sequence([
+        RNAnimated.timing(pulseAnim, {
+          toValue: 1.1,
+          duration: 1000,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        RNAnimated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 1000,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, []);
+
+  return (
+    <RNAnimated.View
+      style={[
+        styles.sosButtonContainer,
+        { transform: [{ scale: pulseAnim }] },
+      ]}
+    >
+      <SquishyButton onPress={onPress} style={styles.sosButton}>
+        <Typography variant="label" color={COLORS.textPrimary}>SOS</Typography>
+      </SquishyButton>
+    </RNAnimated.View>
+  );
+};
+
 const HomeScreen = () => {
   const navigation = useNavigation();
   
-  // State for user and couple data from backend
   const [user, setUser] = useState<User | null>(null);
   const [couple, setCouple] = useState<Couple | null>(null);
   const [categories, setCategories] = useState<GameCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('home');
 
-  // Fetch data from backend on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Get current Firebase user and token
         const currentUser = auth.currentUser;
         if (!currentUser) {
           setError('Not authenticated');
@@ -45,16 +242,10 @@ const HomeScreen = () => {
 
         const token = await currentUser.getIdToken();
 
-        // ============================================
-        // FETCH USER DATA FROM BACKEND
-        // ============================================
         const userData = await userApi.get(currentUser.uid, token);
         setUser(userData);
         console.log('✅ User data fetched from backend:', userData.display_name);
 
-        // ============================================
-        // FETCH COUPLE DATA FROM BACKEND (if linked)
-        // ============================================
         if (userData.couple_id) {
           try {
             const coupleData = await coupleApi.get(userData.couple_id, token);
@@ -62,13 +253,9 @@ const HomeScreen = () => {
             console.log('✅ Couple data fetched from backend');
           } catch (coupleErr) {
             console.error('Failed to fetch couple data:', coupleErr);
-            // Don't fail entirely if couple data fails
           }
         }
 
-        // ============================================
-        // FETCH GAME CATEGORIES FROM BACKEND
-        // ============================================
         const categoriesData = await gamesApi.getCategories();
         setCategories(categoriesData.categories);
         console.log(`✅ ${categoriesData.categories.length} game categories fetched from backend`);
@@ -77,7 +264,6 @@ const HomeScreen = () => {
         console.error('❌ Error fetching data:', err);
         setError(err.message || 'Failed to load data');
         
-        // Show alert for critical errors
         Alert.alert(
           'Connection Error',
           'Could not connect to the game server. Please try again.',
@@ -91,116 +277,181 @@ const HomeScreen = () => {
     fetchData();
   }, []);
 
-  // Navigate to game category
   const handleCategoryPress = (category: GameCategory) => {
     navigation.navigate('GameLibrary', {
       categoryId: category.id,
-      categoryName: category.name
+      categoryName: category.name,
     });
   };
 
-  // Navigate to couple linking if not linked
   const handleLinkPartner = () => {
     navigation.navigate('CoupleLinking');
   };
 
-  // Show loading state
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
+      <ScreenLayout showHeader={false} scrollable={false}>
+        <LinearGradient colors={[COLORS.deepCosmic, COLORS.nightSky]} style={styles.background} />
         <View style={styles.centerContent}>
-          <ActivityIndicator size="large" color="#db147c" />
-          <Text style={styles.loadingText}>Loading your love data...</Text>
+          <ActivityIndicator size="large" color={COLORS.vibrantPink} />
+          <Typography variant="body" color={COLORS.textPrimary} style={{ marginTop: SPACING.large }}>
+            Loading your love data...
+          </Typography>
         </View>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
-  // Show error state
   if (error && !user) {
     return (
-      <SafeAreaView style={styles.container}>
-        <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
+      <ScreenLayout showHeader={false} scrollable={false}>
+        <LinearGradient colors={[COLORS.deepCosmic, COLORS.nightSky]} style={styles.background} />
         <View style={styles.centerContent}>
-          <Text style={styles.errorText}>Unable to load data</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.retryButtonText}>Go to Login</Text>
-          </TouchableOpacity>
+          <Typography variant="h3" color={COLORS.error} center style={{ marginBottom: SPACING.large }}>
+            Unable to load data
+          </Typography>
+          <SquishyButton onPress={() => navigation.navigate('Login')}>
+            <Typography variant="button" color={COLORS.textPrimary}>Go to Login</Typography>
+          </SquishyButton>
         </View>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <LinearGradient
+        colors={[COLORS.deepCosmic, COLORS.nightSky]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={styles.background}
+      />
       
-      <ScrollView style={styles.scrollView}>
-        {/* Header Section */}
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.greeting}>Welcome back, {user?.display_name || 'Player'}!</Text>
+          <View style={styles.headerTop}>
+            <View>
+              <Typography variant="body" color={COLORS.textSecondary}>Welcome back,</Typography>
+              <Typography variant="h2" color={COLORS.textPrimary}>{user?.display_name || 'Player'}!</Typography>
+            </View>
+            <AvatarWithRing size={SPACING.xxxlarge + SPACING.large} isOnline={true} />
+          </View>
           
           {couple ? (
-            <View style={styles.coupleInfo}>
-              <Text style={styles.coupleText}>Connected with partner ❤️</Text>
-              <Text style={styles.statsText}>
-                Trust: {Math.round((couple.trust_meter || 0) * 100)}% |
-                Romance: {Math.round((couple.romance_meter || 0) * 100)}%
-              </Text>
-            </View>
+            <GlassCard variant="outlined" style={styles.coupleInfo} padding="medium">
+              <View style={styles.coupleAvatars}>
+                <AvatarWithRing size={SPACING.xxlarge} />
+                <View style={styles.connectionLine}>
+                  <Typography variant="body">💕</Typography>
+                </View>
+                <AvatarWithRing size={SPACING.xxlarge} />
+              </View>
+              <Typography variant="body" color={COLORS.textSecondary}>Connected with partner</Typography>
+            </GlassCard>
           ) : (
-            <TouchableOpacity style={styles.linkButton} onPress={handleLinkPartner}>
-              <Text style={styles.linkButtonText}>🔗 Link with Your Partner</Text>
-            </TouchableOpacity>
+            <SquishyButton onPress={handleLinkPartner} style={styles.linkButton}>
+              <Typography variant="button" color={COLORS.textPrimary}>🔗 Link with Your Partner</Typography>
+            </SquishyButton>
           )}
         </View>
 
-        {/* Game Categories Section */}
+        <View style={styles.thermometerSection}>
+          <View style={styles.thermometerHeader}>
+            <Typography variant="h4" color={COLORS.textPrimary}>Trust Thermometer</Typography>
+            <Typography variant="caption" color={COLORS.textSecondary}>Your relationship health</Typography>
+          </View>
+          <View style={styles.thermometerContainer}>
+            <TrustThermometer
+              level={couple?.trust_meter || 0.5}
+              width={SPACING.xxlarge + SPACING.large}
+              height={SPACING.xxxlarge * 5}
+              showPercentage={true}
+              weeklyChange={couple?.trust_weekly_change}
+            />
+          </View>
+        </View>
+
+        <View style={styles.questSection}>
+          <DailyQuestCard onPress={() => navigation.navigate('DailyQuest')} />
+        </View>
+
         <View style={styles.categoriesSection}>
-          <Text style={styles.sectionTitle}>Choose Your Adventure</Text>
+          <Typography variant="h4" color={COLORS.textPrimary} style={{ marginBottom: SPACING.regular }}>
+            Choose Your Adventure
+          </Typography>
           
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category.id}
-              style={[styles.categoryCard, { borderLeftColor: category.color }]}
-              onPress={() => handleCategoryPress(category)}
-            >
-              <Text style={styles.categoryIcon}>{category.icon}</Text>
-              <View style={styles.categoryInfo}>
-                <Text style={styles.categoryName}>{category.name}</Text>
-                <Text style={styles.categoryDescription}>{category.description}</Text>
-                <Text style={styles.gameCount}>{category.games.length} games</Text>
-              </View>
-            </TouchableOpacity>
+          {categories.map((category, index) => (
+            <AnimatedCard key={category.id} delay={index * 100}>
+              <TouchableOpacity
+                style={[styles.categoryCard, { borderLeftColor: category.color }]}
+                onPress={() => handleCategoryPress(category)}
+                activeOpacity={0.8}
+              >
+                <BlurView intensity={10} tint="dark" style={StyleSheet.absoluteFill} />
+                <Typography variant="h2">{category.icon}</Typography>
+                <View style={styles.categoryInfo}>
+                  <Typography variant="h4" color={COLORS.textPrimary}>{category.name}</Typography>
+                  <Typography variant="caption" color={COLORS.textSecondary}>{category.description}</Typography>
+                  <Typography variant="label" color={COLORS.vibrantPink} style={{ marginTop: SPACING.tiny }}>
+                    {category.games.length} games
+                  </Typography>
+                </View>
+                <Typography variant="h4" color={COLORS.textSecondary}>→</Typography>
+              </TouchableOpacity>
+            </AnimatedCard>
           ))}
         </View>
 
-        {/* Quick Actions */}
-        <View style={styles.actionsSection}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => navigation.navigate('SOS')}
-          >
-            <Text style={styles.actionButtonText}>🆘 SOS - Fight Resolution</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => navigation.navigate('MarcieChat')}
-          >
-            <Text style={styles.actionButtonText}>💬 Chat with Dr. Marcie</Text>
-          </TouchableOpacity>
-        </View>
+        <View style={styles.bottomSpacer} />
       </ScrollView>
-    </SafeAreaView>
+
+      <SOSButton onPress={() => navigation.navigate('SOS')} />
+
+      <View style={styles.tabBar}>
+        <BlurView intensity={30} tint="dark" style={StyleSheet.absoluteFill} />
+        <TabItem 
+          icon="🏠" 
+          label="Home" 
+          isActive={activeTab === 'home'}
+          onPress={() => setActiveTab('home')}
+        />
+        <TabItem 
+          icon="🎮" 
+          label="Games" 
+          isActive={activeTab === 'games'}
+          onPress={() => setActiveTab('games')}
+        />
+        <TabItem 
+          icon="📊" 
+          label="Progress" 
+          isActive={activeTab === 'progress'}
+          onPress={() => setActiveTab('progress')}
+        />
+        <View style={styles.tabSpacer} />
+        <TabItem 
+          icon="🏆" 
+          label="Rewards" 
+          isActive={activeTab === 'rewards'}
+          onPress={() => setActiveTab('rewards')}
+        />
+        <TabItem 
+          icon="💬" 
+          label="Chat" 
+          isActive={activeTab === 'chat'}
+          onPress={() => setActiveTab('chat')}
+        />
+        <TabItem 
+          icon="⚙️" 
+          label="Settings" 
+          isActive={activeTab === 'settings'}
+          onPress={() => setActiveTab('settings')}
+        />
+      </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   background: {
     ...StyleSheet.absoluteFillObject,
   },
@@ -211,126 +462,171 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: SPACING.xlarge,
   },
   header: {
-    padding: 20,
-    paddingTop: 40,
+    padding: SPACING.screenPadding,
+    paddingTop: SPACING.large,
   },
-  greeting: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FFF',
-    marginBottom: 10,
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: SPACING.regular,
+  },
+  avatarContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  avatarRing: {
+    position: 'absolute',
+    ...SHADOWS.neonSoft,
+  },
+  avatarInner: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  avatarPlaceholder: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  onlineIndicator: {
+    position: 'absolute',
+    width: SPACING.medium + SPACING.tiny,
+    height: SPACING.medium + SPACING.tiny,
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.mintGreen,
+    borderWidth: SPACING.tiny,
+    borderColor: COLORS.deepCosmic,
   },
   coupleInfo: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    padding: 15,
-    borderRadius: 12,
-    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  coupleText: {
-    fontSize: 16,
-    color: '#FF69B4',
-    fontWeight: '600',
+  coupleAvatars: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: SPACING.regular,
   },
-  statsText: {
-    fontSize: 14,
-    color: '#CCC',
-    marginTop: 5,
+  connectionLine: {
+    marginHorizontal: SPACING.tiny,
   },
   linkButton: {
-    backgroundColor: '#db147c',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 25,
-    marginTop: 15,
     alignSelf: 'flex-start',
   },
-  linkButtonText: {
-    color: '#FFF',
-    fontSize: 14,
-    fontWeight: 'bold',
+  thermometerSection: {
+    paddingHorizontal: SPACING.screenPadding,
+    marginBottom: SPACING.xlarge,
+  },
+  thermometerHeader: {
+    marginBottom: SPACING.regular,
+  },
+  thermometerContainer: {
+    alignItems: 'flex-start',
+  },
+  questSection: {
+    paddingHorizontal: SPACING.screenPadding,
+    marginBottom: SPACING.xlarge,
+  },
+  dailyQuestCard: {
+    overflow: 'hidden',
+  },
+  dailyQuestContent: {
+    padding: SPACING.large,
+  },
+  dailyQuestHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: SPACING.regular,
+  },
+  dailyQuestIcon: {
+    width: SPACING.xxlarge + SPACING.large,
+    height: SPACING.xxlarge + SPACING.large,
+    borderRadius: BORDER_RADIUS.large,
+    backgroundColor: COLORS.vibrantPink,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.regular,
+  },
+  dailyQuestText: {
+    flex: 1,
+  },
+  questProgress: {
+    marginTop: SPACING.small,
+  },
+  questProgressBar: {
+    height: SPACING.small,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.small,
+    overflow: 'hidden',
+  },
+  questProgressFill: {
+    height: '100%',
+    borderRadius: BORDER_RADIUS.small,
   },
   categoriesSection: {
-    padding: 20,
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#FFF',
-    marginBottom: 15,
+    paddingHorizontal: SPACING.screenPadding,
+    paddingBottom: SPACING.xxlarge,
   },
   categoryCard: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    padding: 15,
-    borderRadius: 12,
-    marginBottom: 12,
-    borderLeftWidth: 4,
     alignItems: 'center',
-  },
-  categoryIcon: {
-    fontSize: 30,
-    marginRight: 15,
+    padding: SPACING.large,
+    borderRadius: BORDER_RADIUS.xlarge,
+    marginBottom: SPACING.regular,
+    borderLeftWidth: SPACING.tiny,
+    overflow: 'hidden',
   },
   categoryInfo: {
     flex: 1,
+    marginHorizontal: SPACING.regular,
   },
-  categoryName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF',
+  sosButtonContainer: {
+    position: 'absolute',
+    right: SPACING.screenPadding,
+    bottom: SPACING.xxxlarge * 3,
+    zIndex: 100,
   },
-  categoryDescription: {
-    fontSize: 14,
-    color: '#AAA',
-    marginTop: 4,
+  sosButton: {
+    width: SPACING.xxxlarge + SPACING.large,
+    height: SPACING.xxxlarge + SPACING.large,
+    borderRadius: BORDER_RADIUS.round,
+    ...SHADOWS.neonStrong,
   },
-  gameCount: {
-    fontSize: 12,
-    color: '#db147c',
-    marginTop: 4,
+  tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: SPACING.xxxlarge + SPACING.xxlarge,
+    paddingBottom: SPACING.large,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.divider,
   },
-  actionsSection: {
-    padding: 20,
-    paddingBottom: 40,
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: SPACING.xxlarge + SPACING.large,
   },
-  actionButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    padding: 15,
-    borderRadius: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+  tabItemActive: {
+    // Active state styling
   },
-  actionButtonText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
+  tabIndicator: {
+    position: 'absolute',
+    bottom: SPACING.small,
+    width: SPACING.tiny,
+    height: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.vibrantPink,
   },
-  loadingText: {
-    color: '#FFF',
-    marginTop: 15,
-    fontSize: 16,
+  tabSpacer: {
+    width: SPACING.xxxlarge + SPACING.large,
   },
-  errorText: {
-    color: '#FF6B6B',
-    fontSize: 18,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  retryButton: {
-    backgroundColor: '#db147c',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 25,
-  },
-  retryButtonText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+  bottomSpacer: {
+    height: SPACING.xxxlarge * 3,
   },
 });
 

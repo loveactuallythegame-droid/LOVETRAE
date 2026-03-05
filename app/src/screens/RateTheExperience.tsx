@@ -1,12 +1,16 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, TextInput } from 'react-native';
+import ScreenLayout from '../layout';
+import { Typography, SquishyButton, GlassCard } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
-const Star = ({ filled, onPress }) => (
-    <TouchableOpacity onPress={onPress}>
-        <Text style={[styles.star, {opacity: filled ? 1 : 0.2}]}>★</Text>
-    </TouchableOpacity>
+const Star = ({ filled, onPress }: { filled: boolean, onPress: () => void }) => (
+    <SquishyButton 
+        title="★" 
+        onPress={onPress} 
+        size="small"
+        style={[styles.star, {opacity: filled ? 1 : 0.2}]}
+    />
 );
 
 const RateTheExperienceScreen = () => {
@@ -14,136 +18,88 @@ const RateTheExperienceScreen = () => {
     const [feedback, setFeedback] = useState('');
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
-                <View style={styles.contentContainer}>
-                    <Text style={styles.title}>RATE THE EXPERIENCE</Text>
-                    <Text style={styles.subtitle}>Your feedback helps us bring more love to the universe.</Text>
+        <ScreenLayout scrollable={true}>
+            <GlassCard style={styles.contentContainer}>
+                <Typography variant="displayLarge" style={styles.title}>RATE THE EXPERIENCE</Typography>
+                <Typography variant="bodyMedium" style={styles.subtitle}>Your feedback helps us bring more love to the universe.</Typography>
 
-                    <View style={styles.starContainer}>
-                        {[1, 2, 3, 4, 5].map((index) => (
-                            <Star
-                                key={index}
-                                filled={index <= rating}
-                                onPress={() => setRating(index)}
-                            />
-                        ))}
-                    </View>
-
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="TELL US MORE ABOUT YOUR SESSION... (OPTIONAL)"
-                        placeholderTextColor="#D1C4E9"
-                        multiline
-                        value={feedback}
-                        onChangeText={setFeedback}
-                    />
-
-                    <TouchableOpacity style={styles.submitButton}>
-                       <LinearGradient
-                            colors={['#FF4081', '#E040FB']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 0 }}
-                            style={styles.buttonGradient}
-                        >
-                        <Text style={styles.submitButtonText}>SUBMIT FEEDBACK</Text>
-                        <Text style={{fontSize: 20}}>🚀</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity>
-                        <Text style={styles.maybeLaterText}>MAYBE LATER</Text>
-                    </TouchableOpacity>
+                <View style={styles.starContainer}>
+                    {[1, 2, 3, 4, 5].map((index) => (
+                        <Star
+                            key={index}
+                            filled={index <= rating}
+                            onPress={() => setRating(index)}
+                        />
+                    ))}
                 </View>
-            </LinearGradient>
-        </SafeAreaView>
+
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="TELL US MORE ABOUT YOUR SESSION... (OPTIONAL)"
+                    placeholderTextColor={COLORS.textSecondary}
+                    multiline
+                    value={feedback}
+                    onChangeText={setFeedback}
+                />
+
+                <SquishyButton 
+                    title="SUBMIT FEEDBACK 🚀" 
+                    onPress={() => {}} 
+                    style={styles.submitButton}
+                />
+
+                <SquishyButton 
+                    title="MAYBE LATER" 
+                    onPress={() => {}} 
+                    variant="ghost"
+                />
+            </GlassCard>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#2A002A' },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-    },
     contentContainer: {
         width: '100%',
         maxWidth: 640,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 24,
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'rgba(255, 64, 129, 0.5)',
     },
     title: {
-        color: '#fff',
-        fontSize: 32,
-        fontWeight: 'bold',
-        marginBottom: 8,
+        marginBottom: SPACING.small,
         textAlign: 'center',
         textTransform: 'uppercase',
     },
     subtitle: {
-        color: '#D1C4E9',
-        fontSize: 16,
-        marginBottom: 24,
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.xlarge,
         textAlign: 'center',
-        fontWeight: 'bold',
     },
     starContainer: {
         flexDirection: 'row',
-        marginBottom: 24,
+        marginBottom: SPACING.xlarge,
     },
     star: {
-        fontSize: 50,
-        color: '#FFD700',
-        textShadowColor: '#FFD700',
+        fontSize: TYPOGRAPHY.fontSize.displayLarge,
+        color: COLORS.brightYellow,
+        textShadowColor: COLORS.brightYellow,
         textShadowRadius: 8,
-        marginHorizontal: 5,
+        marginHorizontal: SPACING.tiny,
     },
     textInput: {
         width: '100%',
         minHeight: 120,
         backgroundColor: 'rgba(0,0,0,0.3)',
-        borderRadius: 16,
+        borderRadius: BORDER_RADIUS.xlarge,
         borderWidth: 1,
-        borderColor: 'rgba(255, 64, 129, 0.5)',
-        padding: 16,
-        color: '#fff',
-        fontSize: 16,
+        borderColor: COLORS.glowPink,
+        padding: SPACING.regular,
+        color: COLORS.textPrimary,
         textAlignVertical: 'top',
-        marginBottom: 24,
-        fontWeight: 'bold',
-        textTransform: 'uppercase',
+        marginBottom: SPACING.xlarge,
     },
     submitButton: {
         width: '100%',
-        height: 56,
-        borderRadius: 28,
-        overflow: 'hidden',
-        marginBottom: 12,
-    },
-    buttonGradient: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    submitButtonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginRight: 8,
-        textTransform: 'uppercase',
-    },
-    maybeLaterText: {
-        color: '#D1C4E9',
-        fontSize: 14,
-        fontWeight: 'bold',
-        textTransform: 'uppercase',
+        marginBottom: SPACING.regular,
     },
 });
 

@@ -1,21 +1,22 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, Animated } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, ANIMATIONS } from '../../theme';
 
 const rituals = [
-    { name: 'The Toast', icon: 'wine-bar', color: '#9213ec' },
-    { name: 'Reflection', icon: 'dark-mode', color: '#ff2d85' },
-    { name: 'Reading', icon: 'menu-book', color: '#1a1022' },
-    { name: 'Connection', icon: 'auto-awesome', color: '#00f5ff' },
-    { name: 'Generosity', icon: 'volunteer-activism', color: '#9213ec' },
-    { name: 'Creativity', icon: 'camera-alt', color: '#ff2d85' },
+    { name: 'The Toast', icon: 'wine-bar', color: COLORS.lavenderPurple },
+    { name: 'Reflection', icon: 'dark-mode', color: COLORS.blushPink },
+    { name: 'Reading', icon: 'menu-book', color: COLORS.deepCosmic },
+    { name: 'Connection', icon: 'auto-awesome', color: COLORS.aquaTeal },
+    { name: 'Generosity', icon: 'volunteer-activism', color: COLORS.lavenderPurple },
+    { name: 'Creativity', icon: 'camera-alt', color: COLORS.blushPink },
 ];
 
 const RitualRouletteGame = () => {
     const [spinAnim] = useState(new Animated.Value(0));
-    const [selectedRitual, setSelectedRitual] = useState(null);
+    const [selectedRitual, setSelectedRitual] = useState<typeof rituals[0] | null>(null);
 
     const spinWheel = () => {
         const randomNumber = Math.floor(Math.random() * rituals.length);
@@ -23,7 +24,7 @@ const RitualRouletteGame = () => {
 
         Animated.timing(spinAnim, {
             toValue,
-            duration: 4000,
+            duration: ANIMATIONS.duration.slower * 6,
             useNativeDriver: true,
         }).start(() => {
             setSelectedRitual(rituals[randomNumber]);
@@ -36,84 +37,152 @@ const RitualRouletteGame = () => {
     });
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#1a1022', '#221017']} style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    <Text style={styles.header}>Ritual Roulette</Text>
-                    <Text style={styles.subHeader}>Spin the wheel to discover your shared evening ritual.</Text>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <View style={styles.container}>
+                <Typography variant="h1" center style={styles.header}>Ritual Roulette</Typography>
+                <Typography variant="body" center style={styles.subHeader}>Spin the wheel to discover your shared evening ritual.</Typography>
 
-                    <View style={styles.gameContainer}>
-                        <View style={styles.wheelContainer}>
-                            <View style={styles.pointer}><MaterialIcons name="expand-more" size={40} color="#00f5ff" /></View>
-                            <Animated.View style={[styles.wheel, { transform: [{ rotate: spin }] }]}>
-                                {rituals.map((ritual, i) => (
-                                    <View key={i} style={[styles.wheelSection, { transform: [{ rotate: `${(360 / rituals.length) * i}deg` }] }]}>
-                                        <MaterialIcons name={ritual.icon} size={32} color="#fff" style={{ transform: [{ translateY: -150 }]}} />
-                                    </View>
-                                ))}
-                                <TouchableOpacity style={styles.spinButton} onPress={spinWheel} activeOpacity={0.8}>
-                                     <LinearGradient colors={['#ff2d85', '#f40b61']} style={styles.spinButtonGradient}>
-                                         <Text style={styles.spinButtonText}>SPIN</Text>
-                                     </LinearGradient>
-                                </TouchableOpacity>
-                            </Animated.View>
+                <View style={styles.gameContainer}>
+                    <View style={styles.wheelContainer}>
+                        <View style={styles.pointer}>
+                            <MaterialIcons name="expand-more" size={TYPOGRAPHY.fontSize.displayMedium} color={COLORS.aquaTeal} />
                         </View>
-
-                        <View style={styles.proofContainer}>
-                            <View style={styles.marcieCard}>
-                               <Text style={styles.marcieTitle}>Dr. Marcie Liss</Text>
-                               <Text style={styles.marcieComment}>"This ritual is a total 10/10 for you! It's going to unlock some amazing vibes tonight."</Text>
-                            </View>
-                            <View style={styles.logProofCard}>
-                                <Text style={styles.logProofTitle}>Log Proof</Text>
-                                <TouchableOpacity style={styles.uploadZone}>
-                                    <MaterialIcons name="add-a-photo" size={32} color="rgba(255,255,255,0.6)" />
-                                    <Text style={styles.uploadText}>Snap a photo together</Text>
-                                </TouchableOpacity>
-                                <Text style={styles.orText}>OR</Text>
-                                 <TouchableOpacity style={styles.voiceNoteZone}>
-                                    <MaterialIcons name="mic" size={24} color="#fff" />
-                                    <Text style={styles.voiceNoteText}>Record a Voice Note</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.submitButton}>
-                                    <Text style={styles.submitButtonText}>SUBMIT PROOF</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        <Animated.View style={[styles.wheel, { transform: [{ rotate: spin }] }]}>
+                            {rituals.map((ritual, i) => (
+                                <View key={i} style={[styles.wheelSection, { transform: [{ rotate: `${(360 / rituals.length) * i}deg` }] }]}>
+                                    <MaterialIcons name={ritual.icon as any} size={32} color={COLORS.textPrimary} style={{ transform: [{ translateY: -150 }]}} />
+                                </View>
+                            ))}
+                            <SquishyButton onPress={spinWheel} style={styles.spinButton}>
+                                <Typography variant="h2" style={styles.spinButtonText}>SPIN</Typography>
+                            </SquishyButton>
+                        </Animated.View>
                     </View>
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+
+                    <View style={styles.proofContainer}>
+                        <GlassCard>
+                            <Typography variant="h3" style={styles.marcieTitle}>Dr. Marcie Liss</Typography>
+                            <Typography variant="sass" style={styles.marcieComment}>"This ritual is a total 10/10 for you! It's going to unlock some amazing vibes tonight."</Typography>
+                        </GlassCard>
+                        <GlassCard style={styles.logProofCard}>
+                            <Typography variant="h3" style={styles.logProofTitle}>Log Proof</Typography>
+                            <TouchableOpacity style={styles.uploadZone}>
+                                <MaterialIcons name="add-a-photo" size={32} color={COLORS.textSecondary} />
+                                <Typography variant="body" style={styles.uploadText}>Snap a photo together</Typography>
+                            </TouchableOpacity>
+                            <Typography variant="caption" center style={styles.orText}>OR</Typography>
+                            <TouchableOpacity style={styles.voiceNoteZone}>
+                                <MaterialIcons name="mic" size={24} color={COLORS.textPrimary} />
+                                <Typography variant="body" style={styles.voiceNoteText}>Record a Voice Note</Typography>
+                            </TouchableOpacity>
+                            <SquishyButton onPress={() => {}}>
+                                <Typography variant="button">SUBMIT PROOF</Typography>
+                            </SquishyButton>
+                        </GlassCard>
+                    </View>
+                </View>
+            </View>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#1a1022' },
-    container: { flex: 1 },
-    scrollContent: { padding: 20 },
-    header: { color: '#fff', fontSize: 36, fontWeight: 'bold', textAlign: 'center' },
-    subHeader: { color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginBottom: 24 },
-    gameContainer: { flexDirection: 'row', justifyContent: 'space-between', gap: 24 },
-    wheelContainer: { flex: 1, alignItems: 'center' },
-    pointer: { position: 'absolute', top: -20, zIndex: 2 },
-    wheel: { width: 350, height: 350, borderRadius: 175, borderWidth: 12, borderColor: 'rgba(255,255,255,0.05)', backgroundColor: '#333', justifyContent: 'center', alignItems: 'center' },
-    wheelSection: { position: 'absolute', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' },
-    spinButton: { width: 100, height: 100, borderRadius: 50, justifyContent: 'center', alignItems: 'center', zIndex: 1 },
-    spinButtonGradient: { width: '100%', height: '100%', borderRadius: 50, justifyContent: 'center', alignItems: 'center', borderWidth: 4, borderColor: 'rgba(255,255,255,0.2)' },
-    spinButtonText: { color: '#fff', fontSize: 20, fontWeight: 'bold' },
-    proofContainer: { flex: 1, gap: 24 },
-    marcieCard: { backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 16 },
-    marcieTitle: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-    marcieComment: { color: 'rgba(255,255,255,0.8)', fontStyle: 'italic', fontSize: 18 },
-    logProofCard: { backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 16, gap: 16 },
-    logProofTitle: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-    uploadZone: { borderStyle: 'dashed', borderWidth: 2, borderColor: 'rgba(255,255,255,0.1)', borderRadius: 16, padding: 24, alignItems: 'center', gap: 8 },
-    uploadText: { color: 'rgba(255,255,255,0.6)' },
-    orText: { textAlign: 'center', color: 'rgba(255,255,255,0.2)', fontWeight: 'bold', fontSize: 10 },
-    voiceNoteZone: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 12, gap: 12 },
-    voiceNoteText: { color: '#fff' },
-    submitButton: { backgroundColor: '#f40b61', borderRadius: 16, padding: 16, alignItems: 'center' },
-    submitButtonText: { color: '#fff', fontWeight: 'bold' },
+    container: { 
+        padding: SPACING.screenPadding 
+    },
+    header: { 
+        marginBottom: SPACING.small 
+    },
+    subHeader: { 
+        color: COLORS.textSecondary, 
+        marginBottom: SPACING.xlarge 
+    },
+    gameContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        gap: SPACING.xlarge 
+    },
+    wheelContainer: { 
+        flex: 1, 
+        alignItems: 'center' 
+    },
+    pointer: { 
+        position: 'absolute', 
+        top: -SPACING.large, 
+        zIndex: 2 
+    },
+    wheel: { 
+        width: 350, 
+        height: 350, 
+        borderRadius: BORDER_RADIUS.round, 
+        borderWidth: 12, 
+        borderColor: COLORS.borderSubtle, 
+        backgroundColor: COLORS.backgroundSecondary, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    wheelSection: { 
+        position: 'absolute', 
+        width: '100%', 
+        height: '100%', 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    spinButton: { 
+        width: 100, 
+        height: 100, 
+        borderRadius: BORDER_RADIUS.round, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        zIndex: 1 
+    },
+    spinButtonText: { 
+        color: COLORS.textPrimary 
+    },
+    proofContainer: { 
+        flex: 1, 
+        gap: SPACING.xlarge 
+    },
+    marcieTitle: { 
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.small 
+    },
+    marcieComment: { 
+        color: COLORS.textSecondary 
+    },
+    logProofCard: { 
+        gap: SPACING.regular 
+    },
+    logProofTitle: { 
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.small 
+    },
+    uploadZone: { 
+        borderStyle: 'dashed', 
+        borderWidth: 2, 
+        borderColor: COLORS.borderSubtle, 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.xlarge, 
+        alignItems: 'center', 
+        gap: SPACING.small 
+    },
+    uploadText: { 
+        color: COLORS.textSecondary 
+    },
+    orText: { 
+        color: COLORS.textHint 
+    },
+    voiceNoteZone: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular, 
+        gap: SPACING.regular 
+    },
+    voiceNoteText: { 
+        color: COLORS.textPrimary 
+    },
 });
 
 export default RitualRouletteGame;

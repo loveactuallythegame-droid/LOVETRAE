@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, TextInput, ScrollView, Dimensions } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
-import { Text, GlassCard } from '../../components/ui';
+import { Typography, GlassCard, ScreenLayout } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
-import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 type CloudWord = { text: string; weight: number; left: number; top: number; size: number };
 
@@ -95,7 +94,7 @@ export default function GratitudeCloud({ route, navigation }: any) {
   useEffect(() => {
     const items = words.map((w) => {
       const weight = Math.min(3, Math.max(1, w.length >= 8 ? 3 : w.length >= 5 ? 2 : 1));
-      const size = theme.TYPOGRAPHY.body.fontSize + weight * 4;
+      const size = TYPOGRAPHY.fontSize.bodyLarge + weight * 4;
       return { 
         text: w, 
         weight, 
@@ -110,7 +109,7 @@ export default function GratitudeCloud({ route, navigation }: any) {
   const pulse = useSharedValue(1);
   useEffect(() => { 
     pulse.value = withRepeat(
-      withTiming(1.05, { duration: 1200, easing: Easing.inOut(Easing.ease) }), 
+      withTiming(1.05, { duration: ANIMATIONS.duration.slow * 2.4, easing: Easing.inOut(Easing.ease) }), 
       -1, 
       true
     ); 
@@ -118,59 +117,56 @@ export default function GratitudeCloud({ route, navigation }: any) {
   const cloudStyle = useAnimatedStyle(() => ({ transform: [{ scale: pulse.value }] }));
   
   const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: theme.SPACING.lg }}>
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: SPACING.xlarge }}>
       <GlassCard>
-        <LinearGradient
-          colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradientContainer}
-        >
-          <Text variant="body" style={{ marginBottom: theme.SPACING.md, color: theme.COLORS.textPrimary }}>
+        <View style={styles.gradientContainer}>
+          <Typography variant="body" style={styles.inputLabel}>
             Type positive adjectives about your partner
-          </Text>
+          </Typography>
           <TextInput 
             placeholder="Loving, brave, hilarious..." 
             style={styles.input} 
             value={input} 
             onChangeText={setInput} 
             onSubmitEditing={() => addWord(input)}
-            placeholderTextColor={theme.COLORS.textHint}
+            placeholderTextColor={COLORS.textHint}
           />
-        </LinearGradient>
+        </View>
       </GlassCard>
       
       <View style={styles.cloudContainer}>
         <Animated.View style={[styles.cloud, cloudStyle]}>
           {cloud.map((c, i) => (
-            <Text 
+            <Typography 
               key={`me_${i}`} 
+              variant="body"
               style={[styles.word, { 
                 position: 'absolute', 
                 left: c.left, 
                 top: c.top, 
                 fontSize: c.size, 
-                color: theme.COLORS.accentYellow,
+                color: COLORS.brightYellow,
                 fontWeight: 'bold'
               }]}
             >
               {c.text}
-            </Text>
+            </Typography>
           ))}
           {partnerWords.slice(0, 20).map((w, i) => (
-            <Text 
+            <Typography 
               key={`partner_${i}`} 
+              variant="body"
               style={[styles.word, { 
                 position: 'absolute', 
                 left: Math.random() * (width - 100), 
                 top: Math.random() * 160, 
-                fontSize: theme.TYPOGRAPHY.body.fontSize + 2, 
-                color: theme.COLORS.accentViolet,
+                fontSize: TYPOGRAPHY.fontSize.bodyLarge + 2, 
+                color: COLORS.softViolet,
                 fontWeight: '600'
               }]}
             >
               {w}
-            </Text>
+            </Typography>
           ))}
         </Animated.View>
       </View>
@@ -208,29 +204,33 @@ export default function GratitudeCloud({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
   gradientContainer: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    padding: SPACING.medium,
+    borderRadius: BORDER_RADIUS.card,
+  },
+  inputLabel: {
+    marginBottom: SPACING.medium,
+    color: COLORS.textPrimary,
   },
   input: { 
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     borderWidth: 1, 
-    borderColor: 'rgba(250,31,99,0.3)', 
-    borderRadius: theme.SIZES.borderRadius, 
-    padding: theme.SPACING.md, 
-    color: theme.COLORS.textPrimary, 
-    marginTop: theme.SPACING.md,
-    minHeight: theme.SIZES.inputHeight,
-    fontSize: theme.TYPOGRAPHY.body.fontSize
+    borderColor: COLORS.borderSubtle, 
+    borderRadius: BORDER_RADIUS.input, 
+    padding: SPACING.medium, 
+    color: COLORS.textPrimary, 
+    marginTop: SPACING.medium,
+    minHeight: 48,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge
   },
   cloudContainer: {
     flex: 1,
-    marginTop: theme.SPACING.lg,
+    marginTop: SPACING.large,
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 250,
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: theme.SIZES.borderRadius,
-    padding: theme.SPACING.md,
+    borderRadius: BORDER_RADIUS.card,
+    padding: SPACING.medium,
   },
   cloud: { 
     height: 220,

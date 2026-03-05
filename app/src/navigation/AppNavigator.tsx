@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { COLORS } from '../theme';
 
 // Main Screens
 import MainGameLibrary from '../screens/MainGameLibrary';
@@ -42,7 +43,7 @@ import BoothsScreen from '../screens/sos/BoothsScreen';
 import CoolDownRoom from '../screens/sos/CoolDownRoom';
 import VerdictScreen from '../screens/sos/VerdictScreen';
 
-// Game Screens - Import all from games folder
+// Game Screens
 import TruthOrTrust from '../screens/games/TruthOrTrust';
 import GratitudeCloud from '../screens/games/GratitudeCloud';
 import EyeContactChallenge from '../screens/games/EyeContactChallenge';
@@ -115,14 +116,16 @@ const AppNavigator = () => {
         screenOptions={{ 
           headerShown: false,
           animation: 'slide_from_right',
-          orientation: 'portrait', // Mobile-specific orientation
+          orientation: 'portrait',
           statusBarStyle: 'light',
-          statusBarBackgroundColor: '#0f0a0c',
+          statusBarBackgroundColor: COLORS.backgroundPrimary,
           statusBarTranslucent: false,
-          // Mobile-specific gesture handling
           gestureEnabled: true,
           gestureDirection: 'horizontal',
           fullScreenGestureEnabled: true,
+          contentStyle: {
+            backgroundColor: COLORS.backgroundPrimary,
+          },
         }}
       >
         {/* Main Entry Points */}
@@ -136,12 +139,12 @@ const AppNavigator = () => {
         {/* Auth Flow */}
         <Stack.Screen name="Splash" component={SplashScreen} options={{ 
           statusBarStyle: 'dark',
-          statusBarBackgroundColor: '#ffffff',
+          statusBarBackgroundColor: COLORS.textPrimary,
           animation: 'fade'
         }} />
         <Stack.Screen name="WebSplash" component={WebSplash} options={{ 
           statusBarStyle: 'dark',
-          statusBarBackgroundColor: '#ffffff',
+          statusBarBackgroundColor: COLORS.textPrimary,
           animation: 'fade'
         }} />
         <Stack.Screen name="SignIn" component={SignInScreen} />

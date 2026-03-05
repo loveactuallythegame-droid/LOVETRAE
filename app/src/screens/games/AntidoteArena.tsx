@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, Image } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, StyleSheet, Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-import { Header } from "../../components/ui/Header";
-import { RadialGradientBackground } from "../../components/ui/RadialGradientBackground";
-import { MarcieHost } from "../../components/ai-host/MarcieHost";
+import { ScreenLayout, Typography, SquishyButton } from "../../components/ui";
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, ANIMATIONS, GRADIENTS } from "../../theme";
 
 import firestore from "@react-native-firebase/firestore";
 
-const AntidoteArena = ({ route }) => {
+const AntidoteArena = ({ route }: { route: any }) => {
   const { gameId } = route.params;
   const navigation = useNavigation();
 
-  const [gameState, setGameState] = useState(null);
-  const [selectedAntidote, setSelectedAntidote] = useState(null);
+  const [gameState, setGameState] = useState<any>(null);
+  const [selectedAntidote, setSelectedAntidote] = useState<string | null>(null);
+  const scaleAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     const unsub = firestore()
@@ -31,7 +31,7 @@ const AntidoteArena = ({ route }) => {
     return () => unsub();
   }, [gameId]);
 
-  const handleAntidoteSelection = (antidote) => {
+  const handleAntidoteSelection = (antidote: string) => {
     setSelectedAntidote(antidote);
     const isCorrect = antidote === gameState.correctAntidote;
 
@@ -45,99 +45,117 @@ const AntidoteArena = ({ route }) => {
     // Navigate to next round or results
     setTimeout(() => {
       navigation.navigate("NextRound", { gameId });
-    }, 1000);
+    }, ANIMATIONS.duration.slow);
   };
 
   if (!gameState) {
     return (
-      <SafeAreaView className="flex-1 bg-background-dark items-center justify-center">
-        <Text className="text-white">Loading...</Text>
-      </SafeAreaView>
+      <ScreenLayout showMarcie={false}>
+        <SafeAreaView style={styles.container} edges={['bottom']}>
+          <View style={styles.loadingContainer}>
+            <Typography variant="body">Loading...</Typography>
+          </View>
+        </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-background-dark">
-      <RadialGradientBackground>
-        <Header
-          title="Antidote Arena"
-          logo={require("../../../assets/logo/mainlogoone.png")}
-        />
-        
-        {/* Dr. Marcie Section */}
-        <View style={styles.drMarcieSection}>
-          <View style={styles.avatarContainer}>
-            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
-          </View>
-          <View style={styles.quoteBox}>
-            <Text style={styles.quoteText}>Fight the four horsemen of relationship apocalypse! Each antidote represents a positive communication strategy.</Text>
-          </View>
-        </View>
-        
-        <View className="flex-1 p-4">
-          <MarcieHost quote={gameState.quote} />
+    <ScreenLayout showMarcie={true} marcieQuote="Fight the four horsemen of relationship apocalypse! Each antidote represents a positive communication strategy.">
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <View style={styles.content}>
+          <Typography variant="h1" style={styles.title}>
+            The Love Arcade
+          </Typography>
+          <Typography variant="h2" style={styles.subtitle}>
+            +100 Games to Deepen Connection
+          </Typography>
 
-          <View className="my-8 items-center">
-            <MaterialCommunityIcons name="sword-cross" size={64} color="#db147c" />
-            <Text className="text-white font-barbie text-2xl text-center mt-4 bg-[#db147c]/20 px-4 py-2 rounded-full">
+          <View style={styles.gameContainer}>
+            <View style={styles.iconContainer}>
+              <MaterialCommunityIcons name="sword-cross" size={64} color={COLORS.vibrantPink} />
+            </View>
+            
+            <Typography variant="h3" style={styles.horsemanText}>
               The Horseman of {gameState.horseman} is attacking!
-            </Text>
-          </View>
+            </Typography>
 
-          <View className="flex-row flex-wrap justify-around">
-            {gameState.antidotes.map((antidote) => (
-              <Pressable
-                key={antidote.name}
-                className="w-2/5 bg-gradient-to-br from-[#db147c] to-[#f05d68] p-4 rounded-xl m-2 items-center shadow-lg"
-                onPress={() => handleAntidoteSelection(antidote.name)}
-              >
-                <MaterialCommunityIcons name={antidote.icon} size={32} color="white" />
-                <Text className="text-white font-holiday text-center mt-2">{antidote.name}</Text>
-              </Pressable>
-            ))}
+            <View style={styles.antidoteGrid}>
+              {gameState.antidotes?.map((antidote: any) => (
+                <SquishyButton
+                  key={antidote.name}
+                  onPress={() => handleAntidoteSelection(antidote.name)}
+                  style={styles.antidoteButton}
+                >
+                  <MaterialCommunityIcons name={antidote.icon} size={32} color={COLORS.textPrimary} />
+                  <Typography variant="caption" style={styles.antidoteText}>
+                    {antidote.name}
+                  </Typography>
+                </SquishyButton>
+              ))}
+            </View>
           </View>
         </View>
-      </RadialGradientBackground>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
-const styles = {
-  drMarcieSection: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-    padding: 16,
-    margin: 16,
-    marginBottom: 8
-  },
-  avatarContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#fcc738',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    resizeMode: 'cover'
-  },
-  quoteBox: {
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
-    backgroundColor: 'rgba(252, 199, 56, 0.2)',
-    borderRadius: 12,
-    padding: 12
+    backgroundColor: COLORS.backgroundPrimary,
   },
-  quoteText: {
-    color: '#ffffff',
-    fontSize: 14,
-    lineHeight: 20
-  }
-};
+  content: {
+    flex: 1,
+    padding: SPACING.lg,
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: SPACING.sm,
+  },
+  subtitle: {
+    textAlign: 'center',
+    opacity: 0.7,
+    marginBottom: SPACING.lg,
+  },
+  gameContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconContainer: {
+    marginBottom: SPACING.lg,
+  },
+  horsemanText: {
+    color: COLORS.vibrantPink,
+    textAlign: 'center',
+    marginBottom: SPACING.xlarge,
+    backgroundColor: COLORS.backgroundInput,
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.small,
+    borderRadius: BORDER_RADIUS.xxlarge,
+  },
+  antidoteGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: SPACING.regular,
+  },
+  antidoteButton: {
+    width: '45%',
+    marginBottom: SPACING.regular,
+  },
+  antidoteText: {
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+    marginTop: SPACING.xs,
+  },
+});
 
 export default AntidoteArena;

@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, TYPOGRAPHY } from '../../theme';
+import { Typography } from '../ui';
 
 interface GameFeedbackProps {
   type: 'success' | 'error' | 'warning' | 'info';
@@ -89,38 +91,38 @@ const GameFeedback: React.FC<GameFeedbackProps> = ({
     switch (type) {
       case 'success':
         return {
-          background: '#4CAF50',
-          icon: '#ffffff',
-          text: '#ffffff',
-          shadow: '#4CAF50',
+          background: COLORS.success,
+          icon: COLORS.textPrimary,
+          text: COLORS.textPrimary,
+          shadow: COLORS.success,
         };
       case 'error':
         return {
-          background: '#f44336',
-          icon: '#ffffff',
-          text: '#ffffff',
-          shadow: '#f44336',
+          background: COLORS.error,
+          icon: COLORS.textPrimary,
+          text: COLORS.textPrimary,
+          shadow: COLORS.error,
         };
       case 'warning':
         return {
-          background: '#ff9800',
-          icon: '#ffffff',
-          text: '#ffffff',
-          shadow: '#ff9800',
+          background: COLORS.warning,
+          icon: COLORS.textPrimary,
+          text: COLORS.textPrimary,
+          shadow: COLORS.warning,
         };
       case 'info':
         return {
-          background: '#2196F3',
-          icon: '#ffffff',
-          text: '#ffffff',
-          shadow: '#2196F3',
+          background: COLORS.info,
+          icon: COLORS.textPrimary,
+          text: COLORS.textPrimary,
+          shadow: COLORS.info,
         };
       default:
         return {
-          background: '#2196F3',
-          icon: '#ffffff',
-          text: '#ffffff',
-          shadow: '#2196F3',
+          background: COLORS.info,
+          icon: COLORS.textPrimary,
+          text: COLORS.textPrimary,
+          shadow: COLORS.info,
         };
     }
   };
@@ -141,13 +143,13 @@ const GameFeedback: React.FC<GameFeedbackProps> = ({
     >
       <Ionicons
         name={getIconName() as any}
-        size={24}
+        size={TYPOGRAPHY.fontSize.displaySmall}
         color={colors.icon}
         style={styles.icon}
       />
-      <Text style={[styles.message, { color: colors.text }]}>
+      <Typography variant="bodyLarge" style={[styles.message, { color: colors.text }]}>
         {message}
-      </Text>
+      </Typography>
     </Animated.View>
   );
 };
@@ -160,21 +162,19 @@ const styles = StyleSheet.create({
     right: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.medium,
+    borderRadius: BORDER_RADIUS.large,
+    shadowOffset: SHADOWS.medium.shadowOffset,
+    shadowOpacity: SHADOWS.medium.shadowOpacity,
+    shadowRadius: SHADOWS.medium.shadowRadius,
+    elevation: SHADOWS.medium.elevation,
     zIndex: 1000,
   },
   icon: {
-    marginRight: 12,
+    marginRight: SPACING.medium,
   },
   message: {
-    fontSize: 16,
-    fontWeight: '600',
     flex: 1,
   },
 });

@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 export default function ApologyWorkshop({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -55,7 +57,7 @@ export default function ApologyWorkshop({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.regular }}>
             <GlassCard>
                 {/* Dr. Marcie Section */}
                 <View style={styles.drMarcieSection}>
@@ -63,31 +65,31 @@ export default function ApologyWorkshop({ route, navigation }: any) {
                         <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                     </View>
                     <View style={styles.quoteBox}>
-                        <Text style={styles.quoteText} variant="sass">Master the art of genuine apologies! Build your acknowledgment with each pillar.</Text>
+                        <Typography variant="sass">Master the art of genuine apologies! Build your acknowledgment with each pillar.</Typography>
                     </View>
                 </View>
 
-                <Text variant="header">{station === 'forge' ? `The Forge: Pillar ${pillar}/4` : 'The Release Altar'}</Text>
+                <Typography variant="h2">{station === 'forge' ? `The Forge: Pillar ${pillar}/4` : 'The Release Altar'}</Typography>
 
                 {station === 'forge' && (
                     <View>
-                        <Text variant="instructions">Assemble the phrase block:</Text>
+                        <Typography variant="instructions">Assemble the phrase block:</Typography>
                         <SquishyButton onPress={buildPillar} style={styles.actionBtn}>
-                            <Text variant="body">
+                            <Typography variant="body">
                                 {pillar === 1 ? "I am deeply sorry for..." :
                                     pillar === 2 ? "This was my choice..." :
                                         pillar === 3 ? "I understand it made you feel..." :
                                             "To ensure this never happens again..."}
-                            </Text>
+                            </Typography>
                         </SquishyButton>
                     </View>
                 )}
 
                 {station === 'altar' && (
                     <View>
-                        <Text variant="instructions">Release 'The Victim' identity.</Text>
+                        <Typography variant="instructions">Release 'The Victim' identity.</Typography>
                         <SquishyButton onPress={release} style={styles.actionBtn}>
-                            <Text variant="body">Say: "I survived. Now I build."</Text>
+                            <Typography variant="body">Say: "I survived. Now I build."</Typography>
                         </SquishyButton>
                     </View>
                 )}
@@ -113,50 +115,36 @@ export default function ApologyWorkshop({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
     actionBtn: {
-        marginTop: 20,
-        backgroundColor: '#db147c',
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        marginTop: SPACING.regular,
+        marginBottom: SPACING.regular,
     },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        marginBottom: 16
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular
     },
     avatarContainer: {
         width: 50,
         height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular
     },
     avatar: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: BORDER_RADIUS.round,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
-    }
 });

@@ -1,33 +1,34 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const recentBids = [
     {
-        icon: 'sms',
+        icon: 'sms' as const,
         title: '"Text 🌧️ u up?"',
         time: 'Received 11:42 PM',
         latency: '22m 14s',
         status: 'Turned Away'
     },
     {
-        icon: 'restaurant',
+        icon: 'restaurant' as const,
         title: '"What\'s for dinner? 🍝"',
         time: 'Received 6:15 PM',
         latency: '0m 45s',
         status: 'Turned Toward'
     },
     {
-        icon: 'visibility',
+        icon: 'visibility' as const,
         title: '"Look at this weird bird! 🦜"',
         time: 'Received 3:30 PM',
         latency: '1m 12s',
         status: 'Turned Toward'
     },
     {
-        icon: 'forum',
+        icon: 'forum' as const,
         title: '"Did you see the news about..."',
         time: 'Received 1:05 PM',
         latency: '4m 59s',
@@ -35,75 +36,110 @@ const recentBids = [
     }
 ];
 
-const BidRow = ({ bid }) => (
+const BidRow = ({ bid }: { bid: typeof recentBids[0] }) => (
     <View style={styles.bidRow}>
         <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
             <View style={styles.bidIconContainer}>
-                <MaterialIcons name={bid.icon} size={24} color="#ff0a64" />
+                <MaterialIcons name={bid.icon} size={24} color={COLORS.vibrantPink} />
             </View>
             <View>
-                <Text style={styles.bidTitle}>{bid.title}</Text>
-                <Text style={styles.bidTime}>{bid.time}</Text>
+                <Typography variant="body">{bid.title}</Typography>
+                <Typography variant="caption">{bid.time}</Typography>
             </View>
         </View>
         <View style={[styles.statusContainer, bid.status === 'Turned Toward' ? styles.statusToward : styles.statusAway]}>
-            <Text style={[styles.statusText, bid.status === 'Turned Toward' ? { color: '#34d399' } : { color: '#f87171' }]}>{bid.status.toUpperCase()}</Text>
+            <Typography variant="caption" style={{ color: bid.status === 'Turned Toward' ? COLORS.success : COLORS.error }}>{bid.status.toUpperCase()}</Typography>
         </View>
     </View>
 );
 
 const TurningTowardTallyGame1 = () => {
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#0f0a16', '#230f16']} style={styles.container}>
-                <ScrollView contentContainerStyle={styles.contentContainer}>
-                    <Text style={styles.headerTitle}>Turning Toward Tally</Text>
-                    <Text style={styles.headerSubtitle}>Bid Responsiveness Scorecard</Text>
+        <ScreenLayout showHeader={true} scrollable={true}>
+            <Typography variant="h1" center>Turning Toward Tally</Typography>
+            <Typography variant="h2" center style={{ marginBottom: SPACING.xlarge }}>Bid Responsiveness Scorecard</Typography>
 
-                    <View style={styles.statsGrid}>
-                        <View style={styles.statBox}><Text style={styles.statLabel}>Daily Win Rate</Text><Text style={styles.statValue}>85%</Text></View>
-                        <View style={styles.statBox}><Text style={styles.statLabel}>Avg. Bid Latency</Text><Text style={styles.statValue}>2m 14s</Text></View>
-                        <View style={styles.statBox}><Text style={styles.statLabel}>Successful Turns</Text><Text style={styles.statValue}>18/21</Text></View>
-                    </View>
+            <View style={styles.statsGrid}>
+                <GlassCard style={styles.statBox}>
+                    <Typography variant="caption">Daily Win Rate</Typography>
+                    <Typography variant="h1">85%</Typography>
+                </GlassCard>
+                <GlassCard style={styles.statBox}>
+                    <Typography variant="caption">Avg. Bid Latency</Typography>
+                    <Typography variant="h1">2m 14s</Typography>
+                </GlassCard>
+                <GlassCard style={styles.statBox}>
+                    <Typography variant="caption">Successful Turns</Typography>
+                    <Typography variant="h1">18/21</Typography>
+                </GlassCard>
+            </View>
 
-                    <View style={styles.bidsTable}>
-                        <Text style={styles.tableHeader}>Recent Bid Activity</Text>
-                        <View>
-                            {recentBids.map((bid, index) => <BidRow key={index} bid={bid} />)}
-                        </View>
-                    </View>
+            <GlassCard style={styles.bidsTable}>
+                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>Recent Bid Activity</Typography>
+                <View>
+                    {recentBids.map((bid, index) => <BidRow key={index} bid={bid} />)}
+                </View>
+            </GlassCard>
 
-                    <TouchableOpacity style={styles.primaryButton}>
-                        <Text style={styles.buttonText}>Initiate Bid for Connection</Text>
-                    </TouchableOpacity>
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+            <SquishyButton onPress={() => {}} style={styles.primaryButton}>
+                <Typography variant="button">Initiate Bid for Connection</Typography>
+            </SquishyButton>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#0f0a16' },
-    container: { flex: 1 },
-    contentContainer: { padding: 20 },
-    headerTitle: { color: '#fff', fontSize: 32, fontWeight: '900', textAlign: 'center' },
-    headerSubtitle: { color: '#ab9db9', fontSize: 16, textAlign: 'center', marginBottom: 24 },
-    statsGrid: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 24 },
-    statBox: { backgroundColor: 'rgba(35,15,22,0.6)', borderRadius: 12, padding: 12, alignItems: 'center', width: '32%' },
-    statLabel: { color: '#ab9db9', fontSize: 12, marginBottom: 4 },
-    statValue: { color: '#fff', fontSize: 22, fontWeight: 'bold' },
-    bidsTable: { backgroundColor: 'rgba(35,15,22,0.6)', borderRadius: 12, marginBottom: 24 },
-    tableHeader: { color: '#fff', fontWeight: 'bold', fontSize: 16, padding: 16, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.1)' },
-    bidRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 16, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' },
-    bidIconContainer: { width: 40, height: 40, borderRadius: 8, backgroundColor: 'rgba(255,10,100,0.2)', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
-    bidTitle: { color: '#fff', fontWeight: 'bold' },
-    bidTime: { color: '#ab9db9', fontSize: 12 },
-    statusContainer: { paddingVertical: 6, paddingHorizontal: 10, borderRadius: 6 },
-    statusToward: { backgroundColor: 'rgba(52,211,153,0.1)', borderWidth: 1, borderColor: 'rgba(52,211,153,0.3)' },
-    statusAway: { backgroundColor: 'rgba(248,113,113,0.1)', borderWidth: 1, borderColor: 'rgba(248,113,113,0.3)' },
-    statusText: { fontSize: 10, fontWeight: 'bold' },
-    primaryButton: { backgroundColor: '#ff0a64', padding: 18, borderRadius: 12, alignItems: 'center' },
-    buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 }
+    statsGrid: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        marginBottom: SPACING.xlarge 
+    },
+    statBox: { 
+        alignItems: 'center', 
+        width: '32%',
+        padding: SPACING.small,
+    },
+    bidsTable: { 
+        marginBottom: SPACING.xlarge 
+    },
+    bidRow: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        justifyContent: 'space-between', 
+        padding: SPACING.regular, 
+        borderBottomWidth: 1, 
+        borderBottomColor: COLORS.divider 
+    },
+    bidIconContainer: { 
+        width: 40, 
+        height: 40, 
+        borderRadius: BORDER_RADIUS.medium, 
+        backgroundColor: COLORS.backgroundInput, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginRight: SPACING.regular 
+    },
+    statusContainer: { 
+        paddingVertical: SPACING.tiny, 
+        paddingHorizontal: SPACING.small, 
+        borderRadius: BORDER_RADIUS.small 
+    },
+    statusToward: { 
+        backgroundColor: `${COLORS.success}20`, 
+        borderWidth: 1, 
+        borderColor: `${COLORS.success}50` 
+    },
+    statusAway: { 
+        backgroundColor: `${COLORS.error}20`, 
+        borderWidth: 1, 
+        borderColor: `${COLORS.error}50` 
+    },
+    primaryButton: { 
+        backgroundColor: COLORS.vibrantPink, 
+        padding: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.button, 
+        alignItems: 'center' 
+    },
 });
 
 export default TurningTowardTallyGame1;

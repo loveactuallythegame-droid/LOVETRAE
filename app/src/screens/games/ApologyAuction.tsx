@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions, Image } from 'react-native';
-import { Text, GlassCard, SquishyButton } from '../../components/ui';
-import { GameContainer } from '../../components/games/engine';
+import { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, ScrollView, Dimensions, Animated } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
+
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, ANIMATIONS, GRADIENTS } from '../../theme';
+
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const APOLOGY_CARDS = [
   { id: '1', text: "I'm sorry you felt that way...", type: 'avoidance', value: 10 },
@@ -25,6 +27,7 @@ export default function ApologyAuction({ route, navigation }: any) {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [partnerResponse, setPartnerResponse] = useState<any>(null);
   const coupleId = useRef<string | null>(null);
+  const scaleAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
@@ -50,7 +53,7 @@ export default function ApologyAuction({ route, navigation }: any) {
             collection(db, 'game_sessions'),
             where('couple_id', '==', couple_code),
             where('gameId', '==', gameId),
-            where('userId', '!=', user.uid) // Different user
+            where('userId', '!=', user.uid)
           );
           
           const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
@@ -74,6 +77,12 @@ export default function ApologyAuction({ route, navigation }: any) {
 
   const selectCard = (cardId: string) => {
     setSelectedCard(cardId);
+    Animated.spring(scaleAnim, {
+      toValue: 1.02,
+      friction: 8,
+      tension: 100,
+      useNativeDriver: true,
+    }).start();
   };
 
   const submitBid = () => {
@@ -84,224 +93,183 @@ export default function ApologyAuction({ route, navigation }: any) {
       setPlayerScore(prev => prev + card.value);
       setRound(prev => prev + 1);
       setSelectedCard(null);
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        friction: 8,
+        tension: 100,
+        useNativeDriver: true,
+      }).start();
     }
   };
 
-  const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: theme.SPACING.lg }}>
-      <GlassCard>
-        <LinearGradient
-          colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradientContainer}
-        >
-          {/* Dr. Marcie Section */}
-          <View style={styles.drMarcieSection}>
-            <View style={styles.avatarContainer}>
-              <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
-            </View>
-            <View style={styles.quoteBox}>
-              <Text style={styles.quoteText} variant="sass">Genuine apologies are the foundation of trust! Choose the most heartfelt option to win this auction.</Text>
-            </View>
-          </View>
-          
-          <Text variant="header" style={{ marginBottom: theme.SPACING.md, color: theme.COLORS.textPrimary }}>
-            Round {round} of 5
-          </Text>
-          <Text variant="body" style={{ marginBottom: theme.SPACING.lg, color: theme.COLORS.textSecondary }}>
-            Select the most genuine apology for the situation
-          </Text>
-
-          <View style={styles.cardsContainer}>
-            {APOLOGY_CARDS.map((card) => (
-              <LinearGradient
-                key={card.id}
-                colors={['#db147c', '#f05d68']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={[
-                  styles.card,
-                  selectedCard === card.id && styles.selectedCard
-                ]}
-              >
-                <SquishyButton
-                  style={styles.squishyButton}
-                  onPress={() => selectCard(card.id)}
-                >
-                  <Text variant="body" style={{ 
-                    color: selectedCard === card.id ? theme.COLORS.background : theme.COLORS.textPrimary,
-                    textAlign: 'center'
-                  }}>
-                    {card.text}
-                  </Text>
-                  <View style={styles.cardFooter}>
-                    <Text variant="small" style={{ 
-                      color: selectedCard === card.id ? theme.COLORS.background : theme.COLORS.accentTeal 
-                    }}>
-                      Value: {card.value} pts
-                    </Text>
-                  </View>
-                </SquishyButton>
-              </LinearGradient>
-            ))}
-          </View>
-
-          <SquishyButton 
-            style={styles.submitButton} 
-            onPress={submitBid} 
-            disabled={!selectedCard}
-          >
-            <Text variant="header" style={{ color: theme.COLORS.background }}>
-              Bid Apology
-            </Text>
-          </SquishyButton>
-        </LinearGradient>
-      </GlassCard>
-      
-      {partnerResponse && (
-        <GlassCard style={styles.partnerCard}>
-          <Text variant="sass" style={{ color: theme.COLORS.accentTeal, marginBottom: theme.SPACING.sm }}>
-            Partner's Choice:
-          </Text>
-          <Text variant="body" style={{ color: theme.COLORS.textSecondary }}>
-            {partnerResponse.selectedCard 
-              ? `Selected card with value: ${partnerResponse.selectedCard}`
-              : 'Partner is selecting...'}
-          </Text>
-        </GlassCard>
-      )}
-    </ScrollView>
-  );
-
-  const baseState = {
-    id: gameId,
-    title: 'Apology Auction',
-    description: 'Bid on the most genuine apologies',
-    category: 'conflict-resolution' as const,
-    difficulty: 'medium' as const,
-    xpReward: 50,
-    currentStep: round,
-    totalTime: 300,
-    playerData: { 
-      vulnerabilityScore: playerScore > 75 ? 90 : playerScore > 50 ? 70 : 50, 
-      honestyScore: playerScore > 75 ? 85 : playerScore > 50 ? 65 : 45, 
-      completionTime: 0, 
-      partnerSync: partnerResponse ? 80 : 20 
-    },
-  };
-
   return (
-    <GameContainer 
-      state={baseState} 
-      inputs={["custom"]} 
-      inputArea={inputArea} 
-      onComplete={() => {
-        if (sessionId) {
-          const sessionRef = doc(db, 'game_sessions', sessionId);
-          updateDoc(sessionRef, {
-            finished_at: new Date().toISOString(),
-            score: playerScore,
-            state: JSON.stringify({ completed: true, finalScore: playerScore })
-          });
-        }
-        navigation.goBack();
-      }} 
-      sessionId={sessionId} 
-    />
+    <ScreenLayout showMarcie={true} marcieQuote="Genuine apologies are the foundation of trust! Choose the most heartfelt option to win this auction.">
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content}>
+          <Typography variant="h1" style={styles.title}>
+            The Love Arcade
+          </Typography>
+          <Typography variant="h2" style={styles.subtitle}>
+            +100 Games to Deepen Connection
+          </Typography>
+
+          <GlassCard>
+            <LinearGradient
+              colors={[COLORS.backgroundInput, COLORS.backgroundInput]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradientContainer}
+            >
+              <Typography variant="h3" style={{ marginBottom: SPACING.md, color: COLORS.textPrimary }}>
+                Round {round} of 5
+              </Typography>
+              <Typography variant="body" style={{ marginBottom: SPACING.lg, color: COLORS.textSecondary }}>
+                Select the most genuine apology for the situation
+              </Typography>
+
+              <View style={styles.cardsContainer}>
+                {APOLOGY_CARDS.map((card) => (
+                  <Animated.View 
+                    key={card.id}
+                    style={[
+                      { transform: [{ scale: selectedCard === card.id ? scaleAnim : 1 }] }
+                    ]}
+                  >
+                    <LinearGradient
+                      colors={GRADIENTS.primary.colors}
+                      start={GRADIENTS.primary.start}
+                      end={GRADIENTS.primary.end}
+                      style={[
+                        styles.card,
+                        selectedCard === card.id && styles.selectedCard
+                      ]}
+                    >
+                      <SquishyButton
+                        style={styles.squishyButton}
+                        onPress={() => selectCard(card.id)}
+                      >
+                        <Typography variant="body" style={{ 
+                          color: selectedCard === card.id ? COLORS.backgroundPrimary : COLORS.textPrimary,
+                          textAlign: 'center'
+                        }}>
+                          {card.text}
+                        </Typography>
+                        <View style={styles.cardFooter}>
+                          <Typography variant="caption" style={{ 
+                            color: selectedCard === card.id ? COLORS.backgroundPrimary : COLORS.mintGreen 
+                          }}>
+                            Value: {card.value} pts
+                          </Typography>
+                        </View>
+                      </SquishyButton>
+                    </LinearGradient>
+                  </Animated.View>
+                ))}
+              </View>
+
+              <SquishyButton 
+                style={styles.submitButton} 
+                onPress={submitBid} 
+                disabled={!selectedCard}
+              >
+                <Typography variant="button" style={{ color: COLORS.textPrimary }}>
+                  Bid Apology
+                </Typography>
+              </SquishyButton>
+            </LinearGradient>
+          </GlassCard>
+          
+          {partnerResponse && (
+            <GlassCard style={styles.partnerCard}>
+              <Typography variant="caption" style={{ color: COLORS.mintGreen, marginBottom: SPACING.sm }}>
+                Partner's Choice:
+              </Typography>
+              <Typography variant="body" style={{ color: COLORS.textSecondary }}>
+                {partnerResponse.selectedCard 
+                  ? `Selected card with value: ${partnerResponse.selectedCard}`
+                  : 'Partner is selecting...'}
+              </Typography>
+            </GlassCard>
+          )}
+
+          <View style={styles.scoreContainer}>
+            <Typography variant="caption" style={styles.scoreLabel}>Your Score</Typography>
+            <Typography variant="h2" style={styles.scoreValue}>{playerScore}</Typography>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  gradientContainer: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
-  },
-  drMarcieSection: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-    padding: 16,
-    marginBottom: 16
-  },
-  avatarContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#fcc738',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    resizeMode: 'cover'
-  },
-  quoteBox: {
+  container: {
     flex: 1,
-    backgroundColor: 'rgba(252, 199, 56, 0.2)',
-    borderRadius: 12,
-    padding: 12
+    backgroundColor: COLORS.backgroundPrimary,
   },
-  quoteText: {
-    color: '#ffffff',
-    fontSize: 14,
-    lineHeight: 20
+  content: {
+    padding: SPACING.lg,
+    paddingBottom: SPACING.xxxlarge,
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: SPACING.sm,
+  },
+  subtitle: {
+    textAlign: 'center',
+    opacity: 0.7,
+    marginBottom: SPACING.lg,
+  },
+  gradientContainer: {
+    padding: SPACING.md,
+    borderRadius: BORDER_RADIUS.xlarge,
   },
   cardsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: theme.SPACING.md,
-    marginBottom: theme.SPACING.lg,
+    gap: SPACING.md,
+    marginBottom: SPACING.lg,
   },
   card: {
     flex: 1,
-    minWidth: (width - theme.SPACING.lg * 4) / 2,
-    borderRadius: theme.SIZES.borderRadius,
-    padding: theme.SPACING.md,
-    marginBottom: theme.SPACING.md,
+    minWidth: (width - SPACING.lg * 4) / 2,
+    borderRadius: BORDER_RADIUS.xlarge,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
     borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
+    borderColor: COLORS.borderSubtle,
+    ...SHADOWS.large,
   },
   squishyButton: {
     flex: 1,
-    padding: theme.SPACING.md,
+    padding: SPACING.md,
   },
   selectedCard: {
-    backgroundColor: theme.COLORS.success,
-    borderColor: theme.COLORS.success,
+    backgroundColor: COLORS.success,
+    borderColor: COLORS.success,
   },
   cardFooter: {
-    marginTop: theme.SPACING.sm,
+    marginTop: SPACING.sm,
     alignItems: 'flex-end',
   },
   submitButton: {
-    marginTop: theme.SPACING.md,
-    padding: theme.SPACING.lg,
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    alignItems: 'center',
+    marginTop: SPACING.md,
     opacity: 0.7,
-    backgroundColor: '#db147c',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
-  },
-  submitButtonEnabled: {
-    opacity: 1,
   },
   partnerCard: {
-    marginTop: theme.SPACING.md,
-    padding: theme.SPACING.md,
+    marginTop: SPACING.md,
+    padding: SPACING.md,
+  },
+  scoreContainer: {
+    marginTop: SPACING.lg,
+    alignItems: 'center',
+  },
+  scoreLabel: {
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.xs,
+  },
+  scoreValue: {
+    color: COLORS.vibrantPink,
   },
 });

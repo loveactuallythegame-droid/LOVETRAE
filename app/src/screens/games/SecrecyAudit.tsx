@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, GlassCard, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 type Question = { text: string; risk: 'high' | 'medium' | 'low' };
 
@@ -39,12 +41,7 @@ export default function SecrecyAudit({ route, navigation }: any) {
     const newAnswers = [...answers, { q: QUESTIONS[index].text, a: val }];
     setAnswers(newAnswers);
     
-    // Check for "bad habits" trigger
-    const secretCount = newAnswers.filter(x => !x.a).length; // Assuming 'No' means secrecy for positive questions like "Do they know passcode"
-    // Wait, questions are mixed.
-    // "Do they know passcode?" -> No = Secret.
-    // "Have you deleted messages?" -> Yes = Secret.
-    // Let's normalize logic later or just count raw "No"s for "Do they know" type questions.
+    const secretCount = newAnswers.filter(x => !x.a).length;
     
     if (index === 6 && secretCount > 3) {
         speakMarcie("You have multiple passwords your partner doesn't know. What are you hiding, a secret life or just bad habits?");
@@ -52,14 +49,9 @@ export default function SecrecyAudit({ route, navigation }: any) {
 
     if (index < QUESTIONS.length - 1) {
         setIndex(index + 1);
-    } else {
-        // Auto-finish logic handled by GameContainer finish button usually, but here we might want to just stop input
     }
   }
 
-  // Calculate transparency score
-  // Questions 0, 1, 4: Yes is good.
-  // Questions 2, 3, 5, 6: No is good.
   const transparencyScore = useMemo(() => {
       let score = 0;
       answers.forEach((ans, i) => {
@@ -94,30 +86,40 @@ export default function SecrecyAudit({ route, navigation }: any) {
       <GlassCard>
         {index < QUESTIONS.length ? (
             <>
-                <Text variant="header" style={{textAlign: 'center', marginBottom: 24}}>{QUESTIONS[index].text}</Text>
-                <View style={{flexDirection: 'row', gap: 16, justifyContent: 'center'}}>
-                    <SquishyButton onPress={() => answer(true)} style={[styles.btn, {backgroundColor: '#33DEA5'}]}>
-                        <Text variant="header">YES</Text>
+                <Typography variant="h2" center style={{ marginBottom: SPACING.xlarge }}>{QUESTIONS[index].text}</Typography>
+                <View style={{ flexDirection: 'row', gap: SPACING.large, justifyContent: 'center' }}>
+                    <SquishyButton onPress={() => answer(true)} style={[styles.btn, { backgroundColor: COLORS.success }]}>
+                        <Typography variant="h2">YES</Typography>
                     </SquishyButton>
-                    <SquishyButton onPress={() => answer(false)} style={[styles.btn, {backgroundColor: '#E11637'}]}>
-                        <Text variant="header">NO</Text>
+                    <SquishyButton onPress={() => answer(false)} style={[styles.btn, { backgroundColor: COLORS.error }]}>
+                        <Typography variant="h2">NO</Typography>
                     </SquishyButton>
                 </View>
-                <Text variant="keyword" style={{alignSelf: 'center', marginTop: 16}}>Question {index + 1} / {QUESTIONS.length}</Text>
+                <Typography variant="caption" center style={{ marginTop: SPACING.regular }}>Question {index + 1} / {QUESTIONS.length}</Typography>
             </>
         ) : (
-            <View style={{alignItems: 'center'}}>
-                <Text variant="header">Audit Complete</Text>
-                <Text variant="body" style={{marginTop: 8}}>Transparency Score: {transparencyScore}%</Text>
+            <View style={{ alignItems: 'center' }}>
+                <Typography variant="h2">Audit Complete</Typography>
+                <Typography variant="body" style={{ marginTop: SPACING.regular }}>Transparency Score: {transparencyScore}%</Typography>
             </View>
         )}
       </GlassCard>
     </View>
   );
 
-  return <GameContainer state={baseState} inputs={["text"]} inputArea={inputArea} onComplete={onComplete} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={["text"]} inputArea={inputArea} onComplete={onComplete} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  btn: { paddingHorizontal: 32, paddingVertical: 16, borderRadius: 16, minWidth: 100, alignItems: 'center' },
+  btn: { 
+    paddingHorizontal: SPACING.xlarge, 
+    paddingVertical: SPACING.large, 
+    borderRadius: BORDER_RADIUS.xlarge, 
+    minWidth: 100, 
+    alignItems: 'center' 
+  },
 });

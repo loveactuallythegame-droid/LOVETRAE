@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, TextInput, Alert, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
-import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 export default function BidRadar({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -50,7 +51,7 @@ export default function BidRadar({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
         {/* Dr. Marcie Section */}
         <View style={styles.drMarcieSection}>
@@ -58,16 +59,16 @@ export default function BidRadar({ route, navigation }: any) {
             <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
           </View>
           <View style={styles.quoteBox}>
-            <Text style={styles.quoteText} variant="sass">Log emotional bids to track connection attempts! Recognize when you make or receive bids for attention.</Text>
+            <Typography variant="sass">Log emotional bids to track connection attempts! Recognize when you make or receive bids for attention.</Typography>
           </View>
         </View>
 
-        <Text variant="header">Log a Bid</Text>
-        <Text variant="body">What was the bid?</Text>
+        <Typography variant="h2">Log a Bid</Typography>
+        <Typography variant="body">What was the bid?</Typography>
         <TextInput
             style={styles.input}
             placeholder="e.g. sighed while cooking..."
-            placeholderTextColor="#9ca3af"
+            placeholderTextColor={COLORS.textHint}
             value={bid}
             onChangeText={setBid}
             multiline
@@ -77,24 +78,17 @@ export default function BidRadar({ route, navigation }: any) {
                 onPress={() => setIsReceived(false)}
                 style={[styles.toggleBtn, !isReceived ? styles.activeBtn : {}]}
             >
-                <Text variant="body" style={{color: !isReceived ? '#120016' : '#fff'}}>I Made It</Text>
+                <Typography variant="body" style={{color: !isReceived ? COLORS.backgroundPrimary : COLORS.textPrimary}}>I Made It</Typography>
             </SquishyButton>
             <SquishyButton
                 onPress={() => setIsReceived(true)}
                 style={[styles.toggleBtn, isReceived ? styles.activeBtn : {}]}
             >
-                <Text variant="body" style={{color: isReceived ? '#120016' : '#fff'}}>I Received It</Text>
+                <Typography variant="body" style={{color: isReceived ? COLORS.backgroundPrimary : COLORS.textPrimary}}>I Received It</Typography>
             </SquishyButton>
         </View>
         <SquishyButton onPress={submit} style={styles.submitBtn}>
-          <LinearGradient
-            colors={['#db147c', '#f05d68']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.gradientButton}
-          >
-            <Text variant="header" style={{ color: '#ffffff' }}>Submit to Marcie</Text>
-          </LinearGradient>
+          <Typography variant="button" style={{ color: COLORS.textPrimary }}>Submit to Marcie</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -117,84 +111,64 @@ export default function BidRadar({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 8,
-    padding: 12,
-    color: '#fff',
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.medium,
+    padding: SPACING.regular,
+    color: COLORS.textPrimary,
     minHeight: 80,
     textAlignVertical: 'top',
-    marginTop: 8,
-    fontFamily: 'Inter_400Regular',
+    marginTop: SPACING.small,
+    fontFamily: TYPOGRAPHY.fontFamily.regular,
     borderWidth: 1,
-    borderColor: 'rgba(219, 20, 124, 0.3)',
+    borderColor: COLORS.borderSubtle,
   },
   toggleRow: {
     flexDirection: 'row',
-    gap: 8,
-    marginTop: 12,
+    gap: SPACING.small,
+    marginTop: SPACING.regular,
   },
   toggleBtn: {
     flex: 1,
-    padding: 12,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 8,
+    padding: SPACING.regular,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.medium,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: COLORS.borderSubtle,
   },
   activeBtn: {
-    backgroundColor: '#37cf97',
+    backgroundColor: COLORS.mintGreen,
   },
   submitBtn: {
-    marginTop: 16,
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
-  },
-  gradientButton: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12,
-    paddingVertical: 16,
+    marginTop: SPACING.regular,
   },
   drMarcieSection: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-    padding: 16,
-    marginBottom: 16
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.xlarge,
+    padding: SPACING.regular,
+    marginBottom: SPACING.regular
   },
   avatarContainer: {
     width: 50,
     height: 50,
-    borderRadius: 25,
-    backgroundColor: '#fcc738',
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.brightYellow,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12
+    marginRight: SPACING.regular
   },
   avatar: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: BORDER_RADIUS.round,
     resizeMode: 'cover'
   },
   quoteBox: {
     flex: 1,
-    backgroundColor: 'rgba(252, 199, 56, 0.2)',
-    borderRadius: 12,
-    padding: 12
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.large,
+    padding: SPACING.regular
   },
-  quoteText: {
-    color: '#ffffff',
-    fontSize: 14,
-    lineHeight: 20
-  }
 });

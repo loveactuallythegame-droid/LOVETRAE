@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, PanResponder, GestureResponderHandlers } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { Text, GlassCard } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, BORDER_RADIUS, SPACING, ANIMATIONS } from '../../theme';
 
 type Behavior = { text: string; category: 'window' | 'wall' };
 
@@ -70,9 +71,9 @@ export default function WindowsAndWalls({ route, navigation }: any) {
           // Or we can say "correct" if it matches partner? Let's use the predefined category for "healthy boundary" vs "unhealthy secrecy" logic
           // Actually, "Window" (Transparency) vs "Wall" (Privacy).
           // Let's assume the user is sorting them.
-          const correct = (choice === item.category);
+          const isCorrect = (choice === item.category);
 
-          setDecisions((d) => [...d, { choice, correct }]);
+          setDecisions((d) => [...d, { choice, correct: isCorrect }]);
           HapticFeedbackSystem.selection();
 
           if (item.text.includes('phone') && choice === 'window') {
@@ -81,16 +82,18 @@ export default function WindowsAndWalls({ route, navigation }: any) {
             speakMarcie("You think checking your partner's phone is a 'window'? Honey, that's a wrecking ball.");
           }
 
-          x.value = withTiming(0); rotate.value = withTiming(0);
+          x.value = withTiming(0, { duration: ANIMATIONS.duration.normal });
+          rotate.value = withTiming(0, { duration: ANIMATIONS.duration.normal });
           const next = Math.min(BEHAVIORS.length - 1, index + 1);
           setIndex(next);
-          if (sessionId) updateGameSession(sessionId, { state: JSON.stringify({ decisions: [...decisions, { choice, correct }] }) });
+          if (sessionId) updateGameSession(sessionId, { state: JSON.stringify({ decisions: [...decisions, { choice, correct: isCorrect }] }) });
         } else {
-          x.value = withTiming(0); rotate.value = withTiming(0);
+          x.value = withTiming(0, { duration: ANIMATIONS.duration.normal });
+          rotate.value = withTiming(0, { duration: ANIMATIONS.duration.normal });
         }
       },
     }).panHandlers;
-  }, [index, decisions]);
+  }, [index, decisions, sessionId]);
 
   const alignment = Math.min(100, Math.round((decisions.length && partnerDecisions.current.length) ? (decisions.filter((d, i) => partnerDecisions.current[i]?.choice === d.choice).length / Math.min(decisions.length, partnerDecisions.current.length)) * 100 : 0));
 
@@ -116,22 +119,40 @@ export default function WindowsAndWalls({ route, navigation }: any) {
   const inputArea = (
     <View>
       <GlassCard>
-        <Text variant="body">Swipe LEFT for Window (Transparency), RIGHT for Wall (Privacy)</Text>
+        <Typography variant="body">Swipe LEFT for Window (Transparency), RIGHT for Wall (Privacy)</Typography>
         <Animated.View style={[styles.card, style]} {...pan}>
-          <Text variant="header">{BEHAVIORS[index]?.text}</Text>
+          <Typography variant="h2">{BEHAVIORS[index]?.text}</Typography>
         </Animated.View>
         <View style={styles.legend}>
-          <Text variant="keyword" style={{ color: '#33DEA5' }}>← Window</Text>
-          <Text variant="keyword" style={{ color: '#E11637' }}>Wall →</Text>
+          <Typography variant="caption" color={COLORS.success}>← Window</Typography>
+          <Typography variant="caption" color={COLORS.error}>Wall →</Typography>
         </View>
       </GlassCard>
     </View>
   );
 
-  return <GameContainer state={baseState} inputs={["slider"]} inputArea={inputArea} onComplete={onComplete} sessionId={sessionId} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={["slider"]} inputArea={inputArea} onComplete={onComplete} sessionId={sessionId} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  card: { marginTop: 16, padding: 24, borderRadius: 12, backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', alignItems: 'center', minHeight: 150, justifyContent: 'center' },
-  legend: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 }
+  card: { 
+    marginTop: SPACING.regular, 
+    padding: SPACING.xlarge, 
+    borderRadius: BORDER_RADIUS.large, 
+    backgroundColor: COLORS.backgroundSecondary, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    alignItems: 'center', 
+    minHeight: 150, 
+    justifyContent: 'center' 
+  },
+  legend: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    marginTop: SPACING.regular 
+  }
 });

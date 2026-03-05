@@ -1,79 +1,136 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { ScreenLayout, Typography, GlassCard } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
-const GraffitiPrompt = ({ text }) => (
-    <View style={styles.promptContainer}>
-        <Text style={styles.promptText}>{text}</Text>
-    </View>
+const GraffitiPrompt = ({ text }: { text: string }) => (
+    <GlassCard style={styles.promptContainer} padding="small">
+        <Typography variant="body" style={styles.promptText}>{text}</Typography>
+    </GlassCard>
 );
 
 const GratitudeGraffitiScreen = () => {
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
+        <ScreenLayout showHeader={false}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
 
                 <View style={styles.header}>
                     <View>
-                        <Text style={styles.headerTitle}>ROUND 2: GRATITUDE GRAFFITI</Text>
-                        <Text style={styles.headerSubtitle}>Collaborate to draw metaphors of appreciation.</Text>
+                        <Typography variant="h1" style={styles.headerTitle}>
+                            ROUND 2: GRATITUDE GRAFFITI
+                        </Typography>
+                        <Typography variant="body" style={styles.headerSubtitle}>
+                            Collaborate to draw metaphors of appreciation.
+                        </Typography>
                     </View>
                     {/* Timer component would go here */}
                 </View>
 
                 <View style={styles.mainContent}>
                     <View style={styles.sidebar}>
-                        <Text style={styles.sidebarTitle}>INSPIRATION PROMPTS</Text>
-                        <GraffitiPrompt text='"You\'re the guac to my toast.''' />
-                        <GraffitiPrompt text='"The wifi signal to my heart.''' />
-                        <GraffitiPrompt text='"The anchor in my storm.''' />
+                        <Typography variant="label" style={styles.sidebarTitle}>
+                            INSPIRATION PROMPTS
+                        </Typography>
+                        <GraffitiPrompt text='"You\'re the guac to my toast."' />
+                        <GraffitiPrompt text='"The wifi signal to my heart."' />
+                        <GraffitiPrompt text='"The anchor in my storm."' />
                     </View>
 
-                    <View style={styles.canvasContainer}>
+                    <GlassCard style={styles.canvasContainer} padding="none">
                         <View style={styles.canvasPlaceholder}>
-                            <Text style={styles.graffitiTextPink}>GUAC 🥑</Text>
-                            <Text style={styles.graffitiTextTeal}>TOAST 🍞</Text>
+                            <Typography variant="h1" style={styles.graffitiTextPink}>GUAC 🥑</Typography>
+                            <Typography variant="h1" style={styles.graffitiTextTeal}>TOAST 🍞</Typography>
                         </View>
-                    </View>
+                    </GlassCard>
                 </View>
 
                 <View style={styles.marcieContainer}>
-                     <Text style={styles.marcieAvatar}>😊</Text>
-                    <View style={styles.marcieBubble}>
-                        <Text style={styles.marcieText}>
-                            "I'm loving those neon choices! That <Text style={{color: '#FF4081'}}>guac metaphor</Text> is absolutely brilliant!"
-                        </Text>
-                    </View>
+                     <Typography variant="h1" style={styles.marcieAvatar}>😊</Typography>
+                    <GlassCard style={styles.marcieBubble} padding="small">
+                        <Typography variant="body">
+                            "I'm loving those neon choices! That <Typography variant="body" style={{color: COLORS.vibrantPink}}>guac metaphor</Typography> is absolutely brilliant!"
+                        </Typography>
+                    </GlassCard>
                 </View>
 
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
-    background: { ...StyleSheet.absoluteFillObject },
-    scrollContent: { padding: 24 },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 },
-    headerTitle: { color: '#FFF', fontSize: 24, fontWeight: 'bold', textTransform: 'uppercase' },
-    headerSubtitle: { color: '#D1C4E9' },
-    mainContent: { flexDirection: 'row', gap: 16 },
-    sidebar: { width: 150, gap: 8 },
-    sidebarTitle: { color: '#D1C4E9', fontWeight: 'bold', marginBottom: 8, textTransform: 'uppercase' },
-    promptContainer: { backgroundColor: 'rgba(255,255,255,0.1)', padding: 8, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    promptText: { color: '#D1C4E9', fontStyle: 'italic', fontSize: 12 },
-    canvasContainer: { flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 24, minHeight: 400, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    canvasPlaceholder: { alignItems: 'center' },
-    graffitiTextPink: { fontSize: 36, fontWeight: 'bold', color: '#FF4081', textShadowColor: '#FF4081', textShadowRadius: 10, fontStyle: 'italic', textTransform: 'uppercase' },
-    graffitiTextTeal: { fontSize: 36, fontWeight: 'bold', color: '#00FFFF', textShadowColor: '#00FFFF', textShadowRadius: 10, fontStyle: 'italic', textTransform: 'uppercase' },
-    marcieContainer: { position: 'absolute', bottom: 24, right: 24, width: 250, alignItems: 'flex-end' },
-    marcieAvatar: { fontSize: 40, marginBottom: -10, zIndex: 1 },
-    marcieBubble: { backgroundColor: 'rgba(255, 64, 129, 0.2)', padding: 12, borderRadius: 16, borderBottomRightRadius: 0, borderColor: 'rgba(255, 64, 129, 0.3)', borderWidth: 1 },
-    marcieText: { color: '#FFF', lineHeight: 20 },
+    scrollContent: { 
+        padding: SPACING.lg 
+    },
+    header: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'flex-start', 
+        marginBottom: SPACING.lg 
+    },
+    headerTitle: {},
+    headerSubtitle: { 
+        color: COLORS.textSecondary,
+        marginTop: SPACING.xs,
+    },
+    mainContent: { 
+        flexDirection: 'row', 
+        gap: SPACING.lg 
+    },
+    sidebar: { 
+        width: SPACING.xxxlarge * 3, 
+        gap: SPACING.sm 
+    },
+    sidebarTitle: { 
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.sm,
+    },
+    promptContainer: {
+        borderWidth: 1, 
+        borderColor: `${COLORS.vibrantPink}80`,
+    },
+    promptText: { 
+        color: COLORS.textSecondary, 
+        fontStyle: 'italic',
+        fontSize: TYPOGRAPHY.fontSize.bodySmall,
+    },
+    canvasContainer: { 
+        flex: 1, 
+        minHeight: SPACING.xxxlarge * 8, 
+        justifyContent: 'center', 
+        alignItems: 'center',
+    },
+    canvasPlaceholder: { 
+        alignItems: 'center' 
+    },
+    graffitiTextPink: { 
+        color: COLORS.vibrantPink,
+        textShadowColor: COLORS.vibrantPink, 
+        textShadowRadius: SPACING.md, 
+        fontStyle: 'italic',
+    },
+    graffitiTextTeal: { 
+        color: COLORS.aquaTeal,
+        textShadowColor: COLORS.aquaTeal, 
+        textShadowRadius: SPACING.md, 
+        fontStyle: 'italic',
+    },
+    marcieContainer: { 
+        position: 'absolute', 
+        bottom: SPACING.lg, 
+        right: SPACING.lg, 
+        width: SPACING.xxxlarge * 5, 
+        alignItems: 'flex-end' 
+    },
+    marcieAvatar: { 
+        marginBottom: -SPACING.md, 
+        zIndex: 1,
+    },
+    marcieBubble: { 
+        borderBottomRightRadius: 0,
+        borderColor: `${COLORS.vibrantPink}4D`,
+        borderWidth: 1,
+    },
 });
 
 export default GratitudeGraffitiScreen;

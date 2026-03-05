@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function NewlywedHeart({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -51,27 +53,47 @@ export default function NewlywedHeart({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
-                <Text variant="header">Round 1: Survivor's Fury</Text>
-                <Text variant="body" style={{ marginBottom: 16 }}>
+                <Typography variant="h2">Round 1: Survivor's Fury</Typography>
+                <Typography variant="body" style={styles.instructions}>
                     "When she is feeling her rage about the words, what does she most need from him in that moment?"
-                </Text>
+                </Typography>
 
                 <View style={styles.opts}>
-                    <SquishyButton onPress={() => setChoice('A')} style={[styles.btn, choice === 'A' ? styles.sel : {}]}>
-                        <Text variant="body">A) Silence</Text>
+                    <SquishyButton 
+                        onPress={() => setChoice('A')} 
+                        variant={choice === 'A' ? 'primary' : 'secondary'}
+                        size="medium"
+                        style={styles.btn}
+                    >
+                        <Typography variant="body">A) Silence</Typography>
                     </SquishyButton>
-                    <SquishyButton onPress={() => setChoice('B')} style={[styles.btn, choice === 'B' ? styles.sel : {}]}>
-                        <Text variant="body">B) Validation</Text>
+                    <SquishyButton 
+                        onPress={() => setChoice('B')} 
+                        variant={choice === 'B' ? 'primary' : 'secondary'}
+                        size="medium"
+                        style={styles.btn}
+                    >
+                        <Typography variant="body">B) Validation</Typography>
                     </SquishyButton>
-                    <SquishyButton onPress={() => setChoice('C')} style={[styles.btn, choice === 'C' ? styles.sel : {}]}>
-                        <Text variant="body">C) Space</Text>
+                    <SquishyButton 
+                        onPress={() => setChoice('C')} 
+                        variant={choice === 'C' ? 'primary' : 'secondary'}
+                        size="medium"
+                        style={styles.btn}
+                    >
+                        <Typography variant="body">C) Space</Typography>
                     </SquishyButton>
                 </View>
 
-                <SquishyButton onPress={submit} style={styles.submitBtn}>
-                    <Text variant="header">Lock In Prediction</Text>
+                <SquishyButton 
+                    onPress={submit} 
+                    variant="primary"
+                    size="large"
+                    style={styles.submitBtn}
+                >
+                    <Typography variant="button">Lock In Prediction</Typography>
                 </SquishyButton>
             </GlassCard>
         </ScrollView>
@@ -93,21 +115,26 @@ export default function NewlywedHeart({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-    opts: { gap: 10 },
-    btn: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 14,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)'
+    scrollView: { 
+        gap: SPACING.regular 
     },
-    sel: { backgroundColor: '#FFD700', borderColor: '#FFD700' },
+    opts: { 
+        gap: SPACING.regular,
+        marginTop: SPACING.regular,
+    },
+    btn: {
+        backgroundColor: COLORS.backgroundInput,
+    },
+    sel: { 
+        backgroundColor: COLORS.brightYellow, 
+        borderColor: COLORS.brightYellow 
+    },
+    instructions: {
+        marginBottom: SPACING.regular,
+        marginTop: SPACING.small,
+    },
     submitBtn: {
-        marginTop: 20,
-        backgroundColor: '#FA1F63',
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20
+        marginTop: SPACING.xlarge,
+        marginBottom: SPACING.xlarge,
     },
 });

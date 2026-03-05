@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
+import { Typography, SquishyButton } from '../ui';
 
 interface GameHeaderProps {
   title: string;
@@ -26,20 +28,22 @@ const GameHeader: React.FC<GameHeaderProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.leftSection}>
-        <TouchableOpacity style={styles.exitButton} onPress={onExit}>
-          <Ionicons name="close" size={24} color="#ffffff" />
-        </TouchableOpacity>
+        <SquishyButton onPress={onExit} variant="ghost" style={styles.exitButton}>
+          <Ionicons name="close" size={TYPOGRAPHY.fontSize.displaySmall} color={COLORS.textPrimary} />
+        </SquishyButton>
         {icon && (
-          <Text style={styles.icon}>{icon}</Text>
+          <Typography variant="body" style={styles.icon}>{icon}</Typography>
         )}
-        <Text style={styles.title}>{title}</Text>
+        <Typography variant="header" style={styles.title}>{title}</Typography>
       </View>
 
       <View style={styles.rightSection}>
         {timer !== undefined && (
           <View style={styles.timerContainer}>
-            <Ionicons name="time-outline" size={16} color="#ef1b6e" />
-            <Text style={styles.timer}>{formatTime(timer)}</Text>
+            <Ionicons name="time-outline" size={TYPOGRAPHY.fontSize.bodyMedium} color={COLORS.vibrantPink} />
+            <Typography variant="body" color={COLORS.vibrantPink} style={styles.timer}>
+              {formatTime(timer)}
+            </Typography>
           </View>
         )}
         
@@ -48,12 +52,12 @@ const GameHeader: React.FC<GameHeaderProps> = ({
             styles.statusDot, 
             partnerOnline ? styles.onlineDot : styles.offlineDot
           ]} />
-          <Text style={[
+          <Typography variant="caption" style={[
             styles.statusText,
             partnerOnline ? styles.onlineText : styles.offlineText
           ]}>
             {partnerOnline ? 'Partner Online' : 'Waiting...'}
-          </Text>
+          </Typography>
         </View>
       </View>
     </View>
@@ -65,11 +69,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    paddingHorizontal: SPACING.large,
+    paddingVertical: SPACING.regular,
+    backgroundColor: COLORS.backgroundInput,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 64, 129, 0.3)',
+    borderBottomColor: 'rgba(252, 12, 132, 0.3)',
   },
   leftSection: {
     flexDirection: 'row',
@@ -80,65 +84,58 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   exitButton: {
-    padding: 8,
-    marginRight: 12,
+    padding: SPACING.small,
+    marginRight: SPACING.medium,
   },
   icon: {
-    fontSize: 20,
-    marginRight: 8,
+    fontSize: TYPOGRAPHY.fontSize.headerMedium,
+    marginRight: SPACING.small,
   },
   title: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: TYPOGRAPHY.letterSpacing.wide,
   },
   timerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(239, 27, 110, 0.2)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    marginRight: 12,
+    backgroundColor: 'rgba(252, 12, 132, 0.2)',
+    paddingHorizontal: SPACING.medium,
+    paddingVertical: SPACING.small,
+    borderRadius: BORDER_RADIUS.xxlarge,
+    marginRight: SPACING.medium,
   },
   timer: {
-    color: '#ef1b6e',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginLeft: 6,
-    fontFamily: 'monospace',
+    marginLeft: SPACING.tiny,
+    fontFamily: TYPOGRAPHY.fontFamily.medium,
   },
   statusContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginRight: 6,
+    width: SPACING.small,
+    height: SPACING.small,
+    borderRadius: BORDER_RADIUS.small / 2,
+    marginRight: SPACING.tiny,
   },
   onlineDot: {
-    backgroundColor: '#4CAF50',
-    shadowColor: '#4CAF50',
-    shadowOffset: { width: 0, height: 0 },
+    backgroundColor: COLORS.success,
+    ...SHADOWS.small,
+    shadowColor: COLORS.success,
     shadowOpacity: 0.8,
     shadowRadius: 4,
   },
   offlineDot: {
-    backgroundColor: '#f44336',
+    backgroundColor: COLORS.error,
   },
   statusText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
   },
   onlineText: {
-    color: '#4CAF50',
+    color: COLORS.success,
   },
   offlineText: {
-    color: '#f44336',
+    color: COLORS.error,
   },
 });
 

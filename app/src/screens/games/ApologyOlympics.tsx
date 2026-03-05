@@ -1,22 +1,25 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 import { speakMarcie } from '../../lib/voice-engine';
 
 export default function ApologyOlympics({ navigation }: any) {
     useEffect(() => {
-        speakMarcie("‘I shut down and it made you feel abandoned—I’ll pause next time’? 35/35. Gold and my respect.");
+        speakMarcie("'I shut down and it made you feel abandoned—I'll pause next time'? 35/35. Gold and my respect.");
     }, []);
 
     return (
-        <LinearGradient colors={['#2A0040', '#000000']} style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundPrimary]} style={styles.background} />
             <ScrollView contentContainerStyle={styles.content}>
                 <View style={styles.header}>
                     <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-                        <Text variant="body">Back</Text>
+                        <Typography variant="body">Back</Typography>
                     </SquishyButton>
-                    <Text variant="header" style={styles.title}>The Apology Olympics</Text>
+                    <Typography variant="h1" style={styles.title}>The Apology Olympics</Typography>
                 </View>
 
                 {/* Dr. Marcie Section */}
@@ -25,112 +28,102 @@ export default function ApologyOlympics({ navigation }: any) {
                         <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                     </View>
                     <View style={styles.quoteBox}>
-                        <Text style={styles.quoteText} variant="sass">Master the art of genuine apologies! Own your actions, acknowledge impact, and offer repair.</Text>
+                        <Typography variant="sass">Master the art of genuine apologies! Own your actions, acknowledge impact, and offer repair.</Typography>
                     </View>
                 </View>
 
                 <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Type: Speed rewrite + AI rubric</Text>
-                    <Text variant="body">Mechanics: Rewrite “Sorry you felt that way” in {'<'}60s. Must avoid: but, if, you, however.</Text>
+                    <Typography variant="instructions" style={{ marginBottom: SPACING.regular }}>Type: Speed rewrite + AI rubric</Typography>
+                    <Typography variant="body">Mechanics: Rewrite "Sorry you felt that way" in {'<'}60s. Must avoid: but, if, you, however.</Typography>
                 </GlassCard>
 
                 <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Scoring (AI Rubric)</Text>
-                    <Text variant="body">
-                        ✅ Ownership (“I did X”) = +10{'\n'}
-                        ✅ Impact named (“…made you feel Y”) = +10{'\n'}
-                        ✅ Repair offered (“Next time, I’ll Z”) = +10{'\n'}
-                        ✅ No blame-shifting = +5
-                    </Text>
+                    <Typography variant="instructions" style={{ marginBottom: SPACING.regular }}>Scoring (AI Rubric)</Typography>
+                    <Typography variant="body">
+                        Ownership ("I did X") = +10{'\n'}
+                        Impact named ("…made you feel Y") = +10{'\n'}
+                        Repair offered ("Next time, I'll Z") = +10{'\n'}
+                        No blame-shifting = +5
+                    </Typography>
                 </GlassCard>
 
                 <View style={styles.actionArea}>
                     <SquishyButton onPress={() => alert('Rubric loaded. Ready?')} style={styles.playBtn}>
-                        <LinearGradient
-                            colors={['#db147c', '#f05d68']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
-                            style={styles.gradientButton}
-                        >
-                            <Text variant="header" style={{ color: '#ffffff' }}>Start Rewrite</Text>
-                        </LinearGradient>
+                        <Typography variant="button" style={{ color: COLORS.textPrimary }}>Start Rewrite</Typography>
                     </SquishyButton>
                 </View>
             </ScrollView>
-        </LinearGradient>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
-    content: { padding: 20, gap: 20 },
-    header: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 40 },
-    backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-    title: { 
-        fontSize: 22, 
-        color: '#ffffff', 
+    container: { 
         flex: 1,
-        textShadowColor: 'rgba(219, 20, 124, 0.7)',
-        textShadowOffset: {width: 0, height: 0},
-        textShadowRadius: 10,
+        backgroundColor: COLORS.backgroundPrimary,
+    },
+    background: { 
+        ...StyleSheet.absoluteFillObject 
+    },
+    content: { 
+        padding: SPACING.regular, 
+        gap: SPACING.regular 
+    },
+    header: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        gap: SPACING.regular, 
+        marginTop: SPACING.xlarge 
+    },
+    backBtn: { 
+        paddingHorizontal: SPACING.regular, 
+        paddingVertical: SPACING.small, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.large 
+    },
+    title: { 
+        flex: 1,
     },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        marginBottom: 20
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular
     },
     avatarContainer: {
         width: 50,
         height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular
     },
     avatar: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: BORDER_RADIUS.round,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
-    },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular
     },
     card: { 
-        padding: 20,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        padding: SPACING.regular,
+        backgroundColor: COLORS.backgroundCard,
         borderWidth: 1,
-        borderColor: 'rgba(219, 20, 124, 0.3)',
+        borderColor: COLORS.borderSubtle,
     },
-    actionArea: { marginTop: 40, alignItems: 'center' },
+    actionArea: { 
+        marginTop: SPACING.xlarge, 
+        alignItems: 'center' 
+    },
     playBtn: { 
         width: '80%', 
-        paddingVertical: 15, 
-        borderRadius: 20, 
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
     },
-    gradientButton: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 20,
-        paddingVertical: 15,
-    }
 });

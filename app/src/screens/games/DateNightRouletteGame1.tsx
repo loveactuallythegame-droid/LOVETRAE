@@ -1,100 +1,85 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Picker, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Picker } from '@react-native-picker/picker';
+import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const DateNightRouletteGame1Screen = () => {
-
-    // Using require for local images
-    const hostImage = require('../../assets/images/DrMarcieLiss.png');
-
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#181114', '#230f15']} style={styles.background} />
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+            <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
-            <View style={styles.drMarcieSection}>
+            <GlassCard style={styles.drMarcieSection} padding="medium">
                 <View style={styles.avatarContainer}>
                     <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                 </View>
                 <View style={styles.quoteBox}>
-                    <Text style={styles.quoteText}>Spin the wheel for unique date night ideas! Strengthen your connection with creative activities.</Text>
+                    <Typography variant="sass">Spin the wheel for unique date night ideas! Strengthen your connection with creative activities.</Typography>
                 </View>
-            </View>
+            </GlassCard>
             
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Date Night <Text style={styles.headerTitlePrimary}>Roulette</Text></Text>
-                    <Text style={styles.headerSubtitle}>Where will tonight take you?</Text>
+            <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+                <View style={styles.header}>
+                    <Typography variant="h1" center>Date Night Roulette</Typography>
+                    <Typography variant="h2" center style={styles.headerSubtitle}>Where will tonight take you?</Typography>
                 </View>
 
                 <View style={styles.mainLayout}>
                     {/* Left Sidebar */}
-                    <LinearGradient
-                        colors={['#a22ac4', '#9056ef']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.sidebar}
-                    >
+                    <GlassCard style={styles.sidebar} padding="medium">
                         <LinearGradient
-                            colors={['#db147c', '#f05d68']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
+                            colors={GRADIENTS.primary.colors}
+                            start={GRADIENTS.primary.start}
+                            end={GRADIENTS.primary.end}
                             style={styles.glassPanel}
                         >
-                            <Text style={styles.sidebarTitle}>Set the Vibe</Text>
-                            <Picker style={styles.picker}>
-                                <Picker.Item label="Balanced ($$)" value="mid" />
-                                <Picker.Item label="Thrifty ($)" value="low" />
-                                <Picker.Item label="Bougie ($$$)" value="high" />
-                            </Picker>
-                            <Picker style={styles.picker}>
-                                <Picker.Item label="Casual Fun (Mid)" value="mid" />
-                                <Picker.Item label="Netflix & Chill (Low)" value="low" />
-                                <Picker.Item label="Adrenaline Junkie (High)" value="high" />
-                            </Picker>
+                            <Typography variant="h3" style={styles.sidebarTitle}>Set the Vibe</Typography>
+                            <View style={styles.pickerContainer}>
+                                <Picker style={styles.picker} dropdownIconColor={COLORS.textPrimary}>
+                                    <Picker.Item label="Balanced ($$)" value="mid" color={COLORS.textPrimary} />
+                                    <Picker.Item label="Thrifty ($)" value="low" color={COLORS.textPrimary} />
+                                    <Picker.Item label="Bougie ($$$)" value="high" color={COLORS.textPrimary} />
+                                </Picker>
+                            </View>
+                            <View style={styles.pickerContainer}>
+                                <Picker style={styles.picker} dropdownIconColor={COLORS.textPrimary}>
+                                    <Picker.Item label="Casual Fun (Mid)" value="mid" color={COLORS.textPrimary} />
+                                    <Picker.Item label="Netflix & Chill (Low)" value="low" color={COLORS.textPrimary} />
+                                    <Picker.Item label="Adrenaline Junkie (High)" value="high" color={COLORS.textPrimary} />
+                                </Picker>
+                            </View>
                         </LinearGradient>
-                    </LinearGradient>
+                    </GlassCard>
 
                     {/* Center Roulette */}
                     <View style={styles.centerContent}>
                         <LinearGradient
-                            colors={['#37cf97', '#b37dec']}
+                            colors={[COLORS.mintGreen, COLORS.softViolet]}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 1 }}
                             style={styles.wheelContainer}
                         >
                             <View style={styles.wheel} />
-                            <TouchableOpacity style={styles.spinButton}>
-                                <LinearGradient
-                                    colors={['#ffffff', '#ffffff']}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 1 }}
-                                    style={styles.gradientButton}
-                                >
-                                    <Text style={styles.spinButtonText}>SPIN</Text>
-                                </LinearGradient>
-                            </TouchableOpacity>
+                            <SquishyButton style={styles.spinButton}>
+                                <Typography variant="button" style={styles.spinButtonText}>SPIN</Typography>
+                            </SquishyButton>
                         </LinearGradient>
                     </View>
                     
                     {/* Right Sidebar */}
-                    <LinearGradient
-                        colors={['#ff7600', '#ffef1f']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.sidebar}
-                    >
-                         <LinearGradient
-                            colors={['#db147c', '#f05d68']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
+                    <GlassCard style={styles.sidebar} padding="medium">
+                        <LinearGradient
+                            colors={GRADIENTS.primary.colors}
+                            start={GRADIENTS.primary.start}
+                            end={GRADIENTS.primary.end}
                             style={styles.speechBubble}
-                         >
-                             <Text style={styles.speechText}>"Ooh, I love this vibe! Let's see what destiny has in store..."</Text>
-                         </LinearGradient>
-                        {/* Image would be here if we can resolve the path issue */}
-                    </LinearGradient>
+                        >
+                            <Typography variant="sass" center>"Ooh, I love this vibe! Let's see what destiny has in store..."</Typography>
+                        </LinearGradient>
+                    </GlassCard>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -102,167 +87,127 @@ const DateNightRouletteGame1Screen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#181114' },
-    background: { ...StyleSheet.absoluteFillObject },
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
+    },
+    background: { 
+        ...StyleSheet.absoluteFillObject 
+    },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+        margin: SPACING.regular,
+        marginBottom: SPACING.small
     },
     avatarContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        width: SPACING.xxlarge + SPACING.small,
+        height: SPACING.xxlarge + SPACING.small,
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular
     },
     avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: SPACING.xxlarge,
+        height: SPACING.xxlarge,
+        borderRadius: BORDER_RADIUS.round,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
         backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+    scrollContainer: { 
+        flexGrow: 1, 
+        padding: SPACING.regular 
     },
-    scrollContainer: { flexGrow: 1, padding: 20 },
-    header: { alignItems: 'center', marginBottom: 24 },
-    headerTitle: { fontFamily: 'BarbieDream-Regular', fontSize: 36, color: '#ffffff', textTransform: 'uppercase', fontStyle: 'italic' },
-    headerTitlePrimary: { color: '#db147c' },
-    headerSubtitle: { fontFamily: 'SweetPink-Regular', color: '#ffffff', fontSize: 18, marginTop: 4, opacity: 0.8 },
-    mainLayout: { flexDirection: 'row', justifyContent: 'space-between' },
+    header: { 
+        alignItems: 'center', 
+        marginBottom: SPACING.xlarge 
+    },
+    headerSubtitle: { 
+        marginTop: SPACING.small, 
+        opacity: 0.8 
+    },
+    mainLayout: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between' 
+    },
     sidebar: { 
-        width: '25%', 
-        padding: 10,
-        borderRadius: 16,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        width: '25%',
+        ...SHADOWS.card
     },
-    centerContent: { width: '45%', alignItems: 'center' },
     glassPanel: { 
-        borderRadius: 16, 
-        padding: 16,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card
     },
     sidebarTitle: { 
-        fontFamily: 'WonderfulSometimes-Regular', 
-        color: '#ffffff', 
-        fontSize: 22, 
-        marginBottom: 16,
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.regular,
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.medium,
+    },
+    pickerContainer: {
+        backgroundColor: 'rgba(255,255,255,0.05)',
+        borderRadius: BORDER_RADIUS.large,
+        marginBottom: SPACING.regular,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
     },
     picker: { 
-        height: 50, 
+        height: SPACING.xxlarge + SPACING.small, 
         width: '100%', 
-        color: '#ffffff', 
-        backgroundColor: 'rgba(255,255,255,0.05)', 
-        marginBottom: 16,
-        borderWidth: 1,
-        borderColor: 'rgba(219, 20, 124, 0.3)',
+        color: COLORS.textPrimary,
+    },
+    centerContent: { 
+        width: '45%', 
+        alignItems: 'center' 
     },
     wheelContainer: { 
         alignItems: 'center', 
         justifyContent: 'center', 
-        width: 350, 
-        height: 350,
-        borderRadius: 175,
+        width: '80%', 
+        aspectRatio: 1,
+        borderRadius: BORDER_RADIUS.round,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card
     },
     wheel: {
-        width: 350, 
-        height: 350, 
-        borderRadius: 175,
-        backgroundColor: 'transparent', // conic-gradient not supported directly
-        borderWidth: 12, 
+        width: '100%', 
+        height: '100%', 
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: 'transparent',
+        borderWidth: SPACING.small, 
         borderColor: 'rgba(255,255,255,0.1)',
     },
     spinButton: {
-        position: 'absolute', 
-        width: 100, 
-        height: 100, 
-        borderRadius: 50,
+        position: 'absolute',
+        width: SPACING.xxxlarge + SPACING.large,
+        height: SPACING.xxxlarge + SPACING.large,
+        borderRadius: BORDER_RADIUS.round,
         justifyContent: 'center', 
         alignItems: 'center',
-        shadowColor: "#db147c",
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.8, 
-        shadowRadius: 15,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    gradientButton: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 50,
-        paddingVertical: 15,
+        ...SHADOWS.neon
     },
     spinButtonText: { 
-        fontFamily: 'BarbieDream-Regular', 
-        color: '#db147c', 
-        fontSize: 24, 
-        fontStyle: 'italic',
-        fontWeight: 'bold',
+        color: COLORS.vibrantPink,
     },
     speechBubble: { 
-        padding: 15, 
-        borderRadius: 12, 
-        marginBottom: 20,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    speechText: { 
-        color: '#ffffff', 
-        fontStyle: 'italic', 
-        fontSize: 14, 
-        fontFamily: 'SweetPink-Regular',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        padding: 8,
-        borderRadius: 8,
+        padding: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.large,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card
     },
 });
 

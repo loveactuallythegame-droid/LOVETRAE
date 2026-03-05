@@ -1,19 +1,21 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, ImageBackground, TextInput, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout } from '../layout';
+import { Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
 const MemoryLaneGpsGame = () => {
 
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <LinearGradient colors={[COLORS.deepCosmicPurple, COLORS.midPurple]} style={styles.background} />
             <ScrollView contentContainerStyle={styles.scrollContent}>
 
-                <View style={styles.header}>
-                    <Text style={styles.headerTitle}>CURRENT MISSION: BEST FIGHT-TURNED-HUG</Text>
-                </View>
+                <GlassCard style={styles.header} variant="outlined">
+                    <Typography variant="h3" style={styles.headerTitle}>CURRENT MISSION: BEST FIGHT-TURNED-HUG</Typography>
+                </GlassCard>
 
                 <View style={styles.mapContainer}>
                     <ImageBackground 
@@ -24,76 +26,154 @@ const MemoryLaneGpsGame = () => {
                          <View style={styles.mapOverlay} />
                          <View style={styles.heartPinContainer}>
                             <View style={styles.heartPulse}>
-                                <Text>❤️</Text>
+                                <Typography variant="body">❤️</Typography>
                             </View>
-                            <Text style={styles.pinLabel}>THE SPOT</Text>
+                            <Typography variant="caption" style={styles.pinLabel}>THE SPOT</Typography>
                         </View>
 
                          <View style={styles.mapSearchContainer}>
-                            <Text>🔍</Text>
-                            <TextInput placeholder="SEARCH THE LOCATION..." placeholderTextColor="#D1C4E9" style={styles.mapSearchInput} />
+                            <Typography variant="body">🔍</Typography>
+                            <TextInput placeholder="SEARCH THE LOCATION..." placeholderTextColor={COLORS.textSecondary} style={styles.mapSearchInput} />
                         </View>
 
                     </ImageBackground>
                 </View>
 
                 <View style={styles.sidebar}>
-                    <View style={styles.narratorContainer}>
-                        <Text style={styles.narratorTitle}>GPS NARRATOR</Text>
-                        <Text style={styles.narratorText}>"Drop your heart pin exactly where the sparks flew after the storm."</Text>
-                    </View>
+                    <GlassCard style={styles.narratorContainer} variant="outlined">
+                        <Typography variant="label" style={styles.narratorTitle}>GPS NARRATOR</Typography>
+                        <Typography variant="marcieDialogue" style={styles.narratorText}>"Drop your heart pin exactly where the sparks flew after the storm."</Typography>
+                    </GlassCard>
 
-                    <Text style={styles.previewTitle}>MEMORY PREVIEW</Text>
+                    <Typography variant="h3" style={styles.previewTitle}>MEMORY PREVIEW</Typography>
                     <ImageBackground 
                         source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCxsKxglf4x4FqmlvGhYP4OdFnNGT-VdE5tuXbpOScrzQ6zoitzu1rXz1x5mjdfmukqCGzzsNZ6oPjfPqpErXykbv8axx0ttar9ubV31B1-HjOVmI-1Qg_YJNhWNCzM0FFnrBhS4tJy4GNZ2bhchfZ1q18cPpCRTNWAwTksFDJPnFxz9L1wW3hSTBtWajUlk8c-b-mpuCgaP3RHyYMrgOebekTIj5caSXl5vW_3RER8t7ckp56PbrrMeFay9LELAIxfgpSS0zeO0NpV'}}
                         style={styles.previewImage}
-                        imageStyle={{ borderRadius: 24 }}
+                        imageStyle={{ borderRadius: BORDER_RADIUS.xxlarge }}
                     >
-                        <TouchableOpacity style={styles.uploadButton}>
-                            <Text style={{fontSize: 24}}>☁️</Text>
-                            <Text style={styles.uploadText}>REPLACE PHOTO</Text>
-                        </TouchableOpacity>
+                        <SquishyButton variant="secondary" size="medium" onPress={() => {}} style={styles.uploadButton}>
+                            <Typography variant="h2">☁️</Typography>
+                            <Typography variant="label" style={styles.uploadText}>REPLACE PHOTO</Typography>
+                        </SquishyButton>
                     </ImageBackground>
 
-                    <TouchableOpacity style={styles.confirmButton}>
-                        <Text style={styles.confirmButtonText}>CONFIRM LOCATION</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.skipButton}>
-                        <Text style={styles.skipButtonText}>SKIP LANDMARK</Text>
-                    </TouchableOpacity>
+                    <SquishyButton variant="primary" size="large" onPress={() => {}} style={styles.confirmButton}>
+                        <Typography variant="button" color={COLORS.textPrimary}>CONFIRM LOCATION</Typography>
+                    </SquishyButton>
+                    <SquishyButton variant="ghost" size="large" onPress={() => {}} style={styles.skipButton}>
+                        <Typography variant="button">SKIP LANDMARK</Typography>
+                    </SquishyButton>
                 </View>
 
             </ScrollView>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
     background: { ...StyleSheet.absoluteFillObject },
-    scrollContent: { paddingBottom: 24 },
-    header: { padding: 16, alignItems: 'center', backgroundColor: 'rgba(255, 64, 129, 0.2)', borderRadius: 16, margin: 16 },
-    headerTitle: { color: '#FFF', fontSize: 18, fontWeight: 'bold', textTransform: 'uppercase' },
-    mapContainer: { height: 400, marginHorizontal: 16, borderRadius: 24, overflow: 'hidden', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
+    scrollContent: { paddingBottom: SPACING.xlarge },
+    header: { 
+        padding: SPACING.regular, 
+        alignItems: 'center', 
+        backgroundColor: 'rgba(252, 12, 132, 0.2)', 
+        borderRadius: BORDER_RADIUS.xlarge, 
+        margin: SPACING.regular 
+    },
+    headerTitle: { 
+        color: COLORS.textPrimary, 
+        textTransform: 'uppercase' 
+    },
+    mapContainer: { 
+        height: 400, 
+        marginHorizontal: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.xxlarge, 
+        overflow: 'hidden', 
+        borderWidth: 1, 
+        borderColor: COLORS.borderSubtle 
+    },
     mapBackground: { flex: 1 },
     mapOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.5)' },
     heartPinContainer: { position: 'absolute', top: '50%', left: '33%', alignItems: 'center' },
-    heartPulse: { backgroundColor: '#FF4081', padding: 12, borderRadius: 99, shadowColor: '#FF4081', shadowRadius: 10, shadowOpacity: 0.7 },
-    pinLabel: { marginTop: 8, backgroundColor: '#FF4081', color: '#FFF', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, fontSize: 10, fontWeight: 'bold', textTransform: 'uppercase' },
-    mapSearchContainer: { position: 'absolute', bottom: 16, left: 16, flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)', paddingHorizontal: 16, borderRadius: 99, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    mapSearchInput: { flex: 1, color: '#FFF', marginLeft: 8, paddingVertical: 12, fontWeight: 'bold', textTransform: 'uppercase' },
-    sidebar: { padding: 16, borderTopWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', marginTop: 16 },
-    narratorContainer: { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 16, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    narratorTitle: { color: '#FF4081', textTransform: 'uppercase', fontWeight: 'bold', fontSize: 10, marginBottom: 4 },
-    narratorText: { color: '#D1C4E9', fontStyle: 'italic' },
-    previewTitle: { color: '#FFF', fontSize: 18, fontWeight: 'bold', marginBottom: 8, textTransform: 'uppercase' },
-    previewImage: { height: 200, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: 'rgba(255, 64, 129, 0.5)', borderStyle: 'dashed', borderRadius: 24 },
-    uploadButton: { backgroundColor: 'rgba(0,0,0,0.5)', padding: 16, borderRadius: 16, alignItems: 'center' },
-    uploadText: { color: '#FF4081', marginTop: 8, fontWeight: 'bold', textTransform: 'uppercase' },
-    confirmButton: { backgroundColor: '#FF4081', padding: 16, borderRadius: 99, alignItems: 'center', marginTop: 16 },
-    confirmButtonText: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' },
-    skipButton: { backgroundColor: 'rgba(255,255,255,0.1)', padding: 16, borderRadius: 99, alignItems: 'center', marginTop: 8 },
-    skipButtonText: { color: '#D1C4E9', fontWeight: 'bold', textTransform: 'uppercase' },
+    heartPulse: { 
+        backgroundColor: COLORS.vibrantPink, 
+        padding: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.round, 
+        ...SHADOWS.neon
+    },
+    pinLabel: { 
+        marginTop: SPACING.small, 
+        backgroundColor: COLORS.vibrantPink, 
+        color: COLORS.textPrimary, 
+        paddingHorizontal: SPACING.small, 
+        paddingVertical: SPACING.tiny, 
+        borderRadius: BORDER_RADIUS.medium,
+    },
+    mapSearchContainer: { 
+        position: 'absolute', 
+        bottom: SPACING.regular, 
+        left: SPACING.regular, 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        backgroundColor: 'rgba(0,0,0,0.7)', 
+        paddingHorizontal: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.round, 
+        borderWidth: 1, 
+        borderColor: COLORS.borderSubtle 
+    },
+    mapSearchInput: { 
+        flex: 1, 
+        color: COLORS.textPrimary, 
+        marginLeft: SPACING.small, 
+        paddingVertical: SPACING.regular, 
+        fontWeight: 'bold', 
+        textTransform: 'uppercase' 
+    },
+    sidebar: { 
+        padding: SPACING.regular, 
+        borderTopWidth: 1, 
+        borderColor: COLORS.borderSubtle, 
+        marginTop: SPACING.regular 
+    },
+    narratorContainer: { 
+        padding: SPACING.regular, 
+        marginBottom: SPACING.regular,
+    },
+    narratorTitle: { 
+        color: COLORS.vibrantPink, 
+        marginBottom: SPACING.tiny,
+    },
+    narratorText: { color: COLORS.textSecondary },
+    previewTitle: { 
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.small, 
+        textTransform: 'uppercase' 
+    },
+    previewImage: { 
+        height: 200, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        borderWidth: 2, 
+        borderColor: COLORS.borderSubtle, 
+        borderStyle: 'dashed', 
+        borderRadius: BORDER_RADIUS.xxlarge 
+    },
+    uploadButton: { 
+        backgroundColor: 'rgba(0,0,0,0.5)', 
+        padding: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.xlarge, 
+        alignItems: 'center' 
+    },
+    uploadText: { 
+        color: COLORS.vibrantPink, 
+        marginTop: SPACING.small,
+    },
+    confirmButton: { 
+        marginTop: SPACING.xlarge,
+    },
+    skipButton: { 
+        marginTop: SPACING.small,
+    },
 });
 
 export default MemoryLaneGpsGame;

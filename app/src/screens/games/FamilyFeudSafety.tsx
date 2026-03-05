@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const SURVEYS = [
     {
@@ -62,14 +63,17 @@ export default function FamilyFeudSafety({ route, navigation }: any) {
     const current = SURVEYS[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.regular }}>
             <GlassCard>
-                <Text variant="header">Survey Says...</Text>
-                <Text variant="body" style={{ marginBottom: 16 }}>{current.q}</Text>
+                <Text variant="h1" center style={styles.gameTitle}>The Love Arcade</Text>
+                <Text variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Text>
+                
+                <Text variant="h3" style={{ marginTop: SPACING.large }}>Survey Says...</Text>
+                <Text variant="body" style={{ marginBottom: SPACING.large }}>{current.q}</Text>
 
                 {current.answers.map((a, i) => (
                     <SquishyButton key={i} onPress={() => guess(i)} style={styles.ansBtn}>
-                        <Text variant="body">{a.text} ??</Text>
+                        <Text variant="button">{a.text} ??</Text>
                     </SquishyButton>
                 ))}
 
@@ -93,12 +97,18 @@ export default function FamilyFeudSafety({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    gameTitle: {
+        marginBottom: SPACING.small,
+    },
+    subtitle: {
+        marginBottom: SPACING.regular,
+    },
     ansBtn: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 16,
-        borderRadius: 8,
-        marginBottom: 10,
+        backgroundColor: COLORS.backgroundInput,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.medium,
+        marginBottom: SPACING.regular,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)'
+        borderColor: COLORS.borderSubtle
     }
 });

@@ -1,21 +1,49 @@
-
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text } from './Typography'; // Assuming you have a custom Text component
 import { Ionicons } from '@expo/vector-icons';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
+import Text from './Typography';
 
-const Header = () => {
+type HeaderProps = {
+  showNav?: boolean;
+  onNavPress?: (screen: string) => void;
+  variant?: 'default' | 'transparent';
+};
+
+const Header = ({ showNav = true, onNavPress, variant = 'default' }: HeaderProps) => {
+  const navItems = [
+    { label: 'How to Play', screen: 'HowToPlay' },
+    { label: 'Nebula Guide', screen: 'NebulaGuide' },
+    { label: 'About Us', screen: 'AboutUs' },
+  ];
+
   return (
-    <View style={styles.headerContainer}>
+    <View style={[
+      styles.headerContainer,
+      variant === 'transparent' && styles.transparentHeader
+    ]}>
       <View style={styles.logoContainer}>
-        <Ionicons name="sparkles-sharp" size={24} color="#fc0c84" />
-        <Text style={styles.logoText}>Love Actually...</Text>
+        <Ionicons name="sparkles-sharp" size={24} color={COLORS.vibrantPink} />
+        <Text variant="header" style={styles.logoText}>
+          Love Actually...
+        </Text>
       </View>
-      <View style={styles.navContainer}>
-        <TouchableOpacity><Text style={styles.navText}>How to Play</Text></TouchableOpacity>
-        <TouchableOpacity><Text style={styles.navText}>Nebula Guide</Text></TouchableOpacity>
-        <TouchableOpacity><Text style={styles.navText}>About Us</Text></TouchableOpacity>
-      </View>
+      
+      {showNav && (
+        <View style={styles.navContainer}>
+          {navItems.map((item) => (
+            <TouchableOpacity 
+              key={item.screen}
+              onPress={() => onNavPress?.(item.screen)}
+              style={styles.navButton}
+            >
+              <Text variant="caption" style={styles.navText}>
+                {item.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -25,29 +53,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingHorizontal: SPACING.screenPadding,
+    paddingVertical: SPACING.regular,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.05)',
+    borderBottomColor: COLORS.divider,
+    backgroundColor: COLORS.deepCosmic,
+  },
+  transparentHeader: {
+    backgroundColor: 'transparent',
+    borderBottomWidth: 0,
   },
   logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: SPACING.small,
   },
   logoText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.headerMedium,
     textTransform: 'uppercase',
+    letterSpacing: TYPOGRAPHY.letterSpacing.wide,
   },
   navContainer: {
     flexDirection: 'row',
-    gap: 20,
+    gap: SPACING.large,
+  },
+  navButton: {
+    paddingVertical: SPACING.small,
+    paddingHorizontal: SPACING.small,
   },
   navText: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 14,
+    color: COLORS.textSecondary,
+    opacity: 0.8,
   },
 });
 

@@ -1,7 +1,9 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Linking } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView, Linking } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const resources = [
     { 
@@ -9,93 +11,146 @@ const resources = [
         description: 'Free, confidential support available 24/7.',
         action: 'Call 988',
         onPress: () => Linking.openURL('tel:988'),
-        icon: '📞',
-        color: '#FF4081'
+        icon: 'call-outline' as const,
+        color: COLORS.vibrantPink
     },
     {
         title: 'Domestic Violence Hotline',
         description: 'Safety planning and crisis intervention.',
         action: 'Call 1-800-799-7233',
         onPress: () => Linking.openURL('tel:1-800-799-7233'),
-        icon: '🛡️',
-        color: '#E040FB'
+        icon: 'shield-outline' as const,
+        color: COLORS.lavenderPurple
     },
     {
         title: 'Crisis Text Line',
         description: 'Text HOME to 741741 to connect with a counselor.',
         action: 'Text HOME to 741741',
         onPress: () => Linking.openURL('sms:741741'),
-        icon: '💬',
-        color: '#00FFFF'
+        icon: 'chatbubble-ellipses-outline' as const,
+        color: COLORS.info
     }
 ];
 
-const ResourceCard = ({ title, description, action, onPress, icon, color }) => (
-    <View style={[styles.card, {borderColor: color}]}>
-        <View style={{flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 16}}>
-            <Text style={{fontSize: 28}}>{icon}</Text>
-            <Text style={styles.cardTitle}>{title}</Text>
+const ResourceCard = ({ title, description, action, onPress, icon, color }: { 
+    title: string, 
+    description: string, 
+    action: string, 
+    onPress: () => void, 
+    icon: any, 
+    color: string 
+}) => (
+    <GlassCard style={[styles.card, { borderLeftColor: color }]}>
+        <View style={styles.cardHeader}>
+            <View style={[styles.iconContainer, { backgroundColor: `${color}15` }]}>
+                <Ionicons name={icon} size={28} color={color} />
+            </View>
+            <Typography variant="header" style={[styles.cardTitle, { color }]}>{title}</Typography>
         </View>
-        <Text style={styles.cardDescription}>{description}</Text>
-        <TouchableOpacity style={[styles.actionButton, {backgroundColor: color}]} onPress={onPress}>
-            <Text style={styles.actionButtonText}>{action}</Text>
-        </TouchableOpacity>
-    </View>
+        <Typography variant="body" style={styles.cardDescription}>{description}</Typography>
+        <SquishyButton 
+            onPress={onPress}
+            variant="primary"
+            size="large"
+            style={[styles.actionButton, { backgroundColor: color }]}
+        >
+            {action}
+        </SquishyButton>
+    </GlassCard>
 );
 
 const CrisisResourcesScreen = () => {
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
+        <ScreenLayout showMarcie={true} marcieQuote="Your safety is the priority. Help is available.">
+            <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>IMMEDIATE HELP</Text>
-                        <Text style={styles.headerSubtitle}>If you are in danger, call 911. Your safety is the priority.</Text>
+                        <Typography variant="h1" style={styles.headerTitle}>IMMEDIATE HELP</Typography>
+                        <Typography variant="body" style={styles.headerSubtitle}>
+                            If you are in danger, call 911. Your safety is the priority.
+                        </Typography>
                     </View>
 
                     {resources.map((res, index) => <ResourceCard key={index} {...res} />)}
 
-                    <TouchableOpacity style={styles.safetyExitButton}>
-                        <Text style={{fontSize: 20}}>🚪</Text>
-                        <Text style={styles.safetyExitText}>QUICK EXIT</Text>
-                    </TouchableOpacity>
+                    <SquishyButton 
+                        onPress={() => {}}
+                        variant="ghost"
+                        style={styles.safetyExitButton}
+                    >
+                        <Ionicons name="exit-outline" size={20} color={COLORS.error} />
+                        <Typography variant="button" style={styles.safetyExitText}>QUICK EXIT</Typography>
+                    </SquishyButton>
                 </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#2A002A' },
-    container: { flex: 1 },
-    scrollView: { padding: 24 },
-    header: { marginBottom: 24, alignItems: 'center' },
-    headerTitle: { color: '#fff', fontSize: 28, fontWeight: 'bold', textTransform: 'uppercase' },
-    headerSubtitle: { color: '#D1C4E9', textAlign: 'center', marginTop: 8 },
-    card: { 
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 20, 
-        marginBottom: 16, 
-        borderLeftWidth: 4, 
+    container: {
+        flex: 1,
     },
-    cardTitle: { color: '#fff', fontSize: 18, fontWeight: 'bold', textTransform: 'uppercase' },
-    cardDescription: { color: '#D1C4E9', marginBottom: 20, lineHeight: 20 },
-    actionButton: { padding: 14, borderRadius: 12, alignItems: 'center' },
-    actionButtonText: { color: '#fff', fontWeight: 'bold', textTransform: 'uppercase' },
+    scrollView: { 
+        padding: SPACING.lg,
+        paddingBottom: SPACING.xxl,
+    },
+    header: { 
+        marginBottom: SPACING.lg, 
+        alignItems: 'center',
+    },
+    headerTitle: { 
+        textAlign: 'center',
+        marginBottom: SPACING.sm,
+    },
+    headerSubtitle: { 
+        textAlign: 'center', 
+        opacity: 0.7,
+    },
+    card: { 
+        marginBottom: SPACING.lg,
+        borderLeftWidth: 4,
+        padding: SPACING.lg,
+    },
+    cardHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.md,
+        marginBottom: SPACING.md,
+    },
+    iconContainer: {
+        width: 48,
+        height: 48,
+        borderRadius: BORDER_RADIUS.round,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cardTitle: { 
+        flex: 1,
+    },
+    cardDescription: { 
+        opacity: 0.7, 
+        marginBottom: SPACING.lg, 
+        lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyMedium,
+    },
+    actionButton: { 
+        width: '100%',
+    },
     safetyExitButton: { 
         flexDirection: 'row', 
         alignItems: 'center', 
         justifyContent: 'center', 
-        gap: 8, 
-        marginTop: 16, 
-        padding: 14, 
-        borderRadius: 20,
-        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+        gap: SPACING.sm, 
+        marginTop: SPACING.lg, 
+        padding: SPACING.md, 
+        borderRadius: BORDER_RADIUS.large,
+        backgroundColor: `${COLORS.error}15`,
         borderWidth: 1,
-        borderColor: 'rgba(239, 68, 68, 0.5)'
+        borderColor: `${COLORS.error}30`,
     },
-    safetyExitText: { color: '#ef4444', fontWeight: 'bold', textTransform: 'uppercase' },
+    safetyExitText: { 
+        color: COLORS.error,
+    },
 });
 
 export default CrisisResourcesScreen;

@@ -1,81 +1,141 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import ScreenLayout from '../layout/ScreenLayout';
 
-const MadLibInput = ({ options, color, label }) => (
-    <View style={styles.madLibContainer}>
-        <Text style={[styles.madLibLabel, { color }]}>{label}</Text>
-        {/* In a real app, this would be a dropdown picker */}
-    </View>
+interface MadLibInputProps {
+  options: string[];
+  color: string;
+  label: string;
+}
+
+const MadLibInput = ({ options, color, label }: MadLibInputProps) => (
+  <View style={styles.madLibContainer}>
+    <Typography variant="body" color={color} style={styles.madLibLabel}>{label}</Typography>
+  </View>
 );
 
-const StatCard = ({ icon, label, value }) => (
-    <View style={styles.statCard}>
-        <Text style={{fontSize: 30}}>{icon}</Text>
-        <Text style={styles.statLabel}>{label}</Text>
-        <Text style={styles.statValue}>{value}</Text>
-    </View>
+interface StatCardProps {
+  icon: string;
+  label: string;
+  value: string;
+}
+
+const StatCard = ({ icon, label, value }: StatCardProps) => (
+  <GlassCard variant="outlined" style={styles.statCard} padding="medium">
+    <Typography variant="h2" center>{icon}</Typography>
+    <Typography variant="label" color={COLORS.textSecondary} center style={{ marginTop: SPACING.small }}>
+      {label}
+    </Typography>
+    <Typography variant="h4" color={COLORS.textPrimary} center style={{ marginTop: SPACING.tiny }}>
+      {value}
+    </Typography>
+  </GlassCard>
 );
 
 const LeaderboardDetail8Screen = () => {
-    return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-                <Text style={styles.title}>STRUCTURED REFLECTION</Text>
-                <Text style={styles.subtitle}>Use these guided sentences to navigate your feelings.</Text>
+  return (
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <LinearGradient colors={[COLORS.deepCosmic, COLORS.richPlum]} style={styles.background} />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Typography variant="gameTitle" color={COLORS.textPrimary} center style={styles.title}>
+          STRUCTURED REFLECTION
+        </Typography>
+        <Typography variant="body" color={COLORS.textSecondary} center style={styles.subtitle}>
+          Use these guided sentences to navigate your feelings.
+        </Typography>
 
-                <View style={styles.glassPanel}>
-                    <View style={styles.madLibRow}>
-                        <Text style={styles.madLibText}>I FELT</Text>
-                        <MadLibInput label="EMOTION" color="#FF4081" options={['Cherished', 'Heard']}/>
-                        <Text style={styles.madLibText}>WHEN YOU</Text>
-                        <MadLibInput label="ACTION" color="#E040FB" options={['listened', 'held my hand']}/>
-                    </View>
+        <GlassCard variant="outlined" style={styles.glassPanel} padding="large">
+          <View style={styles.madLibRow}>
+            <Typography variant="body" color={COLORS.textPrimary}>I FELT</Typography>
+            <MadLibInput label="EMOTION" color={COLORS.vibrantPink} options={['Cherished', 'Heard']}/>
+            <Typography variant="body" color={COLORS.textPrimary}>WHEN YOU</Typography>
+            <MadLibInput label="ACTION" color={COLORS.lavenderPurple} options={['listened', 'held my hand']}/>
+          </View>
 
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="ADD ANY EXTRA THOUGHTS TO YOUR REFLECTION..."
-                        placeholderTextColor="#D1C4E9"
-                        multiline
-                    />
+          <TextInput
+            style={styles.textInput}
+            placeholder="ADD ANY EXTRA THOUGHTS TO YOUR REFLECTION..."
+            placeholderTextColor={COLORS.textHint}
+            multiline
+          />
 
-                    <TouchableOpacity style={styles.submitButton}>
-                        <Text style={styles.submitButtonText}>SUBMIT REFLECTION</Text>
-                    </TouchableOpacity>
-                </View>
-                
-                <View style={styles.statsContainer}>
-                    <StatCard label="REFLECTIONS SHARED" value="24 SESSIONS" icon="📝"/>
-                    <StatCard label="BOND STRENGTH" value="+150 HP" icon="💪"/>
-                    <StatCard label="CURRENT STREAK" value="5 DAYS" icon="🔥"/>
-                </View>
+          <SquishyButton style={styles.submitButton}>
+            <Typography variant="button" color={COLORS.backgroundPrimary} center>
+              SUBMIT REFLECTION
+            </Typography>
+          </SquishyButton>
+        </GlassCard>
+        
+        <View style={styles.statsContainer}>
+          <StatCard label="REFLECTIONS SHARED" value="24 SESSIONS" icon="📝"/>
+          <StatCard label="BOND STRENGTH" value="+150 HP" icon="💪"/>
+          <StatCard label="CURRENT STREAK" value="5 DAYS" icon="🔥"/>
+        </View>
 
-            </ScrollView>
-        </SafeAreaView>
-    );
+      </ScrollView>
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
-    background: { ...StyleSheet.absoluteFillObject },
-    scrollContent: { padding: 24 },
-    title: { fontSize: 36, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 8, textTransform: 'uppercase' },
-    subtitle: { color: '#D1C4E9', textAlign: 'center', marginBottom: 24, maxWidth: 300, alignSelf: 'center' },
-    glassPanel: { backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 20, padding: 24, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    madLibRow: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', marginBottom: 24 },
-    madLibText: { color: '#FFF', fontSize: 18, marginHorizontal: 8, fontWeight: 'bold', textTransform: 'uppercase' },
-    madLibContainer: { borderBottomWidth: 2, borderBottomColor: '#FF4081', margin: 8 },
-    madLibLabel: { fontSize: 18, paddingVertical: 4, fontWeight: 'bold', textTransform: 'uppercase' },
-    textInput: { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: 16, color: '#FFF', minHeight: 100, marginVertical: 16, textAlignVertical: 'top', fontWeight: 'bold', textTransform: 'uppercase' },
-    submitButton: { paddingVertical: 16, paddingHorizontal: 32, borderRadius: 24, backgroundColor: '#FFD700', alignSelf: 'center', marginTop: 16 },
-    submitButtonText: { color: '#000', fontWeight: 'bold', textTransform: 'uppercase' },
-    statsContainer: { flexDirection: 'row', justifyContent: 'space-around', marginTop: 24, gap: 8 },
-    statCard: { backgroundColor: 'rgba(255, 255, 255, 0.1)', borderRadius: 20, padding: 16, alignItems: 'center', flex: 1, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    statLabel: { color: '#D1C4E9', fontSize: 10, textTransform: 'uppercase', marginBottom: 4, fontWeight: 'bold', textAlign: 'center' },
-    statValue: { color: '#FFF', fontSize: 18, fontWeight: 'bold' },
+  background: { ...StyleSheet.absoluteFillObject },
+  scrollContent: { 
+    padding: SPACING.screenPadding 
+  },
+  title: { 
+    marginBottom: SPACING.small 
+  },
+  subtitle: { 
+    marginBottom: SPACING.xlarge, 
+    maxWidth: 300, 
+    alignSelf: 'center' 
+  },
+  glassPanel: { 
+    marginBottom: SPACING.xlarge
+  },
+  madLibRow: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginBottom: SPACING.xlarge 
+  },
+  madLibContainer: { 
+    borderBottomWidth: 2, 
+    borderBottomColor: COLORS.vibrantPink, 
+    margin: SPACING.small 
+  },
+  madLibLabel: { 
+    paddingVertical: SPACING.tiny,
+    fontWeight: 'bold'
+  },
+  textInput: { 
+    backgroundColor: COLORS.backgroundPrimary, 
+    borderRadius: BORDER_RADIUS.medium, 
+    padding: SPACING.regular, 
+    color: COLORS.textPrimary, 
+    minHeight: 100, 
+    marginVertical: SPACING.regular, 
+    textAlignVertical: 'top', 
+    fontWeight: 'bold'
+  },
+  submitButton: {
+    alignSelf: 'center',
+  },
+  statsContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-around', 
+    gap: SPACING.small 
+  },
+  statCard: { 
+    alignItems: 'center', 
+    flex: 1 
+  },
 });
 
 export default LeaderboardDetail8Screen;

@@ -1,97 +1,174 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Svg, Path } from 'react-native-svg';
+import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, ANIMATIONS } from '../../theme';
+import { LinearGradient } from 'expo-linear-gradient';
 
-const ToolButton = ({ icon, label, active }: { icon: string, label: string, active?: boolean }) => (
-    <TouchableOpacity style={[styles.toolButton, active && styles.activeTool]}>
-        {/* Icon would be here */}
-        <Text style={[styles.toolLabel, active && styles.activeToolLabel]}>{label}</Text>
-    </TouchableOpacity>
+const ToolButton = ({ label, active }: { label: string, active?: boolean }) => (
+    <SquishyButton style={[styles.toolButton, active && styles.activeTool]} variant={active ? 'primary' : 'ghost'} size="small">
+        <Typography variant="caption" style={[styles.toolLabel, active && styles.activeToolLabel]}>{label}</Typography>
+    </SquishyButton>
 );
 
 const GuessMessage = ({ user, message, highlight }: { user: string, message: string, highlight?: boolean }) => (
-    <View style={[styles.messageBubble, highlight && styles.highlightBubble]}>
-        <Text style={styles.messageUser}>{user}</Text>
-        <Text style={styles.messageText}>{message}</Text>
-    </View>
+    <GlassCard style={[styles.messageBubble, highlight && styles.highlightBubble]} padding="small">
+        <Typography variant="caption" style={styles.messageUser}>{user}</Typography>
+        <Typography variant="body" style={styles.messageText}>{message}</Typography>
+    </GlassCard>
 );
 
 const DrawYourFeelingsGameScreen = () => {
-
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#230f19', '#181014']} style={styles.background} />
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+            <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
             <View style={styles.mainLayout}>
                 {/* Left Sidebar */}
-                <View style={styles.sidebar}>
+                <GlassCard style={styles.sidebar} padding="medium">
                     <View style={styles.toolPanel}>
-                        <Text style={styles.panelTitle}>Art Tools</Text>
-                        <ToolButton icon="brush" label="Brush" active />
-                        <ToolButton icon="eraser" label="Eraser" />
-                        <ToolButton icon="stroke" label="Stroke Size" />
-                        <ToolButton icon="palette" label="Turquoise Fixed" />
+                        <Typography variant="h3" style={styles.panelTitle}>Art Tools</Typography>
+                        <ToolButton label="Brush" active />
+                        <ToolButton label="Eraser" />
+                        <ToolButton label="Stroke Size" />
+                        <ToolButton label="Turquoise Fixed" />
                     </View>
-                    <View style={styles.drMarciePanel}>
-                        <Text style={styles.drMarcieText}>"Notice the jagged turquoise lines... Let that vulnerability flow."</Text>
-                    </View>
-                </View>
+                    <GlassCard style={styles.drMarciePanel} padding="medium">
+                        <Typography variant="sass">"Notice the jagged turquoise lines... Let that vulnerability flow."</Typography>
+                    </GlassCard>
+                </GlassCard>
 
                 {/* Center Canvas */}
                 <View style={styles.canvasContainer}>
-                    <Text style={styles.canvasTitle}>Draw <Text style={{ fontStyle: 'italic', color: '#fd0d85' }}>"Vulnerability"</Text></Text>
+                    <Typography variant="h2" center>Draw <Typography variant="h2" style={{ fontStyle: 'italic', color: COLORS.vibrantPink }}>"Vulnerability"</Typography></Typography>
                     <View style={styles.canvas}>
                         <Svg height="100%" width="100%" viewBox="0 0 800 600">
                             <Path d="M150 450 Q 250 150 400 300 T 650 100" fill="none" stroke="#40E0D0" strokeWidth="6" />
                             <Path d="M200 500 C 300 400, 350 550, 450 450" fill="none" stroke="#40E0D0" strokeWidth="4" strokeDasharray="8, 4" />
                         </Svg>
                     </View>
-                    <TouchableOpacity style={styles.submitButton}>
-                        <Text style={styles.submitButtonText}>Submit Art</Text>
-                    </TouchableOpacity>
+                    <SquishyButton style={styles.submitButton}>
+                        <Typography variant="button">Submit Art</Typography>
+                    </SquishyButton>
                 </View>
 
                 {/* Right Sidebar */}
-                <View style={styles.sidebar}>
+                <GlassCard style={styles.sidebar} padding="medium">
                     <View style={styles.chatPanel}>
-                        <Text style={styles.panelTitle}>Partner's Guesses</Text>
-                        <ScrollView>
+                        <Typography variant="h3" style={styles.panelTitle}>Partner's Guesses</Typography>
+                        <ScrollView showsVerticalScrollIndicator={false}>
                             <GuessMessage user="Alex" message="Is it a broken heart? 💔" />
                             <GuessMessage user="Alex" message="Fragility? Like a glass box?" highlight />
-                             <GuessMessage user="Alex" message="EXPOSURE? 👁️" />
+                            <GuessMessage user="Alex" message="EXPOSURE? 👁️" />
                         </ScrollView>
                     </View>
-                </View>
+                </GlassCard>
             </View>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#181014' },
-    background: { ...StyleSheet.absoluteFillObject },
-    mainLayout: { flexDirection: 'row', flex: 1, padding: 16 },
-    sidebar: { width: 250, gap: 16 },
-    toolPanel: { backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16, borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1 },
-    panelTitle: { color: '#FFF', fontWeight: 'bold', fontSize: 16, marginBottom: 16 },
-    toolButton: { padding: 12, borderRadius: 8, marginBottom: 8 },
-    activeTool: { backgroundColor: '#fd0d85', shadowColor: '#fd0d85', shadowRadius: 10, shadowOpacity: 0.5 },
-    toolLabel: { color: '#FFFFFFa0' },
-    activeToolLabel: { color: '#FFF', fontWeight: 'bold' },
-    drMarciePanel: { marginTop: 'auto', backgroundColor: '#3a2730', borderRadius: 12, padding: 12, borderColor: '#fd0d8530', borderWidth: 1 },
-    drMarcieText: { color: '#FFFFFFe0', fontStyle: 'italic', fontSize: 13 },
-    canvasContainer: { flex: 1, paddingHorizontal: 16, alignItems: 'center' },
-    canvasTitle: { color: '#FFF', fontSize: 28, fontWeight: 'bold', marginBottom: 16 },
-    canvas: { width: '100%', aspectRatio: 4 / 3, backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: 12, borderWidth: 2, borderColor: 'rgba(255,255,255,0.1)', borderStyle: 'dashed' },
-    submitButton: { marginTop: 24, backgroundColor: '#fd0d85', paddingVertical: 12, paddingHorizontal: 24, borderRadius: 99 },
-    submitButtonText: { color: '#FFF', fontWeight: 'bold' },
-    chatPanel: { flex: 1, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, overflow: 'hidden' },
-    messageBubble: { backgroundColor: 'rgba(255,255,255,0.05)', padding: 10, borderRadius: 8, borderTopLeftRadius: 0, marginBottom: 8, marginHorizontal: 8 },
-    highlightBubble: { backgroundColor: 'rgba(253, 13, 133, 0.2)', borderColor: 'rgba(253, 13, 133, 0.3)', borderWidth: 1 },
-    messageUser: { color: '#FFFFFF50', fontSize: 10, textTransform: 'uppercase', marginBottom: 4 },
-    messageText: { color: '#FFFFFFd0' },
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
+    },
+    background: { 
+        ...StyleSheet.absoluteFillObject 
+    },
+    mainLayout: { 
+        flexDirection: 'row', 
+        flex: 1, 
+        padding: SPACING.regular 
+    },
+    sidebar: { 
+        width: 250, 
+        gap: SPACING.regular,
+        ...SHADOWS.card
+    },
+    toolPanel: { 
+        backgroundColor: 'rgba(255,255,255,0.05)', 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular, 
+        borderColor: COLORS.borderSubtle, 
+        borderWidth: 1 
+    },
+    panelTitle: { 
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.regular 
+    },
+    toolButton: { 
+        padding: SPACING.small, 
+        borderRadius: BORDER_RADIUS.medium, 
+        marginBottom: SPACING.small,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle
+    },
+    activeTool: { 
+        backgroundColor: COLORS.vibrantPink, 
+        ...SHADOWS.neonSoft 
+    },
+    toolLabel: { 
+        color: COLORS.textSecondary 
+    },
+    activeToolLabel: { 
+        color: COLORS.textPrimary, 
+        fontWeight: 'bold' 
+    },
+    drMarciePanel: { 
+        marginTop: 'auto',
+        backgroundColor: COLORS.backgroundCard,
+        borderColor: 'rgba(253, 13, 133, 0.3)',
+        borderWidth: 1
+    },
+    canvasContainer: { 
+        flex: 1, 
+        paddingHorizontal: SPACING.regular, 
+        alignItems: 'center' 
+    },
+    canvas: { 
+        width: '100%', 
+        aspectRatio: 4 / 3, 
+        backgroundColor: 'rgba(0,0,0,0.2)', 
+        borderRadius: BORDER_RADIUS.large, 
+        borderWidth: 2, 
+        borderColor: COLORS.borderSubtle, 
+        borderStyle: 'dashed',
+        marginTop: SPACING.regular
+    },
+    submitButton: { 
+        marginTop: SPACING.xlarge,
+        ...SHADOWS.buttonGlow
+    },
+    chatPanel: { 
+        flex: 1, 
+        backgroundColor: 'rgba(255,255,255,0.05)', 
+        borderRadius: BORDER_RADIUS.large, 
+        borderColor: COLORS.borderSubtle, 
+        borderWidth: 1, 
+        overflow: 'hidden',
+        padding: SPACING.small
+    },
+    messageBubble: { 
+        backgroundColor: 'rgba(255,255,255,0.05)', 
+        borderTopLeftRadius: 0, 
+        marginBottom: SPACING.small, 
+        marginHorizontal: SPACING.tiny,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle
+    },
+    highlightBubble: { 
+        backgroundColor: 'rgba(253, 13, 133, 0.2)', 
+        borderColor: 'rgba(253, 13, 133, 0.3)' 
+    },
+    messageUser: { 
+        color: COLORS.textHint, 
+        textTransform: 'uppercase', 
+        marginBottom: SPACING.tiny 
+    },
+    messageText: { 
+        color: COLORS.textSecondary 
+    },
 });
 
 export default DrawYourFeelingsGameScreen;

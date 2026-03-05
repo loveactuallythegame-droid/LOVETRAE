@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 export default function DreamSupportSprint({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -20,28 +21,31 @@ export default function DreamSupportSprint({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Dream Support</Text>
+        <Text variant="h2" center style={styles.gameTitle}>The Love Arcade</Text>
+        <Text variant="h3" center style={styles.subtitle}>+100 Games to Deepen Connection</Text>
+        
+        <Text variant="h3" style={{ marginTop: SPACING.large }}>Dream Support</Text>
         <Text variant="body">Partner's Dream:</Text>
         <TextInput
             style={styles.input}
             placeholder="e.g. Learn Guitar"
-            placeholderTextColor="#666"
+            placeholderTextColor={COLORS.textHint}
             value={dream}
             onChangeText={setDream}
         />
-        <Text variant="body" style={{ marginTop: 12 }}>Your Specific Support:</Text>
+        <Text variant="body" style={{ marginTop: SPACING.regular }}>Your Specific Support:</Text>
         <TextInput
             style={styles.input}
             placeholder="e.g. I will take the kids for 1hr on Saturdays"
-            placeholderTextColor="#666"
+            placeholderTextColor={COLORS.textHint}
             value={support}
             onChangeText={setSupport}
             multiline
         />
         <SquishyButton onPress={submit} style={styles.btn}>
-            <Text variant="header">Commit Support</Text>
+            <Text variant="button">Commit Support</Text>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -63,6 +67,23 @@ export default function DreamSupportSprint({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  input: { backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', padding: 12, borderRadius: 8, marginTop: 8 },
-  btn: { marginTop: 16, backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
+  gameTitle: {
+    marginBottom: SPACING.small,
+  },
+  subtitle: {
+    marginBottom: SPACING.regular,
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    color: COLORS.textPrimary, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.medium, 
+    marginTop: SPACING.small,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+  },
+  btn: { 
+    marginTop: SPACING.large,
+  },
 });

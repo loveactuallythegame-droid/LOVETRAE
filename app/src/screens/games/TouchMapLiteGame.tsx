@@ -1,11 +1,22 @@
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Svg, Circle, Path } from 'react-native-svg';
+import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const BodyPart = ({ part, color, onPress }) => {
-    const components = {
+const BodyPart = ({ 
+    part, 
+    color, 
+    onPress 
+}: { 
+    part: string, 
+    color: string, 
+    onPress: (part: string) => void 
+}) => {
+    const components: Record<string, React.ReactElement> = {
         head: <Circle cx="100" cy="40" r="30" />,
         torso: <Path d="M70 80 L130 80 L140 220 L60 220 Z" />,
         l_shoulder: <Circle cx="60" cy="90" r="15" />,
@@ -14,84 +25,181 @@ const BodyPart = ({ part, color, onPress }) => {
         r_leg: <Path d="M105 230 L130 230 L140 380 L110 380 Z" />,
         l_hand: <Circle cx="40" cy="180" r="12" />,
         r_hand: <Circle cx="160" cy="180" r="12" />
-    }
+    };
     return (
-        <TouchableOpacity onPress={() => onPress(part)}>
-            {React.cloneElement(components[part], { fill: color, stroke: 'rgba(255,255,255,0.3)', strokeWidth: 1 })}
-        </TouchableOpacity>
-    )
-}
+        <Svg onPress={() => onPress(part)}>
+            {React.cloneElement(components[part], { 
+                fill: color, 
+                stroke: COLORS.borderSubtle, 
+                strokeWidth: 1 
+            })}
+        </Svg>
+    );
+};
 
 const TouchMapLiteGame = () => {
     const [activeColor, setActiveColor] = useState('rgba(0,255,0,0.4)');
-    const [userMap, setUserMap] = useState({ head: 'rgba(255,255,255,0.1)' }); // Initial empty state
-    const partnerMap = {
-        head: 'rgba(0,255,0,0.4)', torso: 'rgba(255,0,0,0.4)', l_shoulder: 'rgba(0,255,0,0.4)', r_shoulder: 'rgba(0,255,0,0.4)', 
-        l_leg: 'rgba(255,0,0,0.4)', r_leg: 'rgba(255,0,0,0.4)', l_hand: 'rgba(255,0,0,0.4)', r_hand: 'rgba(255,0,0,0.4)'
+    const [userMap, setUserMap] = useState<Record<string, string>>({ head: 'rgba(255,255,255,0.1)' });
+    const partnerMap: Record<string, string> = {
+        head: 'rgba(0,255,0,0.4)', 
+        torso: 'rgba(255,0,0,0.4)', 
+        l_shoulder: 'rgba(0,255,0,0.4)', 
+        r_shoulder: 'rgba(0,255,0,0.4)', 
+        l_leg: 'rgba(255,0,0,0.4)', 
+        r_leg: 'rgba(255,0,0,0.4)', 
+        l_hand: 'rgba(255,0,0,0.4)', 
+        r_hand: 'rgba(255,0,0,0.4)'
     };
     const bodyParts = Object.keys(partnerMap);
 
-    const handlePartPress = (part) => {
+    const handlePartPress = (part: string) => {
         setUserMap(prev => ({ ...prev, [part]: activeColor }));
-    }
+    };
     
     const mismatches = Object.keys(userMap).filter(part => userMap[part] && userMap[part] !== partnerMap[part]).length;
     const syncRate = Math.round(((bodyParts.length - mismatches) / bodyParts.length) * 100);
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#191022', '#230f15']} style={styles.container}>
-                <ScrollView>
-                    <Text style={styles.title}>Touch Map Lite</Text>
-                    <Text style={styles.subtitle}>Where is it okay to touch?</Text>
+        <ScreenLayout showHeader={false} scrollable={true}>
+            <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundSecondary]} style={styles.container}>
+                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <Typography variant="h1" center>Touch Map Lite</Typography>
+                        <Typography variant="body" center style={styles.subtitle}>Where is it okay to touch?</Typography>
 
-                    <View style={styles.colorSelector}>
-                         <TouchableOpacity onPress={() => setActiveColor('rgba(0,255,0,0.4)')} style={[styles.selectorButton, {backgroundColor: '#2e7d32'}]}><Text style={styles.selectorText}>Safe</Text></TouchableOpacity>
-                         <TouchableOpacity onPress={() => setActiveColor('rgba(255,255,0,0.4)')} style={[styles.selectorButton, {backgroundColor: '#f57f17'}]}><Text style={styles.selectorText}>Caution</Text></TouchableOpacity>
-                         <TouchableOpacity onPress={() => setActiveColor('rgba(255,0,0,0.4)')} style={[styles.selectorButton, {backgroundColor: '#c62828'}]}><Text style={styles.selectorText}>Off-limits</Text></TouchableOpacity>
-                    </View>
-
-                    <View style={styles.mapsContainer}>
-                        <View style={styles.mapCard}>
-                            <Text style={styles.mapTitle}>Your Map</Text>
-                            <Svg height="300" width="150" viewBox="0 0 200 400">
-                                {bodyParts.map(part => <BodyPart key={part} part={part} color={userMap[part] || 'rgba(255,255,255,0.1)'} onPress={handlePartPress} />)}
-                            </Svg>
+                        <View style={styles.colorSelector}>
+                            <SquishyButton 
+                                onPress={() => setActiveColor('rgba(0,255,0,0.4)')} 
+                                size="small" 
+                                variant="secondary"
+                                style={[styles.selectorButton, {backgroundColor: COLORS.mintGreen}]}
+                            >
+                                <Typography variant="caption" style={styles.selectorText}>Safe</Typography>
+                            </SquishyButton>
+                            <SquishyButton 
+                                onPress={() => setActiveColor('rgba(255,255,0,0.4)')} 
+                                size="small" 
+                                variant="secondary"
+                                style={[styles.selectorButton, {backgroundColor: COLORS.warning}]}
+                            >
+                                <Typography variant="caption" style={styles.selectorText}>Caution</Typography>
+                            </SquishyButton>
+                            <SquishyButton 
+                                onPress={() => setActiveColor('rgba(255,0,0,0.4)')} 
+                                size="small" 
+                                variant="secondary"
+                                style={[styles.selectorButton, {backgroundColor: COLORS.error}]}
+                            >
+                                <Typography variant="caption" style={styles.selectorText}>Off-limits</Typography>
+                            </SquishyButton>
                         </View>
-                        <View style={styles.mapCard}>
-                            <Text style={styles.mapTitle}>Partner's Map</Text>
-                            <Svg height="300" width="150" viewBox="0 0 200 400">
-                                {bodyParts.map(part => <BodyPart key={part} part={part} color={partnerMap[part]} onPress={() => {}} />)}
-                            </Svg>
+
+                        <View style={styles.mapsContainer}>
+                            <GlassCard style={styles.mapCard}>
+                                <Typography variant="caption" style={styles.mapTitle}>Your Map</Typography>
+                                <Svg height="300" width="150" viewBox="0 0 200 400">
+                                    {bodyParts.map(part => (
+                                        <BodyPart 
+                                            key={part} 
+                                            part={part} 
+                                            color={userMap[part] || 'rgba(255,255,255,0.1)'} 
+                                            onPress={handlePartPress} 
+                                        />
+                                    ))}
+                                </Svg>
+                            </GlassCard>
+                            <GlassCard style={styles.mapCard}>
+                                <Typography variant="caption" style={styles.mapTitle}>Partner's Map</Typography>
+                                <Svg height="300" width="150" viewBox="0 0 200 400">
+                                    {bodyParts.map(part => (
+                                        <BodyPart 
+                                            key={part} 
+                                            part={part} 
+                                            color={partnerMap[part]} 
+                                            onPress={() => {}} 
+                                        />
+                                    ))}
+                                </Svg>
+                            </GlassCard>
                         </View>
-                    </View>
 
-                    <View style={styles.statsContainer}>
-                         <View style={styles.statBox}><Text style={styles.statLabel}>Sync Rate</Text><Text style={styles.statValue}>{syncRate}%</Text></View>
-                         <View style={styles.statBox}><Text style={styles.statLabel}>Mismatches</Text><Text style={[styles.statValue, {color: '#ff8c00'}]}>{mismatches}</Text></View>
-                    </View>
-
-                </ScrollView>
+                        <View style={styles.statsContainer}>
+                            <GlassCard style={styles.statBox}>
+                                <Typography variant="caption" style={styles.statLabel}>Sync Rate</Typography>
+                                <Typography variant="h1" style={styles.statValue}>{syncRate}%</Typography>
+                            </GlassCard>
+                            <GlassCard style={styles.statBox}>
+                                <Typography variant="caption" style={styles.statLabel}>Mismatches</Typography>
+                                <Typography variant="h1" style={[styles.statValue, {color: COLORS.warning}]}>{mismatches}</Typography>
+                            </GlassCard>
+                        </View>
+                    </ScrollView>
+                </SafeAreaView>
             </LinearGradient>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#191022' },
-    container: { flex: 1, padding: 16 },
-    title: { color: '#fff', fontSize: 28, fontWeight: 'bold', textAlign: 'center' },
-    subtitle: { color: '#fff', opacity: 0.6, fontSize: 16, textAlign: 'center', marginBottom: 20 },
-    colorSelector: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12, padding: 6, marginBottom: 20 },
-    selectorButton: { flex: 1, padding: 10, borderRadius: 8, marginHorizontal: 4, alignItems: 'center' },
-    selectorText: { color: '#fff', fontWeight: 'bold' },
-    mapsContainer: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 20 },
-    mapCard: { backgroundColor: 'rgba(54, 35, 72, 0.4)', borderRadius: 20, padding: 16, alignItems: 'center' },
-    mapTitle: { color: '#fff', fontWeight: 'bold', marginBottom: 10, textTransform: 'uppercase' },
-    statsContainer: { flexDirection: 'row', justifyContent: 'space-around' },
-    statBox: { backgroundColor: 'rgba(54, 35, 72, 0.4)', borderRadius: 16, padding: 16, flex: 1, marginHorizontal: 8, alignItems: 'center' },
-    statLabel: { color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', fontSize: 12, marginBottom: 8 },
-    statValue: { color: '#fff', fontSize: 28, fontWeight: 'bold' },
+    container: { 
+        flex: 1, 
+        padding: SPACING.regular 
+    },
+    safeArea: { 
+        flex: 1, 
+        backgroundColor: COLORS.deepCosmic 
+    },
+    subtitle: { 
+        color: COLORS.textSecondary, 
+        marginBottom: SPACING.large 
+    },
+    colorSelector: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.small, 
+        marginBottom: SPACING.large 
+    },
+    selectorButton: { 
+        flex: 1, 
+        marginHorizontal: SPACING.tiny,
+    },
+    selectorText: { 
+        color: COLORS.textPrimary, 
+        fontWeight: 'bold' 
+    },
+    mapsContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        marginBottom: SPACING.large 
+    },
+    mapCard: { 
+        padding: SPACING.regular, 
+        alignItems: 'center' 
+    },
+    mapTitle: { 
+        marginBottom: SPACING.small, 
+        textTransform: 'uppercase' 
+    },
+    statsContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-around' 
+    },
+    statBox: { 
+        padding: SPACING.regular, 
+        flex: 1, 
+        marginHorizontal: SPACING.small, 
+        alignItems: 'center' 
+    },
+    statLabel: { 
+        color: COLORS.textSecondary, 
+        textTransform: 'uppercase', 
+        marginBottom: SPACING.small 
+    },
+    statValue: { 
+        color: COLORS.textPrimary 
+    },
 });
 
 export default TouchMapLiteGame;

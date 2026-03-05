@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, ANIMATIONS } from '../../theme';
 
 const DREAMS = [
   { conflict: "Dishes left in sink", dream: "Need for Order/Safety" },
@@ -34,15 +36,15 @@ export default function DreamDecoder({ route, navigation }: any) {
   const options = DREAMS.map(d => d.dream).sort(() => Math.random() - 0.5);
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
-      <GlassCard>
-        <Text variant="header">Surface Conflict</Text>
-        <Text variant="sass" style={styles.conflict}>"{DREAMS[index].conflict}"</Text>
-        <Text variant="body">What is the underlying dream?</Text>
-        <View style={{ gap: 8, marginTop: 8 }}>
+    <View style={{ gap: SPACING.regular }}>
+      <GlassCard padding="large">
+        <Typography variant="h2">Surface Conflict</Typography>
+        <Typography variant="sass" style={styles.conflict}>"{DREAMS[index].conflict}"</Typography>
+        <Typography variant="body">What is the underlying dream?</Typography>
+        <View style={{ gap: SPACING.small, marginTop: SPACING.small }}>
           {options.map((opt, i) => (
-            <SquishyButton key={i} onPress={() => guess(opt)} style={styles.btn}>
-              <Text variant="body">{opt}</Text>
+            <SquishyButton key={i} onPress={() => guess(opt)} style={styles.btn} variant="ghost">
+              <Typography variant="body">{opt}</Typography>
             </SquishyButton>
           ))}
         </View>
@@ -62,10 +64,30 @@ export default function DreamDecoder({ route, navigation }: any) {
     playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
   }), [gameId, index]);
 
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />;
+  return (
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
-  conflict: { fontSize: 24, color: '#E4E831', textAlign: 'center', marginVertical: 16 },
-  btn: { backgroundColor: 'rgba(255,255,255,0.1)', padding: 16, borderRadius: 8, alignItems: 'center' },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.backgroundPrimary,
+  },
+  conflict: { 
+    fontSize: TYPOGRAPHY.fontSize.displaySmall, 
+    color: COLORS.creativeChaos, 
+    textAlign: 'center', 
+    marginVertical: SPACING.regular 
+  },
+  btn: { 
+    backgroundColor: COLORS.backgroundInput, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.medium, 
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle
+  },
 });

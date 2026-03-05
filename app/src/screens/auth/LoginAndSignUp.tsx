@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
-  Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
   Alert,
   Platform,
   KeyboardAvoidingView,
   ScrollView,
-  Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  Animated as RNAnimated,
+  Easing,
+  Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../lib/firebaseClient';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
+import { Typography, SquishyButton } from '../../components/ui';
+import { ScreenLayout } from '../../layout';
 import { userApi } from '../../lib/api';
-
-const { width, height } = Dimensions.get('window');
+import { COLORS, GRADIENTS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS, ANIMATIONS } from '../../theme';
 
 const LoginAndSignUpScreen = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -29,39 +29,67 @@ const LoginAndSignUpScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
+  const logoScale = useRef(new RNAnimated.Value(0.8)).current;
+  const logoGlow = useRef(new RNAnimated.Value(0.5)).current;
+  const fadeIn = useRef(new RNAnimated.Value(0)).current;
+  const slideUp = useRef(new RNAnimated.Value(50)).current;
+
+  useEffect(() => {
+    RNAnimated.spring(logoScale, {
+      toValue: 1,
+      friction: 8,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+
+    RNAnimated.loop(
+      RNAnimated.sequence([
+        RNAnimated.timing(logoGlow, {
+          toValue: 1,
+          duration: 1500,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        RNAnimated.timing(logoGlow, {
+          toValue: 0.5,
+          duration: 1500,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
+    RNAnimated.timing(fadeIn, {
+      toValue: 1,
+      duration: ANIMATIONS.duration.slow,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+
+    RNAnimated.timing(slideUp, {
+      toValue: 0,
+      duration: ANIMATIONS.duration.slow,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   const handleAuth = async () => {
     setIsLoading(true);
     
     try {
       if (isLogin) {
-        // ============================================
-        // LOGIN FLOW
-        // ============================================
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        
-        // Get Firebase token for backend authentication
         const token = await userCredential.user.getIdToken();
         console.log('User logged in, token obtained');
-        
-        // Auth state change will be caught by the root navigator
-        // and the user will be redirected to the main app.
       } else {
-        // ============================================
-        // SIGNUP FLOW - Create user in Firebase + Backend
-        // ============================================
-        
-        // Step 1: Create user in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        
-        // Step 2: Get Firebase ID token for backend authentication
         const token = await user.getIdToken();
         console.log('Firebase user created, token obtained');
         
-        // Step 3: Create user in backend database
         try {
-          const displayName = email.split('@')[0]; // Use email prefix as default display name
-          
+          const displayName = email.split('@')[0];
           await userApi.create(
             {
               email: user.email || email,
@@ -69,26 +97,16 @@ const LoginAndSignUpScreen = () => {
             },
             token
           );
-          
           console.log('Backend user created successfully');
-          
-          // Step 4: Update Firebase profile with display name
           await updateProfile(user, { displayName });
-          
         } catch (backendError) {
-          // Backend creation failed - log but don't block the user
-          // The user can still use the app, we'll sync later
           console.error('Backend user creation failed:', backendError);
-          
-          // Show a warning but don't prevent sign in
           Alert.alert(
             'Account Created',
             'Your account was created successfully. Some features may be limited until sync completes.',
             [{ text: 'OK' }]
           );
         }
-        
-        // Auth state change will handle navigation to main app
       }
     } catch (error: any) {
       console.error('Authentication error:', error);
@@ -102,160 +120,234 @@ const LoginAndSignUpScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <LinearGradient
-        colors={[theme.COLORS.background, '#392830', theme.COLORS.background]}
-        style={styles.container}
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <KeyboardAvoidingView
+        style={styles.keyboardView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.mainTitle}>Navigate the stars of your relationship.</Text>
-          <Text style={styles.subtitle}>Sync your frequencies to begin the journey.</Text>
-
-          <BlurView intensity={20} tint="dark" style={styles.glassPanel}>
-            <View style={styles.toggleContainer}>
-              <TouchableOpacity
-                style={[styles.toggleButton, isLogin && styles.activeToggleButton]}
-                onPress={() => setIsLogin(true)}>
-                <Text style={[styles.toggleButtonText, isLogin && styles.activeToggleButtonText]}>Login</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.toggleButton, !isLogin && styles.activeToggleButton]}
-                onPress={() => setIsLogin(false)}>
-                <Text style={[styles.toggleButtonText, !isLogin && styles.activeToggleButtonText]}>Sign Up</Text>
-              </TouchableOpacity>
+        <ScrollView 
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
+          <RNAnimated.View
+            style={[
+              styles.logoContainer,
+              {
+                transform: [{ scale: logoScale }],
+                opacity: logoGlow,
+              },
+            ]}
+          >
+            <View style={styles.logoGlow}>
+              <Image
+                source={require('../../assets/logo/mainlogoone.png')}
+                style={styles.logo}
+                resizeMode="contain"
+              />
             </View>
+          </RNAnimated.View>
 
-            <Text style={styles.inputLabel}>Your Cosmic Handle</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="commander@nebula.space"
-              placeholderTextColor="rgba(255, 255, 255, 0.2)"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
+          <RNAnimated.View
+            style={[
+              styles.titleContainer,
+              { opacity: fadeIn, transform: [{ translateY: slideUp }] },
+            ]}
+          >
+            <Typography variant="gameTitle" style={styles.mainTitle}>
+              Navigate the stars of your relationship.
+            </Typography>
+            
+            {!isLogin && (
+              <Typography variant="marcieDialogue" style={styles.tagline}>
+                "How about we DON'T Break Up?"
+              </Typography>
+            )}
+            
+            <Typography variant="body" style={styles.subtitle}>
+              Sync your frequencies to begin the journey.
+            </Typography>
+          </RNAnimated.View>
 
-            <Text style={styles.inputLabel}>Secret Frequency</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="••••••••••••"
-              placeholderTextColor="rgba(255, 255, 255, 0.2)"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
+          <RNAnimated.View
+            style={[
+              styles.panelContainer,
+              { opacity: fadeIn, transform: [{ translateY: slideUp }] },
+            ]}
+          >
+            <BlurView intensity={20} tint="dark" style={styles.glassPanel}>
+              <View style={styles.toggleContainer}>
+                <SquishyButton
+                  onPress={() => setIsLogin(true)}
+                  variant={isLogin ? 'primary' : 'secondary'}
+                  style={styles.toggleButton}
+                >
+                  <Typography variant="button">LOGIN</Typography>
+                </SquishyButton>
+                <SquishyButton
+                  onPress={() => setIsLogin(false)}
+                  variant={!isLogin ? 'primary' : 'secondary'}
+                  style={styles.toggleButton}
+                >
+                  <Typography variant="button">SIGN UP</Typography>
+                </SquishyButton>
+              </View>
 
-            <TouchableOpacity style={styles.authButton} onPress={handleAuth}>
-              <Text style={styles.authButtonText}>{isLogin ? 'Initiate Connection' : 'Create Account'}</Text>
-            </TouchableOpacity>
+              <Typography variant="label" style={styles.inputLabel}>YOUR COSMIC HANDLE</Typography>
+              <View style={styles.inputWrapper}>
+                <LinearGradient
+                  colors={GRADIENTS.primary.colors}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.gradientBorder}
+                >
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="commander@nebula.space"
+                      placeholderTextColor={COLORS.textHint}
+                      value={email}
+                      onChangeText={setEmail}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      autoComplete="email"
+                    />
+                  </View>
+                </LinearGradient>
+              </View>
 
-          </BlurView>
+              <Typography variant="label" style={styles.inputLabel}>SECRET FREQUENCY</Typography>
+              <View style={styles.inputWrapper}>
+                <LinearGradient
+                  colors={GRADIENTS.primary.colors}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={styles.gradientBorder}
+                >
+                  <View style={styles.inputContainer}>
+                    <TextInput
+                      style={styles.input}
+                      placeholder="••••••••••••"
+                      placeholderTextColor={COLORS.textHint}
+                      value={password}
+                      onChangeText={setPassword}
+                      secureTextEntry
+                      autoComplete="password"
+                    />
+                  </View>
+                </LinearGradient>
+              </View>
+
+              <SquishyButton 
+                onPress={handleAuth}
+                disabled={isLoading}
+                style={styles.authButton}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color={COLORS.textPrimary} />
+                ) : (
+                  <Typography variant="button">
+                    {isLogin ? 'INITIATE CONNECTION' : 'CREATE ACCOUNT'}
+                  </Typography>
+                )}
+              </SquishyButton>
+            </BlurView>
+          </RNAnimated.View>
         </ScrollView>
-      </LinearGradient>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </ScreenLayout>
   );
 };
 
+import { RadialGradientBackground } from '../../components/ui';
+
 const styles = StyleSheet.create({
-  container: {
+  keyboardView: {
     flex: 1,
   },
   scrollContainer: {
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.SPACING.lg,
+    padding: SPACING.screenPadding,
+    paddingTop: Platform.OS === 'ios' ? SPACING.xxxlarge : SPACING.xxlarge,
+    paddingBottom: SPACING.xxlarge,
+  },
+  logoContainer: {
+    marginBottom: SPACING.xxlarge,
+    alignItems: 'center',
+  },
+  logoGlow: {
+    ...SHADOWS.neonStrong,
+  },
+  logo: {
+    width: 120,
+    height: 120,
+  },
+  titleContainer: {
+    alignItems: 'center',
+    marginBottom: SPACING.xxlarge,
+    paddingHorizontal: SPACING.large,
   },
   mainTitle: {
-    fontFamily: theme.TYPOGRAPHY.header.fontFamily || 'BarbieDream-Regular',
-    color: theme.COLORS.textPrimary,
-    fontSize: theme.TYPOGRAPHY.header.fontSize,
-    fontWeight: theme.TYPOGRAPHY.header.fontWeight,
     textAlign: 'center',
-    marginBottom: theme.SPACING.sm,
-    paddingHorizontal: theme.SPACING.md,
+  },
+  tagline: {
+    color: COLORS.vibrantPink,
+    textAlign: 'center',
+    marginTop: SPACING.medium,
+    opacity: 0.9,
   },
   subtitle: {
-    color: theme.COLORS.textSecondary,
-    fontSize: theme.TYPOGRAPHY.body.fontSize,
+    color: COLORS.textSecondary,
     textAlign: 'center',
-    marginBottom: theme.SPACING.xxl,
+    marginTop: SPACING.small,
+  },
+  panelContainer: {
+    width: '100%',
+    maxWidth: 400,
   },
   glassPanel: {
-    width: '100%',
-    maxWidth: 480,
-    borderRadius: theme.SIZES.borderRadius * 1.5,
-    padding: theme.SPACING.xl,
+    borderRadius: BORDER_RADIUS.xlarge,
+    padding: SPACING.xlarge,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: COLORS.borderSubtle,
     overflow: 'hidden',
+    backgroundColor: COLORS.backgroundModal,
   },
   toggleContainer: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    borderRadius: theme.SIZES.borderRadius,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.05)',
-    marginBottom: theme.SPACING.xl,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    borderRadius: BORDER_RADIUS.xlarge,
+    padding: SPACING.tiny,
+    marginBottom: SPACING.xlarge,
   },
   toggleButton: {
     flex: 1,
-    paddingVertical: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius - 2,
-    alignItems: 'center',
-  },
-  activeToggleButton: {
-    backgroundColor: theme.COLORS.accentPink,
-  },
-  toggleButtonText: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontWeight: 'bold',
-    fontSize: theme.TYPOGRAPHY.small.fontSize,
-  },
-  activeToggleButtonText: {
-    color: theme.COLORS.textPrimary,
   },
   inputLabel: {
-    color: theme.COLORS.textSecondary,
-    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
-    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
-    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
-    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
-    marginBottom: theme.SPACING.sm,
+    marginBottom: SPACING.small,
+  },
+  inputWrapper: {
+    marginBottom: SPACING.large,
+  },
+  gradientBorder: {
+    borderRadius: BORDER_RADIUS.xlarge,
+    padding: 2,
+  },
+  inputContainer: {
+    backgroundColor: COLORS.backgroundModal,
+    borderRadius: BORDER_RADIUS.xlarge - 2,
+    overflow: 'hidden',
   },
   input: {
-    height: theme.SIZES.inputHeight,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: theme.SIZES.borderRadius,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: theme.SPACING.md,
-    color: theme.COLORS.textPrimary,
-    fontSize: theme.TYPOGRAPHY.body.fontSize,
-    marginBottom: theme.SPACING.lg,
+    height: 52,
+    paddingHorizontal: SPACING.regular,
+    color: COLORS.textPrimary,
+    fontFamily: TYPOGRAPHY.fontFamily.regular,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
   },
   authButton: {
-    backgroundColor: theme.COLORS.accentPink,
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    paddingVertical: theme.SPACING.lg,
-    alignItems: 'center',
-    marginTop: theme.SPACING.md,
-    shadowColor: theme.COLORS.accentPink,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
-    elevation: 10, // for Android
-  },
-  authButtonText: {
-    color: theme.COLORS.textPrimary,
-    fontSize: theme.TYPOGRAPHY.keyword.fontSize,
-    fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
-    textTransform: theme.TYPOGRAPHY.keyword.textTransform,
-    letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing,
+    marginTop: SPACING.large,
   },
 });
 

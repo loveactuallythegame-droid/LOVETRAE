@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput } from 'react-native';
-import { Text, GlassCard } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
+import { View, StyleSheet, ScrollView, Modal, TextInput, Pressable } from 'react-native';
+import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SOSModal({ visible, onClose, navigation }: any) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -88,13 +89,13 @@ export default function SOSModal({ visible, onClose, navigation }: any) {
       [`submissions.${user.uid}`]: {
         i_feel: formData.i_feel,
         when_partner: formData.when_partner,
-        because_i_tell_myself: formData.because_i_tell_my_self,
+        because_i_tell_myself: formData.because_i_tell_myself,
         what_i_need: formData.what_i_need,
         submitted_at: new Date()
       }
     });
     
-    if (currentStep < 4) {
+    if (currentStep < 3) {
       setCurrentStep(prev => prev + 1);
     } else {
       // Complete the session
@@ -110,25 +111,29 @@ export default function SOSModal({ visible, onClose, navigation }: any) {
       title: "I Feel...",
       field: "i_feel",
       placeholder: "Describe your emotion...",
-      helper: "Name the feeling you're experiencing"
+      helper: "Name the feeling you're experiencing",
+      icon: "heart-outline"
     },
     {
       title: "When Partner...",
       field: "when_partner",
       placeholder: "What did your partner do?",
-      helper: "Describe the specific behavior or action"
+      helper: "Describe the specific behavior or action",
+      icon: "person-outline"
     },
     {
       title: "Because I Tell Myself...",
       field: "because_i_tell_myself",
       placeholder: "What story are you telling yourself?",
-      helper: "Identify your internal narrative"
+      helper: "Identify your internal narrative",
+      icon: "chatbubble-outline"
     },
     {
       title: "What I Need...",
       field: "what_i_need",
       placeholder: "What would help you feel better?",
-      helper: "Express your specific need"
+      helper: "Express your specific need",
+      icon: "hand-left-outline"
     }
   ];
 
@@ -142,29 +147,34 @@ export default function SOSModal({ visible, onClose, navigation }: any) {
       onRequestClose={onClose}
     >
       <View style={styles.modalContainer}>
-        <TouchableOpacity 
+        <Pressable 
           style={styles.modalBackdrop} 
           onPress={onClose}
         />
         
         <View style={styles.modalContent}>
           <GlassCard style={styles.modalCard}>
-            <LinearGradient
-              colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.gradientContainer}
-            >
+            <SafeAreaView style={styles.safeArea}>
               <View style={styles.header}>
-                <Text variant="header" style={{ color: theme.COLORS.textPrimary }}>
+                <Typography variant="h2" style={styles.headerTitle}>
                   SOS: Fight Solver
-                </Text>
-                <Text variant="small" style={{ color: theme.COLORS.textHint }}>
-                  Step {currentStep + 1} of {steps.length}
-                </Text>
+                </Typography>
+                <SquishyButton 
+                  onPress={onClose} 
+                  variant="ghost"
+                  size="small"
+                  style={styles.closeButton}
+                >
+                  <Ionicons name="close" size={24} color={COLORS.textPrimary} />
+                </SquishyButton>
               </View>
               
-              <View style={styles.stepIndicator}>
+              <Typography variant="small" style={styles.stepIndicator}>
+                Step {currentStep + 1} of {steps.length}
+              </Typography>
+              
+              {/* Step Dots */}
+              <View style={styles.stepDots}>
                 {steps.map((_, index) => (
                   <View 
                     key={index} 
@@ -177,72 +187,54 @@ export default function SOSModal({ visible, onClose, navigation }: any) {
                 ))}
               </View>
               
-              <Text variant="title" style={{ color: theme.COLORS.textPrimary, marginBottom: theme.SPACING.md }}>
-                {currentStepData.title}
-              </Text>
-              
-              <Text variant="small" style={{ color: theme.COLORS.textSecondary, marginBottom: theme.SPACING.lg }}>
-                {currentStepData.helper}
-              </Text>
-              
-              <TextInput
-                style={styles.textInput}
-                placeholder={currentStepData.placeholder}
-                value={formData[currentStepData.field as keyof typeof formData] as string}
-                onChangeText={(value) => updateFormData(currentStepData.field, value)}
-                multiline
-                numberOfLines={4}
-              />
+              <ScrollView contentContainerStyle={styles.scrollContent}>
+                <View style={styles.stepHeader}>
+                  <View style={styles.iconContainer}>
+                    <Ionicons 
+                      name={currentStepData.icon as any} 
+                      size={32} 
+                      color={COLORS.vibrantPink} 
+                    />
+                  </View>
+                  <Typography variant="h3" style={styles.stepTitle}>
+                    {currentStepData.title}
+                  </Typography>
+                </View>
+                
+                <Typography variant="body" style={styles.stepHelper}>
+                  {currentStepData.helper}
+                </Typography>
+                
+                <TextInput
+                  placeholder={currentStepData.placeholder}
+                  placeholderTextColor={COLORS.textHint}
+                  value={formData[currentStepData.field as keyof typeof formData] as string}
+                  onChangeText={(value) => updateFormData(currentStepData.field, value)}
+                  multiline
+                  numberOfLines={4}
+                  style={styles.textInput}
+                />
+              </ScrollView>
               
               <View style={styles.buttonContainer}>
-                <TouchableOpacity 
-                  style={styles.button} 
+                <SquishyButton 
                   onPress={submitForm}
+                  variant="primary"
+                  size="large"
                   disabled={!formData[currentStepData.field as keyof typeof formData]}
                 >
-                  <LinearGradient
-                    colors={[
-                      formData[currentStepData.field as keyof typeof formData] 
-                        ? theme.COLORS.primaryGradientStart 
-                        : '#666',
-                      formData[currentStepData.field as keyof typeof formData] 
-                        ? theme.COLORS.primaryGradientEnd 
-                        : '#666'
-                    ]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.buttonGradient}
-                  >
-                    <Text 
-                      variant="header" 
-                      style={{ 
-                        color: formData[currentStepData.field as keyof typeof formData] 
-                          ? theme.COLORS.background 
-                          : theme.COLORS.textHint,
-                        textAlign: 'center'
-                      }}
-                    >
-                      {currentStep === steps.length - 1 ? 'Submit SOS' : 'Next'}
-                    </Text>
-                  </LinearGradient>
-                </TouchableOpacity>
+                  {currentStep === steps.length - 1 ? 'Submit SOS' : 'Next'}
+                </SquishyButton>
                 
-                <TouchableOpacity 
-                  style={styles.secondaryButton} 
+                <SquishyButton 
                   onPress={onClose}
+                  variant="ghost"
+                  size="medium"
                 >
-                  <Text 
-                    variant="header" 
-                    style={{ 
-                      color: theme.COLORS.textPrimary,
-                      textAlign: 'center'
-                    }}
-                  >
-                    Cancel
-                  </Text>
-                </TouchableOpacity>
+                  Cancel
+                </SquishyButton>
               </View>
-            </LinearGradient>
+            </SafeAreaView>
           </GlassCard>
         </View>
       </View>
@@ -255,7 +247,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: `${COLORS.backgroundPrimary}B3`,
   },
   modalBackdrop: {
     position: 'absolute',
@@ -267,68 +259,94 @@ const styles = StyleSheet.create({
   modalContent: {
     width: '90%',
     maxWidth: 500,
-    maxHeight: '80%',
+    maxHeight: '85%',
   },
   modalCard: {
     flex: 1,
+    overflow: 'hidden',
+    padding: SPACING.lg,
   },
-  gradientContainer: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+  safeArea: {
     flex: 1,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.md,
+  },
+  headerTitle: {
+    flex: 1,
+  },
+  closeButton: {
+    padding: SPACING.xs,
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   stepIndicator: {
+    textAlign: 'center',
+    opacity: 0.6,
+    marginBottom: SPACING.sm,
+  },
+  stepDots: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: theme.SPACING.lg,
-    gap: 10,
+    marginBottom: SPACING.lg,
+    gap: SPACING.sm,
   },
   stepDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: theme.COLORS.textHint,
+    backgroundColor: COLORS.textHint,
   },
   activeStepDot: {
-    backgroundColor: theme.COLORS.primaryGradientStart,
+    backgroundColor: COLORS.vibrantPink,
+    width: 24,
   },
   completedStepDot: {
-    backgroundColor: theme.COLORS.success,
+    backgroundColor: COLORS.success,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  stepHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.md,
+    marginBottom: SPACING.md,
+  },
+  iconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: `${COLORS.vibrantPink}15`,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepTitle: {
+    flex: 1,
+  },
+  stepHelper: {
+    opacity: 0.7,
+    marginBottom: SPACING.lg,
   },
   textInput: {
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderWidth: 1,
-    borderColor: 'rgba(250, 31, 99, 0.3)',
-    borderRadius: theme.SIZES.borderRadius,
-    padding: theme.SPACING.md,
-    color: theme.COLORS.textPrimary,
-    fontSize: theme.TYPOGRAPHY.body.fontSize,
     minHeight: 120,
     textAlignVertical: 'top',
-    marginBottom: theme.SPACING.lg,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.input,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.regular,
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
   },
   buttonContainer: {
-    marginTop: 'auto',
-  },
-  button: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    overflow: 'hidden',
-    marginBottom: theme.SPACING.md,
-  },
-  buttonGradient: {
-    padding: theme.SPACING.lg,
-    borderRadius: theme.SIZES.buttonBorderRadius,
-  },
-  secondaryButton: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    borderWidth: 1,
-    borderColor: theme.COLORS.textHint,
-    padding: theme.SPACING.lg,
+    marginTop: SPACING.lg,
+    gap: SPACING.md,
   },
 });

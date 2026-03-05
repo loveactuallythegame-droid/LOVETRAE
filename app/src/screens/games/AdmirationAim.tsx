@@ -1,12 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
-import { Header } from '../../components/ui/Header';
-import { SquishyButton } from '../../components/ui';
-import { COLORS, TYPOGRAPHY, SIZES, SPACING, GLOWS, moderateScale } from '../../theme';
-import ASSETS, { getMarcieImage } from '../../utils/assets';
+
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 const AdmirationAimScreen = () => {
   // Placeholder for game state and logic
@@ -14,229 +12,176 @@ const AdmirationAimScreen = () => {
   const kudos = ["You're an amazing listener.", "I love your sense of humor.", "Thank you for always being there for me."];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient
-        colors={[COLORS.deepCosmicPurple, COLORS.richPlum]}
-        style={styles.background}
-      />
-      
-      {/* Dr. Marcie Section */}
-      <View style={styles.drMarcieSection}>
-        <View style={styles.avatarContainer}>
-          <Image source={getMarcieImage(2)} style={styles.avatar} />
-        </View>
-        <View style={styles.quoteBox}>
-          <Text style={styles.quoteText}>Expressing admiration strengthens your bond! Each target hit represents a positive trait you appreciate in your partner.</Text>
-        </View>
-      </View>
-      
-      <Header title="Admiration Aim" />
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.targetContainer}>
-          <LinearGradient
-            colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={[styles.ring, styles.outerRing]}
-          />
-          <LinearGradient
-            colors={[COLORS.warmOrange, COLORS.brightYellow]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={[styles.ring, styles.middleRing]}
-          />
-          <LinearGradient
-            colors={[COLORS.mintGreen, COLORS.softViolet]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={[styles.ring, styles.innerRing]}
-          />
-          <LinearGradient
-            colors={[COLORS.progressGradientStart, COLORS.progressGradientMid1, COLORS.progressGradientMid2, COLORS.progressGradientEnd]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.bullseye}
-          />
-        </View>
+    <ScreenLayout showMarcie={true} marcieQuote="Expressing admiration strengthens your bond! Each target hit represents a positive trait you appreciate in your partner.">
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <Typography variant="h1" style={styles.title}>
+            The Love Arcade
+          </Typography>
+          <Typography variant="h2" style={styles.subtitle}>
+            +100 Games to Deepen Connection
+          </Typography>
 
-        <View style={styles.kudosContainer}>
-          <Text style={styles.kudosTitle}>Kudos Corner</Text>
-          {kudos.map((kudo, index) => (
-            <Text key={index} style={styles.kudoText}>- {kudo}</Text>
-          ))}
-        </View>
+          <View style={styles.targetContainer}>
+            <LinearGradient
+              colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.ring, styles.outerRing]}
+            />
+            <LinearGradient
+              colors={[COLORS.warmOrange, COLORS.brightYellow]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.ring, styles.middleRing]}
+            />
+            <LinearGradient
+              colors={[COLORS.mintGreen, COLORS.softViolet]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.ring, styles.innerRing]}
+            />
+            <LinearGradient
+              colors={COLORS.progress}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.bullseye}
+            />
+          </View>
 
-        <View style={styles.scoreAndActionContainer}>
-            <View style={styles.scoreContainer}>
-                <Text style={styles.scoreLabel}>Score</Text>
-                <LinearGradient
-                  colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.scoreValueContainer}
-                >
-                  <Text style={styles.scoreValue}>{score}</Text>
-                </LinearGradient>
-            </View>
-            
-            <SquishyButton style={styles.fireButton}>
-                <Text style={styles.fireButtonText}>Fire!</Text>
-            </SquishyButton>
-        </View>
-      </ScrollView>
-      <GlobalMarcieOverlay quote={`Right in the heart! Another perfect shot.`} />
-    </SafeAreaView>
+          <GlassCard style={styles.kudosContainer}>
+            <Typography variant="h3" style={styles.kudosTitle}>Kudos Corner</Typography>
+            {kudos.map((kudo, index) => (
+              <Typography key={index} variant="body" style={styles.kudoText}>- {kudo}</Typography>
+            ))}
+          </GlassCard>
+
+          <View style={styles.scoreAndActionContainer}>
+              <View style={styles.scoreContainer}>
+                  <Typography variant="caption" style={styles.scoreLabel}>Score</Typography>
+                  <LinearGradient
+                    colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.scoreValueContainer}
+                  >
+                    <Typography variant="h2" style={styles.scoreValue}>{score}</Typography>
+                  </LinearGradient>
+              </View>
+              
+              <SquishyButton>
+                  <Typography variant="button">Fire!</Typography>
+              </SquishyButton>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#1a0a1a' },
-  background: { ...StyleSheet.absoluteFillObject },
-  drMarcieSection: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-    padding: 16,
-    margin: 16,
-    marginBottom: 8
+  container: { 
+    flex: 1, 
+    backgroundColor: COLORS.backgroundPrimary 
   },
-  avatarContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#fcc738',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12
+  content: { 
+    padding: SPACING.lg, 
+    alignItems: 'center' 
   },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    resizeMode: 'cover'
+  title: { 
+    textAlign: 'center', 
+    marginBottom: SPACING.sm 
   },
-  quoteBox: {
-    flex: 1,
-    backgroundColor: 'rgba(252, 199, 56, 0.2)',
-    borderRadius: 12,
-    padding: 12
+  subtitle: { 
+    textAlign: 'center', 
+    opacity: 0.7, 
+    marginBottom: SPACING.lg 
   },
-  quoteText: {
-    color: '#ffffff',
-    fontSize: 14,
-    lineHeight: 20
-  },
-  content: { padding: 20, alignItems: 'center' },
   targetContainer: {
     width: 300,
     height: 300,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 30,
-    borderRadius: 150,
+    marginBottom: SPACING.xxlarge,
+    borderRadius: BORDER_RADIUS.round,
     borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
+    borderColor: COLORS.borderSubtle,
+    ...SHADOWS.large,
   },
   ring: {
     position: 'absolute',
-    borderRadius: 150,
+    borderRadius: BORDER_RADIUS.round,
     borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: COLORS.borderSubtle,
   },
-  outerRing: { width: 300, height: 300 },
-  middleRing: { width: 200, height: 200 },
-  innerRing: { width: 100, height: 100 },
-  bullseye: { width: 50, height: 50, borderRadius: 25 },
+  outerRing: { 
+    width: 300, 
+    height: 300 
+  },
+  middleRing: { 
+    width: 200, 
+    height: 200 
+  },
+  innerRing: { 
+    width: 100, 
+    height: 100 
+  },
+  bullseye: { 
+    width: 50, 
+    height: 50, 
+    borderRadius: BORDER_RADIUS.round 
+  },
   kudosContainer: {
     width: '100%',
-    padding: 20,
-    backgroundColor: 'rgba(92, 20, 89, 0.2)',
-    borderRadius: 16,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(219, 20, 124, 0.3)',
+    padding: SPACING.lg,
+    marginBottom: SPACING.lg,
   },
   kudosTitle: {
-    fontFamily: 'BarbieDream-Regular',
-    color: '#db147c',
-    fontSize: 24,
+    color: COLORS.vibrantPink,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: SPACING.regular,
     backgroundColor: 'rgba(219, 20, 124, 0.2)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.small,
+    borderRadius: BORDER_RADIUS.xxlarge,
   },
   kudoText: {
-    fontFamily: 'SweetPink-Regular',
-    color: '#FFF',
-    fontSize: 16,
-    marginBottom: 5,
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.xs,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.xs,
+    borderRadius: BORDER_RADIUS.large,
   },
   scoreAndActionContainer: {
       flexDirection: 'row',
       width: '100%',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginTop: 10,
+      marginTop: SPACING.regular,
   },
   scoreContainer: {
       alignItems: 'center',
   },
   scoreLabel: {
-    fontFamily: 'HolidayChristmas-Regular',
-    color: '#db147c',
-    fontSize: 18,
+    color: COLORS.vibrantPink,
     textTransform: 'uppercase',
     backgroundColor: 'rgba(219, 20, 124, 0.2)',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 12,
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.large,
   },
   scoreValueContainer: {
     width: 80,
     height: 80,
-    borderRadius: 40,
+    borderRadius: BORDER_RADIUS.round,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
+    ...SHADOWS.large,
   },
   scoreValue: {
-    fontFamily: 'WonderfulSometimes-Regular',
-    color: '#FFF',
-    fontSize: 24,
-    fontWeight: 'bold',
+    color: COLORS.textPrimary,
   },
-  fireButton: {
-      backgroundColor: '#db147c',
-      paddingVertical: 20,
-      paddingHorizontal: 50,
-      borderRadius: 40,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.3,
-      shadowRadius: 6,
-      elevation: 8,
-  },
-  fireButtonText: {
-      fontFamily: 'BarbieDream-Regular',
-      color: '#FFF',
-      fontSize: 24,
-  }
 });
 
 export default AdmirationAimScreen;

@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const CHALLENGES = [
     {
@@ -64,24 +67,43 @@ export default function TrustWiring({ route, navigation }: any) {
     const current = CHALLENGES[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.regular }}>
             <GlassCard>
-                <Text variant="header">Challenge {round + 1}</Text>
+                <Typography variant="h1" center style={styles.gameTitle}>
+                    The Love Arcade
+                </Typography>
+                <Typography variant="h2" center style={styles.subtitle}>
+                    +100 Games to Deepen Connection
+                </Typography>
+
+                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                    Challenge {round + 1}
+                </Typography>
 
                 <View style={styles.console}>
-                    <Text variant="keyword" style={{ color: '#FFD700' }}>ALARM: {current.alarm}</Text>
-                    <Text variant="body">Partner B says: "{current.desc}"</Text>
+                    <Typography variant="keyword" style={{ color: COLORS.brightYellow }}>
+                        ALARM: {current.alarm}
+                    </Typography>
+                    <Typography variant="body">
+                        Partner B says: "{current.desc}"
+                    </Typography>
                 </View>
 
-                <Text variant="instructions">Partner A, select tool:</Text>
+                <Typography variant="instructions" style={{ marginBottom: SPACING.regular }}>
+                    Partner A, select tool:
+                </Typography>
                 <View style={styles.tools}>
                     {current.tools.map(t => (
-                        <SquishyButton key={t.id} onPress={() => fixWire(t.id)} style={styles.toolBtn}>
-                            <Text variant="body">{t.text}</Text>
+                        <SquishyButton 
+                            key={t.id} 
+                            onPress={() => fixWire(t.id)} 
+                            variant="ghost"
+                            style={styles.toolBtn}
+                        >
+                            <Typography variant="body">{t.text}</Typography>
                         </SquishyButton>
                     ))}
                 </View>
-
             </GlassCard>
         </ScrollView>
     );
@@ -102,20 +124,24 @@ export default function TrustWiring({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-    console: {
-        backgroundColor: '#000',
-        padding: 16,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: '#FFD700',
-        marginBottom: 20
+    gameTitle: {
+        marginBottom: SPACING.small
     },
-    tools: { gap: 10 },
-    toolBtn: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 14,
-        borderRadius: 8,
+    subtitle: {
+        marginBottom: SPACING.xlarge
+    },
+    console: {
+        backgroundColor: COLORS.backgroundPrimary,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.medium,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)'
+        borderColor: COLORS.brightYellow,
+        marginBottom: SPACING.xlarge
+    },
+    tools: { 
+        gap: SPACING.regular 
+    },
+    toolBtn: {
+        padding: SPACING.regular,
     }
 });

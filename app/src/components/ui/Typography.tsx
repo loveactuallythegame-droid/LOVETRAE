@@ -1,43 +1,70 @@
 import { ReactNode } from 'react';
-import { Text as RNText, TextProps as RNTextProps } from 'react-native';
-import { FONT_FAMILIES } from '../../constants/fontFamilies';
+import { Text as RNText, TextProps as RNTextProps, TextStyle } from 'react-native';
+import { FONT_FAMILIES, TYPOGRAPHY_ROLES } from '../../constants/fontFamilies';
 import { scaleFont } from '../../lib/typography';
 import { useAppStore } from '../../state/store';
-import theme from '../../theme';
+import { COLORS, TYPOGRAPHY } from '../../theme';
 
-type Variant = 'header' | 'title' | 'body' | 'caption' | 'small' | 'instructions' | 'sass' | 'keyword';
+type Variant = 
+  | 'gameTitle'
+  | 'header'
+  | 'body'
+  | 'button'
+  | 'marcieDialogue'
+  | 'caption'
+  | 'label'
+  | 'title'
+  | 'small'
+  | 'instructions'
+  | 'sass'
+  | 'keyword'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4';
 
 type TextProps = RNTextProps & {
   variant?: Variant;
   children: ReactNode;
+  color?: string;
+  center?: boolean;
 };
 
-export default function Text({ variant = 'body', style, children, ...rest }: TextProps) {
-  const { family, size, additionalStyles } = mapVariant(variant);
-  const fontScale = useAppStore((s) => s.fontScale);
+export default function Text({ 
+  variant = 'body', 
+  style, 
+  children, 
+  color,
+  center = false,
+  ...rest 
+}: TextProps) {
+  const { family, size, weight, additionalStyles } = mapVariant(variant);
+  const fontScale = useAppStore((s) => s.fontScale) || 1;
   const highContrast = useAppStore((s) => s.highContrast);
-  const appTheme = useAppStore((s) => s.theme);
-  
-  // Determine text color based on app theme
-  const textColor = appTheme === 'light' ? theme.COLORS.textPrimary : theme.COLORS.textPrimary;
+
+  const textColor = color || COLORS.textPrimary;
   const shadow = highContrast ? { 
-    textShadowColor: '#000000', 
+    textShadowColor: COLORS.backgroundPrimary, 
     textShadowOffset: { width: 0, height: 1 }, 
     textShadowRadius: 2 
   } : {};
 
+  const textStyle: TextStyle = {
+    fontFamily: family,
+    fontSize: scaleFont(size * fontScale),
+    fontWeight: weight as TextStyle['fontWeight'],
+    color: textColor,
+    lineHeight: scaleFont(size * 1.5 * fontScale),
+    textAlign: center ? 'center' : 'left',
+  };
+
   return (
     <RNText 
       {...rest} 
-      accessibilityRole={rest.accessibilityRole} 
+      accessibilityRole={rest.accessibilityRole || 'text'}
       style={[
-        { 
-          fontFamily: family, 
-          fontSize: scaleFont(size * fontScale), 
-          color: textColor,
-          lineHeight: scaleFont(size * 1.4 * fontScale) // Ensure readable line height on mobile
-        }, 
-        shadow, 
+        textStyle,
+        shadow,
         additionalStyles,
         style
       ]}
@@ -48,80 +75,138 @@ export default function Text({ variant = 'body', style, children, ...rest }: Tex
 }
 
 function mapVariant(variant: Variant) {
-  if (variant === 'header') return { 
-    family: FONT_FAMILIES.BarbieDream, 
-    size: theme.TYPOGRAPHY.header.fontSize, 
-    additionalStyles: { 
-      lineHeight: theme.TYPOGRAPHY.header.lineHeight,
-      fontWeight: theme.TYPOGRAPHY.header.fontWeight
-    } 
-  };
-  if (variant === 'title') return { 
-    family: FONT_FAMILIES.BarbieDream, 
-    size: theme.TYPOGRAPHY.title.fontSize, 
-    additionalStyles: { 
-      lineHeight: theme.TYPOGRAPHY.title.lineHeight,
-      fontWeight: theme.TYPOGRAPHY.title.fontWeight
-    } 
-  };
-  if (variant === 'body') return { 
-    family: FONT_FAMILIES.Cheese, 
-    size: theme.TYPOGRAPHY.body.fontSize, 
-    additionalStyles: { 
-      lineHeight: theme.TYPOGRAPHY.body.lineHeight,
-      fontWeight: theme.TYPOGRAPHY.body.fontWeight
-    } 
-  };
-  if (variant === 'caption') return { 
-    family: FONT_FAMILIES.Cheese, 
-    size: theme.TYPOGRAPHY.caption.fontSize, 
-    additionalStyles: { 
-      lineHeight: theme.TYPOGRAPHY.caption.lineHeight,
-      fontWeight: theme.TYPOGRAPHY.caption.fontWeight
-    } 
-  };
-  if (variant === 'small') return { 
-    family: FONT_FAMILIES.Cheese, 
-    size: theme.TYPOGRAPHY.small.fontSize, 
-    additionalStyles: { 
-      lineHeight: theme.TYPOGRAPHY.small.lineHeight,
-      fontWeight: theme.TYPOGRAPHY.small.fontWeight
-    } 
-  };
-  if (variant === 'instructions') return { 
-    family: FONT_FAMILIES.HolidayChristmas, 
-    size: theme.TYPOGRAPHY.body.fontSize, 
-    additionalStyles: { 
-      lineHeight: theme.TYPOGRAPHY.body.lineHeight,
-      fontWeight: theme.TYPOGRAPHY.body.fontWeight as any
-    } 
-  };
-  if (variant === 'sass') return { 
-    family: FONT_FAMILIES.SweetPink, 
-    size: theme.TYPOGRAPHY.sass.fontSize, 
-    additionalStyles: { 
-      lineHeight: theme.TYPOGRAPHY.sass.lineHeight,
-      fontWeight: theme.TYPOGRAPHY.sass.fontWeight,
-      fontStyle: theme.TYPOGRAPHY.sass.fontStyle
-    } 
-  };
-  if (variant === 'keyword') return { 
-    family: FONT_FAMILIES.WonderfulSometimes, 
-    size: theme.TYPOGRAPHY.keyword.fontSize, 
-    additionalStyles: { 
-      lineHeight: theme.TYPOGRAPHY.keyword.lineHeight,
-      fontWeight: theme.TYPOGRAPHY.keyword.fontWeight,
-      textTransform: theme.TYPOGRAPHY.keyword.textTransform,
-      letterSpacing: theme.TYPOGRAPHY.keyword.letterSpacing
-    } 
-  };
-  // Default to body
-  return { 
-    family: FONT_FAMILIES.Cheese, 
-    size: theme.TYPOGRAPHY.body.fontSize, 
-    additionalStyles: { 
-      lineHeight: theme.TYPOGRAPHY.body.lineHeight,
-      fontWeight: theme.TYPOGRAPHY.body.fontWeight
-    } 
-  };
+  switch (variant) {
+    case 'gameTitle':
+      return {
+        family: TYPOGRAPHY_ROLES.gameTitle.fontFamily,
+        weight: TYPOGRAPHY_ROLES.gameTitle.fontWeight,
+        size: TYPOGRAPHY.fontSize.displayLarge,
+        additionalStyles: {
+          letterSpacing: TYPOGRAPHY.letterSpacing.tight,
+          lineHeight: TYPOGRAPHY.fontSize.displayLarge * 1.2,
+        } as TextStyle,
+      };
+
+    case 'h1':
+    case 'header':
+    case 'title':
+      return {
+        family: TYPOGRAPHY_ROLES.header.fontFamily,
+        weight: TYPOGRAPHY_ROLES.header.fontWeight,
+        size: TYPOGRAPHY.fontSize.headerLarge,
+        additionalStyles: {
+          lineHeight: TYPOGRAPHY.fontSize.headerLarge * 1.3,
+          letterSpacing: TYPOGRAPHY.letterSpacing.tight,
+        } as TextStyle,
+      };
+
+    case 'h2':
+      return {
+        family: TYPOGRAPHY_ROLES.header.fontFamily,
+        weight: TYPOGRAPHY.fontWeight.semiBold,
+        size: TYPOGRAPHY.fontSize.headerMedium,
+        additionalStyles: {
+          lineHeight: TYPOGRAPHY.fontSize.headerMedium * 1.3,
+        } as TextStyle,
+      };
+
+    case 'h3':
+      return {
+        family: TYPOGRAPHY_ROLES.header.fontFamily,
+        weight: TYPOGRAPHY.fontWeight.medium,
+        size: TYPOGRAPHY.fontSize.headerSmall,
+        additionalStyles: {
+          lineHeight: TYPOGRAPHY.fontSize.headerSmall * 1.4,
+        } as TextStyle,
+      };
+
+    case 'h4':
+      return {
+        family: TYPOGRAPHY_ROLES.header.fontFamily,
+        weight: TYPOGRAPHY.fontWeight.medium,
+        size: TYPOGRAPHY.fontSize.bodyLarge,
+        additionalStyles: {
+          lineHeight: TYPOGRAPHY.fontSize.bodyLarge * 1.4,
+        } as TextStyle,
+      };
+
+    case 'body':
+      return {
+        family: TYPOGRAPHY_ROLES.body.fontFamily,
+        weight: TYPOGRAPHY_ROLES.body.fontWeight,
+        size: TYPOGRAPHY.fontSize.bodyLarge,
+        additionalStyles: {
+          lineHeight: TYPOGRAPHY.fontSize.bodyLarge * 1.5,
+        } as TextStyle,
+      };
+
+    case 'button':
+    case 'keyword':
+      return {
+        family: TYPOGRAPHY_ROLES.button.fontFamily,
+        weight: TYPOGRAPHY_ROLES.button.fontWeight,
+        size: Math.max(TYPOGRAPHY.fontSize.button, 16),
+        additionalStyles: {
+          textTransform: 'uppercase',
+          letterSpacing: TYPOGRAPHY.letterSpacing.button,
+          lineHeight: TYPOGRAPHY.fontSize.button * 1.2,
+        } as TextStyle,
+      };
+
+    case 'label':
+      return {
+        family: FONT_FAMILIES.InterMedium,
+        weight: TYPOGRAPHY.fontWeight.medium,
+        size: TYPOGRAPHY.fontSize.label,
+        additionalStyles: {
+          letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+          lineHeight: TYPOGRAPHY.fontSize.label * 1.4,
+          textTransform: 'uppercase',
+        } as TextStyle,
+      };
+
+    case 'marcieDialogue':
+    case 'sass':
+      return {
+        family: TYPOGRAPHY_ROLES.marcieDialogue.fontFamily,
+        weight: TYPOGRAPHY_ROLES.marcieDialogue.fontWeight,
+        size: TYPOGRAPHY.fontSize.marcieDialogue,
+        additionalStyles: {
+          fontStyle: 'italic',
+          lineHeight: TYPOGRAPHY.fontSize.marcieDialogue * TYPOGRAPHY.lineHeight.relaxed,
+        } as TextStyle,
+      };
+
+    case 'caption':
+    case 'small':
+      return {
+        family: TYPOGRAPHY_ROLES.caption.fontFamily,
+        weight: TYPOGRAPHY_ROLES.caption.fontWeight,
+        size: TYPOGRAPHY.fontSize.bodySmall,
+        additionalStyles: {
+          letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+          lineHeight: TYPOGRAPHY.fontSize.bodySmall * 1.4,
+        } as TextStyle,
+      };
+
+    case 'instructions':
+      return {
+        family: TYPOGRAPHY_ROLES.body.fontFamily,
+        weight: TYPOGRAPHY_ROLES.body.fontWeight,
+        size: TYPOGRAPHY.fontSize.bodyMedium,
+        additionalStyles: {
+          lineHeight: TYPOGRAPHY.fontSize.bodyMedium * TYPOGRAPHY.lineHeight.relaxed,
+        } as TextStyle,
+      };
+
+    default:
+      return {
+        family: TYPOGRAPHY_ROLES.body.fontFamily,
+        weight: TYPOGRAPHY_ROLES.body.fontWeight,
+        size: TYPOGRAPHY.fontSize.bodyLarge,
+        additionalStyles: {
+          lineHeight: TYPOGRAPHY.fontSize.bodyLarge * 1.5,
+        } as TextStyle,
+      };
+  }
 }

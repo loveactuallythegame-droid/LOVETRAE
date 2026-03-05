@@ -1,243 +1,200 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header } from '../../components/ui/Header'; 
 
-const AntidoteButton = ({ title, description, color, icon }: { title: string, description: string, color: string, icon: string }) => (
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
+
+const AntidoteButton = ({ title, description, icon }: { title: string, description: string, icon: string }) => (
     <LinearGradient
-        colors={['#db147c', '#f05d68']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[styles.antidoteButton, { borderColor: `${color}80` }]}
+        colors={GRADIENTS.primary.colors}
+        start={GRADIENTS.primary.start}
+        end={GRADIENTS.primary.end}
+        style={styles.antidoteButton}
     >
-        <View style={[styles.antidoteIconContainer, { backgroundColor: `${color}30` }]}>
-            <Text style={[styles.antidoteIcon, { color: '#ffffff' }]}>{icon}</Text>
+        <View style={styles.antidoteIconContainer}>
+            <Typography variant="h2" style={styles.antidoteIcon}>{icon}</Typography>
         </View>
         <View>
-            <Text style={styles.antidoteTitle}>{title}</Text>
-            <Text style={styles.antidoteDescription}>{description}</Text>
+            <Typography variant="h4" style={styles.antidoteTitle}>{title}</Typography>
+            <Typography variant="body" style={styles.antidoteDescription}>{description}</Typography>
         </View>
     </LinearGradient>
 )
 
 const AntidoteArenaGameScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#191022', '#2a1142']} style={styles.background} />
-      
-      {/* Dr. Marcie Section */}
-      <View style={styles.drMarcieSection}>
-        <View style={styles.avatarContainer}>
-          <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
-        </View>
-        <View style={styles.quoteBox}>
-          <Text style={styles.quoteText}>The horsemen of relationship apocalypse can be defeated! Use these antidotes to counter destructive communication patterns.</Text>
-        </View>
-      </View>
-      
-      <Header title="Antidote Arena" />
-      <View style={styles.content}>
-        <View style={styles.headerSection}>
-            <Text style={styles.mainTitle}>ANTIDOTE ARENA</Text>
-            <Text style={styles.subtitle}>The "Horseman" of Contempt is attacking! Buzz in with the cure.</Text>
-        </View>
+    <ScreenLayout showMarcie={true} marcieQuote="The horsemen of relationship apocalypse can be defeated! Use these antidotes to counter destructive communication patterns.">
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <View style={styles.content}>
+          <Typography variant="h1" style={styles.title}>
+            The Love Arcade
+          </Typography>
+          <Typography variant="h2" style={styles.subtitle}>
+            +100 Games to Deepen Connection
+          </Typography>
 
-        <LinearGradient
-            colors={['#a22ac4', '#9056ef']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.soundwaveContainer}
-        >
-            {/* Simplified soundwave visualization */}
-            <Text style={styles.soundwaveIcon}>graphic_eq</Text>
-            <Text style={styles.soundwaveStatus}>Contemptuous Tone Detected</Text>
-        </LinearGradient>
+          <View style={styles.headerSection}>
+              <Typography variant="h1" style={styles.mainTitle}>ANTIDOTE ARENA</Typography>
+              <Typography variant="body" style={styles.subtitleText}>The "Horseman" of Contempt is attacking! Buzz in with the cure.</Typography>
+          </View>
 
-        <View style={styles.antidoteGrid}>
-            <AntidoteButton title="Gentle Start-Up" description="Counter criticism with soft phrasing." color="#22d3ee" icon="psychology"/>
-            <AntidoteButton title="Appreciation" description="Build culture of admiration." color="#ec4899" icon="favorite" />
-            <AntidoteButton title="Responsibility" description="Accept your part of the conflict." color="#34d399" icon="task_alt" />
-            <AntidoteButton title="Self-Soothing" description="Calm your physiological response." color="#f59e0b" icon="self_improvement" />
+          <LinearGradient
+              colors={[COLORS.lavenderPurple, COLORS.softViolet]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.soundwaveContainer}
+          >
+              {/* Simplified soundwave visualization */}
+              <Typography variant="h2" style={styles.soundwaveIcon}>♪</Typography>
+              <Typography variant="caption" style={styles.soundwaveStatus}>Contemptuous Tone Detected</Typography>
+          </LinearGradient>
+
+          <View style={styles.antidoteGrid}>
+              <AntidoteButton title="Gentle Start-Up" description="Counter criticism with soft phrasing." icon="🧠" />
+              <AntidoteButton title="Appreciation" description="Build culture of admiration." icon="❤️" />
+              <AntidoteButton title="Responsibility" description="Accept your part of the conflict." icon="✓" />
+              <AntidoteButton title="Self-Soothing" description="Calm your physiological response." icon="🧘" />
+          </View>
+
+          <LinearGradient
+              colors={[COLORS.mintGreen, COLORS.softViolet]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.marcieHostFeed}
+          >
+               <Typography variant="caption" style={styles.marcieTitle}>Dr. Marcie Liss</Typography>
+               <Typography variant="body" style={styles.marcieQuote}>"Chef's kiss contempt level, honey. Quick, what's the cure?"</Typography>
+          </LinearGradient>
         </View>
-
-        <LinearGradient
-            colors={['#37cf97', '#b37dec']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.marcieHostFeed}
-        >
-             <Text style={styles.marcieTitle}>Dr. Marcie Liss</Text>
-             <Text style={styles.marcieQuote}>"Chef's kiss contempt level, honey. Quick, what's the cure?"</Text>
-        </LinearGradient>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#191022' },
-    background: { ...StyleSheet.absoluteFillObject },
-    drMarcieSection: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
     },
-    avatarContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 12
+    content: { 
+        flex: 1, 
+        padding: SPACING.lg, 
+        justifyContent: 'space-between' 
     },
-    avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        resizeMode: 'cover'
+    title: { 
+        textAlign: 'center', 
+        marginBottom: SPACING.sm 
     },
-    quoteBox: {
-        flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+    subtitle: { 
+        textAlign: 'center', 
+        opacity: 0.7, 
+        marginBottom: SPACING.lg 
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+    headerSection: { 
+        alignItems: 'center', 
+        marginBottom: SPACING.lg 
     },
-    content: { flex: 1, padding: 20, justifyContent: 'space-between' },
-    headerSection: { alignItems: 'center', marginBottom: 20 },
     mainTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 42, 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         fontStyle: 'italic',
-        textShadowColor: 'rgba(219, 20, 124, 0.7)',
+        textShadowColor: COLORS.vibrantPink,
         textShadowOffset: {width: 0, height: 0},
         textShadowRadius: 10,
     },
-    subtitle: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 16, 
-        color: '#db147c', 
+    subtitleText: { 
+        color: COLORS.vibrantPink, 
         textAlign: 'center',
         backgroundColor: 'rgba(219, 20, 124, 0.2)',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 20,
+        paddingHorizontal: SPACING.regular,
+        paddingVertical: SPACING.small,
+        borderRadius: BORDER_RADIUS.xxlarge,
+        marginTop: SPACING.small,
     },
     soundwaveContainer: {
-        borderRadius: 20,
-        padding: 30,
+        borderRadius: BORDER_RADIUS.xxlarge,
+        padding: SPACING.xlarge,
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     soundwaveIcon: { 
-        fontFamily: 'Material Icons', 
-        fontSize: 60, 
-        color: '#ffffff', 
-        marginBottom: 10,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.regular,
     },
     soundwaveStatus: { 
-        fontFamily: 'Space Grotesk', 
-        color: '#ff7600', 
+        color: COLORS.warmOrange, 
         textTransform: 'uppercase', 
         letterSpacing: 3,
         backgroundColor: 'rgba(255, 118, 0, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
-    antidoteGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-around' },
+    antidoteGrid: { 
+        flexDirection: 'row', 
+        flexWrap: 'wrap', 
+        justifyContent: 'space-around' 
+    },
     antidoteButton: {
         width: '45%',
-        borderRadius: 16,
-        padding: 15,
-        marginBottom: 15,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     antidoteIconContainer: { 
         width: 50, 
         height: 50, 
-        borderRadius: 10, 
+        borderRadius: BORDER_RADIUS.large, 
         justifyContent: 'center', 
         alignItems: 'center', 
-        marginBottom: 10,
+        marginBottom: SPACING.regular,
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
         borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        borderColor: COLORS.borderSubtle,
     },
     antidoteIcon: { 
-        fontFamily: 'Material Icons', 
-        fontSize: 30 
+        color: COLORS.textPrimary,
     },
     antidoteTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 16, 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         textTransform: 'uppercase',
         textAlign: 'center',
     },
     antidoteDescription: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 12, 
-        color: '#ffffff', 
-        marginTop: 4,
+        color: COLORS.textSecondary, 
+        marginTop: SPACING.xs,
         textAlign: 'center',
-        opacity: 0.8,
     },
     marcieHostFeed: {
-        borderRadius: 16,
-        padding: 15,
-        marginTop: 20,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        marginTop: SPACING.lg,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     marcieTitle: { 
-        fontFamily: 'SweetPink-Regular', 
         textTransform: 'uppercase', 
-        color: '#ffffff', 
-        fontSize: 12, 
-        marginBottom: 5,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.xs,
         textAlign: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 8,
+        paddingHorizontal: SPACING.xs,
+        paddingVertical: SPACING.micro,
+        borderRadius: BORDER_RADIUS.small,
     },
     marcieQuote: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontStyle: 'italic', 
-        color: '#ffffff',
+        color: COLORS.textPrimary,
         textAlign: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 8,
-        borderRadius: 8,
+        padding: SPACING.small,
+        borderRadius: BORDER_RADIUS.medium,
     }
 });
 

@@ -1,86 +1,137 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const DefensivenessDetoxGameScreen = () => {
-
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#102220', '#1a1a1a']} style={styles.background} />
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+            <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
+            <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Identify the Trigger</Text>
-                    <Text style={styles.headerSubtitle}>Express your frustration. Let's find a softer way to say it.</Text>
+                    <Typography variant="h1" center>Identify the Trigger</Typography>
+                    <Typography variant="body" center style={styles.headerSubtitle}>Express your frustration. Let's find a softer way to say it.</Typography>
                 </View>
 
                 <View style={styles.gameGrid}>
                     {/* Left Panel */}
-                    <View style={styles.glassPanel}>
-                        <Text style={styles.panelTitle}>The Complaint: Speak Your Mind</Text>
+                    <GlassCard style={styles.glassPanel} padding="large">
+                        <Typography variant="h3" style={styles.panelTitle}>The Complaint: Speak Your Mind</Typography>
                         <TextInput
                             style={styles.textInput}
                             multiline
                             placeholder="e.g., You always forget to do the dishes..."
-                            placeholderTextColor="#9db9b760"
+                            placeholderTextColor={COLORS.textHint}
                             defaultValue="You always forget to do the dishes when it's your turn. It makes me feel like I have to do everything around here."
                         />
-                    </View>
+                    </GlassCard>
 
                     {/* Right Panel */}
-                    <View style={styles.glassPanel}>
-                        <Text style={styles.panelTitle}>The Analysis: The Heart View</Text>
+                    <GlassCard style={styles.glassPanel} padding="large">
+                        <Typography variant="h3" style={styles.panelTitle}>The Analysis: The Heart View</Typography>
                         <View style={styles.analysisBox}>
-                            <Text style={styles.analysisText}>
-                                <Text style={styles.highlightedText}>"You always"</Text>
-                                <Text> forget to do the dishes...</Text>
-                            </Text>
+                            <Typography variant="body">
+                                <Typography variant="body" style={styles.highlightedText}>"You always"</Typography>
+                                <Typography variant="body"> forget to do the dishes...</Typography>
+                            </Typography>
                         </View>
                         <View style={styles.drMarcieContainer}>
                              {/* Image Placeholder */}
                             <View style={styles.drMarcieAvatar} />
-                            <View style={styles.speechBubble}>
-                                <Text style={styles.speechText}>"Honey, <Text style={styles.speechHighlight}>"you always"</Text> is a brick wall. Try focusing on the specific event."</Text>
-                            </View>
+                            <GlassCard style={styles.speechBubble} padding="medium">
+                                <Typography variant="sass">"Honey, <Typography variant="body" style={styles.speechHighlight}>"you always"</Typography> is a brick wall. Try focusing on the specific event."</Typography>
+                            </GlassCard>
                         </View>
-                    </View>
+                    </GlassCard>
                 </View>
 
-                <TouchableOpacity style={styles.ctaButton}>
-                     <LinearGradient colors={['#13ecda', '#40fdf0', '#13ecda']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
-                        <Text style={styles.ctaButtonText}>CHECK FOR DEFENSIVENESS</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-
+                <SquishyButton style={styles.ctaButton} size="large">
+                    <Typography variant="button">CHECK FOR DEFENSIVENESS</Typography>
+                </SquishyButton>
             </ScrollView>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#102220' },
-    background: { ...StyleSheet.absoluteFillObject },
-    scrollContainer: { padding: 20 },
-    header: { alignItems: 'center', marginBottom: 24 },
-    headerTitle: { fontFamily: 'SpaceGrotesk-Bold', fontSize: 32, color: '#FFF', textAlign: 'center' },
-    headerSubtitle: { fontFamily: 'SpaceGrotesk-Regular', color: '#9db9b7', fontSize: 16, textAlign: 'center', marginTop: 8 },
-    gameGrid: { flexDirection: 'row', gap: 16, marginBottom: 24 },
-    glassPanel: { flex: 1, backgroundColor: 'rgba(28, 39, 38, 0.7)', borderColor: 'rgba(59, 84, 82, 0.5)', borderWidth: 1, borderRadius: 16, padding: 16 },
-    panelTitle: { fontFamily: 'SpaceGrotesk-Bold', color: '#FFF', fontSize: 18, marginBottom: 12 },
-    textInput: { flex: 1, backgroundColor: 'rgba(28, 39, 38, 0.5)', borderRadius: 12, padding: 12, color: '#FFF', fontSize: 16, minHeight: 150 },
-    analysisBox: { backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 12, padding: 16, marginBottom: 16 },
-    analysisText: { fontSize: 16, color: '#FFFFFFd0' },
-    highlightedText: { color: '#ff4b4b', fontWeight: 'bold', textDecorationLine: 'underline' },
-    drMarcieContainer: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
-    drMarcieAvatar: { width: 60, height: 60, borderRadius: 30, backgroundColor: '#8a2be2' /* Placeholder */ },
-    speechBubble: { flex: 1, backgroundColor: '#FFF', padding: 12, borderRadius: 12, borderTopLeftRadius: 0 },
-    speechText: { color: '#102220', fontStyle: 'italic' },
-    speechHighlight: { color: '#ff2d95', fontWeight: 'bold' },
-    ctaButton: { height: 50, borderRadius: 25, shadowColor: '#13ecda', shadowRadius: 15, shadowOpacity: 0.5, marginTop: 16 },
-    ctaGradient: { height: '100%', width: '100%', borderRadius: 25, justifyContent: 'center', alignItems: 'center' },
-    ctaButtonText: { color: '#102220', fontSize: 16, fontWeight: '700' },
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundSecondary 
+    },
+    background: { 
+        ...StyleSheet.absoluteFillObject 
+    },
+    scrollContainer: { 
+        padding: SPACING.regular 
+    },
+    header: { 
+        alignItems: 'center', 
+        marginBottom: SPACING.xlarge 
+    },
+    headerSubtitle: { 
+        marginTop: SPACING.small,
+        opacity: 0.8
+    },
+    gameGrid: { 
+        flexDirection: 'row', 
+        gap: SPACING.regular, 
+        marginBottom: SPACING.xlarge 
+    },
+    glassPanel: { 
+        flex: 1,
+        backgroundColor: COLORS.backgroundCard,
+        borderColor: COLORS.borderSubtle,
+        borderWidth: 1,
+    },
+    panelTitle: { 
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.regular 
+    },
+    textInput: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular, 
+        color: COLORS.textPrimary, 
+        fontSize: TYPOGRAPHY.fontSize.bodyLarge, 
+        minHeight: 150 
+    },
+    analysisBox: { 
+        backgroundColor: COLORS.backgroundPrimary, 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular, 
+        marginBottom: SPACING.regular 
+    },
+    highlightedText: { 
+        color: COLORS.error, 
+        fontWeight: 'bold', 
+        textDecorationLine: 'underline' 
+    },
+    drMarcieContainer: { 
+        flexDirection: 'row', 
+        alignItems: 'flex-start', 
+        gap: SPACING.regular 
+    },
+    drMarcieAvatar: { 
+        width: SPACING.xxxlarge, 
+        height: SPACING.xxxlarge, 
+        borderRadius: BORDER_RADIUS.round, 
+        backgroundColor: COLORS.lavenderPurple
+    },
+    speechBubble: { 
+        flex: 1,
+        backgroundColor: COLORS.textPrimary,
+    },
+    speechHighlight: { 
+        color: COLORS.vibrantPink, 
+        fontWeight: 'bold' 
+    },
+    ctaButton: { 
+        marginTop: SPACING.regular,
+        ...SHADOWS.neon
+    },
 });
 
 export default DefensivenessDetoxGameScreen;

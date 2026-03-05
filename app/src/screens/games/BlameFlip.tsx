@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const ORIGINAL = ["You", "make", "me", "feel", "ignored"];
 const GOAL = ["I", "feel", "ignored", "when", "you"]; // Simplified check
@@ -19,141 +20,138 @@ export default function BlameFlip({ navigation }: any) {
   }
 
   return (
-    <LinearGradient colors={['#201010', '#000000']} style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.header}>
-          <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Text variant="body">Back</Text>
-          </SquishyButton>
-          <Text variant="header">The Blame Flip</Text>
-        </View>
-
-        {/* Dr. Marcie Section */}
-        <View style={styles.drMarcieSection}>
-          <View style={styles.avatarContainer}>
-            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
-          </View>
-          <View style={styles.quoteBox}>
-            <Text style={styles.quoteText} variant="sass">Transform blame into ownership! Change "you" statements to "I" statements for better communication.</Text>
-          </View>
-        </View>
-
-        <GlassCard style={styles.card}>
-          <Text variant="header">Fix the Sentence</Text>
-          <Text variant="body" style={{ textAlign: 'center', marginBottom: 20 }}>
-            Change "You make me feel..." to an "I" statement.
-          </Text>
-
-          <View style={styles.wordRow}>
-            {words.map((w, i) => (
-              <View key={i} style={styles.wordBox}>
-                <Text style={styles.wordText}>{w}</Text>
-              </View>
-            ))}
-          </View>
-
-          {!success ? (
-            <SquishyButton onPress={swapToI} style={styles.btn}>
-              <LinearGradient
-                colors={['#db147c', '#f05d68']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.gradientButton}
-              >
-                <Text variant="header" style={{ color: '#ffffff' }}>Flip It</Text>
-              </LinearGradient>
+    <ScreenLayout showHeader={false} scrollable={true}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.header}>
+            <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
+              <Typography variant="body">Back</Typography>
             </SquishyButton>
-          ) : (
-             <View style={{ marginTop: 20 }}>
-               <Text variant="header" style={{ color: '#37cf97', textAlign: 'center' }}>Nice Flip! (+10 XP)</Text>
-               <Text variant="body" style={{ textAlign: 'center', marginTop: 10 }}>
-                 Marcie: "‘You never listen’ → ‘I feel unheard when…’—YES. Now say it without an eye roll."
-               </Text>
-             </View>
-          )}
-        </GlassCard>
-      </ScrollView>
-    </LinearGradient>
+            <Typography variant="h1" center>The Love Arcade</Typography>
+          </View>
+          
+          <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
+
+          {/* Dr. Marcie Section */}
+          <GlassCard style={styles.drMarcieSection} variant="outlined">
+            <View style={styles.avatarContainer}>
+              <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+            </View>
+            <View style={styles.quoteBox}>
+              <Typography variant="body">Transform blame into ownership! Change "you" statements to "I" statements for better communication.</Typography>
+            </View>
+          </GlassCard>
+
+          <GlassCard style={styles.card}>
+            <Typography variant="h2" center>Fix the Sentence</Typography>
+            <Typography variant="body" center style={{ marginBottom: SPACING.regular }}>
+              Change "You make me feel..." to an "I" statement.
+            </Typography>
+
+            <View style={styles.wordRow}>
+              {words.map((w, i) => (
+                <View key={i} style={styles.wordBox}>
+                  <Typography variant="body" style={styles.wordText}>{w}</Typography>
+                </View>
+              ))}
+            </View>
+
+            {!success ? (
+              <SquishyButton onPress={swapToI} style={styles.btn}>
+                <Typography variant="button" style={{ color: COLORS.textPrimary }}>Flip It</Typography>
+              </SquishyButton>
+            ) : (
+               <View style={{ marginTop: SPACING.regular }}>
+                 <Typography variant="h2" center style={{ color: COLORS.mintGreen }}>Nice Flip! (+10 XP)</Typography>
+                 <Typography variant="body" center style={{ marginTop: SPACING.small }}>
+                   Marcie: "'You never listen' → 'I feel unheard when…'—YES. Now say it without an eye roll."
+                 </Typography>
+               </View>
+            )}
+          </GlassCard>
+        </ScrollView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { padding: 20, gap: 20 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
+  container: { 
+    flex: 1,
+    backgroundColor: COLORS.backgroundPrimary,
+  },
+  content: { 
+    padding: SPACING.regular, 
+    gap: SPACING.regular 
+  },
+  header: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: SPACING.small 
+  },
+  backBtn: { 
+    paddingHorizontal: SPACING.regular, 
+    paddingVertical: SPACING.small, 
+    backgroundColor: COLORS.backgroundInput, 
+    borderRadius: BORDER_RADIUS.large 
+  },
+  subtitle: {
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.small,
+  },
   drMarcieSection: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 20,
-    padding: 16,
-    marginBottom: 20
+    marginBottom: SPACING.regular,
+    padding: SPACING.regular,
   },
   avatarContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#fcc738',
+    width: SPACING.xxlarge + SPACING.medium,
+    height: SPACING.xxlarge + SPACING.medium,
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.brightYellow,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12
+    marginRight: SPACING.regular,
   },
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: SPACING.xxlarge,
+    height: SPACING.xxlarge,
+    borderRadius: BORDER_RADIUS.round,
     resizeMode: 'cover'
   },
   quoteBox: {
     flex: 1,
-    backgroundColor: 'rgba(252, 199, 56, 0.2)',
-    borderRadius: 12,
-    padding: 12
-  },
-  quoteText: {
-    color: '#ffffff',
-    fontSize: 14,
-    lineHeight: 20
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.large,
+    padding: SPACING.regular,
   },
   card: { 
-    padding: 20, 
-    gap: 20, 
+    padding: SPACING.regular, 
+    gap: SPACING.regular, 
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(219, 20, 124, 0.3)',
   },
-  wordRow: { flexDirection: 'row', gap: 10, flexWrap: 'wrap', justifyContent: 'center' },
+  wordRow: { 
+    flexDirection: 'row', 
+    gap: SPACING.small, 
+    flexWrap: 'wrap', 
+    justifyContent: 'center' 
+  },
   wordBox: { 
-    padding: 10, 
-    backgroundColor: 'rgba(255,255,255,0.1)', 
-    borderRadius: 8,
+    padding: SPACING.small, 
+    backgroundColor: COLORS.backgroundInput, 
+    borderRadius: BORDER_RADIUS.medium,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
+    borderColor: COLORS.borderSubtle,
   },
-  wordText: { color: '#ffffff', fontSize: 18, fontWeight: 'bold' },
+  wordText: { 
+    color: COLORS.textPrimary, 
+    fontWeight: 'bold' 
+  },
   btn: { 
-    padding: 15, 
-    borderRadius: 12, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
     alignItems: 'center', 
     width: 200,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 8,
   },
-  gradientButton: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12,
-    paddingVertical: 15,
-  }
 });

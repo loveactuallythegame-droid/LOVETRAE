@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
 export default function MicroMomentMuseum({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -30,23 +32,23 @@ export default function MicroMomentMuseum({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Curate a Moment</Text>
-        <Text variant="body">Upload a photo of a small connection:</Text>
-        <SquishyButton onPress={upload} style={styles.upload}>
-            <Text variant="body">{hasPhoto ? "📸 Photo Selected" : "Tap to Upload Photo"}</Text>
+        <Typography variant="h2">Curate a Moment</Typography>
+        <Typography variant="body">Upload a photo of a small connection:</Typography>
+        <SquishyButton onPress={upload} style={styles.upload} variant="ghost">
+            <Typography variant="body">{hasPhoto ? "📸 Photo Selected" : "Tap to Upload Photo"}</Typography>
         </SquishyButton>
-        <Text variant="body" style={{ marginTop: 12 }}>Write a caption:</Text>
+        <Typography variant="body" style={{ marginTop: SPACING.regular }}>Write a caption:</Typography>
         <TextInput
           style={styles.input}
           placeholder="Title this moment..."
-          placeholderTextColor="#666"
+          placeholderTextColor={COLORS.textHint}
           value={caption}
           onChangeText={setCaption}
         />
         <SquishyButton onPress={submit} style={styles.btn}>
-            <Text variant="header">Hang in Museum</Text>
+            <Typography variant="h2">Hang in Museum</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -64,11 +66,30 @@ export default function MicroMomentMuseum({ route, navigation }: any) {
     playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
   }), [gameId]);
 
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => submit()} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => submit()} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  upload: { height: 100, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 8, justifyContent: 'center', alignItems: 'center', marginTop: 8, borderStyle: 'dashed', borderWidth: 1, borderColor: '#666' },
-  input: { backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', padding: 12, borderRadius: 8, marginTop: 8 },
-  btn: { marginTop: 16, backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
+  upload: { 
+    height: 100, 
+    marginTop: SPACING.regular,
+    borderStyle: 'dashed', 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle,
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    color: COLORS.textPrimary, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.medium, 
+    marginTop: SPACING.regular,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+  },
+  btn: { 
+    marginTop: SPACING.regular,
+  },
 });

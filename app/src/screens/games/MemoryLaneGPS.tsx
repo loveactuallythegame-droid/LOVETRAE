@@ -1,55 +1,106 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 import { speakMarcie } from '../../lib/voice-engine';
 
 export default function MemoryLaneGPS({ navigation }: any) {
     useEffect(() => {
-        speakMarcie("Pinned Trader Joe’s parking lot? Iconic. Love and frozen dumplings.");
+        speakMarcie("Pinned Trader Joe's parking lot? Iconic. Love and frozen dumplings.");
     }, []);
 
     return (
-        <LinearGradient colors={['#2A0040', '#000000']} style={styles.container}>
-            <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.header}>
-                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-                        <Text variant="body">Back</Text>
-                    </SquishyButton>
-                    <Text variant="header" style={styles.title}>Memory Lane GPS</Text>
-                </View>
+        <ScreenLayout showMarcie={true} marcieQuote="Pinned Trader Joe's parking lot? Iconic. Love and frozen dumplings.">
+            <SafeAreaView style={styles.container} edges={['bottom']}>
+                <ScrollView contentContainerStyle={styles.content}>
+                    <View style={styles.header}>
+                        <SquishyButton 
+                            variant="ghost" 
+                            size="small"
+                            onPress={() => navigation.goBack()}
+                        >
+                            <Typography variant="body">Back</Typography>
+                        </SquishyButton>
+                        <Typography variant="h2" style={styles.title}>Memory Lane GPS</Typography>
+                    </View>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Type: Map pin + media proof</Text>
-                    <Text variant="body">Mechanics: Drop pin → label (“Best fight-turned-hug”) → upload one photo both took that day.</Text>
-                </GlassCard>
+                    <Typography variant="h1" style={styles.mainTitle}>
+                        The Love Arcade
+                    </Typography>
+                    <Typography variant="body" style={styles.subtitle}>
+                        +100 Games to Deepen Connection
+                    </Typography>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Scoring</Text>
-                    <Text variant="body">
-                        ✅ Pin = +5{'\n'}
-                        ✅ Photo = +10{'\n'}
-                        ✅ Partner confirms = +10
-                    </Text>
-                </GlassCard>
+                    <GlassCard style={styles.card}>
+                        <Typography variant="instructions" style={{ marginBottom: SPACING.sm }}>
+                            Type: Map pin + media proof
+                        </Typography>
+                        <Typography variant="body">
+                            Mechanics: Drop pin → label ("Best fight-turned-hug") → upload one photo both took that day.
+                        </Typography>
+                    </GlassCard>
 
-                <View style={styles.actionArea}>
-                    <SquishyButton onPress={() => alert('Opening Map...')} style={styles.playBtn}>
-                        <Text variant="header">Drop Pin</Text>
-                    </SquishyButton>
-                </View>
-            </ScrollView>
-        </LinearGradient>
+                    <GlassCard style={styles.card}>
+                        <Typography variant="instructions" style={{ marginBottom: SPACING.sm }}>
+                            Scoring
+                        </Typography>
+                        <Typography variant="body">
+                            ✅ Pin = +5{'\n'}
+                            ✅ Photo = +10{'\n'}
+                            ✅ Partner confirms = +10
+                        </Typography>
+                    </GlassCard>
+
+                    <View style={styles.actionArea}>
+                        <SquishyButton 
+                            variant="primary" 
+                            size="large"
+                            onPress={() => alert('Opening Map...')}
+                        >
+                            <Typography variant="button" color={COLORS.textPrimary}>
+                                Drop Pin
+                            </Typography>
+                        </SquishyButton>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
-    content: { padding: 20, gap: 20 },
-    header: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 40 },
-    backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-    title: { fontSize: 22, color: '#fff', flex: 1 },
-    card: { padding: 20 },
-    actionArea: { marginTop: 40, alignItems: 'center' },
-    playBtn: { width: '80%', paddingVertical: 15, backgroundColor: '#FA1F63', borderRadius: 20, alignItems: 'center' }
+    container: { 
+        flex: 1,
+        backgroundColor: COLORS.backgroundPrimary,
+    },
+    content: { 
+        padding: SPACING.lg, 
+        gap: SPACING.lg 
+    },
+    header: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        gap: SPACING.sm, 
+        marginTop: SPACING.xl 
+    },
+    title: { 
+        flex: 1,
+    },
+    mainTitle: {
+        textAlign: 'center',
+        marginBottom: SPACING.sm,
+    },
+    subtitle: {
+        textAlign: 'center',
+        opacity: 0.7,
+        marginBottom: SPACING.lg,
+    },
+    card: { 
+        padding: SPACING.lg 
+    },
+    actionArea: { 
+        marginTop: SPACING.xl, 
+        alignItems: 'center' 
+    },
 });

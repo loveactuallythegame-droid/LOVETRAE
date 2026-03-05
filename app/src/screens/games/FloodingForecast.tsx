@@ -1,8 +1,10 @@
 import { useMemo, useState, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 export default function FloodingForecast({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -27,21 +29,21 @@ export default function FloodingForecast({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Heart Rate Monitor</Text>
-        <Text variant="keyword" style={styles.bpm}>{bpm} BPM</Text>
+        <Typography variant="h2">Heart Rate Monitor</Typography>
+        <Typography variant="keyword" style={styles.bpm}>{bpm} BPM</Typography>
         <View style={styles.barWrap}>
-            <View style={[styles.bar, { width: `${(bpm / 120) * 100}%`, backgroundColor: bpm > 100 ? '#E11637' : '#33DEA5' }]} />
+          <View style={[styles.bar, { width: `${(bpm / 120) * 100}%`, backgroundColor: bpm > 100 ? COLORS.error : COLORS.success }]} />
         </View>
-        <Text variant="body" style={{ textAlign: 'center', marginTop: 8 }}>
-            {bpm > 100 ? "FLOODING IMMINENT" : "Safe Zone"}
-        </Text>
+        <Typography variant="body" style={{ textAlign: 'center', marginTop: SPACING.small }}>
+          {bpm > 100 ? "FLOODING IMMINENT" : "Safe Zone"}
+        </Typography>
         <SquishyButton onPress={calmDown} style={styles.btn}>
-            <Text variant="header">Box Breathe</Text>
+          <Typography variant="body">Box Breathe</Typography>
         </SquishyButton>
         <SquishyButton onPress={finish} style={styles.checkBtn}>
-            <Text variant="header">Check Forecast</Text>
+          <Typography variant="body">Check Forecast</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -59,13 +61,30 @@ export default function FloodingForecast({ route, navigation }: any) {
     playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
   }), [gameId]);
 
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => finish()} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => finish()} />
+      </SafeAreaView>
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  bpm: { fontSize: 48, textAlign: 'center', marginVertical: 12, color: '#fff' },
-  barWrap: { height: 20, backgroundColor: '#333', borderRadius: 10, overflow: 'hidden' },
+  container: { flex: 1 },
+  bpm: { 
+    fontSize: TYPOGRAPHY.fontSize.displayLarge, 
+    textAlign: 'center', 
+    marginVertical: SPACING.regular, 
+    color: COLORS.textPrimary 
+  },
+  barWrap: { 
+    height: 20, 
+    backgroundColor: COLORS.backgroundInput, 
+    borderRadius: BORDER_RADIUS.round, 
+    overflow: 'hidden' 
+  },
   bar: { height: '100%' },
-  btn: { marginTop: 20, backgroundColor: '#5C1459', padding: 16, borderRadius: 12, alignItems: 'center' },
-  checkBtn: { marginTop: 12, backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
+  btn: { marginTop: SPACING.regular },
+  checkBtn: { marginTop: SPACING.regular },
 });

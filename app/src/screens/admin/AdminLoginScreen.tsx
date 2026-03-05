@@ -2,9 +2,7 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
   Alert,
   KeyboardAvoidingView,
@@ -13,6 +11,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 const AdminLoginScreen = () => {
   const [username, setUsername] = useState('');
@@ -29,48 +30,50 @@ const AdminLoginScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <LinearGradient colors={['#0a050a', '#230f19']} style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Love Actually... The Game</Text>
-        </View>
-        <View style={styles.content}>
-          <Text style={styles.title}>Admin Console</Text>
-          <Text style={styles.subtitle}>Secure access for game coordinators and moderators</Text>
+    <ScreenLayout scrollable={false} showHeader={false}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.container}>
+          <View style={styles.header}>
+            <Typography variant="header" style={styles.headerText}>Love Actually... The Game</Typography>
+          </View>
+          <View style={styles.content}>
+            <Typography variant="gameTitle" style={styles.title}>Admin Console</Typography>
+            <Typography variant="body" style={styles.subtitle}>Secure access for game coordinators and moderators</Typography>
 
-          <BlurView intensity={10} tint="dark" style={styles.glassPanel}>
-            <Text style={styles.inputLabel}>Administrator Username</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g. coordinator_alpha"
-              placeholderTextColor="rgba(255, 255, 255, 0.3)"
-              value={username}
-              onChangeText={setUsername}
-            />
+            <GlassCard style={styles.glassPanel}>
+              <Typography variant="label" style={styles.inputLabel}>Administrator Username</Typography>
+              <TextInput
+                style={styles.input}
+                placeholder="e.g. coordinator_alpha"
+                placeholderTextColor={COLORS.textDisabled}
+                value={username}
+                onChangeText={setUsername}
+              />
 
-            <Text style={styles.inputLabel}>Access Security Key</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="••••••••••••"
-              placeholderTextColor="rgba(255, 255, 255, 0.3)"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
+              <Typography variant="label" style={styles.inputLabel}>Access Security Key</Typography>
+              <TextInput
+                style={styles.input}
+                placeholder="••••••••••••"
+                placeholderTextColor={COLORS.textDisabled}
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+              />
 
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-              <Text style={styles.buttonText}>Authorize Access</Text>
-            </TouchableOpacity>
-          </BlurView>
-        </View>
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>© 2024 Love Actually... Cosmic Entertainment. All rights reserved.</Text>
-        </View>
-      </LinearGradient>
-    </KeyboardAvoidingView>
+              <SquishyButton onPress={handleLogin}>
+                <Typography variant="button">Authorize Access</Typography>
+              </SquishyButton>
+            </GlassCard>
+          </View>
+          <View style={styles.footer}>
+            <Typography variant="caption" style={styles.footerText}>© 2024 Love Actually... Cosmic Entertainment. All rights reserved.</Typography>
+          </View>
+        </LinearGradient>
+      </KeyboardAvoidingView>
+    </ScreenLayout>
   );
 };
 
@@ -79,83 +82,69 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    padding: 20,
+    padding: SPACING.regular,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    borderBottomColor: COLORS.borderSubtle,
   },
   headerText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.headerMedium,
+    fontWeight: TYPOGRAPHY.fontWeight.bold as any,
     textAlign: 'center',
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: SPACING.regular,
   },
   title: {
-    color: '#ffffff',
-    fontSize: 36,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.displayLarge,
+    fontWeight: TYPOGRAPHY.fontWeight.bold as any,
+    marginBottom: SPACING.small,
   },
   subtitle: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: 14,
-    marginBottom: 32,
+    color: COLORS.textSecondary,
+    fontSize: TYPOGRAPHY.fontSize.bodyMedium,
+    marginBottom: SPACING.xlarge,
   },
   glassPanel: {
     width: '100%',
     maxWidth: 480,
-    borderRadius: 16,
-    padding: 32,
+    borderRadius: BORDER_RADIUS.xlarge,
+    padding: SPACING.xxlarge,
     borderWidth: 1,
-    borderColor: 'rgba(238, 43, 205, 0.2)',
+    borderColor: COLORS.borderSubtle,
     overflow: 'hidden',
   },
   inputLabel: {
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: 14,
-    marginBottom: 8,
+    color: COLORS.textSecondary,
+    fontSize: TYPOGRAPHY.fontSize.bodyMedium,
+    marginBottom: SPACING.small,
   },
   input: {
     height: 56,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    borderRadius: 8,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.medium,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: 16,
-    color: '#ffffff',
-    fontSize: 16,
-    marginBottom: 24,
-  },
-  button: {
-    height: 56,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#7c3aed',
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
+    borderColor: COLORS.borderSubtle,
+    paddingHorizontal: SPACING.regular,
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+    marginBottom: SPACING.xlarge,
   },
   footer: {
-    padding: 20,
+    padding: SPACING.regular,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    borderTopColor: COLORS.borderSubtle,
   },
   footerText: {
-    color: 'rgba(255, 255, 255, 0.2)',
-    fontSize: 10,
+    color: COLORS.textHint,
+    fontSize: TYPOGRAPHY.fontSize.bodySmall,
     textAlign: 'center',
     textTransform: 'uppercase',
-    letterSpacing: 2,
+    letterSpacing: TYPOGRAPHY.letterSpacing.wide,
   },
 });
 

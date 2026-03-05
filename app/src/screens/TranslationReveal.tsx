@@ -1,7 +1,11 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
+import ScreenLayout from '../layout/ScreenLayout';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
 const TranslationReveal = () => {
 
@@ -10,72 +14,77 @@ const TranslationReveal = () => {
     const insight = "This insight suggests a need for emotional safety and leadership in small choices to alleviate mental fatigue.";
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
-                <ScrollView contentContainerStyle={styles.contentContainer}>
-                    <Text style={styles.phaseTitle}>WHEN YOU SAID...</Text>
-                    <Text style={styles.originalStatement}>"{originalStatement}"</Text>
+        <ScreenLayout scrollable={true} showHeader={false} contentStyle={styles.contentContainer}>
+            <Typography variant="label" color={COLORS.vibrantPink} style={styles.phaseTitle}>WHEN YOU SAID...</Typography>
+            <Typography variant="h2" color={COLORS.textSecondary} style={styles.originalStatement}>"{originalStatement}"</Typography>
 
-                    <View style={styles.revealCard}>
-                        <Text style={styles.revealTitle}>THE TRUE MEANING</Text>
-                        <Text style={styles.trueMeaning}>{trueMeaning}</Text>
+            <GlassCard style={styles.revealCard}>
+                <Typography variant="label" color={COLORS.vibrantPink} style={styles.revealTitle}>THE TRUE MEANING</Typography>
+                <Typography variant="h1" style={styles.trueMeaning}>{trueMeaning}</Typography>
 
-                        <View style={styles.insightContainer}>
-                            <Text style={{fontSize: 24}}>💡</Text>
-                            <Text style={styles.insightText}>{insight}</Text>
-                        </View>
-                    </View>
+                <View style={styles.insightContainer}>
+                    <Typography style={{fontSize: TYPOGRAPHY.fontSize.headerLarge}}>💡</Typography>
+                    <Typography variant="body" color={COLORS.textSecondary} style={styles.insightText}>{insight}</Typography>
+                </View>
+            </GlassCard>
 
-                    <TouchableOpacity style={styles.actionButton}>
-                        <Text style={styles.actionButtonText}>VIEW ACTION PLAN</Text>
-                        <Text style={{fontSize: 22}}>▶️</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.nextStepText}>NEXT: DISCOVER 3 WAYS TO RESPOND</Text>
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+            <SquishyButton onPress={() => {}} style={styles.actionButton}>
+                <Typography variant="button" color={COLORS.backgroundPrimary}>VIEW ACTION PLAN</Typography>
+                <Typography style={{fontSize: TYPOGRAPHY.fontSize.headerLarge}}>▶️</Typography>
+            </SquishyButton>
+            <Typography variant="caption" color={COLORS.textSecondary} style={styles.nextStepText}>NEXT: DISCOVER 3 WAYS TO RESPOND</Typography>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#2A002A' },
-    container: { flex: 1 },
-    contentContainer: { flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 24 },
-    phaseTitle: { color: '#FF4081', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 8, fontSize: 12 },
-    originalStatement: { color: '#D1C4E9', fontSize: 22, fontStyle: 'italic', textAlign: 'center', marginBottom: 32 },
-    revealCard: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 20,
-        padding: 24,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 64, 129, 0.5)',
-        shadowColor: "#E040FB",
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.2,
-        shadowRadius: 20,
-        elevation: 10,
-        width: '100%',
-        marginBottom: 32,
-    },
-    revealTitle: { color: '#FF4081', textTransform: 'uppercase', fontWeight: 'bold', letterSpacing: 1.5, fontSize: 12, marginBottom: 16 },
-    trueMeaning: { color: '#fff', fontSize: 26, fontWeight: 'bold', lineHeight: 34, marginBottom: 24 },
-    insightContainer: { flexDirection: 'row', alignItems: 'flex-start', paddingTop: 16, borderTopWidth: 1, borderTopColor: 'rgba(255, 64, 129, 0.5)' },
-    insightText: { color: '#D1C4E9', fontSize: 14, marginLeft: 12, flex: 1 },
-    actionButton: {
-        flexDirection: 'row',
+    contentContainer: { 
+        flexGrow: 1, 
+        justifyContent: 'center', 
         alignItems: 'center',
-        paddingVertical: 18,
-        paddingHorizontal: 32,
-        borderRadius: 20,
-        backgroundColor: '#FFD700',
-        shadowColor: '#FFD700',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.3,
-        shadowRadius: 20,
-        elevation: 8
     },
-    actionButtonText: { color: '#000', fontSize: 18, fontWeight: 'bold', marginRight: 8, textTransform: 'uppercase' },
-    nextStepText: { color: '#D1C4E9', marginTop: 16, fontSize: 12, fontWeight: 'bold', textTransform: 'uppercase' }
+    phaseTitle: { 
+        letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+        marginBottom: SPACING.small,
+        textTransform: 'uppercase',
+    },
+    originalStatement: { 
+        fontStyle: 'italic', 
+        textAlign: 'center', 
+        marginBottom: SPACING.xxlarge 
+    },
+    revealCard: {
+        width: '100%',
+        marginBottom: SPACING.xxlarge,
+    },
+    revealTitle: { 
+        letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+        marginBottom: SPACING.regular,
+        textTransform: 'uppercase',
+    },
+    trueMeaning: { 
+        lineHeight: TYPOGRAPHY.fontSize.displayMedium * 1.3,
+        marginBottom: SPACING.xlarge 
+    },
+    insightContainer: { 
+        flexDirection: 'row', 
+        alignItems: 'flex-start', 
+        paddingTop: SPACING.regular, 
+        borderTopWidth: 1, 
+        borderTopColor: COLORS.borderSubtle 
+    },
+    insightText: { 
+        marginLeft: SPACING.regular, 
+        flex: 1 
+    },
+    actionButton: {
+        backgroundColor: COLORS.brightYellow,
+        ...SHADOWS.medium,
+    },
+    nextStepText: { 
+        marginTop: SPACING.regular,
+        textTransform: 'uppercase',
+    }
 });
 
 export default TranslationReveal;

@@ -1,10 +1,13 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, TextInput, StyleSheet, Image } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../../firebase/firebaseConfig'; // Assuming you have this configured
+import { auth, db } from '../../firebase/firebaseConfig';
 import { useAppStore } from '../../state/store';
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const AdminLoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -31,80 +34,97 @@ const AdminLoginScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <View style={styles.container}>
         <View style={styles.header}>
-            <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
+          <Image source={require('../../../assets/mainlogoone.png')} style={styles.logo} />
         </View>
-      <Text style={styles.title}>Admin Console</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Authorize Access</Text>
-      </TouchableOpacity>
-    </View>
+        <Typography variant="h1" center style={styles.title}>
+          Admin Console
+        </Typography>
+        <GlassCard padding="large" style={styles.formCard}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor={COLORS.textHint}
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor={COLORS.textHint}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+          {error ? (
+            <Typography variant="caption" color={COLORS.error} center style={styles.error}>
+              {error}
+            </Typography>
+          ) : null}
+          <SquishyButton
+            onPress={handleLogin}
+            accessibilityLabel="Authorize Access"
+            variant="primary"
+            size="large"
+            style={styles.button}
+          >
+            <Typography variant="button" color={COLORS.textPrimary}>
+              Authorize Access
+            </Typography>
+          </SquishyButton>
+        </GlassCard>
+      </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#5C1459', // Glam Noir
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    header: {
-        position: 'absolute',
-        top: 20,
-        alignItems: 'center',
-    },
-    logo: {
-        width: 150,
-        height: 50,
-        resizeMode: 'contain',
-    },
-    title: {
-        fontSize: 32,
-        fontFamily: 'BarbieDream-Regular', // Barbie Dream
-        color: '#FA1F63', // Hot Pink
-        marginBottom: 40,
-    },
-    input: {
-        width: '80%',
-        backgroundColor: '#fff',
-        padding: 15,
-        marginBottom: 20,
-        borderRadius: 5,
-        color: '#000',
-        fontFamily: 'Cheese-Regular', // Cheese
-    },
-    button: {
-        width: '80%',
-        backgroundColor: '#33DEA5', // Teal
-        padding: 20,
-        borderRadius: 5,
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    error: {
-        color: 'red',
-        marginBottom: 20,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.healingHospital,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header: {
+    position: 'absolute',
+    top: SPACING.xlarge,
+    alignItems: 'center',
+  },
+  logo: {
+    width: 150,
+    height: 50,
+    resizeMode: 'contain',
+  },
+  title: {
+    fontFamily: 'BarbieDream-Regular',
+    color: COLORS.emotionalConnection,
+    marginBottom: SPACING.xxlarge,
+  },
+  formCard: {
+    width: '80%',
+    alignItems: 'center',
+  },
+  input: {
+    width: '100%',
+    backgroundColor: COLORS.backgroundInput,
+    padding: SPACING.regular,
+    marginBottom: SPACING.regular,
+    borderRadius: BORDER_RADIUS.input,
+    color: COLORS.textPrimary,
+    fontFamily: 'Cheese-Regular',
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+  },
+  button: {
+    width: '100%',
+    marginTop: SPACING.small,
+  },
+  error: {
+    marginBottom: SPACING.regular,
+  },
 });
 
 export default AdminLoginScreen;

@@ -11,14 +11,16 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
 
 // Components
-import { GlassCard, Text } from '../../components/ui';
+import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
+
+// Theme
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 // Game Constants
 const GAME_ID = 'newlywed-game';
@@ -174,219 +176,144 @@ const NewlywedGame: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <SafeAreaView style={styles.container}>
-                <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                    <Text style={styles.loadingText}>Loading Questions...</Text>
-                </LinearGradient>
-            </SafeAreaView>
+            <ScreenLayout showHeader={false}>
+                <View style={styles.centerContent}>
+                    <Typography variant="h2">Loading Questions...</Typography>
+                </View>
+            </ScreenLayout>
         );
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <Text style={styles.title}>The Newlywed Game</Text>
-                        <Text style={styles.subtitle}>How well do you know each other?</Text>
-                        <View style={styles.scoreRow}>
-                            <Text style={styles.scoreText}>Score: {score}</Text>
-                            {isSyncing && <Text style={styles.syncText}>💾</Text>}
-                        </View>
-                        <Text style={styles.roundText}>
-                            Question {round + 1} of {ROUNDS.length} • Matches: {matches}
-                        </Text>
+        <ScreenLayout showHeader={false}>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                {/* Header */}
+                <View style={styles.header}>
+                    <Typography variant="h1" center>The Newlywed Game</Typography>
+                    <Typography variant="h2" center style={styles.subtitle}>How well do you know each other?</Typography>
+                    <View style={styles.scoreRow}>
+                        <Typography variant="h3" style={styles.scoreText}>Score: {score}</Typography>
+                        {isSyncing && <Typography variant="caption">💾</Typography>}
                     </View>
+                    <Typography variant="caption" center style={styles.roundText}>
+                        Question {round + 1} of {ROUNDS.length} • Matches: {matches}
+                    </Typography>
+                </View>
 
-                    {/* Question Card */}
-                    <GlassCard style={styles.questionCard}>
-                        <Text style={styles.questionText}>{currentRound.question}</Text>
-                    </GlassCard>
+                {/* Question Card */}
+                <GlassCard style={styles.questionCard}>
+                    <Typography variant="body" center>{currentRound.question}</Typography>
+                </GlassCard>
 
-                    {/* Your Answer */}
-                    <Text style={styles.sectionTitle}>Your Answer:</Text>
-                    <View style={styles.optionsContainer}>
-                        {currentRound.options.map((option) => (
-                            <TouchableOpacity
-                                key={`my-${option.id}`}
-                                style={[
-                                    styles.optionButton,
-                                    myAnswer === option.id && styles.selectedOption
-                                ]}
-                                onPress={() => setMyAnswer(option.id)}
-                            >
-                                <Text style={[
-                                    styles.optionText,
-                                    myAnswer === option.id && styles.selectedText
-                                ]}>
-                                    {option.text}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+                {/* Your Answer */}
+                <Typography variant="h3" style={styles.sectionTitle}>Your Answer:</Typography>
+                <View style={styles.optionsContainer}>
+                    {currentRound.options.map((option) => (
+                        <SquishyButton
+                            key={`my-${option.id}`}
+                            onPress={() => setMyAnswer(option.id)}
+                            variant={myAnswer === option.id ? 'primary' : 'secondary'}
+                            size="medium"
+                            style={styles.optionButton}
+                        >
+                            <Typography variant="body">{option.text}</Typography>
+                        </SquishyButton>
+                    ))}
+                </View>
 
-                    {/* Your Prediction */}
-                    <Text style={styles.sectionTitle}>Predict Your Partner's Answer:</Text>
-                    <View style={styles.optionsContainer}>
-                        {currentRound.options.map((option) => (
-                            <TouchableOpacity
-                                key={`pred-${option.id}`}
-                                style={[
-                                    styles.predictionButton,
-                                    prediction === option.id && styles.selectedPrediction
-                                ]}
-                                onPress={() => setPrediction(option.id)}
-                            >
-                                <Text style={[
-                                    styles.optionText,
-                                    prediction === option.id && styles.selectedText
-                                ]}>
-                                    {option.text}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+                {/* Your Prediction */}
+                <Typography variant="h3" style={styles.sectionTitle}>Predict Your Partner's Answer:</Typography>
+                <View style={styles.optionsContainer}>
+                    {currentRound.options.map((option) => (
+                        <SquishyButton
+                            key={`pred-${option.id}`}
+                            onPress={() => setPrediction(option.id)}
+                            variant={prediction === option.id ? 'primary' : 'ghost'}
+                            size="medium"
+                            style={styles.predictionButton}
+                        >
+                            <Typography variant="body">{option.text}</Typography>
+                        </SquishyButton>
+                    ))}
+                </View>
 
-                    {/* Submit */}
-                    <TouchableOpacity
-                        style={[styles.submitButton, (!myAnswer || !prediction) && styles.disabledButton]}
-                        onPress={submit}
-                        disabled={!myAnswer || !prediction}
-                    >
-                        <Text style={styles.submitText}>Reveal Match</Text>
-                    </TouchableOpacity>
+                {/* Submit */}
+                <SquishyButton
+                    onPress={submit}
+                    disabled={!myAnswer || !prediction}
+                    variant="primary"
+                    size="large"
+                    style={styles.submitButton}
+                >
+                    <Typography variant="button">Reveal Match</Typography>
+                </SquishyButton>
 
-                    {/* Session Info */}
-                    {session && (
-                        <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
-                    )}
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+                {/* Session Info */}
+                {session && (
+                    <Typography variant="caption" center style={styles.sessionInfo}>
+                        Session: {session.id.slice(0, 8)}...
+                    </Typography>
+                )}
+            </ScrollView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    centerContent: {
         flex: 1,
-    },
-    background: {
-        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     scrollContent: {
-        padding: 20,
-        paddingTop: 60,
+        padding: SPACING.screenPadding,
+        paddingTop: SPACING.xlarge,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#fff',
-        marginBottom: 5,
+        marginBottom: SPACING.xlarge,
     },
     subtitle: {
-        fontSize: 14,
-        color: 'rgba(255,255,255,0.7)',
-        marginBottom: 10,
+        color: COLORS.textSecondary,
+        marginTop: SPACING.small,
     },
     scoreRow: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: SPACING.regular,
     },
     scoreText: {
-        fontSize: 20,
-        color: '#db147c',
-        fontWeight: 'bold',
-    },
-    syncText: {
-        marginLeft: 8,
-        fontSize: 14,
+        color: COLORS.vibrantPink,
+        marginRight: SPACING.small,
     },
     roundText: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 14,
-        marginTop: 5,
-    },
-    loadingText: {
-        color: '#fff',
-        fontSize: 18,
-        textAlign: 'center',
-        marginTop: 100,
+        color: COLORS.textHint,
+        marginTop: SPACING.small,
     },
     questionCard: {
-        padding: 20,
-        marginBottom: 20,
-    },
-    questionText: {
-        fontSize: 18,
-        color: '#fff',
-        textAlign: 'center',
-        lineHeight: 26,
+        padding: SPACING.cardPadding,
+        marginBottom: SPACING.xlarge,
     },
     sectionTitle: {
-        fontSize: 16,
-        color: '#FFD700',
-        marginBottom: 12,
-        fontWeight: '600',
+        color: COLORS.brightYellow,
+        marginBottom: SPACING.regular,
     },
     optionsContainer: {
-        marginBottom: 20,
+        marginBottom: SPACING.xlarge,
+        gap: SPACING.small,
     },
     optionButton: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 15,
-        borderRadius: 12,
-        marginBottom: 8,
-        borderWidth: 2,
-        borderColor: 'transparent',
-    },
-    selectedOption: {
-        borderColor: '#db147c',
-        backgroundColor: 'rgba(219, 20, 124, 0.2)',
+        marginBottom: SPACING.small,
     },
     predictionButton: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 15,
-        borderRadius: 12,
-        marginBottom: 8,
-        borderWidth: 2,
-        borderColor: 'transparent',
-    },
-    selectedPrediction: {
-        borderColor: '#33DEA5',
-        backgroundColor: 'rgba(51, 222, 165, 0.2)',
-    },
-    optionText: {
-        color: '#fff',
-        fontSize: 14,
-    },
-    selectedText: {
-        fontWeight: 'bold',
+        marginBottom: SPACING.small,
     },
     submitButton: {
-        backgroundColor: '#db147c',
-        paddingVertical: 15,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginTop: 10,
-    },
-    disabledButton: {
-        opacity: 0.5,
-    },
-    submitText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        marginTop: SPACING.regular,
     },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
-        textAlign: 'center',
-        marginTop: 20,
+        color: COLORS.textHint,
+        marginTop: SPACING.xlarge,
     },
 });
 

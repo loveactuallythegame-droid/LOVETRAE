@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
-import { Text, GlassCard, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 type Segment = { text: string; label: 'criticism' | 'contempt' | 'defensiveness' | 'stonewalling' | 'neutral' };
 
@@ -12,7 +14,7 @@ const TRANSCRIPT: Segment[] = [
   { text: 'Maybe if you were worth calling.', label: 'contempt' },
   { text: 'I only forgot once.', label: 'defensiveness' },
   { text: '(silence)', label: 'stonewalling' },
-  { text: 'Let’s set a reminder together.', label: 'neutral' },
+  { text: 'Let\'s set a reminder together.', label: 'neutral' },
 ];
 
 export default function WhosRight({ route, navigation }: any) {
@@ -49,21 +51,23 @@ export default function WhosRight({ route, navigation }: any) {
   const inputArea = (
     <View>
       <GlassCard>
-        <Text variant="body">Highlight harmful patterns</Text>
+        <Typography variant="instructions" center>Highlight harmful patterns</Typography>
         {TRANSCRIPT.map((seg, i) => (
           <View key={i} style={styles.row}>
-            <Text variant="body">{seg.text}</Text>
-            <View style={{ flexDirection: 'row', gap: 8 }}>
+            <Typography variant="body">{seg.text}</Typography>
+            <View style={{ flexDirection: 'row', gap: SPACING.small }}>
               {(['criticism', 'contempt', 'defensiveness', 'stonewalling'] as Segment['label'][]).map((l) => (
                 <Pressable key={l} onPress={() => toggle(i, l)} style={[styles.badge, selected[i] === l ? styles.badgeOn : {}]}>
-                  <Text variant="keyword">{l}</Text>
+                  <Typography variant="caption">{l}</Typography>
                 </Pressable>
               ))}
             </View>
           </View>
         ))}
-        <SquishyButton style={styles.btn} onPress={() => { HapticFeedbackSystem.selection(); }}><Text variant="header">Review</Text></SquishyButton>
-        <Text variant="keyword">Accuracy {accuracy}%</Text>
+        <SquishyButton style={styles.btn} onPress={() => { HapticFeedbackSystem.selection(); }}>
+          <Typography variant="button">Review</Typography>
+        </SquishyButton>
+        <Typography variant="caption" center>Accuracy {accuracy}%</Typography>
       </GlassCard>
     </View>
   );
@@ -90,9 +94,27 @@ export default function WhosRight({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  row: { marginTop: 8, gap: 6 },
-  badge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, backgroundColor: '#120016', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)' },
-  badgeOn: { backgroundColor: '#5C1459' },
-  btn: { alignSelf: 'flex-end', marginTop: 10, paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#33DEA5', borderRadius: 12 },
+  row: { 
+    marginTop: SPACING.regular, 
+    gap: SPACING.small 
+  },
+  badge: { 
+    paddingHorizontal: SPACING.small, 
+    paddingVertical: SPACING.tiny, 
+    borderRadius: BORDER_RADIUS.xlarge, 
+    backgroundColor: COLORS.backgroundPrimary, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle 
+  },
+  badgeOn: { 
+    backgroundColor: COLORS.healingHospital 
+  },
+  btn: { 
+    alignSelf: 'flex-end', 
+    marginTop: SPACING.regular, 
+    paddingHorizontal: SPACING.regular, 
+    paddingVertical: SPACING.small, 
+    backgroundColor: COLORS.success, 
+    borderRadius: BORDER_RADIUS.button 
+  },
 });
-

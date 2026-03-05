@@ -1,10 +1,13 @@
 
 import React from 'react';
 import { 
-    View, Text, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity, TextInput 
+    View, StyleSheet, SafeAreaView, ScrollView, FlatList, TextInput 
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 const users = [
     { id: '#LA-9821-XP', username: '@stardust_lover', status: 'Active Now', tier: 'ETERNAL COSMOS', sos: '2h ago', progress: 0.75 },
@@ -14,83 +17,172 @@ const users = [
     { id: '#LA-0043-KX', username: '@void_zen', status: 'Offline', tier: 'STAR-CROSSED', sos: '1h ago', progress: 0.66 },
 ];
 
-const StatCard = ({ title, value, change, color }) => (
-    <View style={[styles.statCard, { borderLeftColor: color }]}>
-        <Text style={styles.statTitle}>{title}</Text>
-        <Text style={styles.statValue}>{value}</Text>
-        {change && <Text style={[styles.statChange, {color}]}>{change}</Text>}
-    </View>
+const StatCard = ({ title, value, change, color }: { title: string, value: string, change?: string, color: string }) => (
+    <GlassCard style={[styles.statCard, { borderLeftColor: color }]}>
+        <Typography variant="caption" style={styles.statTitle}>{title}</Typography>
+        <Typography variant="header" style={styles.statValue}>{value}</Typography>
+        {change && <Typography variant="caption" style={[styles.statChange, {color}]}>{change}</Typography>}
+    </GlassCard>
 );
 
-const UserRow = ({ item }) => (
+const UserRow = ({ item }: { item: typeof users[0] }) => (
     <View style={styles.userRow}>
         <View style={styles.userInfo}>
-            <View style={[styles.avatar, {backgroundColor: 'rgba(252, 12, 132, 0.2)'}]}><Text style={{color: '#fc0c84'}}>{item.username.substring(1,3).toUpperCase()}</Text></View>
+            <View style={[styles.avatar, {backgroundColor: COLORS.richPlum}]}>
+                <Typography variant="caption" style={{color: COLORS.vibrantPink}}>
+                    {item.username.substring(1,3).toUpperCase()}
+                </Typography>
+            </View>
             <View>
-                <Text style={styles.userId}>{item.id}</Text>
-                <Text style={styles.username}>{item.username}</Text>
+                <Typography variant="body" style={styles.userId}>{item.id}</Typography>
+                <Typography variant="caption" style={styles.username}>{item.username}</Typography>
             </View>
         </View>
-        <View style={{flex: 1}}><Text style={styles.statusText}>{item.status}</Text></View>
-        <View style={{flex: 1}}><Text style={styles.tierText}>{item.tier}</Text></View>
-         <TouchableOpacity>
-            <LinearGradient colors={['#a855f7', '#ec4899']} style={styles.detailButton}>
-                <Text style={styles.detailButtonText}>VIEW</Text>
-            </LinearGradient>
-        </TouchableOpacity>
+        <View style={{flex: 1}}>
+            <Typography variant="body" style={styles.statusText}>{item.status}</Typography>
+        </View>
+        <View style={{flex: 1}}>
+            <Typography variant="caption" style={styles.tierText}>{item.tier}</Typography>
+        </View>
+        <SquishyButton size="small" onPress={() => {}}>
+            <Typography variant="button" style={{ fontSize: TYPOGRAPHY.fontSize.bodySmall }}>VIEW</Typography>
+        </SquishyButton>
     </View>
 );
 
 const AdminUserManagementList = () => {
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#102222', '#1a3a3a']} style={styles.container}>
-                <View style={styles.header}>
-                    <TextInput style={styles.searchInput} placeholder="Search User ID, Username..." placeholderTextColor="rgba(255,255,255,0.4)" />
-                </View>
-                
-                <ScrollView contentContainerStyle={styles.scrollView}>
-                    <View style={styles.statsGrid}>
-                        <StatCard title="Total Users" value="24,592" change="+4.2%" color="#fc0c84" />
-                        <StatCard title="Active Now" value="1,842" change="Live" color="#13ecec" />
-                        <StatCard title="Premium Tier" value="8,210" change="33%" color="#a855f7" />
-                        <StatCard title="Pending SOS" value="12" change="Urgent" color="#ef4444" />
-                    </View>
-
-                    <View style={styles.tableContainer}>
-                         <FlatList
-                            data={users}
-                            renderItem={({item}) => <UserRow item={item} />}
-                            keyExtractor={item => item.id}
+        <ScreenLayout scrollable={false} showHeader={false}>
+            <SafeAreaView style={styles.safeArea}>
+                <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.container}>
+                    <View style={styles.header}>
+                        <TextInput 
+                            style={styles.searchInput} 
+                            placeholder="Search User ID, Username..." 
+                            placeholderTextColor={COLORS.textHint}
                         />
                     </View>
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+                    
+                    <ScrollView contentContainerStyle={styles.scrollView}>
+                        <View style={styles.statsGrid}>
+                            <StatCard title="Total Users" value="24,592" change="+4.2%" color={COLORS.vibrantPink} />
+                            <StatCard title="Active Now" value="1,842" change="Live" color={COLORS.info} />
+                            <StatCard title="Premium Tier" value="8,210" change="33%" color={COLORS.lavenderPurple} />
+                            <StatCard title="Pending SOS" value="12" change="Urgent" color={COLORS.error} />
+                        </View>
+
+                        <GlassCard style={styles.tableContainer}>
+                            <FlatList
+                                data={users}
+                                renderItem={({item}) => <UserRow item={item} />}
+                                keyExtractor={item => item.id}
+                            />
+                        </GlassCard>
+                    </ScrollView>
+                </LinearGradient>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#102222' },
-    container: { flex: 1 },
-    header: { padding: 16, backgroundColor: 'rgba(40, 57, 57, 0.4)', borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' },
-    searchInput: { backgroundColor: 'rgba(40, 57, 57, 0.8)', color: 'white', borderRadius: 12, padding: 12, paddingLeft: 40 },
-    scrollView: { padding: 16 },
-    statsGrid: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16, gap: 12 },
-    statCard: { flex: 1, backgroundColor: 'rgba(40, 57, 57, 0.6)', padding: 12, borderRadius: 12, borderLeftWidth: 4 },
-    statTitle: { color: 'rgba(255,255,255,0.5)', fontSize: 11, textTransform: 'uppercase' },
-    statValue: { color: '#fff', fontSize: 20, fontWeight: 'bold', marginVertical: 4 },
-    statChange: { fontSize: 12, fontWeight: 'bold' },
-    tableContainer: { backgroundColor: 'rgba(40, 57, 57, 0.6)', borderRadius: 12 },
-    userRow: { flexDirection: 'row', alignItems: 'center', padding: 12, borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' },
-    userInfo: { flexDirection: 'row', alignItems: 'center', gap: 12, flex: 2 },
-    avatar: { width: 32, height: 32, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
-    userId: { color: '#fff', fontWeight: 'bold', fontSize: 12 },
-    username: { color: 'rgba(255,255,255,0.5)', fontSize: 11 },
-    statusText: { color: '#fff', fontSize: 12 },
-    tierText: { color: '#fff', fontSize: 10, flexShrink: 1, backgroundColor: 'rgba(168, 85, 247, 0.2)', color: '#c084fc', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 20, overflow: 'hidden', textAlign: 'center' },
-    detailButton: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
-    detailButtonText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
+    safeArea: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundSecondary 
+    },
+    container: { 
+        flex: 1 
+    },
+    header: { 
+        padding: SPACING.regular, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderBottomWidth: 1, 
+        borderBottomColor: COLORS.divider 
+    },
+    searchInput: { 
+        backgroundColor: COLORS.backgroundCard, 
+        color: COLORS.textPrimary, 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular, 
+        paddingLeft: SPACING.xxlarge 
+    },
+    scrollView: { 
+        padding: SPACING.regular 
+    },
+    statsGrid: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        marginBottom: SPACING.regular, 
+        gap: SPACING.small 
+    },
+    statCard: { 
+        flex: 1, 
+        padding: SPACING.regular, 
+        borderRadius: BORDER_RADIUS.large, 
+        borderLeftWidth: 4 
+    },
+    statTitle: { 
+        color: COLORS.textHint, 
+        fontSize: TYPOGRAPHY.fontSize.bodySmall, 
+        textTransform: 'uppercase' 
+    },
+    statValue: { 
+        color: COLORS.textPrimary, 
+        fontSize: TYPOGRAPHY.fontSize.headerMedium, 
+        fontWeight: TYPOGRAPHY.fontWeight.bold as any,
+        marginVertical: SPACING.tiny 
+    },
+    statChange: { 
+        fontSize: TYPOGRAPHY.fontSize.bodySmall, 
+        fontWeight: TYPOGRAPHY.fontWeight.bold as any
+    },
+    tableContainer: { 
+        borderRadius: BORDER_RADIUS.large 
+    },
+    userRow: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        padding: SPACING.regular, 
+        borderBottomWidth: 1, 
+        borderBottomColor: COLORS.divider 
+    },
+    userInfo: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        gap: SPACING.regular, 
+        flex: 2 
+    },
+    avatar: { 
+        width: 32, 
+        height: 32, 
+        borderRadius: BORDER_RADIUS.small, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    userId: { 
+        color: COLORS.textPrimary, 
+        fontWeight: TYPOGRAPHY.fontWeight.bold as any,
+        fontSize: TYPOGRAPHY.fontSize.bodySmall 
+    },
+    username: { 
+        color: COLORS.textHint, 
+        fontSize: TYPOGRAPHY.fontSize.bodySmall 
+    },
+    statusText: { 
+        color: COLORS.textPrimary, 
+        fontSize: TYPOGRAPHY.fontSize.bodySmall 
+    },
+    tierText: { 
+        color: COLORS.lavenderPurple, 
+        fontSize: TYPOGRAPHY.fontSize.bodySmall,
+        flexShrink: 1, 
+        backgroundColor: 'rgba(168, 85, 247, 0.2)', 
+        paddingHorizontal: SPACING.small, 
+        paddingVertical: SPACING.tiny, 
+        borderRadius: BORDER_RADIUS.round, 
+        overflow: 'hidden', 
+        textAlign: 'center' 
+    },
 });
 
 export default AdminUserManagementList;

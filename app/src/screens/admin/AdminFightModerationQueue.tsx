@@ -1,8 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { collection, onSnapshot, query, where, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebaseClient';
+import { ScreenLayout } from '../../layout';
+import { Typography, SquishyButton, GlassCard } from '../../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 const AdminFightModerationQueue = () => {
   const [activeFights, setActiveFights] = useState([]);
@@ -34,50 +37,54 @@ const AdminFightModerationQueue = () => {
   };
 
   const renderFightItem = ({ item }) => (
-    <View style={styles.fightItem}>
+    <GlassCard style={styles.fightItem}>
       <View style={styles.fightDetails}>
-        <Text style={styles.fightUsers}>{item.coupleId}</Text>
-        <Text style={styles.fightTimestamp}>{new Date(item.timestamp.seconds * 1000).toLocaleTimeString()}</Text>
+        <Typography variant="body" color={COLORS.textPrimary} style={{ fontWeight: TYPOGRAPHY.fontWeight.bold }}>
+          {item.coupleId}
+        </Typography>
+        <Typography variant="caption" color={COLORS.textSecondary}>
+          {new Date(item.timestamp.seconds * 1000).toLocaleTimeString()}
+        </Typography>
       </View>
       <View style={styles.fightActions}>
-        <TouchableOpacity style={styles.resolveButton} onPress={() => resolveFight(item.id)}>
-          <Text style={styles.resolveButtonText}>RESOLVE</Text>
-        </TouchableOpacity>
+        <SquishyButton
+          onPress={() => resolveFight(item.id)}
+          variant="primary"
+          size="small"
+        >
+          <Typography variant="button" color={COLORS.deepCosmic}>
+            RESOLVE
+          </Typography>
+        </SquishyButton>
       </View>
-    </View>
+    </GlassCard>
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Fight Moderation Queue</Text>
+    <ScreenLayout
+      showHeader={true}
+      scrollable={true}
+    >
+      <Typography variant="h1" color={COLORS.textPrimary} style={{ marginBottom: SPACING.xlarge }}>
+        Fight Moderation Queue
+      </Typography>
       <FlatList
         data={activeFights}
         renderItem={renderFightItem}
         keyExtractor={item => item.id}
-        ListEmptyComponent={<Text style={styles.emptyText}>No active fights to moderate.</Text>}
+        ListEmptyComponent={
+          <Typography variant="body" color={COLORS.textSecondary} center style={{ marginTop: SPACING.xxxlarge }}>
+            No active fights to moderate.
+          </Typography>
+        }
       />
-    </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#230f19',
-    padding: 24,
-  },
-  header: {
-    fontFamily: 'BarbieDream-Regular',
-    color: '#ffffff',
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 24,
-  },
   fightItem: {
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 16,
+    marginBottom: SPACING.regular,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -85,31 +92,7 @@ const styles = StyleSheet.create({
   fightDetails: {
     flex: 1,
   },
-  fightUsers: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  fightTimestamp: {
-    color: 'rgba(255, 255, 255, 0.5)',
-    fontSize: 12,
-  },
   fightActions: {},
-  resolveButton: {
-    backgroundColor: '#13ecec',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-  },
-  resolveButtonText: {
-    color: '#230f19',
-    fontWeight: 'bold',
-  },
-  emptyText: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    textAlign: 'center',
-    marginTop: 48,
-  },
 });
 
 export default AdminFightModerationQueue;

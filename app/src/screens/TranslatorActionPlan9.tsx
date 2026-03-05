@@ -1,18 +1,20 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import ScreenLayout from '../layout/ScreenLayout';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../theme';
 
 const PartnerCard = ({ partner, answer, color, avatar, align }) => (
     <View style={styles.cardContainer}>
-        <LinearGradient 
-            colors={[`${color}20`, '#1d0b16']} 
-            style={[styles.card, { borderColor: `${color}80`, alignItems: align === 'left' ? 'flex-start' : 'flex-end' }]}>
+        <GlassCard style={[styles.card, { borderColor: `${color}80`, alignItems: align === 'left' ? 'flex-start' : 'flex-end' }]}>
             <Image source={{ uri: avatar }} style={styles.avatar} />
-            <Text style={[styles.answerText, { color }]}>{answer}</Text>
-            <Text style={styles.partnerLabel}>{partner}</Text>
-        </LinearGradient>
+            <Typography variant="h1" style={[styles.answerText, { color }]}>{answer}</Typography>
+            <Typography variant="caption" color={COLORS.textHint} style={styles.partnerLabel}>{partner}</Typography>
+        </GlassCard>
     </View>
 );
 
@@ -24,56 +26,120 @@ const TranslatorActionPlan9 = () => {
     const roast = "Ouch! Someone's living in a fantasy world. Those parking tickets don't lie, Mark!";
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#120810', '#1d0b16']} style={styles.container}>
-                <Text style={styles.header}>The Big Reveal</Text>
-                <View style={styles.questionContainer}>
-                    <Text style={styles.questionText}>"{question}"</Text>
+        <ScreenLayout scrollable={true} showHeader={false} contentStyle={styles.contentContainer}>
+            <Typography variant="label" color={COLORS.textSecondary} style={styles.header}>The Big Reveal</Typography>
+            <GlassCard style={styles.questionContainer}>
+                <Typography variant="h3" style={styles.questionText}>"{question}"</Typography>
+            </GlassCard>
+            
+            <View style={styles.revealContainer}>
+                <PartnerCard partner={partner1.name} answer={partner1.answer} color={COLORS.mintGreen} avatar={partner1.avatar} align="left" />
+                
+                <View style={styles.roastContainer}>
+                    <Image source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDk_aTW4MbpEPoKcJ7J9so5udKgmhztqFRhZlMjXwaxZBzYUy_CH85HG2QoeY7emOh1vfFmFpUaHFnfHrt2hJr4-XFvHLEo8zvyZFyO9OGdoxmiejXbj03jL_TGGQ0sOi7proHpxNQZ2sShaAYaracCiwyMl4XmuH9rlNHonxAU-zD3JStjlsROVzqY-E9fXfWvCF03hpWY_UW-E1EeejiVUtn3vv7HCgMS2WQEjPXGaKHdCiSOIhlzbUFxjCijfhvqgImA-KzTH4Im' }} style={styles.hostAvatar} />
+                    <GlassCard variant="elevated" style={styles.speechBubble}>
+                        <Typography variant="body" color={COLORS.backgroundPrimary} style={styles.roastText}>{roast}</Typography>
+                    </GlassCard>
+                    <GlassCard padding="small" style={styles.syncScore}>
+                        <Typography variant="caption" color={COLORS.vibrantPink} style={styles.syncText}>MISMATCH</Typography>
+                    </GlassCard>
                 </View>
                 
-                <View style={styles.revealContainer}>
-                    <PartnerCard partner={partner1.name} answer={partner1.answer} color="#2dd4bf" avatar={partner1.avatar} align="left" />
-                    
-                    <View style={styles.roastContainer}>
-                        <Image source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDk_aTW4MbpEPoKcJ7J9so5udKgmhztqFRhZlMjXwaxZBzYUy_CH85HG2QoeY7emOh1vfFmFpUaHFnfHrt2hJr4-XFvHLEo8zvyZFyO9OGdoxmiejXbj03jL_TGGQ0sOi7proHpxNQZ2sShaAYaracCiwyMl4XmuH9rlNHonxAU-zD3JStjlsROVzqY-E9fXfWvCF03hpWY_UW-E1EeejiVUtn3vv7HCgMS2WQEjPXGaKHdCiSOIhlzbUFxjCijfhvqgImA-KzTH4Im' }} style={styles.hostAvatar} />
-                        <View style={styles.speechBubble}>
-                            <Text style={styles.roastText}>{roast}</Text>
-                        </View>
-                        <View style={styles.syncScore}><Text style={styles.syncText}>MISMATCH</Text></View>
-                    </View>
-                    
-                    <PartnerCard partner={partner2.name} answer={partner2.answer} color="#f472b6" avatar={partner2.avatar} align="right" />
-                </View>
+                <PartnerCard partner={partner2.name} answer={partner2.answer} color={COLORS.rosePink} avatar={partner2.avatar} align="right" />
+            </View>
 
-                <TouchableOpacity style={styles.nextButton}>
-                    <Text style={styles.nextButtonText}>Next Question</Text>
-                    <MaterialIcons name="arrow-forward" size={20} color="#fff" />
-                </TouchableOpacity>
-            </LinearGradient>
-        </SafeAreaView>
+            <SquishyButton onPress={() => {}} style={styles.nextButton}>
+                <Typography variant="button">Next Question</Typography>
+                <MaterialIcons name="arrow-forward" size={20} color={COLORS.textPrimary} />
+            </SquishyButton>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#120810' },
-    container: { flex: 1, alignItems: 'center', justifyContent: 'space-around', padding: 16 },
-    header: { color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase', letterSpacing: 3, fontSize: 14, marginBottom: 16 },
-    questionContainer: { backgroundColor: 'rgba(29,11,22,0.8)', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    questionText: { color: '#fff', fontStyle: 'italic', fontSize: 18, fontWeight: 'bold' },
-    revealContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' },
-    cardContainer: { flex: 1, padding: 8 },
-    card: { height: 250, borderRadius: 32, borderWidth: 2, justifyContent: 'center', padding: 16 },
-    avatar: { width: 80, height: 80, borderRadius: 40, borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)', alignSelf: 'center', marginBottom: 16 },
-    answerText: { fontSize: 48, fontWeight: '900', textAlign: 'center', textTransform: 'uppercase' },
-    partnerLabel: { color: 'rgba(255,255,255,0.4)', textAlign: 'center', marginTop: 8 },
-    roastContainer: { alignItems: 'center', marginHorizontal: -20, zIndex: 1 },
-    hostAvatar: { width: 120, height: 120, borderRadius: 60, borderWidth: 3, borderColor: '#fc0c84' },
-    speechBubble: { backgroundColor: '#fff', borderRadius: 20, padding: 12, marginTop: -20, zIndex: -1 },
-    roastText: { color: '#000', fontWeight: '600', textAlign: 'center' },
-    syncScore: { backgroundColor: '#000', paddingVertical: 6, paddingHorizontal: 12, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)', marginTop: 12 },
-    syncText: { color: '#fc0c84', fontWeight: 'bold' },
-    nextButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fc0c84', paddingVertical: 16, paddingHorizontal: 32, borderRadius: 16 },
-    nextButtonText: { color: '#fff', fontWeight: 'bold', marginRight: 8, textTransform: 'uppercase' },
+    contentContainer: {
+        justifyContent: 'space-around',
+    },
+    header: { 
+        textTransform: 'uppercase', 
+        letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+        marginBottom: SPACING.regular,
+        textAlign: 'center',
+    },
+    questionContainer: { 
+        backgroundColor: `${COLORS.backgroundSecondary}80`,
+        marginBottom: SPACING.xlarge,
+    },
+    questionText: { 
+        fontStyle: 'italic',
+        textAlign: 'center',
+    },
+    revealContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        width: '100%' 
+    },
+    cardContainer: { 
+        flex: 1, 
+        padding: SPACING.tiny 
+    },
+    card: { 
+        height: 250, 
+        borderWidth: 2, 
+        justifyContent: 'center', 
+        padding: SPACING.regular 
+    },
+    avatar: { 
+        width: 80, 
+        height: 80, 
+        borderRadius: BORDER_RADIUS.round, 
+        borderWidth: 2, 
+        borderColor: COLORS.borderSubtle, 
+        alignSelf: 'center', 
+        marginBottom: SPACING.regular 
+    },
+    answerText: { 
+        textAlign: 'center', 
+        textTransform: 'uppercase' 
+    },
+    partnerLabel: { 
+        textAlign: 'center', 
+        marginTop: SPACING.small 
+    },
+    roastContainer: { 
+        alignItems: 'center', 
+        marginHorizontal: -SPACING.large, 
+        zIndex: 1 
+    },
+    hostAvatar: { 
+        width: 120, 
+        height: 120, 
+        borderRadius: BORDER_RADIUS.round, 
+        borderWidth: 3, 
+        borderColor: COLORS.vibrantPink 
+    },
+    speechBubble: { 
+        backgroundColor: COLORS.textPrimary,
+        marginTop: -SPACING.xlarge,
+        zIndex: -1 
+    },
+    roastText: { 
+        textAlign: 'center' 
+    },
+    syncScore: { 
+        backgroundColor: COLORS.backgroundPrimary,
+        marginTop: SPACING.regular,
+    },
+    syncText: { 
+        fontWeight: 'bold' 
+    },
+    nextButton: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        marginTop: SPACING.xlarge,
+    },
 });
 
 export default TranslatorActionPlan9;

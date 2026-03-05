@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
-import { Text, GlassCard } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Typography, GlassCard, ScreenLayout } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
 type Pin = { name: string; lat?: number; lng?: number; details?: string };
 
@@ -81,24 +83,64 @@ export default function MemoryLaneMap({ route, navigation }: any) {
   const inputArea = (
     <View>
       <GlassCard>
-        <Text variant="body">Where was your first kiss?</Text>
-        <TextInput placeholder="Place name" style={styles.input} value={pin.name} onChangeText={(t) => update('name', t)} />
-        <View style={{ flexDirection: 'row', gap: 8 }}>
-          <TextInput placeholder="lat" keyboardType="numeric" style={[styles.input, styles.inputSmall]} value={String(pin.lat || '')} onChangeText={(t) => update('lat', parseFloat(t))} />
-          <TextInput placeholder="lng" keyboardType="numeric" style={[styles.input, styles.inputSmall]} value={String(pin.lng || '')} onChangeText={(t) => update('lng', parseFloat(t))} />
+        <Typography variant="body">Where was your first kiss?</Typography>
+        <TextInput 
+          placeholder="Place name" 
+          placeholderTextColor={COLORS.textHint}
+          style={styles.input} 
+          value={pin.name} 
+          onChangeText={(t) => update('name', t)} 
+        />
+        <View style={{ flexDirection: 'row', gap: SPACING.small }}>
+          <TextInput 
+            placeholder="lat" 
+            placeholderTextColor={COLORS.textHint}
+            keyboardType="numeric" 
+            style={[styles.input, styles.inputSmall]} 
+            value={String(pin.lat || '')} 
+            onChangeText={(t) => update('lat', parseFloat(t))} 
+          />
+          <TextInput 
+            placeholder="lng" 
+            placeholderTextColor={COLORS.textHint}
+            keyboardType="numeric" 
+            style={[styles.input, styles.inputSmall]} 
+            value={String(pin.lng || '')} 
+            onChangeText={(t) => update('lng', parseFloat(t))} 
+          />
         </View>
-        <TextInput placeholder="Memory details" style={styles.input} value={pin.details || ''} onChangeText={(t) => update('details', t)} />
-        {!!partnerPin && <Text variant="keyword">Partner chose: {partnerPin.name}</Text>}
-        {!!dist && <Text variant="keyword">Distance: {dist.toFixed(2)} km</Text>}
+        <TextInput 
+          placeholder="Memory details" 
+          placeholderTextColor={COLORS.textHint}
+          style={styles.input} 
+          value={pin.details || ''} 
+          onChangeText={(t) => update('details', t)} 
+        />
+        {!!partnerPin && <Typography variant="keyword">Partner chose: {partnerPin.name}</Typography>}
+        {!!dist && <Typography variant="keyword">Distance: {dist.toFixed(2)} km</Typography>}
       </GlassCard>
     </View>
   );
 
-  return <GameContainer state={baseState} inputs={["text"]} inputArea={inputArea} onComplete={onComplete} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={["text"]} inputArea={inputArea} onComplete={onComplete} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  input: { backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 10, color: '#fff', marginTop: 8 },
-  inputSmall: { flex: 1 },
+  input: { 
+    backgroundColor: COLORS.backgroundSecondary, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    borderRadius: BORDER_RADIUS.medium, 
+    padding: SPACING.regular, 
+    color: COLORS.textPrimary, 
+    marginTop: SPACING.regular,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+  },
+  inputSmall: { 
+    flex: 1,
+  },
 });
-

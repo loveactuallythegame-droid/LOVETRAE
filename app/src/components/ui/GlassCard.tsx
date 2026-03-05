@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { View, StyleSheet, Pressable, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
 import Svg, { Defs, LinearGradient, Stop, Rect } from 'react-native-svg';
-import theme from '../../theme';
+import { COLORS, GRADIENTS, BORDER_RADIUS, SPACING, SHADOWS } from '../../theme';
 
 type GlassCardProps = {
   children?: ReactNode;
@@ -11,20 +11,56 @@ type GlassCardProps = {
   radius?: number;
   style?: any;
   onPress?: () => void;
+  variant?: 'default' | 'elevated' | 'outlined';
+  padding?: 'none' | 'small' | 'medium' | 'large';
 };
 
-export default function GlassCard({ children, width, height, radius = theme.SIZES.borderRadius, style, onPress }: GlassCardProps) {
+export default function GlassCard({ 
+  children, 
+  width, 
+  height, 
+  radius = BORDER_RADIUS.card, 
+  style, 
+  onPress,
+  variant = 'default',
+  padding = 'medium'
+}: GlassCardProps) {
   const Container = onPress ? Pressable : View;
   
-  // Define gradient colors based on theme
-  const gradientColors = [
-    { offset: "0%", color: theme.COLORS.profileRingStart, opacity: 0.1 },
-    { offset: "50%", color: theme.COLORS.profileRingMid, opacity: 0.1 },
-    { offset: "100%", color: theme.COLORS.profileRingEnd, opacity: 0.2 }
-  ];
+  // Padding configurations - increased for better visual breathing room
+  const paddingConfig = {
+    none: 0,
+    small: SPACING.small,
+    medium: SPACING.cardPadding,
+    large: SPACING.xlarge,
+  };
+  
+  // Variant styles
+  const getVariantStyles = () => {
+    switch (variant) {
+      case 'elevated':
+        return {
+          ...SHADOWS.card,
+          backgroundColor: COLORS.backgroundCard,
+        };
+      case 'outlined':
+        return {
+          borderWidth: 1,
+          borderColor: COLORS.borderSubtle,
+          backgroundColor: 'transparent',
+        };
+      case 'default':
+      default:
+        return {
+          backgroundColor: COLORS.backgroundCard,
+          borderWidth: 1,
+          borderColor: COLORS.borderSubtle,
+          ...SHADOWS.neonSoft,
+        };
+    }
+  };
 
   return (
-    // @ts-ignore
     <Container 
       onPress={onPress} 
       style={[
@@ -33,27 +69,26 @@ export default function GlassCard({ children, width, height, radius = theme.SIZE
           width, 
           height, 
           borderRadius: radius,
-          backgroundColor: theme.COLORS.card
-        }, 
+        },
+        getVariantStyles(),
         style
       ]}
     >
-      <BlurView 
-        intensity={40} 
-        tint="dark" 
-        style={[styles.blur, { borderRadius: radius }]} 
-      />
+      {variant === 'default' && (
+        <BlurView 
+          intensity={50} 
+          tint="dark" 
+          style={[styles.blur, { borderRadius: radius }]} 
+        />
+      )}
+      
+      {/* Gradient border effect */}
       <Svg style={StyleSheet.absoluteFill} pointerEvents="none">
         <Defs>
           <LinearGradient id="borderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            {gradientColors.map((stop, index) => (
-              <Stop 
-                key={index} 
-                offset={stop.offset} 
-                stopColor={stop.color} 
-                stopOpacity={Platform.OS === 'android' ? 0.3 : 0.1} // Higher opacity on Android due to different rendering
-              />
-            ))}
+            <Stop offset="0%" stopColor={COLORS.vibrantPink} stopOpacity={Platform.OS === 'android' ? 0.3 : 0.15} />
+            <Stop offset="50%" stopColor={COLORS.rosePink} stopOpacity={Platform.OS === 'android' ? 0.2 : 0.1} />
+            <Stop offset="100%" stopColor={COLORS.vibrantPink} stopOpacity={Platform.OS === 'android' ? 0.3 : 0.15} />
           </LinearGradient>
         </Defs>
         <Rect
@@ -69,7 +104,10 @@ export default function GlassCard({ children, width, height, radius = theme.SIZE
           strokeDasharray="8 12"
         />
       </Svg>
-      <View style={[styles.content, { borderRadius: radius }]}>{children}</View>
+      
+      <View style={[styles.content, { borderRadius: radius, padding: paddingConfig[padding] }]}>
+        {children}
+      </View>
     </Container>
   );
 }
@@ -77,14 +115,11 @@ export default function GlassCard({ children, width, height, radius = theme.SIZE
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(250, 31, 99, 0.2)',
   },
   blur: {
     ...StyleSheet.absoluteFillObject,
   },
   content: {
     flex: 1,
-    padding: theme.SPACING.md,
   },
 });

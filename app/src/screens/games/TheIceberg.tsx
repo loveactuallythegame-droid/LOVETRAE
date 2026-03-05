@@ -1,13 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Slider } from 'react-native';
-import { Text, GlassCard } from '../../components/ui';
-import { GameContainer } from '../../components/games/engine';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
+import { COLORS, SPACING, BORDER_RADIUS, GRADIENTS } from '../../theme';
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
-
-const { width, height } = Dimensions.get('window');
 
 const ICEBERG_QUESTIONS = [
   {
@@ -72,12 +69,11 @@ export default function TheIceberg({ route, navigation }: any) {
           });
           setSessionId(sessionRef.id);
           
-          // Set up real-time sync with partner
           const q = query(
             collection(db, 'game_sessions'),
             where('couple_id', '==', couple_code),
             where('gameId', '==', gameId),
-            where('userId', '!=', user.uid) // Different user
+            where('userId', '!=', user.uid)
           );
           
           const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
@@ -85,7 +81,6 @@ export default function TheIceberg({ route, navigation }: any) {
               if (change.type === "added" || change.type === "modified") {
                 const data = change.doc.data();
                 if (data.state?.responses) {
-                  // Get the latest response from partner
                   const partnerResponses = data.state.responses;
                   const currentQId = ICEBERG_QUESTIONS[currentQuestionIndex]?.id;
                   if (currentQId && partnerResponses[currentQId]) {
@@ -124,7 +119,6 @@ export default function TheIceberg({ route, navigation }: any) {
       };
       setResponses(newResponses);
       
-      // Update in Firebase
       if (sessionId) {
         const sessionRef = doc(db, 'game_sessions', sessionId);
         updateDoc(sessionRef, {
@@ -149,298 +143,226 @@ export default function TheIceberg({ route, navigation }: any) {
 
   const currentQuestion = ICEBERG_QUESTIONS[currentQuestionIndex];
 
-  const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: theme.SPACING.lg }}>
-      {!gameCompleted ? (
-        <GlassCard>
-          <LinearGradient
-            colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.gradientContainer}
-          >
-            <View style={styles.headerContainer}>
-              <Text variant="header" style={{ color: theme.COLORS.textPrimary, marginBottom: theme.SPACING.md }}>
-                The Iceberg
-              </Text>
-              <Text 
-                variant="small" 
-                style={{ 
-                  position: 'absolute', 
-                  right: theme.SPACING.md, 
-                  top: theme.SPACING.md,
-                  color: theme.COLORS.textHint 
-                }}
-              >
-                {currentQuestionIndex + 1}/{ICEBERG_QUESTIONS.length}
-              </Text>
-            </View>
-            
-            <Text variant="title" style={{ color: theme.COLORS.emotionalConnection, marginBottom: theme.SPACING.md }}>
-              {currentQuestion.category}
-            </Text>
-            
-            <View style={styles.icebergContainer}>
-              <View style={styles.aboveWater}>
-                <Text variant="body" style={{ color: theme.COLORS.textPrimary, textAlign: 'center' }}>
-                  Above Water (Visible)
-                </Text>
-                <Text variant="body" style={{ color: theme.COLORS.textSecondary, textAlign: 'center', marginTop: theme.SPACING.sm }}>
-                  {currentQuestion.visible}
-                </Text>
-              </View>
-              
-              <View style={styles.waterLine}>
-                <Text variant="small" style={{ color: theme.COLORS.accentTeal, textAlign: 'center' }}>
-                  Surface Level
-                </Text>
-              </View>
-              
-              <View style={styles.belowWater}>
-                <Text variant="body" style={{ color: theme.COLORS.textPrimary, textAlign: 'center' }}>
-                  Below Water (Hidden)
-                </Text>
-                <Text variant="body" style={{ color: theme.COLORS.textSecondary, textAlign: 'center', marginTop: theme.SPACING.sm }}>
-                  {currentQuestion.hidden}
-                </Text>
-              </View>
-            </View>
-            
-            <View style={styles.sliderContainer}>
-              <View style={styles.sliderRow}>
-                <Text variant="small" style={{ color: theme.COLORS.textSecondary, width: 100 }}>
-                  Visible: {aboveSliderValue}%
-                </Text>
-                <Slider
-                  style={{ flex: 1 }}
-                  value={aboveSliderValue}
-                  onValueChange={handleAboveSliderChange}
-                  minimumValue={0}
-                  maximumValue={100}
-                  thumbStyle={{ backgroundColor: theme.COLORS.primaryGradientStart }}
-                  trackStyle={{ backgroundColor: theme.COLORS.innerLineStart }}
-                />
-              </View>
-              
-              <View style={styles.sliderRow}>
-                <Text variant="small" style={{ color: theme.COLORS.textSecondary, width: 100 }}>
-                  Hidden: {belowSliderValue}%
-                </Text>
-                <Slider
-                  style={{ flex: 1 }}
-                  value={belowSliderValue}
-                  onValueChange={handleBelowSliderChange}
-                  minimumValue={0}
-                  maximumValue={100}
-                  thumbStyle={{ backgroundColor: theme.COLORS.profileRingStart }}
-                  trackStyle={{ backgroundColor: theme.COLORS.innerLineEnd }}
-                />
-              </View>
-            </View>
-            
-            <TouchableOpacity 
-              style={styles.submitButton} 
-              onPress={submitResponse}
-            >
-              <LinearGradient
-                colors={[theme.COLORS.primaryGradientStart, theme.COLORS.primaryGradientEnd]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.submitGradient}
-              >
-                <Text 
-                  variant="header" 
-                  style={{ 
-                    color: theme.COLORS.background,
-                    textAlign: 'center'
-                  }}
-                >
-                  {currentQuestionIndex === ICEBERG_QUESTIONS.length - 1 ? 'Finish Game' : 'Next Question'}
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </LinearGradient>
-        </GlassCard>
-      ) : (
-        <GlassCard>
-          <LinearGradient
-            colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.gradientContainer}
-          >
-            <Text variant="header" style={{ textAlign: 'center', marginBottom: theme.SPACING.md, color: theme.COLORS.success }}>
-              Iceberg Fully Revealed!
-            </Text>
-            <Text variant="body" style={{ textAlign: 'center', marginBottom: theme.SPACING.lg, color: theme.COLORS.textPrimary }}>
-              You and your partner have explored the depths of your relationship dynamics.
-            </Text>
-            <TouchableOpacity 
-              style={styles.submitButton} 
-              onPress={() => {
-                if (sessionId) {
-                  const sessionRef = doc(db, 'game_sessions', sessionId);
-                  updateDoc(sessionRef, {
-                    finished_at: new Date().toISOString(),
-                    score: Object.keys(responses).length * 20,
-                    state: JSON.stringify({ completed: true, responses })
-                  });
-                }
-                navigation.goBack();
-              }}
-            >
-              <LinearGradient
-                colors={[theme.COLORS.primaryGradientStart, theme.COLORS.primaryGradientEnd]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.submitGradient}
-              >
-                <Text 
-                  variant="header" 
-                  style={{ 
-                    color: theme.COLORS.background,
-                    textAlign: 'center'
-                  }}
-                >
-                  Return to Menu
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </LinearGradient>
-        </GlassCard>
-      )}
-
-      {partnerResponse && (
-        <GlassCard style={styles.partnerCard}>
-          <Text variant="sass" style={{ color: theme.COLORS.accentTeal, marginBottom: theme.SPACING.sm }}>
-            Partner's Response:
-          </Text>
-          <View style={styles.partnerSliderContainer}>
-            <View style={styles.sliderRow}>
-              <Text variant="small" style={{ color: theme.COLORS.textSecondary, width: 100 }}>
-                Visible: {partnerResponse.above}%
-              </Text>
-              <View style={styles.partnerSlider}>
-                <View style={[styles.partnerSliderFill, { width: `${partnerResponse.above}%`, backgroundColor: theme.COLORS.primaryGradientStart }]} />
-              </View>
-            </View>
-            <View style={styles.sliderRow}>
-              <Text variant="small" style={{ color: theme.COLORS.textSecondary, width: 100 }}>
-                Hidden: {partnerResponse.below}%
-              </Text>
-              <View style={styles.partnerSlider}>
-                <View style={[styles.partnerSliderFill, { width: `${partnerResponse.below}%`, backgroundColor: theme.COLORS.profileRingStart }]} />
-              </View>
-            </View>
-          </View>
-        </GlassCard>
-      )}
-    </ScrollView>
-  );
-
-  const baseState = {
-    id: gameId,
-    title: 'The Iceberg',
-    description: 'Explore visible vs hidden aspects of your relationship',
-    category: 'emotional-connection' as const,
-    difficulty: 'medium' as const,
-    xpReward: 70,
-    currentStep: currentQuestionIndex,
-    totalTime: 600,
-    playerData: { 
-      vulnerabilityScore: Object.keys(responses).length > 3 ? 90 : Object.keys(responses).length > 1 ? 70 : 50, 
-      honestyScore: Object.keys(responses).length > 3 ? 85 : Object.keys(responses).length > 1 ? 65 : 45, 
-      completionTime: 0, 
-      partnerSync: partnerResponse ? 80 : 20 
-    },
-  };
-
   return (
-    <GameContainer 
-      state={baseState} 
-      inputs={["custom"]} 
-      inputArea={inputArea} 
-      onComplete={() => {
-        if (sessionId) {
-          const sessionRef = doc(db, 'game_sessions', sessionId);
-          updateDoc(sessionRef, {
-            finished_at: new Date().toISOString(),
-            score: Object.keys(responses).length * 20,
-            state: JSON.stringify({ completed: true, responses })
-          });
-        }
-        navigation.goBack();
-      }} 
-      sessionId={sessionId} 
-    />
+    <ScreenLayout showHeader={true} scrollable={true}>
+      <View style={{ gap: SPACING.regular }}>
+        <Typography variant="h1" center>The Love Arcade</Typography>
+        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
+
+        {!gameCompleted ? (
+          <GlassCard>
+            <LinearGradient
+              colors={GRADIENTS.background.colors}
+              start={GRADIENTS.background.start}
+              end={GRADIENTS.background.end}
+              style={styles.gradientContainer}
+            >
+              <View style={styles.headerContainer}>
+                <Typography variant="h2">The Iceberg</Typography>
+                <Typography variant="caption">
+                  {currentQuestionIndex + 1}/{ICEBERG_QUESTIONS.length}
+                </Typography>
+              </View>
+              
+              <Typography variant="h3" color={COLORS.emotionalConnection}>
+                {currentQuestion.category}
+              </Typography>
+              
+              <View style={styles.icebergContainer}>
+                <View style={styles.aboveWater}>
+                  <Typography variant="body" center>Above Water (Visible)</Typography>
+                  <Typography variant="body" center color={COLORS.textSecondary}>
+                    {currentQuestion.visible}
+                  </Typography>
+                </View>
+                
+                <View style={styles.waterLine}>
+                  <Typography variant="caption" color={COLORS.aquaTeal} center>Surface Level</Typography>
+                </View>
+                
+                <View style={styles.belowWater}>
+                  <Typography variant="body" center>Below Water (Hidden)</Typography>
+                  <Typography variant="body" center color={COLORS.textSecondary}>
+                    {currentQuestion.hidden}
+                  </Typography>
+                </View>
+              </View>
+              
+              <View style={styles.sliderContainer}>
+                <View style={styles.sliderRow}>
+                  <Typography variant="caption" style={{ width: 100 }}>
+                    Visible: {aboveSliderValue}%
+                  </Typography>
+                  <View style={styles.sliderTrack}>
+                    <View style={[styles.sliderFill, { width: `${aboveSliderValue}%`, backgroundColor: COLORS.gradientStart }]} />
+                  </View>
+                  <View style={{ flexDirection: 'row', gap: SPACING.small }}>
+                    <SquishyButton onPress={() => handleAboveSliderChange(Math.max(0, aboveSliderValue - 10))} variant="ghost" size="small">
+                      <Typography variant="h2">-</Typography>
+                    </SquishyButton>
+                    <SquishyButton onPress={() => handleAboveSliderChange(Math.min(100, aboveSliderValue + 10))} variant="ghost" size="small">
+                      <Typography variant="h2">+</Typography>
+                    </SquishyButton>
+                  </View>
+                </View>
+                
+                <View style={styles.sliderRow}>
+                  <Typography variant="caption" style={{ width: 100 }}>
+                    Hidden: {belowSliderValue}%
+                  </Typography>
+                  <View style={styles.sliderTrack}>
+                    <View style={[styles.sliderFill, { width: `${belowSliderValue}%`, backgroundColor: COLORS.lavenderPurple }]} />
+                  </View>
+                  <View style={{ flexDirection: 'row', gap: SPACING.small }}>
+                    <SquishyButton onPress={() => handleBelowSliderChange(Math.max(0, belowSliderValue - 10))} variant="ghost" size="small">
+                      <Typography variant="h2">-</Typography>
+                    </SquishyButton>
+                    <SquishyButton onPress={() => handleBelowSliderChange(Math.min(100, belowSliderValue + 10))} variant="ghost" size="small">
+                      <Typography variant="h2">+</Typography>
+                    </SquishyButton>
+                  </View>
+                </View>
+              </View>
+              
+              <SquishyButton onPress={submitResponse}>
+                <Typography variant="h2">
+                  {currentQuestionIndex === ICEBERG_QUESTIONS.length - 1 ? 'Finish Game' : 'Next Question'}
+                </Typography>
+              </SquishyButton>
+            </LinearGradient>
+          </GlassCard>
+        ) : (
+          <GlassCard>
+            <LinearGradient
+              colors={GRADIENTS.background.colors}
+              start={GRADIENTS.background.start}
+              end={GRADIENTS.background.end}
+              style={styles.gradientContainer}
+            >
+              <Typography variant="h2" center color={COLORS.success}>
+                Iceberg Fully Revealed!
+              </Typography>
+              <Typography variant="body" center>
+                You and your partner have explored the depths of your relationship dynamics.
+              </Typography>
+              <SquishyButton 
+                onPress={() => {
+                  if (sessionId) {
+                    const sessionRef = doc(db, 'game_sessions', sessionId);
+                    updateDoc(sessionRef, {
+                      finished_at: new Date().toISOString(),
+                      score: Object.keys(responses).length * 20,
+                      state: JSON.stringify({ completed: true, responses })
+                    });
+                  }
+                  navigation.goBack();
+                }}
+                style={{ marginTop: SPACING.regular }}
+              >
+                <Typography variant="h2">Return to Menu</Typography>
+              </SquishyButton>
+            </LinearGradient>
+          </GlassCard>
+        )}
+
+        {partnerResponse && (
+          <GlassCard style={styles.partnerCard}>
+            <Typography variant="sass" color={COLORS.aquaTeal}>
+              Partner's Response:
+            </Typography>
+            <View style={styles.partnerSliderContainer}>
+              <View style={styles.sliderRow}>
+                <Typography variant="caption" style={{ width: 100 }}>
+                  Visible: {partnerResponse.above}%
+                </Typography>
+                <View style={styles.partnerSlider}>
+                  <View style={[styles.partnerSliderFill, { width: `${partnerResponse.above}%`, backgroundColor: COLORS.gradientStart }]} />
+                </View>
+              </View>
+              <View style={styles.sliderRow}>
+                <Typography variant="caption" style={{ width: 100 }}>
+                  Hidden: {partnerResponse.below}%
+                </Typography>
+                <View style={styles.partnerSlider}>
+                  <View style={[styles.partnerSliderFill, { width: `${partnerResponse.below}%`, backgroundColor: COLORS.lavenderPurple }]} />
+                </View>
+              </View>
+            </View>
+          </GlassCard>
+        )}
+      </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
   gradientContainer: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.large,
   },
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: theme.SPACING.md,
+    marginBottom: SPACING.regular,
   },
   icebergContainer: {
-    borderWidth: 2,
-    borderColor: theme.COLORS.textHint,
-    borderRadius: theme.SIZES.borderRadius,
-    marginBottom: theme.SPACING.lg,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    borderRadius: BORDER_RADIUS.large,
+    marginVertical: SPACING.regular,
     overflow: 'hidden',
   },
   aboveWater: {
-    padding: theme.SPACING.md,
-    backgroundColor: 'rgba(51, 222, 165, 0.2)', // Green tint for above water
-    borderBottomWidth: 2,
-    borderBottomColor: theme.COLORS.textHint,
+    padding: SPACING.regular,
+    backgroundColor: COLORS.backgroundInput,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.borderSubtle,
   },
   waterLine: {
-    padding: theme.SPACING.sm,
-    backgroundColor: theme.COLORS.textHint,
+    padding: SPACING.small,
+    backgroundColor: COLORS.borderSubtle,
     alignItems: 'center',
   },
   belowWater: {
-    padding: theme.SPACING.md,
-    backgroundColor: 'rgba(179, 125, 236, 0.2)', // Purple tint for below water
+    padding: SPACING.regular,
+    backgroundColor: COLORS.backgroundInput,
   },
   sliderContainer: {
-    marginBottom: theme.SPACING.lg,
+    marginVertical: SPACING.regular,
   },
   sliderRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: theme.SPACING.md,
+    marginBottom: SPACING.regular,
   },
-  submitButton: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
+  sliderTrack: {
+    flex: 1,
+    height: SPACING.small,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.round,
     overflow: 'hidden',
+    marginHorizontal: SPACING.small,
   },
-  submitGradient: {
-    padding: theme.SPACING.lg,
-    borderRadius: theme.SIZES.buttonBorderRadius,
+  sliderFill: {
+    height: '100%',
+    borderRadius: BORDER_RADIUS.round,
   },
   partnerCard: {
-    marginTop: theme.SPACING.md,
-    padding: theme.SPACING.md,
+    marginTop: SPACING.regular,
   },
   partnerSliderContainer: {
-    marginTop: theme.SPACING.md,
+    marginTop: SPACING.regular,
   },
   partnerSlider: {
-    height: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    borderRadius: 10,
+    height: SPACING.regular,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.round,
     overflow: 'hidden',
     flex: 1,
   },
   partnerSliderFill: {
     height: '100%',
-    borderRadius: 10,
+    borderRadius: BORDER_RADIUS.round,
   },
 });

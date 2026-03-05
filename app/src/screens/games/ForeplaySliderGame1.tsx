@@ -1,89 +1,87 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-// Using a simple slider for demonstration. A custom vertical slider would be needed for the exact visual.
 import Slider from '@react-native-community/slider';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const ForeplaySliderGame1Screen = () => {
-    const [sliderValue, setSliderValue] = useState(75);
+  const [sliderValue, setSliderValue] = useState(75);
 
-    const intensityLevels = ['Subtle', 'Playful', 'Warming', 'Passion', 'Intense'];
+  const intensityLevels = ['Subtle', 'Playful', 'Warming', 'Passion', 'Intense'];
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#31152c', '#181114']} style={styles.background} />
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <View style={styles.header}>
+          <Typography variant="h1">Foreplay Slider</Typography>
+          <Typography variant="caption">Variant 4 of 10</Typography>
+        </View>
 
-            <View style={styles.header}>
-                <Text style={styles.headerTitle}>Foreplay Slider</Text>
-                <Text style={styles.headerSubtitle}>Variant 4 of 10</Text>
+        <View style={styles.mainContent}>
+          <View style={styles.sliderSection}>
+            <View style={styles.intensityMarkers}>
+              {intensityLevels.map(level => <Typography key={level} variant="caption">{level}</Typography>)}
             </View>
 
-            <View style={styles.mainContent}>
-                <View style={styles.sliderSection}>
-                    <View style={styles.intensityMarkers}>
-                        {intensityLevels.map(level => <Text key={level} style={styles.markerText}>{level}</Text>)}
-                    </View>
-
-                    <View style={styles.sliderContainer}>
-                        <Slider
-                            style={{ height: 400, width: 200, transform: [{ rotate: '-90deg' }] }} // Basic horizontal slider rotated
-                            minimumValue={0}
-                            maximumValue={100}
-                            value={sliderValue}
-                            onValueChange={setSliderValue}
-                            minimumTrackTintColor="#f4257b"
-                            maximumTrackTintColor="#39282f"
-                            thumbTintColor="#40e0d0"
-                        />
-                    </View>
-
-                    <View style={styles.statsContainer}>
-                        <View style={styles.statBox}>
-                            <Text style={styles.statLabel}>Arousal Meter</Text>
-                            <Text style={styles.statValue}>{Math.round(sliderValue)}%</Text>
-                        </View>
-                        <View style={styles.syncBox}>
-                            <Text style={styles.syncStatus}>Harmony achieved</Text>
-                        </View>
-                    </View>
-                </View>
-
-                 <TouchableOpacity style={styles.confirmButton}>
-                    <Text style={styles.confirmButtonText}>Confirm Setting</Text>
-                </TouchableOpacity>
+            <View style={styles.sliderContainer}>
+              <Slider
+                style={{ height: 400, width: 200, transform: [{ rotate: '-90deg' }] }}
+                minimumValue={0}
+                maximumValue={100}
+                value={sliderValue}
+                onValueChange={setSliderValue}
+                minimumTrackTintColor={COLORS.vibrantPink}
+                maximumTrackTintColor={COLORS.backgroundCard}
+                thumbTintColor={COLORS.aquaTeal}
+              />
             </View>
 
-            <View style={styles.marcieContainer}>
-                 <Text style={styles.marcieText}>"Sparks are flying! Partner A, I can feel the tension rising..."</Text>
+            <View style={styles.statsContainer}>
+              <GlassCard style={styles.statBox}>
+                <Typography variant="caption">Arousal Meter</Typography>
+                <Typography variant="h1" style={styles.statValue}>{Math.round(sliderValue)}%</Typography>
+              </GlassCard>
+              <GlassCard style={styles.syncBox}>
+                <Typography variant="body" style={styles.syncStatus}>Harmony achieved</Typography>
+              </GlassCard>
             </View>
+          </View>
 
-        </SafeAreaView>
-    );
+          <SquishyButton style={styles.confirmButton}>
+            <Typography variant="body">Confirm Setting</Typography>
+          </SquishyButton>
+        </View>
+
+        <GlassCard style={styles.marcieContainer}>
+          <Typography variant="marcieDialogue">"Sparks are flying! Partner A, I can feel the tension rising..."</Typography>
+        </GlassCard>
+      </SafeAreaView>
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#181114' },
-    background: { ...StyleSheet.absoluteFillObject },
-    header: { alignItems: 'center', padding: 16 },
-    headerTitle: { fontSize: 36, fontWeight: 'bold', color: '#FFF' },
-    headerSubtitle: { color: 'rgba(255,0,72,0.6)', textTransform: 'uppercase', letterSpacing: 4 },
-    mainContent: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 },
-    sliderSection: { flexDirection: 'row', alignItems: 'center', gap: 16 },
-    intensityMarkers: { height: 380, justifyContent: 'space-between', alignItems: 'flex-end' },
-    markerText: { color: 'rgba(255,255,255,0.4)', fontWeight: '700', fontSize: 12, textTransform: 'uppercase' },
-    sliderContainer: { justifyContent: 'center', alignItems: 'center', height: 450, width: 50 },
-    statsContainer: { gap: 16, width: 200 },
-    statBox: { backgroundColor: 'rgba(255,255,255,0.05)', padding: 20, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    statLabel: { color: 'rgba(255,255,255,0.6)' },
-    statValue: { fontSize: 48, fontWeight: 'bold', color: '#FFF' },
-    syncBox: { backgroundColor: 'rgba(255,0,72,0.1)', padding: 16, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,0,72,0.2)' },
-    syncStatus: { color: '#FFF', fontStyle: 'italic' },
-    confirmButton: { marginTop: 24, backgroundColor: '#FFF', paddingVertical: 16, paddingHorizontal: 32, borderRadius: 99 },
-    confirmButtonText: { color: '#230f15', fontWeight: 'bold' },
-    marcieContainer: { position: 'absolute', bottom: 20, left: 20, width: 300 },
-    marcieText: { backgroundColor: 'rgba(255,255,255,0.1)', padding: 16, borderRadius: 12, color: '#FFF', fontStyle: 'italic', fontSize: 16, borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)' },
+  container: { flex: 1, backgroundColor: COLORS.backgroundPrimary },
+  header: { alignItems: 'center', padding: SPACING.regular },
+  mainContent: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: SPACING.screenPadding },
+  sliderSection: { flexDirection: 'row', alignItems: 'center', gap: SPACING.regular },
+  intensityMarkers: { height: 380, justifyContent: 'space-between', alignItems: 'flex-end' },
+  sliderContainer: { justifyContent: 'center', alignItems: 'center', height: 450, width: 50 },
+  statsContainer: { gap: SPACING.regular, width: 200 },
+  statBox: { padding: SPACING.regular },
+  statLabel: { color: COLORS.textSecondary },
+  statValue: { fontSize: TYPOGRAPHY.fontSize.displayLarge },
+  syncBox: { padding: SPACING.regular },
+  syncStatus: { fontStyle: 'italic' },
+  confirmButton: { marginTop: SPACING.xlarge },
+  marcieContainer: { 
+    position: 'absolute', 
+    bottom: SPACING.xlarge, 
+    left: SPACING.screenPadding, 
+    width: 300,
+    padding: SPACING.regular
+  }
 });
 
 export default ForeplaySliderGame1Screen;

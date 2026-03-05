@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, Image, StyleSheet, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
+import { Typography, SquishyButton } from '../ui';
 import * as Haptics from 'expo-haptics';
 
 const loveActuallyLogo = require('../../../assets/logo/mainlogoone.png');
 
 // Enhanced cosmic retro arcade color mapping
 const cosmicGlowColors = {
-  "Physical Connection": ['#FA1F63', '#FCC738', '#EA031F'],
-  "Vulnerability": ['#8B5CF6', '#A22AC4', '#9056EF'],
-  "Empathy": ['#33DEA5', '#37CF97', '#00D4AA'],
-  "Playfulness": ['#EC4899', '#FC0C84', '#FF6B9D'],
-  "Intimacy": ['#BE1980', '#C60AB3', '#A22AC4'],
-  "Trust": ['#22D3EE', '#37CF97', '#33DEA5'],
-  "Communication": ['#FCC738', '#FFEF1F', '#FF9E3D'],
-  "Romance": ['#E16BA9', '#FC0C84', '#FF6B9D'],
-  "Conflict Resolution": ['#33DEA5', '#37CF97', '#00D4AA'],
-  "Emotional Connection": ['#FA1F63', '#FCC738', '#EA031F'],
+  "Physical Connection": [COLORS.emotionalConnection, COLORS.brightYellow, COLORS.warmOrange],
+  "Vulnerability": [COLORS.softViolet, COLORS.lavenderPurple, COLORS.lavenderPurple],
+  "Empathy": [COLORS.mintGreen, COLORS.aquaTeal, COLORS.aquaTeal],
+  "Playfulness": [COLORS.rosePink, COLORS.vibrantPink, COLORS.blushPink],
+  "Intimacy": [COLORS.romanceHub, COLORS.vibrantPink, COLORS.lavenderPurple],
+  "Trust": [COLORS.info, COLORS.aquaTeal, COLORS.mintGreen],
+  "Communication": [COLORS.brightYellow, COLORS.brightYellow, COLORS.peachOrange],
+  "Romance": [COLORS.rosePink, COLORS.vibrantPink, COLORS.blushPink],
+  "Conflict Resolution": [COLORS.mintGreen, COLORS.aquaTeal, COLORS.aquaTeal],
+  "Emotional Connection": [COLORS.emotionalConnection, COLORS.brightYellow, COLORS.warmOrange],
 };
 
 interface GameCardProps {
@@ -43,7 +44,7 @@ const GameCard = ({
   players = '2 players',
 }: GameCardProps) => {
   const [scaleValue] = useState(new Animated.Value(1));
-  const glowColors = cosmicGlowColors[category] || ['#FA1F63', '#FCC738', '#EA031F'];
+  const glowColors = cosmicGlowColors[category] || [COLORS.emotionalConnection, COLORS.brightYellow, COLORS.warmOrange];
   
   const handlePressIn = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -73,11 +74,11 @@ const GameCard = ({
 
   return (
     <Animated.View style={[styles.container, { transform: [{ scale: scaleValue }] }]}>
-      <TouchableOpacity 
+      <SquishyButton
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        activeOpacity={0.9}
+        variant="ghost"
         style={styles.touchable}
       >
         {/* Multi-layered cosmic glow effect */}
@@ -116,25 +117,25 @@ const GameCard = ({
           </View>
           
           {/* Game title with neon effect */}
-          <Text style={[styles.title, { color: glowColors[0] }]} numberOfLines={2}>
+          <Typography variant="h3" center style={[styles.title, { color: glowColors[0] }]} numberOfLines={2}>
             {title}
-          </Text>
+          </Typography>
           
           {/* Game description */}
-          <Text style={styles.description} numberOfLines={3}>
+          <Typography variant="small" center style={styles.description} numberOfLines={3}>
             {description}
-          </Text>
+          </Typography>
           
           {/* Game metadata */}
           <View style={styles.metadata}>
             <View style={[styles.metadataItem, { backgroundColor: getDifficultyColor(difficulty) }]}>
-              <Text style={styles.metadataText}>{difficulty}</Text>
+              <Typography variant="label" color={COLORS.textPrimary}>{difficulty}</Typography>
             </View>
             <View style={styles.metadataItem}>
-              <Text style={styles.metadataText}>{duration}</Text>
+              <Typography variant="label" color={COLORS.textPrimary}>{duration}</Typography>
             </View>
             <View style={styles.metadataItem}>
-              <Text style={styles.metadataText}>{players}</Text>
+              <Typography variant="label" color={COLORS.textPrimary}>{players}</Typography>
             </View>
           </View>
           
@@ -146,7 +147,7 @@ const GameCard = ({
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
             >
-              <Text style={styles.category}>{category}</Text>
+              <Typography variant="label" color={COLORS.textPrimary}>{category}</Typography>
             </LinearGradient>
           </View>
           
@@ -154,17 +155,17 @@ const GameCard = ({
           {isSelected && (
             <View style={styles.selectionIndicator}>
               <LinearGradient
-                colors={['#FCC738', '#EA031F']}
+                colors={[COLORS.brightYellow, COLORS.warmOrange]}
                 style={styles.selectionBadge}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
               >
-                <Text style={styles.selectionText}>SELECTED</Text>
+                <Typography variant="label" color={COLORS.textPrimary}>SELECTED</Typography>
               </LinearGradient>
             </View>
           )}
         </BlurView>
-      </TouchableOpacity>
+      </SquishyButton>
     </Animated.View>
   );
 };
@@ -179,6 +180,9 @@ const styles = StyleSheet.create({
   
   touchable: {
     flex: 1,
+    padding: 0,
+    backgroundColor: 'transparent',
+    borderWidth: 0,
   },
   
   glowContainer: {
@@ -191,41 +195,35 @@ const styles = StyleSheet.create({
   
   glowOuter: {
     position: 'absolute',
-    top: -8,
-    left: -8,
-    right: -8,
-    bottom: -8,
-    borderRadius: BORDER_RADIUS.card + 8,
-    shadowOffset: { width: 0, height: 0 },
+    top: -SPACING.regular,
+    left: -SPACING.regular,
+    right: -SPACING.regular,
+    bottom: -SPACING.regular,
+    borderRadius: BORDER_RADIUS.card + SPACING.regular,
+    ...SHADOWS.large,
     shadowOpacity: 0.6,
-    shadowRadius: 20,
-    elevation: 12,
   },
   
   glowMiddle: {
     position: 'absolute',
-    top: -4,
-    left: -4,
-    right: -4,
-    bottom: -4,
-    borderRadius: BORDER_RADIUS.card + 4,
-    shadowOffset: { width: 0, height: 0 },
+    top: -SPACING.small,
+    left: -SPACING.small,
+    right: -SPACING.small,
+    bottom: -SPACING.small,
+    borderRadius: BORDER_RADIUS.card + SPACING.small,
+    ...SHADOWS.medium,
     shadowOpacity: 0.7,
-    shadowRadius: 15,
-    elevation: 10,
   },
   
   glowInner: {
     position: 'absolute',
-    top: -2,
-    left: -2,
-    right: -2,
-    bottom: -2,
-    borderRadius: BORDER_RADIUS.card + 2,
-    shadowOffset: { width: 0, height: 0 },
+    top: -SPACING.tiny,
+    left: -SPACING.tiny,
+    right: -SPACING.tiny,
+    bottom: -SPACING.tiny,
+    borderRadius: BORDER_RADIUS.card + SPACING.tiny,
+    ...SHADOWS.small,
     shadowOpacity: 0.8,
-    shadowRadius: 10,
-    elevation: 8,
   },
   
   card: {
@@ -235,12 +233,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.15)',
-    backgroundColor: 'rgba(45, 25, 80, 0.7)',
+    borderColor: COLORS.borderSubtle,
+    backgroundColor: COLORS.backgroundCard,
   },
   
   cardSelected: {
-    borderColor: 'rgba(252, 199, 56, 0.5)',
+    borderColor: 'rgba(255, 239, 31, 0.5)',
     borderWidth: 2,
   },
   
@@ -268,9 +266,6 @@ const styles = StyleSheet.create({
   },
   
   title: {
-    fontFamily: TYPOGRAPHY.fontFamily.bold,
-    fontSize: TYPOGRAPHY.fontSize.headerSmall,
-    textAlign: 'center',
     marginBottom: SPACING.small,
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 0, height: 1 },
@@ -278,10 +273,7 @@ const styles = StyleSheet.create({
   },
   
   description: {
-    fontFamily: TYPOGRAPHY.fontFamily.regular,
-    fontSize: TYPOGRAPHY.fontSize.bodySmall,
     color: COLORS.textSecondary,
-    textAlign: 'center',
     flex: 1,
     lineHeight: TYPOGRAPHY.lineHeight.relaxed,
   },
@@ -297,18 +289,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.small,
     paddingVertical: SPACING.micro,
     borderRadius: BORDER_RADIUS.small,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  
-  metadataText: {
-    fontFamily: TYPOGRAPHY.fontFamily.medium,
-    fontSize: TYPOGRAPHY.fontSize.label,
-    color: COLORS.textPrimary,
+    backgroundColor: COLORS.backgroundInput,
   },
   
   footer: {
     borderTopWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: COLORS.divider,
     paddingTop: SPACING.regular,
     marginTop: SPACING.regular,
     width: '100%',
@@ -321,14 +307,6 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.small,
   },
   
-  category: {
-    fontFamily: TYPOGRAPHY.fontFamily.semiBold,
-    fontSize: TYPOGRAPHY.fontSize.label,
-    color: COLORS.textPrimary,
-    textTransform: 'uppercase',
-    letterSpacing: TYPOGRAPHY.letterSpacing.wide,
-  },
-  
   selectionIndicator: {
     position: 'absolute',
     top: SPACING.small,
@@ -339,12 +317,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.small,
     paddingVertical: SPACING.micro,
     borderRadius: BORDER_RADIUS.small,
-  },
-  
-  selectionText: {
-    fontFamily: TYPOGRAPHY.fontFamily.bold,
-    fontSize: TYPOGRAPHY.fontSize.label,
-    color: COLORS.textPrimary,
   },
 });
 

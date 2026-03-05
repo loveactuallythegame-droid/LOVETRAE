@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header } from '../../components/ui/Header';
+import { ScreenLayout, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 const bingoTilesData = [
     'Slow Dance', 'Eye Contact', 'New Location', 'Candlelight', 'Massage',
@@ -14,7 +15,7 @@ const bingoTilesData = [
 
 const BingoTile = ({ text, isActive, isFree, onPress }: { text: string, isActive: boolean, isFree?: boolean, onPress: () => void }) => (
     <LinearGradient
-        colors={['#db147c', '#f05d68']}
+        colors={[COLORS.vibrantPink, COLORS.rosePink]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={[styles.bingoTile, isActive && styles.activeTile, isFree && styles.freeSpace]}
@@ -24,8 +25,8 @@ const BingoTile = ({ text, isActive, isFree, onPress }: { text: string, isActive
             onPress={onPress}
             disabled={isFree}
         >
-            {isFree && <Text style={styles.freeSpaceIcon}>💖</Text>}
-            <Text style={styles.bingoText}>{text}</Text>
+            {isFree && <Typography variant="h2" center style={{ color: COLORS.textPrimary }}>💖</Typography>}
+            <Typography variant="caption" center style={{ color: COLORS.textPrimary }}>{text}</Typography>
         </TouchableOpacity>
     </LinearGradient>
 );
@@ -42,10 +43,11 @@ const BedroomBingoGame1Screen = () => {
     };
 
     const completedLines = 1; // Mock data
+    const progressPercentage = (completedLines / 5) * 100;
 
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#181116', '#230f18']} style={styles.background} />
+            <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
             <View style={styles.drMarcieSection}>
@@ -53,11 +55,12 @@ const BedroomBingoGame1Screen = () => {
                     <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                 </View>
                 <View style={styles.quoteBox}>
-                    <Text style={styles.quoteText}>Connect intimately through shared experiences! Each tile represents a new way to deepen your bond.</Text>
+                    <Typography variant="body">Connect intimately through shared experiences! Each tile represents a new way to deepen your bond.</Typography>
                 </View>
             </View>
             
-            <Header title="Bedroom Bingo" />
+            <Typography variant="h1" center style={styles.title}>Bedroom Bingo</Typography>
+            
             <ScrollView contentContainerStyle={styles.content}>
 
                 <View style={styles.gameContainer}>
@@ -74,271 +77,175 @@ const BedroomBingoGame1Screen = () => {
                     </View>
 
                     <LinearGradient
-                        colors={['#a22ac4', '#9056ef']}
+                        colors={[COLORS.lavenderPurple, COLORS.softViolet]}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.sidebar}
                     >
                         <LinearGradient
-                            colors={['#37cf97', '#b37dec']}
+                            colors={[COLORS.mintGreen, COLORS.softViolet]}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 1 }}
                             style={styles.hostBubble}
                         >
-                            <Text style={styles.hostName}>Dr. Marcie Liss</Text>
-                            <Text style={styles.hostQuote}>"Keep the fire burning, lovebirds! One more square for a diagonal Bingo!"</Text>
+                            <Typography variant="h3" style={{ color: COLORS.textPrimary }}>Dr. Marcie Liss</Typography>
+                            <Typography variant="sass" style={{ color: COLORS.textPrimary }}>"Keep the fire burning, lovebirds! One more square for a diagonal Bingo!"</Typography>
                         </LinearGradient>
                         <LinearGradient
-                            colors={['#ff7600', '#ffef1f']}
+                            colors={[COLORS.warmOrange, COLORS.brightYellow]}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 1 }}
                             style={styles.multipliersContainer}
                         >
-                            <Text style={styles.sidebarTitle}>Active Multipliers</Text>
-                            <Text style={styles.multiplierText}>Evening Bonus: 2x Progress</Text>
+                            <Typography variant="caption" style={{ color: COLORS.textPrimary }}>Active Multipliers</Typography>
+                            <Typography variant="body" style={{ color: COLORS.textPrimary }}>Evening Bonus: 2x Progress</Typography>
                         </LinearGradient>
                     </LinearGradient>
                 </View>
 
             </ScrollView>
             <LinearGradient
-                colors={['#db147c', '#f05d68']}
+                colors={[COLORS.vibrantPink, COLORS.rosePink]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.footer}
             >
-                <Text style={styles.footerTitle}>Bingo Status: {completedLines}/5 Lines Complete</Text>
+                <Typography variant="h3" center style={{ color: COLORS.textPrimary }}>Bingo Status: {completedLines}/5 Lines Complete</Typography>
                  <View style={styles.progressBar}>
-                    <LinearGradient colors={['#ffffff', '#ffffff80']} style={{width: `${(completedLines / 5) * 100}%`, height: '100%'}} />
+                    <LinearGradient colors={[COLORS.textPrimary, COLORS.textSecondary]} style={{width: `${progressPercentage}%`, height: '100%'}} />
                 </View>
-                <TouchableOpacity style={styles.submitButton}>
-                    <LinearGradient
-                        colors={['#ffffff', '#ffffff']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.gradientButton}
-                    >
-                        <Text style={styles.submitButtonText}>SUBMIT LINE</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
+                <SquishyButton onPress={() => {}} style={styles.submitButton}>
+                    <Typography variant="button" style={{ color: COLORS.vibrantPink }}>SUBMIT LINE</Typography>
+                </SquishyButton>
             </LinearGradient>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#181116' },
-    background: { ...StyleSheet.absoluteFillObject },
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundSecondary 
+    },
+    background: { 
+        ...StyleSheet.absoluteFillObject 
+    },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        margin: SPACING.regular,
+        marginBottom: SPACING.small
     },
     avatarContainer: {
         width: 50,
         height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular
     },
     avatar: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: BORDER_RADIUS.round,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
         backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+    title: {
+        marginVertical: SPACING.regular,
     },
-    content: { padding: 20 },
-    gameContainer: { flexDirection: 'row', justifyContent: 'space-between' },
+    content: { 
+        padding: SPACING.regular 
+    },
+    gameContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between' 
+    },
     bingoGrid: { 
         flex: 3,
         flexDirection: 'row', 
         flexWrap: 'wrap', 
         aspectRatio: 1,
         backgroundColor: 'rgba(255, 255, 255, 0.03)',
-        borderRadius: 16,
-        padding: 10
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular
     },
     sidebar: { 
         flex: 1, 
-        marginLeft: 20,
-        borderRadius: 16,
-        padding: 16,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        marginLeft: SPACING.regular,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     hostBubble: { 
-        borderRadius: 16,
-        padding: 15,
-        marginBottom: 20,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    hostName: { 
-        fontFamily: 'BarbieDream-Regular', 
-        color: '#ffffff', 
-        fontSize: 18,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
-    },
-    hostQuote: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
-        fontSize: 14, 
-        fontStyle: 'italic',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 8,
-        borderRadius: 8,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     multipliersContainer: { 
-        borderRadius: 16,
-        padding: 15,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    sidebarTitle: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
-        textTransform: 'uppercase',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 8,
-    },
-    multiplierText: { 
-        fontFamily: 'WonderfulSometimes-Regular', 
-        color: '#ffffff', 
-        fontSize: 14,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 4,
-        borderRadius: 6,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     bingoTile: {
         width: '18%',
         aspectRatio: 1,
         margin: '1%',
-        borderRadius: 12,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 3,
+        borderRadius: BORDER_RADIUS.large,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.small,
     },
     tileButton: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 5,
+        padding: SPACING.tiny,
     },
     activeTile: {
         backgroundColor: 'rgba(219, 20, 124, 0.3)',
-        borderColor: '#db147c',
+        borderColor: COLORS.vibrantPink,
     },
     freeSpace: { 
         backgroundColor: 'rgba(219, 20, 124, 0.3)',
-        borderColor: '#db147c',
-    },
-    freeSpaceIcon: { 
-        fontSize: 24, 
-        color: '#ffffff' 
-    },
-    bingoText: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 10, 
-        color: '#ffffff', 
-        textAlign: 'center', 
-        textTransform: 'uppercase',
+        borderColor: COLORS.vibrantPink,
     },
     footer: { 
-        padding: 20, 
+        padding: SPACING.regular, 
         borderTopWidth: 1, 
-        borderColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 16,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    footerTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        color: '#ffffff', 
-        fontSize: 16, 
-        textAlign: 'center', 
-        marginBottom: 10,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        padding: 4,
-        borderRadius: 8,
+        borderColor: COLORS.borderSubtle,
+        borderRadius: BORDER_RADIUS.xlarge,
+        borderWidth: 1,
+        ...SHADOWS.card,
     },
     progressBar: { 
         height: 12, 
-        backgroundColor: 'rgba(255,255,255,0.1)', 
-        borderRadius: 6, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.medium, 
         overflow: 'hidden',
         borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        borderColor: COLORS.borderSubtle,
+        marginVertical: SPACING.regular,
     },
     submitButton: { 
-        padding: 15, 
-        borderRadius: 99, 
-        alignItems: 'center',
-        marginTop: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        backgroundColor: COLORS.textPrimary,
     },
-    gradientButton: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 99,
-        paddingVertical: 15,
-    },
-    submitButtonText: { 
-        fontFamily: 'BarbieDream-Regular', 
-        color: '#db147c', 
-        fontSize: 16, 
-        fontWeight: 'bold',
-    }
 });
 
 export default BedroomBingoGame1Screen;

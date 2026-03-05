@@ -1,12 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Camera } from 'expo-camera';
-import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const RoleSwapRoastArGame = () => {
-    const [hasPermission, setHasPermission] = useState(null);
+    const [hasPermission, setHasPermission] = useState<boolean | null>(null);
     const [isRecording, setIsRecording] = useState(false);
 
     useEffect(() => {
@@ -17,73 +18,158 @@ const RoleSwapRoastArGame = () => {
     }, []);
 
     if (hasPermission === null) {
-        return <View style={styles.permissionContainer}><Text style={styles.permissionText}>Requesting camera permission...</Text></View>;
+        return (
+            <ScreenLayout showHeader={false} scrollable={false}>
+                <View style={styles.permissionContainer}>
+                    <Typography variant="body">Requesting camera permission...</Typography>
+                </View>
+            </ScreenLayout>
+        );
     }
     if (hasPermission === false) {
-        return <View style={styles.permissionContainer}><Text style={styles.permissionText}>No access to camera</Text></View>;
+        return (
+            <ScreenLayout showHeader={false} scrollable={false}>
+                <View style={styles.permissionContainer}>
+                    <Typography variant="body">No access to camera</Typography>
+                </View>
+            </ScreenLayout>
+        );
     }
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#181311', '#2d1b4e']} style={styles.container}>
-                <Text style={styles.headerTitle}>Role-Swap Roast</Text>
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <View style={styles.container}>
+                <Typography variant="h1" center style={styles.headerTitle}>Role-Swap Roast</Typography>
 
                 <View style={styles.cameraContainer}>
                     <Camera style={styles.camera} type={Camera.Constants.Type.front}>
                         {/* AR Overlays */}
                         <View style={styles.arHudTop}>
-                            <View style={styles.hudItem}><Text style={styles.hudText}>🔴 LIVE FEEDBACK</Text></View>
+                            <GlassCard style={styles.hudItem}>
+                                <Typography variant="caption" style={styles.hudText}>🔴 LIVE FEEDBACK</Typography>
+                            </GlassCard>
                         </View>
                         <View style={styles.marcieOverlay}>
-                             <Text style={styles.marcieScore}>88/100</Text>
-                             <Text style={styles.marcieComment}>"Ooh, that was particularly petty!"</Text>
+                            <Typography variant="h2" style={styles.marcieScore}>88/100</Typography>
+                            <Typography variant="caption" style={styles.marcieComment}>"Ooh, that was particularly petty!"</Typography>
                         </View>
                     </Camera>
                 </View>
 
                 <View style={styles.controlsContainer}>
                     <View style={styles.statsContainer}>
-                        <Text style={styles.streakLabel}>Current Pettiness Streak</Text>
-                        <Text style={styles.streakValue}>x4.5</Text>
+                        <Typography variant="caption" style={styles.streakLabel}>Current Pettiness Streak</Typography>
+                        <Typography variant="h2" style={styles.streakValue}>x4.5</Typography>
                     </View>
-                    <TouchableOpacity style={styles.recordButton} onPress={() => setIsRecording(!isRecording)}>
-                        <MaterialIcons name={isRecording ? 'stop' : 'radio-button-checked'} size={40} color="#fff" />
-                    </TouchableOpacity>
+                    <SquishyButton onPress={() => setIsRecording(!isRecording)} style={styles.recordButton}>
+                        <MaterialIcons name={isRecording ? 'stop' : 'radio-button-checked'} size={40} color={COLORS.textPrimary} />
+                    </SquishyButton>
                     <View style={styles.actionsContainer}>
                         <TouchableOpacity style={styles.actionButton}>
-                            <MaterialIcons name="face-retouching-natural" size={24} color="#fff" />
+                            <MaterialIcons name="face-retouching-natural" size={24} color={COLORS.textPrimary} />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.actionButton}>
-                             <MaterialIcons name="share" size={24} color="#fff" />
+                            <MaterialIcons name="share" size={24} color={COLORS.textPrimary} />
                         </TouchableOpacity>
                     </View>
                 </View>
-            </LinearGradient>
-        </SafeAreaView>
+            </View>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#181311' },
-    container: { flex: 1, padding: 16, justifyContent: 'space-between' },
-    permissionContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#181311' },
-    permissionText: { color: '#fff', fontSize: 18 },
-    headerTitle: { color: '#fff', fontSize: 32, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase' },
-    cameraContainer: { aspectRatio: 16 / 9, borderRadius: 24, overflow: 'hidden', borderWidth: 2, borderColor: 'rgba(255,255,255,0.1)' },
-    camera: { flex: 1, justifyContent: 'space-between' },
-    arHudTop: { position: 'absolute', top: 16, left: 16, gap: 8 },
-    hudItem: { backgroundColor: 'rgba(0,0,0,0.6)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 },
-    hudText: { color: '#fff', fontSize: 12, fontWeight: 'bold' },
-    marcieOverlay: { position: 'absolute', bottom: 16, right: 16, backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 12, padding: 12, alignItems: 'center' },
-    marcieScore: { color: '#f46a25', fontSize: 24, fontWeight: 'bold' },
-    marcieComment: { color: '#181311', fontSize: 12 },
-    controlsContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16 },
-    statsContainer: { flex: 1 },
-    streakLabel: { color: 'rgba(255,255,255,0.7)', fontSize: 12 },
-    streakValue: { color: '#f46a25', fontSize: 24, fontWeight: 'bold' },
-    recordButton: { width: 80, height: 80, borderRadius: 40, backgroundColor: '#f46a25', justifyContent: 'center', alignItems: 'center', borderWidth: 4, borderColor: 'rgba(255,255,255,0.2)' },
-    actionsContainer: { flex: 1, flexDirection: 'row', justifyContent: 'flex-end', gap: 16 },
-    actionButton: { width: 50, height: 50, borderRadius: 25, backgroundColor: 'rgba(255,255,255,0.1)', justifyContent: 'center', alignItems: 'center' },
+    container: { 
+        flex: 1, 
+        padding: SPACING.regular, 
+        justifyContent: 'space-between' 
+    },
+    permissionContainer: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    headerTitle: { 
+        textTransform: 'uppercase' 
+    },
+    cameraContainer: { 
+        aspectRatio: 16 / 9, 
+        borderRadius: BORDER_RADIUS.xxlarge, 
+        overflow: 'hidden', 
+        borderWidth: 2, 
+        borderColor: COLORS.borderSubtle 
+    },
+    camera: { 
+        flex: 1, 
+        justifyContent: 'space-between' 
+    },
+    arHudTop: { 
+        position: 'absolute', 
+        top: SPACING.regular, 
+        left: SPACING.regular, 
+        gap: SPACING.small 
+    },
+    hudItem: { 
+        paddingHorizontal: SPACING.regular, 
+        paddingVertical: SPACING.small 
+    },
+    hudText: { 
+        color: COLORS.textPrimary 
+    },
+    marcieOverlay: { 
+        position: 'absolute', 
+        bottom: SPACING.regular, 
+        right: SPACING.regular, 
+        backgroundColor: COLORS.backgroundCard, 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular, 
+        alignItems: 'center' 
+    },
+    marcieScore: { 
+        color: COLORS.warmOrange 
+    },
+    marcieComment: { 
+        color: COLORS.textPrimary 
+    },
+    controlsContainer: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        paddingHorizontal: SPACING.regular 
+    },
+    statsContainer: { 
+        flex: 1 
+    },
+    streakLabel: { 
+        color: COLORS.textSecondary 
+    },
+    streakValue: { 
+        color: COLORS.warmOrange 
+    },
+    recordButton: { 
+        width: 80, 
+        height: 80, 
+        borderRadius: BORDER_RADIUS.round, 
+        backgroundColor: COLORS.warmOrange, 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        padding: SPACING.none,
+        minHeight: 80
+    },
+    actionsContainer: { 
+        flex: 1, 
+        flexDirection: 'row', 
+        justifyContent: 'flex-end', 
+        gap: SPACING.regular 
+    },
+    actionButton: { 
+        width: 50, 
+        height: 50, 
+        borderRadius: BORDER_RADIUS.round, 
+        backgroundColor: COLORS.backgroundInput, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
 });
 
 export default RoleSwapRoastArGame;

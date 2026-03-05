@@ -1,28 +1,29 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS, TYPOGRAPHY, SIZES, SPACING, GLOWS, moderateScale } from '../theme';
+import { ScreenLayout } from '../layout';
+import { Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS, GLOWS, moderateScale } from '../theme';
 
 const LieDetectorLiteScreen = () => {
     return (
-        <SafeAreaView style={styles.container}>
+        <ScreenLayout showHeader={false} scrollable={false}>
             <LinearGradient 
                 colors={[COLORS.deepCosmicPurple, COLORS.midPurple]} 
                 style={styles.background} 
             />
             
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>LIE DETECTOR: LITE™</Text>
+                <Typography variant="gameTitle" style={styles.headerTitle}>LIE DETECTOR: LITE™</Typography>
             </View>
 
             <View style={styles.mainContent}>
-                <Text style={styles.analysisTitle}>VOICE ANALYSIS PROTOCOL</Text>
+                <Typography variant="header" style={styles.analysisTitle}>VOICE ANALYSIS PROTOCOL</Typography>
                 
-                <View style={styles.panel}>
+                <GlassCard style={styles.panel} variant="elevated">
                     <View style={styles.meterContainer}>
-                        <Text style={styles.meterTitle}>PROSODY METER</Text>
-                        <Text style={styles.meterValue}>65%</Text>
+                        <Typography variant="button" style={styles.meterTitle}>PROSODY METER</Typography>
+                        <Typography variant="gameTitle" style={styles.meterValue}>65%</Typography>
                     </View>
                     <View style={styles.meterBarContainer}>
                         <LinearGradient 
@@ -32,35 +33,35 @@ const LieDetectorLiteScreen = () => {
                             style={[styles.meterBar, {width: '65%'}]} 
                         />
                     </View>
-                    <Text style={styles.meterStatus}>HIGH PITCH VARIANCE DETECTED</Text>
+                    <Typography variant="marcieDialogue" style={styles.meterStatus}>HIGH PITCH VARIANCE DETECTED</Typography>
 
-                    <TouchableOpacity style={styles.recordButton}>
-                        <Text style={styles.recordButtonText}>RECORD</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.recordSubtext}>HOLD TO ANALYZE VERBAL TRANSPARENCY</Text>
-                </View>
+                    <SquishyButton 
+                        variant="primary" 
+                        size="large" 
+                        onPress={() => {}}
+                        style={styles.recordButton}
+                    >
+                        <Typography variant="button" color={COLORS.textPrimary} style={styles.recordButtonText}>RECORD</Typography>
+                    </SquishyButton>
+                    <Typography variant="caption" style={styles.recordSubtext}>HOLD TO ANALYZE VERBAL TRANSPARENCY</Typography>
+                </GlassCard>
             </View>
 
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { 
-        flex: 1, 
-        backgroundColor: COLORS.deepCosmicPurple 
-    },
     background: { 
         ...StyleSheet.absoluteFillObject 
     },
     header: { 
-        padding: SPACING.lg, 
+        padding: SPACING.xl, 
         borderBottomWidth: 1, 
         borderColor: COLORS.vibrantPink, 
         backgroundColor: COLORS.richPlum 
     },
     headerTitle: { 
-        ...TYPOGRAPHY.gameTitle,
         color: COLORS.textPrimary, 
         textAlign: 'center', 
         textTransform: 'uppercase' 
@@ -69,22 +70,17 @@ const styles = StyleSheet.create({
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center', 
-        padding: SPACING.xl 
+        padding: SPACING.xxlarge 
     },
     analysisTitle: { 
-        ...TYPOGRAPHY.header,
         color: COLORS.textPrimary, 
-        marginBottom: SPACING.xl, 
+        marginBottom: SPACING.xxlarge, 
         textTransform: 'uppercase' 
     },
     panel: { 
-        backgroundColor: COLORS.inputFieldBg, 
-        borderRadius: SIZES.cardBorderRadius, 
-        padding: SPACING.xl, 
+        padding: SPACING.xxlarge, 
         width: '90%', 
-        alignItems: 'center', 
-        borderWidth: SIZES.inputBorderWidth, 
-        borderColor: COLORS.vibrantPink,
+        alignItems: 'center',
         ...GLOWS.soft(COLORS.vibrantPink)
     },
     meterContainer: { 
@@ -94,29 +90,26 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.sm 
     },
     meterTitle: { 
-        ...TYPOGRAPHY.button,
         color: COLORS.aquaTeal, 
         textTransform: 'uppercase' 
     },
     meterValue: { 
-        ...TYPOGRAPHY.score,
         color: COLORS.aquaTeal 
     },
     meterBarContainer: { 
         width: '100%', 
-        height: SIZES.progressBarHeight * 3, 
+        height: SPACING.medium * 3, 
         backgroundColor: COLORS.nightSky, 
-        borderRadius: SIZES.progressBarBorderRadius, 
+        borderRadius: BORDER_RADIUS.small, 
         padding: SPACING.xs, 
         borderWidth: 1, 
         borderColor: COLORS.vibrantPink 
     },
     meterBar: { 
         height: '100%', 
-        borderRadius: SIZES.progressBarBorderRadius 
+        borderRadius: BORDER_RADIUS.small 
     },
     meterStatus: { 
-        ...TYPOGRAPHY.marcieDialogue,
         color: COLORS.aquaTeal, 
         marginTop: SPACING.sm, 
         textTransform: 'uppercase' 
@@ -125,19 +118,16 @@ const styles = StyleSheet.create({
         width: Math.max(moderateScale(180), 180), 
         height: Math.max(moderateScale(180), 180), 
         borderRadius: Math.max(moderateScale(90), 90), 
-        backgroundColor: COLORS.vibrantPink, 
         justifyContent: 'center', 
         alignItems: 'center', 
-        marginVertical: SPACING.xl,
+        marginVertical: SPACING.xxlarge,
         ...GLOWS.strong(COLORS.vibrantPink)
     },
     recordButtonText: { 
-        ...TYPOGRAPHY.button,
         color: COLORS.textPrimary, 
         letterSpacing: 4 
     },
     recordSubtext: { 
-        ...TYPOGRAPHY.caption,
         color: COLORS.textSecondary, 
         textTransform: 'uppercase', 
         letterSpacing: 2, 

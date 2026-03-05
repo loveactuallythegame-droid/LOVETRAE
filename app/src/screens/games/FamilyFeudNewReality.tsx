@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const ROUNDS = [
     {
@@ -65,23 +66,29 @@ export default function FamilyFeudNewReality({ route, navigation }: any) {
     const current = ROUNDS[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.regular }}>
             <GlassCard>
-                <Text variant="header">Round {round + 1}</Text>
-                <Text variant="body" style={{ marginBottom: 16 }}>{current.q}</Text>
+                <Text variant="h1" center style={styles.gameTitle}>The Love Arcade</Text>
+                <Text variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Text>
+                
+                <Text variant="h3" style={{ marginTop: SPACING.large }}>Round {round + 1}</Text>
+                <Text variant="body" style={{ marginBottom: SPACING.large }}>{current.q}</Text>
 
                 {current.top.map((ans, i) => (
                     <SquishyButton
                         key={i}
+                        variant={guess === i ? 'primary' : 'ghost'}
                         onPress={() => setGuess(i)}
-                        style={[styles.opt, guess === i ? styles.selected : {}]}
+                        style={styles.opt}
                     >
-                        <Text variant="body" style={{ color: guess === i ? '#120016' : '#fff' }}>{guess === i ? ans : `Answer ${i + 1}`}</Text>
+                        <Text variant="button" style={{ color: guess === i ? COLORS.textPrimary : COLORS.textSecondary }}>
+                            {guess === i ? ans : `Answer ${i + 1}`}
+                        </Text>
                     </SquishyButton>
                 ))}
 
                 <SquishyButton onPress={submitGuess} style={styles.submitBtn}>
-                    <Text variant="header">Buzz In</Text>
+                    <Text variant="button">Buzz In</Text>
                 </SquishyButton>
             </GlassCard>
         </ScrollView>
@@ -103,25 +110,23 @@ export default function FamilyFeudNewReality({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    gameTitle: {
+        marginBottom: SPACING.small,
+    },
+    subtitle: {
+        marginBottom: SPACING.regular,
+    },
     opt: {
-        padding: 16,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 8,
-        marginBottom: 8,
+        padding: SPACING.regular,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.medium,
+        marginBottom: SPACING.regular,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)',
+        borderColor: COLORS.borderSubtle,
         alignItems: 'center'
     },
-    selected: {
-        backgroundColor: '#FFD700',
-        borderColor: '#FFD700',
-    },
     submitBtn: {
-        marginTop: 20,
-        backgroundColor: '#33DEA5',
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20
+        marginTop: SPACING.large,
+        marginBottom: SPACING.large,
     },
 });

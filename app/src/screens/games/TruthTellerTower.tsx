@@ -6,13 +6,20 @@
  * - Creates game session via useGameSession
  * - Saves score after each question
  * - Completes game and submits final score
+ * 
+ * Design Spec:
+ * - Game area: midPurple (#3D2A5C)
+ * - Game Titles: Inter Black (900)
+ * - Dr. Marcie overlays triggered by game state changes
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, Alert, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Alert, ScrollView, TouchableOpacity, Animated as RNAnimated } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { ScreenLayout } from '../../components/ui';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
@@ -21,9 +28,11 @@ import { auth } from '../../lib/firebaseClient';
 import { useWebSocket } from '../../hooks/useWebSocket';
 
 // Components
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton } from '../../components/ui';
+import GlobalMarcieOverlay, { MarcieAnimationType } from '../../components/ai-host/GlobalMarcieOverlay';
 
-const { width, height } = Dimensions.get('window');
+// Theme
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, ANIMATIONS, GRADIENTS } from '../../theme';
 
 // Game Constants
 const GAME_ID = 'truth-teller-tower';
@@ -55,7 +64,7 @@ const QUESTIONS = [
             { id: 'D', text: '"You always..."' }
         ],
         correct: 'B',
-        marcieReason: '"Calm down" is emotional gasoline. Never works.",
+        marcieReason: '"Calm down" is emotional gasoline. Never works.',
         value: 20
     },
     {
@@ -90,7 +99,7 @@ const QUESTIONS = [
         options: [
             { id: 'A', text: 'Silent treatment' },
             { id: 'B', text: 'Yelling it out' },
-            { id: 'C', text: 'Using \"I feel\" statements' },
+            { id: 'C', text: 'Using "I feel" statements' },
             { id: 'D', text: 'Passive-aggressive notes' }
         ],
         correct: 'C',
@@ -105,6 +114,9 @@ interface Lifelines {
     askMarcie: boolean;
     doubleConfidence: boolean;
 }
+
+// Game state type for Dr. Marcie overlay
+ type GameOverlayState = 'intro' | 'playing' | 'thinking' | 'correct' | 'wrong' | 'results';
 
 const TruthTellerTower: React.FC = () => {
     const navigation = useNavigation();
@@ -134,6 +146,8 @@ const TruthTellerTower: React.FC = () => {
     const [eliminatedOptions, setEliminatedOptions] = useState<string[]>([]);
     const [marcieHint, setMarcieHint] = useState<string | null>(null);
     const [partnerResponse, setPartnerResponse] = useState<any>(null);
+    const [gameOverlayState, setGameOverlayState] = useState<GameOverlayState>('intro');
+    const [marcieQuote, setMarcieQuote] = useState<string | undefined>(undefined);
 
     // WebSocket for real-time sync
     const { sendMessage, lastMessage } = useWebSocket(
@@ -144,9 +158,40 @@ const TruthTellerTower: React.FC = () => {
     // Get current question
     const currentQuestion = QUESTIONS[qIndex];
 
+    // Map game overlay state to Marcie animation
+    const getMarcieAnimation = (state: GameOverlayState): MarcieAnimationType => {
+        switch (state) {
+            case 'intro':
+                return 'intro';
+            case 'playing':
+                return 'idle';
+            case 'thinking':
+                return 'thinking';
+            case 'correct':
+                return 'correct';
+            case 'wrong':
+                return 'wrong';
+            case 'results':
+                return score >= 70 ? 'laugh' : 'shrug';
+            default:
+                return 'idle';
+        }
+    };
+
+    // Set initial overlay state
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setGameOverlayState('playing');
+            setMarcieQuote("Welcome to Truth Teller Tower. Let's see how well you know your partner!");
+        }, ANIMATIONS.duration.slow);
+        return () => clearTimeout(timer);
+    }, []);
+
     // Handle answer selection
     const handleAnswerSelect = (optionId: string) => {
         setMyAnswer(optionId);
+        setGameOverlayState('thinking');
+        setMarcieQuote(undefined);
     };
 
     // Handle prediction selection
@@ -177,6 +222,8 @@ const TruthTellerTower: React.FC = () => {
         
         setMarcieHint(currentQuestion.marcieReason);
         setLifelines(prev => ({ ...prev, askMarcie: false }));
+        setGameOverlayState('thinking');
+        setMarcieQuote(currentQuestion.marcieReason);
     };
 
     // Use Double Confidence lifeline
@@ -190,9 +237,10 @@ const TruthTellerTower: React.FC = () => {
         if (!myAnswer || !prediction || !currentQuestion) return;
 
         let roundPoints = 0;
+        const isCorrect = myAnswer === currentQuestion.correct;
         
         // Points for correct answer
-        if (myAnswer === currentQuestion.correct) {
+        if (isCorrect) {
             roundPoints += currentQuestion.value;
         }
         
@@ -202,12 +250,19 @@ const TruthTellerTower: React.FC = () => {
         }
         
         // Double confidence bonus
-        if (!lifelines.doubleConfidence && myAnswer === currentQuestion.correct) {
+        if (!lifelines.doubleConfidence && isCorrect) {
             roundPoints *= 2;
         }
 
         const newScore = score + roundPoints;
         setScore(newScore);
+
+        // Update overlay based on result
+        setGameOverlayState(isCorrect ? 'correct' : 'wrong');
+        setMarcieQuote(isCorrect 
+            ? "Correct! You're on fire! 🔥" 
+            : "Ouch, that's not right. But hey, honesty is the first step!"
+        );
 
         // Save progress to backend
         await updateScore(newScore, false, [
@@ -220,21 +275,27 @@ const TruthTellerTower: React.FC = () => {
             }
         ]);
 
-        // Move to next question or finish
-        if (qIndex < QUESTIONS.length - 1) {
-            setQIndex(prev => prev + 1);
-            setMyAnswer(null);
-            setPrediction(null);
-            setEliminatedOptions([]);
-            setMarcieHint(null);
-        } else {
-            finishGame(newScore);
-        }
+        // Delay before moving to next question
+        setTimeout(() => {
+            // Move to next question or finish
+            if (qIndex < QUESTIONS.length - 1) {
+                setQIndex(prev => prev + 1);
+                setMyAnswer(null);
+                setPrediction(null);
+                setEliminatedOptions([]);
+                setMarcieHint(null);
+                setGameOverlayState('playing');
+                setMarcieQuote(undefined);
+            } else {
+                finishGame(newScore);
+            }
+        }, ANIMATIONS.duration.slow);
     };
 
     // Finish game
     const finishGame = async (finalScore: number) => {
         setGameCompleted(true);
+        setGameOverlayState('results');
         
         // Calculate badge
         let badge = 'Truth Adjacent';
@@ -246,6 +307,11 @@ const TruthTellerTower: React.FC = () => {
         await completeGame(finalScore, [
             { completed: true, badge, totalQuestions: QUESTIONS.length }
         ]);
+
+        setMarcieQuote(finalScore >= 70 
+            ? `Amazing! You scored ${finalScore} points! You're a Truth Teller champion! 🏆`
+            : `You scored ${finalScore} points. Keep practicing - honesty takes time! 💪`
+        );
 
         Alert.alert(
             "Tower Scaled! 🏆",
@@ -279,123 +345,178 @@ const TruthTellerTower: React.FC = () => {
         });
         setEliminatedOptions([]);
         setMarcieHint(null);
+        setGameOverlayState('intro');
+        setMarcieQuote(undefined);
+        
+        setTimeout(() => {
+            setGameOverlayState('playing');
+            setMarcieQuote("Let's try again! Good luck!");
+        }, ANIMATIONS.duration.fast);
     };
 
     // Loading state
     if (sessionLoading) {
         return (
-            <View style={styles.container}>
-                <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                    <Text style={styles.loadingText}>Preparing Truth Teller Tower...</Text>
-                </LinearGradient>
-            </View>
+            <ScreenLayout scrollable={false} showHeader={false}>
+                <SafeAreaView style={styles.container}>
+                    <LinearGradient colors={[COLORS.deepCosmic, COLORS.midPurple]} style={styles.background}>
+                        <Typography variant="body" center style={styles.loadingText}>
+                            Preparing Truth Teller Tower...
+                        </Typography>
+                    </LinearGradient>
+                </SafeAreaView>
+            </ScreenLayout>
         );
     }
 
     return (
-        <View style={styles.container}>
-            <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <Text style={styles.title}>Truth Teller Tower</Text>
-                        <Text style={styles.subtitle}>Round {qIndex + 1} of {QUESTIONS.length}</Text>
-                        <View style={styles.scoreContainer}>
-                            <Text style={styles.scoreText}>Score: {score}</Text>
-                            {isSyncing && <Text style={styles.syncText}>💾</Text>}
-                        </View>
-                    </View>
-
-                    {/* Question */}
-                    <GlassCard style={styles.questionCard}>
-                        <Text style={styles.questionText}>{currentQuestion?.text}</Text>
-                        {marcieHint && (
-                            <View style={styles.marcieHint}>
-                                <Text style={styles.marcieText}>💡 {marcieHint}</Text>
+        <ScreenLayout scrollable={false} showHeader={false}>
+            <SafeAreaView style={styles.container}>
+                {/* Game Area Background: midPurple */}
+                <LinearGradient 
+                    colors={[COLORS.deepCosmic, COLORS.midPurple]} 
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                    style={styles.background}
+                >
+                    <ScrollView contentContainerStyle={styles.scrollContent}>
+                        {/* Header - Game Title: Inter Black (900) */}
+                        <View style={styles.header}>
+                            <Typography variant="h1" center>
+                                The Love Arcade
+                            </Typography>
+                            <Typography variant="h2" center style={styles.subtitle}>
+                                +100 Games to Deepen Connection
+                            </Typography>
+                            <View style={styles.scoreContainer}>
+                                <Typography variant="caption">
+                                    Score: {score}
+                                </Typography>
+                                {isSyncing && <Typography variant="caption">💾</Typography>}
                             </View>
+                        </View>
+
+                        <Typography variant="h3" center style={styles.gameTitle}>
+                            TRUTH TELLER TOWER
+                        </Typography>
+                        <Typography variant="body" center style={styles.roundText}>
+                            Round {qIndex + 1} of {QUESTIONS.length}
+                        </Typography>
+
+                        {/* Question */}
+                        <GlassCard style={styles.questionCard}>
+                            <Typography variant="body">{currentQuestion?.text}</Typography>
+                            {marcieHint && (
+                                <View style={styles.marcieHint}>
+                                    <Typography variant="sass">💡 {marcieHint}</Typography>
+                                </View>
+                            )}
+                        </GlassCard>
+
+                        {/* Your Answer Section */}
+                        <Typography variant="instructions" style={styles.sectionTitle}>
+                            Your Answer:
+                        </Typography>
+                        <View style={styles.optionsContainer}>
+                            {currentQuestion?.options.map((option) => (
+                                <TouchableOpacity
+                                    key={option.id}
+                                    style={[
+                                        styles.optionButton,
+                                        myAnswer === option.id && styles.selectedOption,
+                                        eliminatedOptions.includes(option.id) && styles.eliminatedOption
+                                    ]}
+                                    onPress={() => handleAnswerSelect(option.id)}
+                                    disabled={eliminatedOptions.includes(option.id)}
+                                >
+                                    <Typography variant="h4" style={styles.optionLabel}>{option.id}:</Typography>
+                                    <Typography variant="body" style={styles.optionText}>{option.text}</Typography>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+
+                        {/* Predict Partner Section */}
+                        <Typography variant="instructions" style={styles.sectionTitle}>
+                            Predict Your Partner's Answer:
+                        </Typography>
+                        <View style={styles.optionsContainer}>
+                            {currentQuestion?.options.map((option) => (
+                                <TouchableOpacity
+                                    key={`pred-${option.id}`}
+                                    style={[
+                                        styles.predictionButton,
+                                        prediction === option.id && styles.selectedPrediction
+                                    ]}
+                                    onPress={() => handlePredictionSelect(option.id)}
+                                >
+                                    <Typography variant="h4" style={styles.optionLabel}>{option.id}</Typography>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+
+                        {/* Lifelines */}
+                        <View style={styles.lifelinesContainer}>
+                            <SquishyButton
+                                onPress={useFiftyFifty}
+                                disabled={!lifelines.fiftyFifty}
+                                variant={lifelines.fiftyFifty ? 'primary' : 'ghost'}
+                                size="small"
+                            >
+                                <Typography variant="button">50:50</Typography>
+                            </SquishyButton>
+                            <SquishyButton
+                                onPress={useAskMarcie}
+                                disabled={!lifelines.askMarcie}
+                                variant={lifelines.askMarcie ? 'primary' : 'ghost'}
+                                size="small"
+                            >
+                                <Typography variant="button">Ask Marcie</Typography>
+                            </SquishyButton>
+                            <SquishyButton
+                                onPress={useDoubleConfidence}
+                                disabled={!lifelines.doubleConfidence}
+                                variant={lifelines.doubleConfidence ? 'primary' : 'ghost'}
+                                size="small"
+                            >
+                                <Typography variant="button">2x Points</Typography>
+                            </SquishyButton>
+                        </View>
+
+                        {/* Submit Button */}
+                        <SquishyButton
+                            onPress={submitAnswer}
+                            disabled={!myAnswer || !prediction}
+                            size="large"
+                        >
+                            <Typography variant="button">
+                                {qIndex < QUESTIONS.length - 1 ? 'NEXT QUESTION' : 'FINISH GAME'}
+                            </Typography>
+                        </SquishyButton>
+
+                        {/* Session Info */}
+                        {session && (
+                            <Typography variant="caption" center style={styles.sessionInfo}>
+                                Session: {session.id.slice(0, 8)}...
+                            </Typography>
                         )}
-                    </GlassCard>
+                    </ScrollView>
+                </LinearGradient>
 
-                    {/* Your Answer Section */}
-                    <Text style={styles.sectionTitle}>Your Answer:</Text>
-                    <View style={styles.optionsContainer}>
-                        {currentQuestion?.options.map((option) => (
-                            <TouchableOpacity
-                                key={option.id}
-                                style={[
-                                    styles.optionButton,
-                                    myAnswer === option.id && styles.selectedOption,
-                                    eliminatedOptions.includes(option.id) && styles.eliminatedOption
-                                ]}
-                                onPress={() => handleAnswerSelect(option.id)}
-                                disabled={eliminatedOptions.includes(option.id)}
-                            >
-                                <Text style={styles.optionLabel}>{option.id}:</Text>
-                                <Text style={styles.optionText}>{option.text}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
-
-                    {/* Predict Partner Section */}
-                    <Text style={styles.sectionTitle}>Predict Your Partner's Answer:</Text>
-                    <View style={styles.optionsContainer}>
-                        {currentQuestion?.options.map((option) => (
-                            <TouchableOpacity
-                                key={`pred-${option.id}`}
-                                style={[
-                                    styles.predictionButton,
-                                    prediction === option.id && styles.selectedPrediction
-                                ]}
-                                onPress={() => handlePredictionSelect(option.id)}
-                            >
-                                <Text style={styles.optionLabel}>{option.id}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
-
-                    {/* Lifelines */}
-                    <View style={styles.lifelinesContainer}>
-                        <TouchableOpacity
-                            style={[styles.lifelineButton, !lifelines.fiftyFifty && styles.usedLifeline]}
-                            onPress={useFiftyFifty}
-                            disabled={!lifelines.fiftyFifty}
-                        >
-                            <Text style={styles.lifelineText}>50:50</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.lifelineButton, !lifelines.askMarcie && styles.usedLifeline]}
-                            onPress={useAskMarcie}
-                            disabled={!lifelines.askMarcie}
-                        >
-                            <Text style={styles.lifelineText}>Ask Marcie</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.lifelineButton, !lifelines.doubleConfidence && styles.usedLifeline]}
-                            onPress={useDoubleConfidence}
-                            disabled={!lifelines.doubleConfidence}
-                        >
-                            <Text style={styles.lifelineText}>2x Points</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Submit Button */}
-                    <TouchableOpacity
-                        style={[styles.submitButton, (!myAnswer || !prediction) && styles.disabledButton]}
-                        onPress={submitAnswer}
-                        disabled={!myAnswer || !prediction}
-                    >
-                        <Text style={styles.submitText}>
-                            {qIndex < QUESTIONS.length - 1 ? 'Next Question' : 'Finish Game'}
-                        </Text>
-                    </TouchableOpacity>
-
-                    {/* Session Info */}
-                    {session && (
-                        <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
-                    )}
-                </ScrollView>
-            </LinearGradient>
-        </View>
+                {/* Dr. Marcie Overlay - Triggers based on game state */}
+                <GlobalMarcieOverlay
+                    animation={getMarcieAnimation(gameOverlayState)}
+                    position="bottom-right"
+                    visible={true}
+                    quote={marcieQuote}
+                    showBubble={!!marcieQuote}
+                    bubbleDuration={ANIMATIONS.duration.slow * 8}
+                    size="medium"
+                    gameState={gameOverlayState === 'intro' ? 'intro' : 
+                              gameOverlayState === 'thinking' ? 'thinking' : 
+                              gameOverlayState === 'results' ? 'results' : 'playing'}
+                />
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
@@ -407,160 +528,99 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        padding: 20,
-        paddingTop: 60,
+        padding: SPACING.screenPadding,
+        paddingTop: SPACING.xxxlarge,
+        paddingBottom: SPACING.xxxlarge * 2,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#fff',
-        textAlign: 'center',
+        marginBottom: SPACING.xlarge,
     },
     subtitle: {
-        fontSize: 16,
-        color: 'rgba(255,255,255,0.7)',
-        marginTop: 5,
+        marginTop: SPACING.small,
     },
     scoreContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: SPACING.regular,
     },
-    scoreText: {
-        fontSize: 20,
-        color: '#db147c',
-        fontWeight: 'bold',
+    gameTitle: {
+        marginTop: SPACING.large,
+        marginBottom: SPACING.small,
     },
-    syncText: {
-        marginLeft: 8,
-        fontSize: 14,
+    roundText: {
+        marginBottom: SPACING.large,
     },
     loadingText: {
-        color: '#fff',
-        fontSize: 18,
-        textAlign: 'center',
         marginTop: 100,
     },
     questionCard: {
-        marginBottom: 20,
-        padding: 20,
-    },
-    questionText: {
-        fontSize: 18,
-        color: '#fff',
-        lineHeight: 24,
+        marginBottom: SPACING.xlarge,
+        padding: SPACING.large,
     },
     marcieHint: {
-        marginTop: 15,
-        padding: 12,
-        backgroundColor: 'rgba(219, 20, 124, 0.2)',
-        borderRadius: 8,
+        marginTop: SPACING.regular,
+        padding: SPACING.regular,
+        backgroundColor: 'rgba(252, 12, 132, 0.15)',
+        borderRadius: BORDER_RADIUS.large,
         borderLeftWidth: 3,
-        borderLeftColor: '#db147c',
-    },
-    marcieText: {
-        color: '#fff',
-        fontSize: 14,
-        fontStyle: 'italic',
+        borderLeftColor: COLORS.vibrantPink,
     },
     sectionTitle: {
-        fontSize: 16,
-        color: 'rgba(255,255,255,0.8)',
-        marginBottom: 10,
-        fontWeight: '600',
+        marginBottom: SPACING.regular,
+        textTransform: 'uppercase',
+        letterSpacing: TYPOGRAPHY.letterSpacing.wide,
     },
     optionsContainer: {
-        marginBottom: 20,
+        marginBottom: SPACING.xlarge,
     },
     optionButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 15,
-        borderRadius: 12,
-        marginBottom: 8,
+        backgroundColor: 'rgba(61, 42, 92, 0.6)',
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.large,
+        marginBottom: SPACING.small,
         borderWidth: 2,
         borderColor: 'transparent',
     },
     selectedOption: {
-        borderColor: '#db147c',
-        backgroundColor: 'rgba(219, 20, 124, 0.2)',
+        borderColor: COLORS.vibrantPink,
+        backgroundColor: 'rgba(252, 12, 132, 0.2)',
     },
     eliminatedOption: {
         opacity: 0.3,
     },
     optionLabel: {
-        color: '#db147c',
-        fontWeight: 'bold',
-        fontSize: 16,
-        marginRight: 10,
+        color: COLORS.vibrantPink,
+        marginRight: SPACING.regular,
     },
     optionText: {
-        color: '#fff',
-        fontSize: 14,
         flex: 1,
+        lineHeight: TYPOGRAPHY.fontSize.bodyMedium * 1.4,
     },
     predictionButton: {
-        width: 50,
-        height: 50,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 25,
+        width: 56,
+        height: 56,
+        backgroundColor: 'rgba(61, 42, 92, 0.6)',
+        borderRadius: BORDER_RADIUS.round,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 10,
+        marginRight: SPACING.regular,
         borderWidth: 2,
         borderColor: 'transparent',
     },
     selectedPrediction: {
-        borderColor: '#33DEA5',
-        backgroundColor: 'rgba(51, 222, 165, 0.2)',
+        borderColor: COLORS.mintGreen,
+        backgroundColor: 'rgba(55, 207, 151, 0.2)',
     },
     lifelinesContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginBottom: 20,
-    },
-    lifelineButton: {
-        backgroundColor: 'rgba(219, 20, 124, 0.3)',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: '#db147c',
-    },
-    usedLifeline: {
-        opacity: 0.3,
-        borderColor: 'rgba(255,255,255,0.3)',
-    },
-    lifelineText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 12,
-    },
-    submitButton: {
-        backgroundColor: '#db147c',
-        paddingVertical: 15,
-        borderRadius: 25,
-        alignItems: 'center',
-        marginTop: 10,
-    },
-    disabledButton: {
-        opacity: 0.5,
-    },
-    submitText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+        marginBottom: SPACING.xlarge,
     },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
-        textAlign: 'center',
-        marginTop: 20,
+        marginTop: SPACING.xxlarge,
     },
 });
 

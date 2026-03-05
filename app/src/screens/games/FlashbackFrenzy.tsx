@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { View, StyleSheet, ScrollView, TextInput, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 export default function FlashbackFrenzy({ navigation }: any) {
   const [emotion, setEmotion] = useState('');
@@ -9,81 +10,95 @@ export default function FlashbackFrenzy({ navigation }: any) {
   const [step, setStep] = useState(1);
 
   return (
-    <LinearGradient colors={['#101010', '#202040']} style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.header}>
-          <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Text variant="body">Back</Text>
-          </SquishyButton>
-          <Text variant="header">Flashback Frenzy</Text>
-        </View>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.header}>
+            <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
+              <Typography variant="body">Back</Typography>
+            </SquishyButton>
+            <Typography variant="h1">Flashback Frenzy</Typography>
+          </View>
 
-        <GlassCard style={styles.card}>
+          <GlassCard style={styles.card}>
             <View style={styles.imagePlaceholder}>
-                <Text variant="header" style={{fontSize: 40}}>🌧️ 🪟</Text>
-                <Text variant="body">Image: Rainy Window</Text>
+              <Typography variant="h1" style={{ fontSize: TYPOGRAPHY.fontSize.displayLarge }}>🌧️ 🪟</Typography>
+              <Typography variant="body">Image: Rainy Window</Typography>
             </View>
-        </GlassCard>
-
-        {step === 1 && (
-          <GlassCard style={styles.card}>
-            <Text variant="header">Partner A: The Feeling</Text>
-            <Text variant="body">What emotion does this trigger?</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g., Abandonment, Fear..."
-              placeholderTextColor="#666"
-              value={emotion}
-              onChangeText={setEmotion}
-            />
-            <SquishyButton onPress={() => setStep(2)} style={styles.btn}>
-              <Text variant="header">Submit</Text>
-            </SquishyButton>
           </GlassCard>
-        )}
 
-        {step === 2 && (
-          <GlassCard style={styles.card}>
-            <Text variant="header">Partner B: The Guess</Text>
-            <Text variant="body">Why does A feel that way? Guess the memory.</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g., That night I didn't come home..."
-              placeholderTextColor="#666"
-              value={guess}
-              onChangeText={setGuess}
-            />
-            <SquishyButton onPress={() => setStep(3)} style={styles.btn}>
-              <Text variant="header">Check Match</Text>
-            </SquishyButton>
-          </GlassCard>
-        )}
+          {step === 1 && (
+            <GlassCard style={styles.card}>
+              <Typography variant="h2">Partner A: The Feeling</Typography>
+              <Typography variant="body">What emotion does this trigger?</Typography>
+              <TextInput
+                style={styles.input}
+                placeholder="e.g., Abandonment, Fear..."
+                placeholderTextColor={COLORS.textHint}
+                value={emotion}
+                onChangeText={setEmotion}
+              />
+              <SquishyButton onPress={() => setStep(2)} style={styles.btn}>
+                <Typography variant="body">Submit</Typography>
+              </SquishyButton>
+            </GlassCard>
+          )}
 
-        {step === 3 && (
-          <GlassCard style={styles.card}>
-            <Text variant="header" style={{ color: '#33DEA5', textAlign: 'center' }}>Match Analysis</Text>
-            <Text variant="body">Emotion: <Text variant="keyword">{emotion}</Text></Text>
-            <Text variant="body">Guess: <Text variant="keyword">{guess}</Text></Text>
-            <Text variant="body" style={{ marginTop: 20, fontStyle: 'italic', color: '#BE1980' }}>
-              Marcie: "Spot on. Listening level: 100. (+15 XP)"
-            </Text>
-            <SquishyButton onPress={() => { setStep(1); setEmotion(''); setGuess(''); }} style={styles.btn}>
-              <Text variant="header">Next Image</Text>
-            </SquishyButton>
-          </GlassCard>
-        )}
-      </ScrollView>
-    </LinearGradient>
+          {step === 2 && (
+            <GlassCard style={styles.card}>
+              <Typography variant="h2">Partner B: The Guess</Typography>
+              <Typography variant="body">Why does A feel that way? Guess the memory.</Typography>
+              <TextInput
+                style={styles.input}
+                placeholder="e.g., That night I didn't come home..."
+                placeholderTextColor={COLORS.textHint}
+                value={guess}
+                onChangeText={setGuess}
+              />
+              <SquishyButton onPress={() => setStep(3)} style={styles.btn}>
+                <Typography variant="body">Check Match</Typography>
+              </SquishyButton>
+            </GlassCard>
+          )}
+
+          {step === 3 && (
+            <GlassCard style={styles.card}>
+              <Typography variant="h2" color={COLORS.success} center>Match Analysis</Typography>
+              <Typography variant="body">Emotion: <Typography variant="keyword">{emotion}</Typography></Typography>
+              <Typography variant="body">Guess: <Typography variant="keyword">{guess}</Typography></Typography>
+              <Typography variant="body" style={{ marginTop: SPACING.regular, fontStyle: 'italic', color: COLORS.romanceHub }}>
+                Marcie: "Spot on. Listening level: 100. (+15 XP)"
+              </Typography>
+              <SquishyButton onPress={() => { setStep(1); setEmotion(''); setGuess(''); }} style={styles.btn}>
+                <Typography variant="body">Next Image</Typography>
+              </SquishyButton>
+            </GlassCard>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  content: { padding: 20, gap: 20 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-  card: { padding: 20, gap: 15 },
-  input: { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 8, padding: 15, color: '#fff', fontSize: 16 },
-  btn: { backgroundColor: '#FA1F63', padding: 15, borderRadius: 12, alignItems: 'center', marginTop: 10 },
-  imagePlaceholder: { height: 200, backgroundColor: 'rgba(0,0,0,0.5)', borderRadius: 12, alignItems: 'center', justifyContent: 'center' }
+  content: { padding: SPACING.screenPadding, gap: SPACING.regular },
+  header: { flexDirection: 'row', alignItems: 'center', gap: SPACING.small },
+  backBtn: { paddingHorizontal: SPACING.regular, paddingVertical: SPACING.small },
+  card: { padding: SPACING.cardPadding, gap: SPACING.regular },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    borderRadius: BORDER_RADIUS.medium, 
+    padding: SPACING.regular, 
+    color: COLORS.textPrimary, 
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge 
+  },
+  btn: { marginTop: SPACING.regular },
+  imagePlaceholder: { 
+    height: 200, 
+    backgroundColor: COLORS.backgroundInput, 
+    borderRadius: BORDER_RADIUS.large, 
+    alignItems: 'center', 
+    justifyContent: 'center' 
+  }
 });

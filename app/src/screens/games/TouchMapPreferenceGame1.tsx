@@ -1,13 +1,16 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { Svg, Circle, Rect } from 'react-native-svg'; // Using Svg for clickable zones
+import { View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Svg, Circle, Rect } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 const consentColors = {
-    yes: '#22c55e',
-    maybe: '#eab308',
-    no: '#ef4444',
+    yes: COLORS.success,
+    maybe: COLORS.warning,
+    no: COLORS.error,
 };
 
 const frontZones = [
@@ -23,7 +26,7 @@ const backZones = [
     { id: 'b_back', shape: 'Rect', args: { x: '30%', y: '25%', width: '40%', height: '30%' } },
 ];
 
-const Zone = ({ zone, color, onPress }) => {
+const Zone = ({ zone, color, onPress }: { zone: any; color: string; onPress: () => void }) => {
     const Component = zone.shape === 'Circle' ? Circle : Rect;
     return (
         <TouchableOpacity onPress={onPress}>
@@ -32,62 +35,157 @@ const Zone = ({ zone, color, onPress }) => {
     );
 };
 
-
 const TouchMapPreferenceGame1 = () => {
     const [selectedColor, setSelectedColor] = useState(consentColors.yes);
-    const [zoneColors, setZoneColors] = useState({});
+    const [zoneColors, setZoneColors] = useState<Record<string, string>>({});
 
-    const handleZonePress = (zoneId) => {
+    const handleZonePress = (zoneId: string) => {
         setZoneColors(prev => ({ ...prev, [zoneId]: selectedColor }));
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#141118', '#2a0a4d']} style={styles.container}>
-                <ScrollView>
-                    <Text style={styles.title}>Define Your Boundaries</Text>
-                    <Text style={styles.subtitle}>Select a color, then tap to mark your preference.</Text>
-                    
-                    <View style={styles.mapArea}>
-                        <View style={styles.silhouetteContainer}>
-                             <Text style={styles.mapLabel}>FRONT</Text>
-                             <Svg width="100%" height="100%">
-                                <Image href={{'uri':'https://lh3.googleusercontent.com/aida-public/AB6AXuB2UWKyEDKbKyVg29sz0dwSPUvtT-pHdFj4Mxs_2m5WW3XLo7sKVY0qzq6wO4DAe0A7Jm7azxrR8FH5uLcFi0YHeeYug8eBWN9DoYQRsjzbFnxzcAlXctQXto_OvBhbU6cau0gq5CVkYSs-gB00-veE9s9-aVSHsPp2_3LS4Hi_M99HFeexBFujBEwKilYfxc64dnIq8699e8EypubyiJ2c5MccVr5rq21Qg8PsNAtfqj-PTPbWxmv6odjrBaLc8oz6AbelrekwjPzB'}} width="100%" height="100%" preserveAspectRatio="xMidYMid slice" opacity="0.7"/>
-                                {frontZones.map(zone => <Zone key={zone.id} zone={zone} color={zoneColors[zone.id] || 'transparent'} onPress={() => handleZonePress(zone.id)} />)}
-                            </Svg>
+        <ScreenLayout scrollable={false} showHeader={false}>
+            <SafeAreaView style={styles.safeArea}>
+                <LinearGradient colors={[COLORS.deepCosmic, COLORS.richPlum]} style={styles.container}>
+                    <ScrollView>
+                        <Typography variant="h1" center style={styles.title}>
+                            The Love Arcade
+                        </Typography>
+                        <Typography variant="h2" center style={styles.subtitle}>
+                            +100 Games to Deepen Connection
+                        </Typography>
+                        
+                        <Typography variant="body" center style={styles.instructions}>
+                            Define Your Boundaries
+                        </Typography>
+                        <Typography variant="caption" center style={styles.caption}>
+                            Select a color, then tap to mark your preference.
+                        </Typography>
+                        
+                        <View style={styles.mapArea}>
+                            <View style={styles.silhouetteContainer}>
+                                <Typography variant="caption" style={styles.mapLabel}>FRONT</Typography>
+                                <Svg width="100%" height="100%">
+                                    <Image 
+                                        source={{'uri':'https://lh3.googleusercontent.com/aida-public/AB6AXuB2UWKyEDKbKyVg29sz0dwSPUvtT-pHdFj4Mxs_2m5WW3XLo7sKVY0qzq6wO4DAe0A7Jm7azxrR8FH5uLcFi0YHeeYug8eBWN9DoYQRsjzbFnxzcAlXctQXto_OvBhbU6cau0gq5CVkYSs-gB00-veE9s9-aVSHsPp2_3LS4Hi_M99HFeexBFujBEwKilYfxc64dnIq8699e8EypubyiJ2c5MccVr5rq21Qg8PsNAtfqj-PTPbWxmv6odjrBaLc8oz6AbelrekwjPzB'}} 
+                                        width="100%" 
+                                        height="100%" 
+                                        preserveAspectRatio="xMidYMid slice" 
+                                        opacity={0.7}
+                                    />
+                                    {frontZones.map(zone => (
+                                        <Zone 
+                                            key={zone.id} 
+                                            zone={zone} 
+                                            color={zoneColors[zone.id] || 'transparent'} 
+                                            onPress={() => handleZonePress(zone.id)} 
+                                        />
+                                    ))}
+                                </Svg>
+                            </View>
+                            <View style={styles.silhouetteContainer}>
+                                <Typography variant="caption" style={styles.mapLabel}>BACK</Typography>
+                                <Svg width="100%" height="100%">
+                                    <Image 
+                                        source={{'uri':'https://lh3.googleusercontent.com/aida-public/AB6AXuDyzBgbsINisi-F2bwWogMl_RNPBRSPa-2YjgenFL5wxbHylYe_9yYGfNjlRCeSx2cl1XSjBd7G4y4g5_o2po9rQsjQE-5KggQmP2THDgBnGiz6hYaYy5F-9MfEjc4b5pOpXQZB86i8NusC-4EouHtvcoSeJ007O5M8mS398zWuXH7Q0mvf_-ahAmQaP49DmfUbHNdx-A81RdvAzSPjhRB-Ns0o-bFOSQ-9BRrlWdLEyf8FSaj-I6NAwRMOf55_vvaPNhlU_NbxVVRl'}} 
+                                        width="100%" 
+                                        height="100%" 
+                                        preserveAspectRatio="xMidYMid slice" 
+                                        opacity={0.7}
+                                    />
+                                    {backZones.map(zone => (
+                                        <Zone 
+                                            key={zone.id} 
+                                            zone={zone} 
+                                            color={zoneColors[zone.id] || 'transparent'} 
+                                            onPress={() => handleZonePress(zone.id)} 
+                                        />
+                                    ))}
+                                </Svg>
+                            </View>
                         </View>
-                        <View style={styles.silhouetteContainer}>
-                             <Text style={styles.mapLabel}>BACK</Text>
-                             <Svg width="100%" height="100%">
-                                 <Image href={{'uri':'https://lh3.googleusercontent.com/aida-public/AB6AXuDyzBgbsINisi-F2bwWogMl_RNPBRSPa-2YjgenFL5wxbHylYe_9yYGfNjlRCeSx2cl1XSjBd7G4y4g5_o2po9rQsjQE-5KggQmP2THDgBnGiz6hYaYy5F-9MfEjc4b5pOpXQZB86i8NusC-4EouHtvcoSeJ007O5M8mS398zWuXH7Q0mvf_-ahAmQaP49DmfUbHNdx-A81RdvAzSPjhRB-Ns0o-bFOSQ-9BRrlWdLEyf8FSaj-I6NAwRMOf55_vvaPNhlU_NbxVVRl'}} width="100%" height="100%" preserveAspectRatio="xMidYMid slice" opacity="0.7"/>
-                                {backZones.map(zone => <Zone key={zone.id} zone={zone} color={zoneColors[zone.id] || 'transparent'} onPress={() => handleZonePress(zone.id)} />)}
-                            </Svg>
-                        </View>
-                    </View>
-                    
-                    <View style={styles.palette}>
-                        <TouchableOpacity style={[styles.paletteButton, { backgroundColor: `${consentColors.yes}30` }]} onPress={() => setSelectedColor(consentColors.yes)}><Text style={styles.paletteText}>YES</Text></TouchableOpacity>
-                        <TouchableOpacity style={[styles.paletteButton, { backgroundColor: `${consentColors.maybe}30` }]} onPress={() => setSelectedColor(consentColors.maybe)}><Text style={styles.paletteText}>MAYBE</Text></TouchableOpacity>
-                        <TouchableOpacity style={[styles.paletteButton, { backgroundColor: `${consentColors.no}30` }]} onPress={() => setSelectedColor(consentColors.no)}><Text style={styles.paletteText}>NO</Text></TouchableOpacity>
-                    </View>
-
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+                        
+                        <GlassCard style={styles.palette}>
+                            <SquishyButton 
+                                onPress={() => setSelectedColor(consentColors.yes)} 
+                                variant={selectedColor === consentColors.yes ? 'primary' : 'ghost'}
+                                style={styles.paletteButton}
+                            >
+                                <Typography variant="button">YES</Typography>
+                            </SquishyButton>
+                            <SquishyButton 
+                                onPress={() => setSelectedColor(consentColors.maybe)} 
+                                variant={selectedColor === consentColors.maybe ? 'primary' : 'ghost'}
+                                style={styles.paletteButton}
+                            >
+                                <Typography variant="button">MAYBE</Typography>
+                            </SquishyButton>
+                            <SquishyButton 
+                                onPress={() => setSelectedColor(consentColors.no)} 
+                                variant={selectedColor === consentColors.no ? 'primary' : 'ghost'}
+                                style={styles.paletteButton}
+                            >
+                                <Typography variant="button">NO</Typography>
+                            </SquishyButton>
+                        </GlassCard>
+                    </ScrollView>
+                </LinearGradient>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#141118' },
-    container: { flex: 1, padding: 16 },
-    title: { color: '#fff', fontSize: 28, fontWeight: 'bold', textAlign: 'center' },
-    subtitle: { color: '#ab9db9', fontSize: 16, textAlign: 'center', marginBottom: 20 },
-    mapArea: { flexDirection: 'row', justifyContent: 'space-around', height: 400, marginBottom: 20 },
-    silhouetteContainer: { flex: 1, alignItems: 'center', marginHorizontal: 10 },
-    mapLabel: { color: '#ab9db9', textTransform: 'uppercase', marginBottom: 10, letterSpacing: 2 },
-    palette: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 20, padding: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    paletteButton: { flex: 1, paddingVertical: 15, borderRadius: 15, margin: 4, alignItems: 'center' },
-    paletteText: { color: '#fff', fontWeight: 'bold' },
+    safeArea: { 
+        flex: 1, 
+        backgroundColor: COLORS.deepCosmic 
+    },
+    container: { 
+        flex: 1, 
+        padding: SPACING.screenPadding 
+    },
+    title: { 
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.small 
+    },
+    subtitle: { 
+        color: COLORS.textSecondary, 
+        marginBottom: SPACING.xlarge 
+    },
+    instructions: { 
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.small 
+    },
+    caption: { 
+        color: COLORS.textHint, 
+        marginBottom: SPACING.large 
+    },
+    mapArea: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        height: 400, 
+        marginBottom: SPACING.xlarge 
+    },
+    silhouetteContainer: { 
+        flex: 1, 
+        alignItems: 'center', 
+        marginHorizontal: SPACING.regular 
+    },
+    mapLabel: { 
+        color: COLORS.textSecondary, 
+        textTransform: 'uppercase', 
+        marginBottom: SPACING.small, 
+        letterSpacing: TYPOGRAPHY.letterSpacing.wide 
+    },
+    palette: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        padding: SPACING.medium 
+    },
+    paletteButton: { 
+        flex: 1, 
+        marginHorizontal: SPACING.tiny 
+    },
 });
 
 export default TouchMapPreferenceGame1;

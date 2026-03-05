@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function LayersOfHurt({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -52,33 +53,41 @@ export default function LayersOfHurt({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.small }}>
             <GlassCard>
-                <Text variant="header">Layer {box}: {box === 1 ? 'Social Betrayal' : box === 2 ? 'Digital Deception' : 'The Grieving'}</Text>
+                <Typography variant="h2">
+                    Layer {box}: {box === 1 ? 'Social Betrayal' : box === 2 ? 'Digital Deception' : 'The Grieving'}
+                </Typography>
 
                 {box === 1 && (
                     <View>
-                        <Text variant="instructions">Identity the Breach Point & Choose Coping Statement.</Text>
+                        <Typography variant="body" style={styles.instruction}>
+                            Identity the Breach Point & Choose Coping Statement.
+                        </Typography>
                         <SquishyButton onPress={unlock} style={styles.actionBtn}>
-                            <Text variant="body">Select: "Coworker's Partner" + "We are a team"</Text>
+                            <Typography variant="body">Select: "Coworker's Partner" + "We are a team"</Typography>
                         </SquishyButton>
                     </View>
                 )}
 
                 {box === 2 && (
                     <View>
-                        <Text variant="instructions">Unscramble the Digital Rule.</Text>
+                        <Typography variant="body" style={styles.instruction}>
+                            Unscramble the Digital Rule.
+                        </Typography>
                         <SquishyButton onPress={unlock} style={styles.actionBtn}>
-                            <Text variant="body">Code: TRANSPARENCY</Text>
+                            <Typography variant="body">Code: TRANSPARENCY</Typography>
                         </SquishyButton>
                     </View>
                 )}
 
                 {box === 3 && (
                     <View>
-                        <Text variant="instructions">Burn the blurred memories.</Text>
+                        <Typography variant="body" style={styles.instruction}>
+                            Burn the blurred memories.
+                        </Typography>
                         <SquishyButton onPress={unlock} style={styles.actionBtn}>
-                            <Text variant="body">Action: Admit Loss + Hope for Earned Safety</Text>
+                            <Typography variant="body">Action: Admit Loss + Hope for Earned Safety</Typography>
                         </SquishyButton>
                     </View>
                 )}
@@ -103,12 +112,16 @@ export default function LayersOfHurt({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    instruction: {
+        marginTop: SPACING.medium,
+        marginBottom: SPACING.medium,
+    },
     actionBtn: {
-        marginTop: 20,
-        backgroundColor: '#33DEA5',
-        padding: 16,
-        borderRadius: 12,
+        marginTop: SPACING.large,
+        backgroundColor: COLORS.success,
+        padding: SPACING.large,
+        borderRadius: BORDER_RADIUS.large,
         alignItems: 'center',
-        marginBottom: 20
-    }
+        marginBottom: SPACING.large,
+    },
 });

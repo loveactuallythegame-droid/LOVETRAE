@@ -1,77 +1,134 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 type Zone = 'Head' | 'Chest' | 'Hands' | 'Legs' | 'Back';
 const ZONES: Zone[] = ['Head', 'Chest', 'Hands', 'Legs', 'Back'];
 
+const ZONE_COLORS = {
+  white: COLORS.textPrimary,
+  green: COLORS.success,
+  yellow: COLORS.warning,
+  red: COLORS.error,
+};
+
 export default function TouchMap({ navigation }: any) {
   const [colors, setColors] = useState<Record<Zone, string>>({
-    Head: '#fff', Chest: '#fff', Hands: '#fff', Legs: '#fff', Back: '#fff'
+    Head: ZONE_COLORS.white, 
+    Chest: ZONE_COLORS.white, 
+    Hands: ZONE_COLORS.white, 
+    Legs: ZONE_COLORS.white, 
+    Back: ZONE_COLORS.white
   });
 
   function cycleColor(z: Zone) {
     const current = colors[z];
-    let next = '#fff';
-    if (current === '#fff') next = '#33DEA5'; // Green
-    else if (current === '#33DEA5') next = '#E4E831'; // Yellow
-    else if (current === '#E4E831') next = '#FA1F63'; // Red
-    else next = '#fff'; // Reset
+    let next = ZONE_COLORS.white;
+    if (current === ZONE_COLORS.white) next = ZONE_COLORS.green;
+    else if (current === ZONE_COLORS.green) next = ZONE_COLORS.yellow;
+    else if (current === ZONE_COLORS.yellow) next = ZONE_COLORS.red;
+    else next = ZONE_COLORS.white;
 
     setColors({ ...colors, [z]: next });
   }
 
   return (
-    <LinearGradient colors={['#200020', '#000000']} style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.header}>
-          <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Text variant="body">Back</Text>
-          </SquishyButton>
-          <Text variant="header">The Touch Map: Lite</Text>
-        </View>
-
-        <GlassCard style={styles.card}>
-          <Text variant="body" style={{ textAlign: 'center', marginBottom: 20 }}>
-            Tap zones to set comfort level.
-          </Text>
-          <View style={styles.legend}>
-            <Text style={{ color: '#33DEA5' }}>Green: Yes</Text>
-            <Text style={{ color: '#E4E831' }}>Yellow: Ask</Text>
-            <Text style={{ color: '#FA1F63' }}>Red: No</Text>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <View style={styles.header}>
+            <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
+              <Typography variant="body">Back</Typography>
+            </SquishyButton>
+            <Typography variant="h1">The Touch Map: Lite</Typography>
           </View>
 
-          <View style={styles.bodyMap}>
-            {ZONES.map((z) => (
-              <Pressable key={z} onPress={() => cycleColor(z)} style={[styles.zone, { backgroundColor: colors[z] }]}>
-                <Text style={styles.zoneText}>{z}</Text>
-              </Pressable>
-            ))}
-          </View>
+          <GlassCard style={styles.card}>
+            <Typography variant="body" center style={{ marginBottom: SPACING.xlarge }}>
+              Tap zones to set comfort level.
+            </Typography>
+            <View style={styles.legend}>
+              <Typography variant="caption" color={ZONE_COLORS.green}>Green: Yes</Typography>
+              <Typography variant="caption" color={ZONE_COLORS.yellow}>Yellow: Ask</Typography>
+              <Typography variant="caption" color={ZONE_COLORS.red}>Red: No</Typography>
+            </View>
 
-          <SquishyButton style={[styles.btn, { marginTop: 20 }]}>
-             <Text variant="header">Sync with Partner</Text>
-          </SquishyButton>
+            <View style={styles.bodyMap}>
+              {ZONES.map((z) => (
+                <Pressable key={z} onPress={() => cycleColor(z)} style={[styles.zone, { backgroundColor: colors[z] }]}>
+                  <Typography variant="button" style={styles.zoneText}>{z}</Typography>
+                </Pressable>
+              ))}
+            </View>
 
-          <Text variant="body" style={{ marginTop: 20, fontStyle: 'italic', textAlign: 'center' }}>
-             Marcie: "They marked 'Chest' yellow... you green. Wanna unpack that?"
-          </Text>
-        </GlassCard>
-      </ScrollView>
-    </LinearGradient>
+            <SquishyButton style={[styles.btn, { marginTop: SPACING.xxlarge }]}>
+               <Typography variant="h2" color={COLORS.textPrimary}>Sync with Partner</Typography>
+            </SquishyButton>
+
+            <Typography variant="sass" center style={{ marginTop: SPACING.xxlarge }}>
+               "They marked 'Chest' yellow... you green. Wanna unpack that?"
+            </Typography>
+          </GlassCard>
+        </ScrollView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { padding: 20, gap: 20 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-  card: { padding: 20, alignItems: 'center' },
-  legend: { flexDirection: 'row', gap: 15, marginBottom: 20 },
-  bodyMap: { width: '100%', alignItems: 'center', gap: 15 },
-  zone: { width: 100, height: 60, borderRadius: 30, justifyContent: 'center', alignItems: 'center', opacity: 0.8 },
-  zoneText: { fontWeight: 'bold', color: '#000' },
-  btn: { backgroundColor: '#FA1F63', padding: 15, borderRadius: 12, alignItems: 'center', width: '100%' }
+  container: { 
+    flex: 1,
+    backgroundColor: COLORS.backgroundPrimary,
+  },
+  content: { 
+    padding: SPACING.screenPadding, 
+    gap: SPACING.regular 
+  },
+  header: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: SPACING.small 
+  },
+  backBtn: { 
+    paddingHorizontal: SPACING.regular, 
+    paddingVertical: SPACING.small, 
+    backgroundColor: COLORS.backgroundInput, 
+    borderRadius: BORDER_RADIUS.large 
+  },
+  card: { 
+    padding: SPACING.cardPadding, 
+    alignItems: 'center',
+    backgroundColor: COLORS.backgroundCard,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+  },
+  legend: { 
+    flexDirection: 'row', 
+    gap: SPACING.xlarge, 
+    marginBottom: SPACING.xxlarge 
+  },
+  bodyMap: { 
+    width: '100%', 
+    alignItems: 'center', 
+    gap: SPACING.regular 
+  },
+  zone: { 
+    width: 100, 
+    height: 60, 
+    borderRadius: BORDER_RADIUS.round, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    opacity: 0.8 
+  },
+  zoneText: { 
+    color: COLORS.backgroundPrimary,
+  },
+  btn: { 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
+    alignItems: 'center', 
+    width: '100%',
+  },
 });

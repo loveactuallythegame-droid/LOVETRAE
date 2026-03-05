@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { 
   View, 
-  Text, 
   StyleSheet, 
-  TouchableOpacity, 
   ScrollView, 
   ActivityIndicator,
   Alert,
-  Dimensions
+  Dimensions,
+  TextInput
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { COLORS, TYPOGRAPHY, SPACING, SIZES } from '../theme';
+import ScreenLayout from '../layout';
+import { Typography, SquishyButton, GlassCard } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 import { useGameStore } from '../lib/game-store';
 import { gamesApi, marcieApi } from '../lib/api';
 import { useAuth } from '../hooks/useAuth';
@@ -275,411 +274,287 @@ const RelationalJeopardyScreen = () => {
   // Loading state
   if (gameState.isLoading) {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout scrollable={false}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.primaryGradientStart} />
-          <Text style={styles.loadingText}>Loading challenge...</Text>
+          <ActivityIndicator size="large" color={COLORS.gradientStart} />
+          <Typography variant="bodyMedium" style={styles.loadingText}>Loading challenge...</Typography>
         </View>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Intro phase
   if (gameState.gamePhase === 'intro') {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.introContainer}>
-            <Text style={styles.mainTitle}>
-              ROUND 4: <Text style={styles.titleHighlight}>THE RECONSTRUCTION</Text>
-            </Text>
-            <Text style={styles.subtitle}>
-              Navigate the debris of deception to earn Truth Credits.
-            </Text>
+      <ScreenLayout scrollable={true}>
+        <View style={styles.introContainer}>
+          <Typography variant="displayMedium" style={styles.mainTitle}>
+            ROUND 4: <Typography variant="displayMedium" style={styles.titleHighlight}>THE RECONSTRUCTION</Typography>
+          </Typography>
+          <Typography variant="bodyMedium" style={styles.subtitle}>
+            Navigate the debris of deception to earn Truth Credits.
+          </Typography>
+          
+          <GlassCard style={styles.introCard}>
+            <Typography variant="bodyMedium" style={styles.introText}>
+              Categories designed by couples who rebuilt their relationships 
+              after betrayal. Each question reveals deeper truths about 
+              your connection.
+            </Typography>
             
-            <View style={styles.introCard}>
-              <Text style={styles.introText}>
-                Categories designed by couples who rebuilt their relationships 
-                after betrayal. Each question reveals deeper truths about 
-                your connection.
-              </Text>
-              
-              <Text style={styles.introWarning}>
-                ⚠️ These questions are designed to surface difficult truths. 
-                Ensure you're both ready for deep emotional work.
-              </Text>
-            </View>
+            <Typography variant="bodySmall" style={styles.introWarning}>
+              ⚠️ These questions are designed to surface difficult truths. 
+              Ensure you're both ready for deep emotional work.
+            </Typography>
+          </GlassCard>
 
-            <View style={styles.categoriesPreview}>
-              {gameState.jeopardyCategories.map((category, index) => (
-                <View key={category} style={styles.categoryPreviewItem}>
-                  <Text style={styles.categoryPreviewText}>{category}</Text>
-                </View>
-              ))}
-            </View>
-
-            <TouchableOpacity 
-              style={styles.startButton}
-              onPress={startGame}
-              activeOpacity={0.8}
-            >
-              <LinearGradient
-                colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-                style={styles.startButtonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.startButtonText}>ENTER THE BOARD</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+          <View style={styles.categoriesPreview}>
+            {gameState.jeopardyCategories.map((category) => (
+              <GlassCard key={category} style={styles.categoryPreviewItem}>
+                <Typography variant="label" style={styles.categoryPreviewText}>{category}</Typography>
+              </GlassCard>
+            ))}
           </View>
-        </ScrollView>
-      </SafeAreaView>
+
+          <SquishyButton 
+            title="ENTER THE BOARD"
+            onPress={startGame}
+          />
+        </View>
+      </ScreenLayout>
     );
   }
 
   // Board phase
   if (gameState.gamePhase === 'board') {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.gameContainer}>
-            <View style={styles.scoreContainer}>
-              <Text style={styles.scoreText}>TRUTH CREDITS</Text>
-              <Text style={styles.scoreValue}>${gameState.score}</Text>
-            </View>
+      <ScreenLayout scrollable={true}>
+        <View style={styles.gameContainer}>
+          <GlassCard style={styles.scoreContainer}>
+            <Typography variant="label" style={styles.scoreText}>TRUTH CREDITS</Typography>
+            <Typography variant="displayMedium" style={styles.scoreValue}>${gameState.score}</Typography>
+          </GlassCard>
 
-            <View style={styles.gameBoard}>
-              <View style={styles.headerRow}>
-                {gameState.jeopardyCategories.map(cat => (
-                  <View key={cat} style={styles.headerCell}>
-                    <Text style={styles.headerText} numberOfLines={2}>
-                      {cat}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-              
-              {gameState.pointValues.map(points => (
-                <View key={points} style={styles.row}>
-                  {gameState.jeopardyCategories.map(cat => {
-                    const tileKey = `${cat}-${points}`;
-                    const isAnswered = gameState.answeredTiles.includes(tileKey);
-                    const isDailyDouble = Math.random() < 0.05; // 5% chance per tile
-                    
-                    return (
-                      <JeopardyTile
-                        key={`${cat}-${points}`}
-                        points={points}
-                        category={cat}
-                        onPress={handleTilePress}
-                        answered={isAnswered}
-                        isDailyDouble={isDailyDouble && !isAnswered}
-                      />
-                    );
-                  })}
+          <View style={styles.gameBoard}>
+            <View style={styles.headerRow}>
+              {gameState.jeopardyCategories.map(cat => (
+                <View key={cat} style={styles.headerCell}>
+                  <Typography variant="label" style={styles.headerText} numberOfLines={2}>
+                    {cat}
+                  </Typography>
                 </View>
               ))}
             </View>
-
-            {gameState.answeredTiles.length >= 20 && (
-              <TouchableOpacity 
-                style={styles.finalJeopardyButton}
-                onPress={() => setGameState(prev => ({ 
-                  ...prev, 
-                  finalJeopardy: true,
-                  gamePhase: 'challenge' 
-                }))}
-                activeOpacity={0.8}
-              >
-                <LinearGradient
-                  colors={[COLORS.accentYellow, COLORS.accentOrange]}
-                  style={styles.finalJeopardyButtonGradient}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                >
-                  <Text style={styles.finalJeopardyButtonText}>FINAL JEOPARDY</Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            )}
+            
+            {gameState.pointValues.map(points => (
+              <View key={points} style={styles.row}>
+                {gameState.jeopardyCategories.map(cat => {
+                  const tileKey = `${cat}-${points}`;
+                  const isAnswered = gameState.answeredTiles.includes(tileKey);
+                  const isDailyDoubleTile = Math.random() < 0.05; // 5% chance per tile
+                  
+                  return (
+                    <JeopardyTile
+                      key={`${cat}-${points}`}
+                      points={points}
+                      category={cat}
+                      onPress={handleTilePress}
+                      answered={isAnswered}
+                      isDailyDouble={isDailyDoubleTile && !isAnswered}
+                    />
+                  );
+                })}
+              </View>
+            ))}
           </View>
-        </ScrollView>
-      </SafeAreaView>
+
+          {gameState.answeredTiles.length >= 20 && (
+            <SquishyButton 
+              title="FINAL JEOPARDY"
+              onPress={() => setGameState(prev => ({ 
+                ...prev, 
+                finalJeopardy: true,
+                gamePhase: 'challenge' 
+              }))}
+              style={styles.finalJeopardyButton}
+            />
+          )}
+        </View>
+      </ScreenLayout>
     );
   }
 
   // Challenge phase
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <LinearGradient 
-        colors={[COLORS.background, COLORS.surface]} 
-        style={styles.backgroundGradient}
-      />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.challengeContainer}>
-          {gameState.dailyDouble && (
-            <View style={styles.dailyDoubleBanner}>
-              <Text style={styles.dailyDoubleText}>🎯 DAILY DOUBLE 🎯</Text>
-            </View>
-          )}
-          
-          {gameState.finalJeopardy && (
-            <View style={styles.finalJeopardyBanner}>
-              <Text style={styles.finalJeopardyText}>🏆 FINAL JEOPARDY 🏆</Text>
-            </View>
-          )}
-
-          <View style={styles.challengeHeader}>
-            <Text style={styles.challengeCategory}>
-              {gameState.finalJeopardy ? 'FINAL JEOPARDY' : gameState.currentCategory}
-            </Text>
-            <Text style={styles.challengePoints}>
-              {gameState.finalJeopardy ? 'WAGER' : `$${gameState.currentPoints}`}
-            </Text>
+    <ScreenLayout scrollable={true}>
+      <View style={styles.challengeContainer}>
+        {gameState.dailyDouble && (
+          <View style={styles.dailyDoubleBanner}>
+            <Typography variant="bodyMedium" style={styles.dailyDoubleText}>🎯 DAILY DOUBLE 🎯</Typography>
           </View>
+        )}
+        
+        {gameState.finalJeopardy && (
+          <View style={styles.finalJeopardyBanner}>
+            <Typography variant="bodyMedium" style={styles.finalJeopardyText}>🏆 FINAL JEOPARDY 🏆</Typography>
+          </View>
+        )}
 
-          <View style={styles.challengeContent}>
-            <Text style={styles.challengeText}>
-              {gameState.activeChallenge}
-            </Text>
+        <View style={styles.challengeHeader}>
+          <Typography variant="headerMedium" style={styles.challengeCategory}>
+            {gameState.finalJeopardy ? 'FINAL JEOPARDY' : gameState.currentCategory}
+          </Typography>
+          <Typography variant="displaySmall" style={styles.challengePoints}>
+            {gameState.finalJeopardy ? 'WAGER' : `$${gameState.currentPoints}`}
+          </Typography>
+        </View>
 
-            {gameState.marcieFeedback && (
-              <View style={styles.marcieContainer}>
-                <Text style={styles.marcieAvatar}>👩‍⚕️</Text>
-                <Text style={styles.marcieName}>DR. MARCIE LISS</Text>
-                <View style={styles.marcieFeedbackContainer}>
-                  <Text style={styles.marcieFeedback}>
-                    "{gameState.marcieFeedback}"
-                  </Text>
-                </View>
-              </View>
-            )}
+        <View style={styles.challengeContent}>
+          <Typography variant="bodyMedium" style={styles.challengeText}>
+            {gameState.activeChallenge}
+          </Typography>
 
-            <View style={styles.answerSection}>
-              <Text style={styles.answerPrompt}>Your Answer:</Text>
-              <TextInput
-                style={styles.answerInput}
-                placeholder="Type your answer..."
-                placeholderTextColor={COLORS.textSecondary}
-                multiline
-                numberOfLines={4}
-                value={gameState.activeChallenge}
-                onChangeText={(text) => setGameState(prev => ({ 
-                  ...prev, 
-                  activeChallenge: text 
-                }))}
-              />
-
-              <TouchableOpacity 
-                style={styles.submitAnswerButton}
-                onPress={() => submitAnswer(gameState.activeChallenge)}
-                activeOpacity={0.8}
-              >
-                <LinearGradient
-                  colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-                  style={styles.submitAnswerButtonGradient}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                >
-                  <Text style={styles.submitAnswerButtonText}>
-                    {gameState.finalJeopardy ? 'SUBMIT FINAL ANSWER' : 'SUBMIT ANSWER'}
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
+          {gameState.marcieFeedback && (
+            <View style={styles.marcieContainer}>
+              <Typography style={styles.marcieAvatar}>👩‍⚕️</Typography>
+              <Typography variant="headerSmall" style={styles.marcieName}>DR. MARCIE LISS</Typography>
+              <GlassCard style={styles.marcieFeedbackContainer}>
+                <Typography variant="bodyMedium" style={styles.marcieFeedback}>
+                  "{gameState.marcieFeedback}"
+                </Typography>
+              </GlassCard>
             </View>
+          )}
+
+          <View style={styles.answerSection}>
+            <Typography variant="bodyMedium" style={styles.answerPrompt}>Your Answer:</Typography>
+            <TextInput
+              style={styles.answerInput}
+              placeholder="Type your answer..."
+              placeholderTextColor={COLORS.textSecondary}
+              multiline
+              numberOfLines={4}
+              value={gameState.activeChallenge}
+              onChangeText={(text) => setGameState(prev => ({ 
+                ...prev, 
+                activeChallenge: text 
+              }))}
+            />
+
+            <SquishyButton 
+              title={gameState.finalJeopardy ? 'SUBMIT FINAL ANSWER' : 'SUBMIT ANSWER'}
+              onPress={() => submitAnswer(gameState.activeChallenge)}
+            />
           </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    </ScreenLayout>
   );
 };
 
-const JeopardyTile = ({ points, category, onPress, answered, isDailyDouble }) => (
-  <TouchableOpacity
+const JeopardyTile = ({ points, category, onPress, answered, isDailyDouble }: { points: number, category: string, onPress: (cat: string, pts: number) => void, answered: boolean, isDailyDouble: boolean }) => (
+  <SquishyButton
+    title={answered ? '✅' : `$${points}`}
+    onPress={() => !answered && onPress(category, points)}
+    disabled={answered}
+    variant={answered ? 'ghost' : 'primary'}
     style={[
       styles.tile, 
       answered && styles.tileAnswered,
       isDailyDouble && styles.tileDailyDouble
     ]}
-    onPress={() => !answered && onPress(category, points)}
-    disabled={answered}
-    activeOpacity={0.8}
-  >
-    {answered ? (
-      <Text style={styles.tileAnsweredIcon}>✅</Text>
-    ) : (
-      <View style={styles.tileContent}>
-        <Text style={styles.tileText}>${points}</Text>
-        {isDailyDouble && <Text style={styles.tileDailyDoubleIcon}>🎯</Text>}
-      </View>
-    )}
-  </TouchableOpacity>
+  />
 );
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  backgroundGradient: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  scrollContent: {
-    paddingBottom: SPACING.xl,
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   loadingText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
-    marginTop: SPACING.md,
+    marginTop: SPACING.medium,
   },
   
   // Intro styles
   introContainer: {
-    paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.xl,
+    paddingTop: SPACING.xlarge,
     alignItems: 'center',
   },
   mainTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
     textAlign: 'center',
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.small,
     textTransform: 'uppercase',
   },
   titleHighlight: {
-    color: COLORS.accentYellow,
+    color: COLORS.brightYellow,
   },
   subtitle: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
     textAlign: 'center',
-    marginBottom: SPACING.xl,
-    lineHeight: 22,
+    marginBottom: SPACING.xxlarge,
   },
   introCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.regular,
   },
   introText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    marginBottom: SPACING.md,
-    lineHeight: 22,
+    marginBottom: SPACING.medium,
   },
   introWarning: {
-    ...TYPOGRAPHY.caption,
-    color: COLORS.accentYellow,
+    color: COLORS.brightYellow,
     fontWeight: '600',
   },
   categoriesPreview: {
-    marginBottom: SPACING.xl,
+    marginBottom: SPACING.xxlarge,
+    width: '100%',
   },
   categoryPreviewItem: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius,
-    padding: SPACING.sm,
-    marginVertical: SPACING.xs,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    marginVertical: SPACING.tiny,
   },
   categoryPreviewText: {
-    ...TYPOGRAPHY.caption,
-    color: COLORS.textSecondary,
     textAlign: 'center',
-    textTransform: 'uppercase',
-    fontWeight: '600',
-  },
-  startButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 5,
-    shadowColor: COLORS.primaryGradientStart,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-  },
-  startButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  startButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 1,
     textTransform: 'uppercase',
   },
   
   // Board styles
   gameContainer: {
-    paddingHorizontal: SPACING.md,
-    paddingTop: SPACING.lg,
+    paddingTop: SPACING.regular,
   },
   scoreContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.regular,
     alignItems: 'center',
   },
   scoreText: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.textSecondary,
     textTransform: 'uppercase',
-    marginBottom: SPACING.xs,
+    marginBottom: SPACING.tiny,
   },
   scoreValue: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.accentYellow,
-    fontSize: 32,
+    color: COLORS.brightYellow,
   },
   gameBoard: {
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderRadius: SIZES.borderRadius,
-    padding: SPACING.sm,
+    backgroundColor: COLORS.backgroundPrimary,
+    borderRadius: BORDER_RADIUS.medium,
+    padding: SPACING.small,
     borderWidth: 2,
-    borderColor: COLORS.accentYellow,
+    borderColor: COLORS.brightYellow,
   },
   headerRow: {
     flexDirection: 'row',
-    marginBottom: SPACING.xs,
+    marginBottom: SPACING.tiny,
   },
   headerCell: {
     flex: 1,
-    padding: SPACING.sm,
-    margin: 1,
-    backgroundColor: COLORS.accentBlue,
-    borderRadius: 4,
+    padding: SPACING.small,
+    margin: SPACING.micro,
+    backgroundColor: COLORS.gameShow,
+    borderRadius: BORDER_RADIUS.small,
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 60,
   },
   headerText: {
-    ...TYPOGRAPHY.small,
     color: COLORS.textPrimary,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -691,86 +566,48 @@ const styles = StyleSheet.create({
   tile: {
     flex: 1,
     aspectRatio: 1,
-    margin: 1,
-    backgroundColor: COLORS.accentBlue,
-    borderRadius: 4,
+    margin: SPACING.micro,
+    backgroundColor: COLORS.gameShow,
+    borderRadius: BORDER_RADIUS.small,
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: 60,
   },
   tileAnswered: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: COLORS.borderSubtle,
   },
   tileDailyDouble: {
     borderWidth: 2,
-    borderColor: COLORS.accentYellow,
-  },
-  tileContent: {
-    alignItems: 'center',
-  },
-  tileText: {
-    ...TYPOGRAPHY.title,
-    color: COLORS.textPrimary,
-    fontWeight: 'bold',
-  },
-  tileAnsweredIcon: {
-    fontSize: 24,
-  },
-  tileDailyDoubleIcon: {
-    fontSize: 12,
-    color: COLORS.accentYellow,
-    marginTop: 2,
+    borderColor: COLORS.brightYellow,
   },
   finalJeopardyButton: {
-    marginTop: SPACING.lg,
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 5,
-    shadowColor: COLORS.accentYellow,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-  },
-  finalJeopardyButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  finalJeopardyButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.background,
-    fontWeight: '600',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
+    marginTop: SPACING.regular,
   },
   
   // Challenge styles
   challengeContainer: {
-    paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.lg,
+    paddingTop: SPACING.regular,
   },
   dailyDoubleBanner: {
-    backgroundColor: COLORS.accentYellow,
-    padding: SPACING.md,
-    borderRadius: SIZES.borderRadius,
-    marginBottom: SPACING.lg,
+    backgroundColor: COLORS.brightYellow,
+    padding: SPACING.medium,
+    borderRadius: BORDER_RADIUS.medium,
+    marginBottom: SPACING.regular,
     alignItems: 'center',
   },
   dailyDoubleText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.background,
+    color: COLORS.backgroundPrimary,
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   finalJeopardyBanner: {
-    backgroundColor: COLORS.accentOrange,
-    padding: SPACING.md,
-    borderRadius: SIZES.borderRadius,
-    marginBottom: SPACING.lg,
+    backgroundColor: COLORS.warmOrange,
+    padding: SPACING.medium,
+    borderRadius: BORDER_RADIUS.medium,
+    marginBottom: SPACING.regular,
     alignItems: 'center',
   },
   finalJeopardyText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textPrimary,
     fontWeight: 'bold',
     textTransform: 'uppercase',
@@ -779,94 +616,57 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.regular,
   },
   challengeCategory: {
-    ...TYPOGRAPHY.title,
-    color: COLORS.textPrimary,
     textTransform: 'uppercase',
   },
   challengePoints: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.accentYellow,
+    color: COLORS.brightYellow,
   },
   challengeContent: {
-    marginBottom: SPACING.xl,
+    marginBottom: SPACING.xxlarge,
   },
   challengeText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    marginBottom: SPACING.lg,
-    lineHeight: 22,
+    marginBottom: SPACING.regular,
   },
   marcieContainer: {
     alignItems: 'center',
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.regular,
   },
   marcieAvatar: {
-    fontSize: 48,
-    marginBottom: SPACING.sm,
+    fontSize: TYPOGRAPHY.fontSize.displayLarge,
+    marginBottom: SPACING.small,
   },
   marcieName: {
-    ...TYPOGRAPHY.title,
-    color: COLORS.textPrimary,
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.small,
     textTransform: 'uppercase',
   },
   marcieFeedbackContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    padding: SPACING.md,
-    borderRadius: SIZES.borderRadius * 2,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    width: '100%',
   },
   marcieFeedback: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.accentRose,
+    color: COLORS.rosePink,
     fontStyle: 'italic',
     textAlign: 'center',
-    lineHeight: 22,
   },
   answerSection: {
-    marginBottom: SPACING.xl,
+    marginBottom: SPACING.xxlarge,
   },
   answerPrompt: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.small,
   },
   answerInput: {
-    ...TYPOGRAPHY.body,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: COLORS.backgroundInput,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
+    borderColor: COLORS.borderSubtle,
+    borderRadius: BORDER_RADIUS.xlarge,
+    padding: SPACING.regular,
     color: COLORS.textPrimary,
     minHeight: 120,
     textAlignVertical: 'top',
-    marginBottom: SPACING.lg,
-  },
-  submitAnswerButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 5,
-    shadowColor: COLORS.primaryGradientStart,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-  },
-  submitAnswerButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  submitAnswerButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
+    marginBottom: SPACING.regular,
   },
 });
 

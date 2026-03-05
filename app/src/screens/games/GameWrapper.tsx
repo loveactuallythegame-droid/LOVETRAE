@@ -1,14 +1,16 @@
-
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native'; // Added Text for error display
+import { View, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Asset } from 'expo-asset';
 import { RadialGradient } from 'expo-linear-gradient'; 
 import { useGameContent } from '../../lib/useGameContent';
 import GlobalHeader from '../../components/layout/GlobalHeader';
 import MarcieHost from '../../components/gameplay/MarcieHost';
+import { ScreenLayout, Typography } from '../../components/ui';
+import { COLORS } from '../../theme';
 
 // A map to associate game IDs with their specific assets
-const gameAssetMap = {
+const gameAssetMap: Record<string, any[]> = {
   '6-second-hug': [
     require('../../../assets/images/hugging_couple.png'),
     require('../../../assets/lottie/marcie_talking.json')
@@ -20,7 +22,12 @@ const gameAssetMap = {
   // ... other games
 };
 
-const GameWrapper = ({ coupleId, gameSessionId }) => {
+interface GameWrapperProps {
+  coupleId: string;
+  gameSessionId: string;
+}
+
+const GameWrapper = ({ coupleId, gameSessionId }: GameWrapperProps) => {
   const { gameContent, isLoading, error } = useGameContent(coupleId, gameSessionId);
   const [assetsLoaded, setAssetsLoaded] = useState(false);
 
@@ -48,32 +55,40 @@ const GameWrapper = ({ coupleId, gameSessionId }) => {
   }
 
   if (error) {
-    return <Text style={{color: 'white'}}>{error}</Text>; // Display errors with white text for dark background
+    return (
+      <ScreenLayout showHeader={false} scrollable={false}>
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+          <Typography variant="body" color={COLORS.textPrimary}>{error}</Typography>
+        </SafeAreaView>
+      </ScreenLayout>
+    );
   }
 
-  const themeColor = gameContent.ui_theme_color || '#5C1459'; // Default to a dark purple
+  const themeColor = gameContent.ui_theme_color || COLORS.healingHospital;
 
   return (
-    <View style={styles.container}>
-      <RadialGradient
-        style={StyleSheet.absoluteFill}
-        colors={[`${themeColor}50`, '#000000']}
-        stops={[0.1, 0.7]}
-        center={[0.5, 0.2]}
-      />
-      <GlobalHeader progress={50} /> 
-      <View style={styles.hostContainer}>
-        <MarcieHost state={'talking'} />
-      </View>
-      {/* Your actual game components will go here */}
-    </View>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <RadialGradient
+          style={StyleSheet.absoluteFill}
+          colors={[`${themeColor}50`, COLORS.backgroundPrimary]}
+          stops={[0.1, 0.7]}
+          center={[0.5, 0.2]}
+        />
+        <GlobalHeader progress={50} /> 
+        <View style={styles.hostContainer}>
+          <MarcieHost state={'talking'} />
+        </View>
+        {/* Your actual game components will go here */}
+      </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: COLORS.backgroundPrimary,
   },
   hostContainer: {
     flex: 1,

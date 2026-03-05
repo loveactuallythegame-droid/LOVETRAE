@@ -1,97 +1,158 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard, SquishyButton, RadialGradientBackground } from '../../components/ui';
+import { COLORS, GRADIENTS, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const flags = [
-    { text: 'Bad with money', icon: 'payments', color: '#fbbf24' },
-    { text: 'Late for everything', icon: 'schedule', color: '#f97316' },
-    { text: 'Always on their phone', icon: 'smartphone', color: '#2dd4bf' },
-    { text: 'Workaholic', icon: 'work', color: '#0d9488' },
-    { text: 'Love bombing', icon: 'favorite', color: '#ec4899' },
-    { text: 'Hot & Cold', icon: 'thermostat', color: '#a855f7' },
+  { text: 'Bad with money', icon: 'card', color: COLORS.brightYellow },
+  { text: 'Late for everything', icon: 'time', color: COLORS.warmOrange },
+  { text: 'Always on their phone', icon: 'phone-portrait', color: COLORS.mintGreen },
+  { text: 'Workaholic', icon: 'briefcase', color: COLORS.aquaTeal },
+  { text: 'Love bombing', icon: 'heart', color: COLORS.vibrantPink },
+  { text: 'Hot & Cold', icon: 'thermometer', color: COLORS.lavenderPurple },
 ];
 
-const RedFlagTile = ({ text, icon, color, isSelected, onPress }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.tile, isSelected && styles.selectedTile]}>
-        {/* Icon goes here, color would be applied */}
-        <Text style={styles.tileText}>{text}</Text>
-        {isSelected && <View style={styles.checkIcon} /> /* Checkmark icon */}
-    </TouchableOpacity>
+const RedFlagTile = ({ text, icon, color, isSelected, onPress }: any) => (
+  <SquishyButton 
+    onPress={onPress} 
+    style={[styles.tile, isSelected && { borderColor: color }]}
+  >
+    <Ionicons name={icon} size={24} color={color} />
+    <Typography variant="body" style={styles.tileText}>{text}</Typography>
+    {isSelected && (
+      <View style={[styles.checkIcon, { backgroundColor: color }]}>
+        <Ionicons name="checkmark" size={16} color={COLORS.textPrimary} />
+      </View>
+    )}
+  </SquishyButton>
 );
 
 const OnboardingRedFlagScreen = () => {
-    const [selectedFlags, setSelectedFlags] = useState(['Late for everything', 'Love bombing']);
+  const [selectedFlags, setSelectedFlags] = useState<string[]>([]);
 
-    const toggleFlag = (flagText) => {
-        setSelectedFlags(prev => 
-            prev.includes(flagText) ? prev.filter(f => f !== flagText) : [...prev, flagText]
-        );
-    };
-
-    return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#0a0a0c', 'rgba(109, 40, 217, 0.25)', 'rgba(238, 43, 141, 0.2)', '#0a0a0c']} style={styles.background} />
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-
-                <View style={styles.progressHeader}>
-                    <Text style={styles.progressSubtitle}>Assessment Phase</Text>
-                    <Text style={styles.progressStep}>Step 2 / 5</Text>
-                </View>
-                <View style={styles.progressBar}>
-                    <LinearGradient colors={['#2dd4bf', '#a855f7']} start={{x:0, y:0}} end={{x:1, y:0}} style={styles.progressBarFill} />
-                </View>
-
-                <View style={styles.mainPanel}>
-                    <Text style={styles.title}>What was the first "red flag" you ignored?</Text>
-                    <Text style={styles.subtitle}>Self-awareness is the first step toward healing. Select all that apply.</Text>
-
-                    <View style={styles.tilesContainer}>
-                        {flags.map(flag => (
-                            <RedFlagTile 
-                                key={flag.text} 
-                                {...flag} 
-                                isSelected={selectedFlags.includes(flag.text)}
-                                onPress={() => toggleFlag(flag.text)}
-                            />
-                        ))}
-                    </View>
-
-                    <TouchableOpacity style={styles.submitButton}>
-                         <LinearGradient colors={['#fbbf24', '#f97316']} start={{x:0, y:0}} end={{x:1, y:0}} style={StyleSheet.absoluteFill} />
-                        <Text style={styles.submitButtonText}>Submit Selection</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={styles.skipButton}>None of these apply to me</Text>
-                    </TouchableOpacity>
-                </View>
-
-            </ScrollView>
-        </SafeAreaView>
+  const toggleFlag = (flagText: string) => {
+    setSelectedFlags(prev => 
+      prev.includes(flagText) ? prev.filter(f => f !== flagText) : [...prev, flagText]
     );
+  };
+
+  return (
+    <ScreenLayout>
+      <RadialGradientBackground />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.progressHeader}>
+          <Typography variant="label" style={styles.progressSubtitle}>Assessment Phase</Typography>
+          <Typography variant="caption" style={styles.progressStep}>Step 2 / 5</Typography>
+        </View>
+        <View style={styles.progressBar}>
+          <View style={[styles.progressBarFill, { width: '40%' }]} />
+        </View>
+
+        <GlassCard style={styles.mainPanel}>
+          <Typography variant="header" style={styles.title}>What was the first "red flag" you ignored?</Typography>
+          <Typography variant="body" style={styles.subtitle}>Self-awareness is the first step toward healing. Select all that apply.</Typography>
+
+          <View style={styles.tilesContainer}>
+            {flags.map(flag => (
+              <RedFlagTile 
+                key={flag.text} 
+                {...flag} 
+                isSelected={selectedFlags.includes(flag.text)}
+                onPress={() => toggleFlag(flag.text)}
+              />
+            ))}
+          </View>
+
+          <SquishyButton>
+            <Typography variant="button">Submit Selection</Typography>
+          </SquishyButton>
+          
+          <SquishyButton variant="ghost" style={styles.skipButton}>
+            <Typography variant="caption" style={styles.skipText}>None of these apply to me</Typography>
+          </SquishyButton>
+        </GlassCard>
+      </ScrollView>
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#0a0a0c' },
-    background: { ...StyleSheet.absoluteFillObject },
-    scrollContent: { padding: 24, paddingVertical: 48 },
-    progressHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-    progressSubtitle: { color: '#2dd4bf', textTransform: 'uppercase', fontSize: 12, fontWeight: 'bold', letterSpacing: 1 },
-    progressStep: { color: 'rgba(255,255,255,0.6)' },
-    progressBar: { height: 6, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 3, marginBottom: 24 },
-    progressBarFill: { width: '40%', height: '100%', borderRadius: 3 },
-    mainPanel: { backgroundColor: 'rgba(18, 18, 22, 0.9)', borderRadius: 40, padding: 24, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    title: { color: '#FFF', fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 },
-    subtitle: { color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginBottom: 24 },
-    tilesContainer: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginBottom: 24 },
-    tile: { width: '48%', aspectRatio: 1.2, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 24, padding: 16, marginBottom: 16, justifyContent: 'space-between', borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    selectedTile: { borderColor: '#f97316' },
-    tileText: { color: '#FFF', fontSize: 16, fontWeight: '600' },
-    checkIcon: { alignSelf: 'flex-end', width: 20, height: 20, borderRadius: 10, backgroundColor: '#f97316' }, // Placeholder
-    submitButton: { paddingVertical: 16, borderRadius: 16, alignItems: 'center', overflow: 'hidden', marginBottom: 12 },
-    submitButtonText: { color: '#FFF', fontSize: 18, fontWeight: 'bold' },
-    skipButton: { color: 'rgba(255,255,255,0.4)', textAlign: 'center' },
+  scrollContent: { 
+    padding: SPACING.screenPadding, 
+    paddingVertical: SPACING.xlarge 
+  },
+  progressHeader: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    marginBottom: SPACING.small 
+  },
+  progressSubtitle: { 
+    color: COLORS.mintGreen 
+  },
+  progressStep: { 
+    color: COLORS.textSecondary 
+  },
+  progressBar: { 
+    height: 6, 
+    backgroundColor: COLORS.textPrimary + '0D', 
+    borderRadius: BORDER_RADIUS.small, 
+    marginBottom: SPACING.xlarge 
+  },
+  progressBarFill: { 
+    height: '100%', 
+    backgroundColor: COLORS.vibrantPink, 
+    borderRadius: BORDER_RADIUS.small 
+  },
+  mainPanel: { 
+    padding: SPACING.xlarge 
+  },
+  title: { 
+    textAlign: 'center', 
+    marginBottom: SPACING.small 
+  },
+  subtitle: { 
+    textAlign: 'center', 
+    marginBottom: SPACING.xlarge,
+    color: COLORS.textSecondary,
+  },
+  tilesContainer: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    justifyContent: 'space-between', 
+    marginBottom: SPACING.xlarge 
+  },
+  tile: { 
+    width: '48%', 
+    aspectRatio: 1.2, 
+    backgroundColor: COLORS.backgroundInput, 
+    borderRadius: BORDER_RADIUS.xlarge, 
+    padding: SPACING.regular, 
+    marginBottom: SPACING.regular, 
+    justifyContent: 'space-between', 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle 
+  },
+  tileText: { 
+    color: COLORS.textPrimary 
+  },
+  checkIcon: { 
+    alignSelf: 'flex-end', 
+    width: 24, 
+    height: 24, 
+    borderRadius: BORDER_RADIUS.round / 2, 
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  skipButton: { 
+    marginTop: SPACING.regular 
+  },
+  skipText: { 
+    textAlign: 'center',
+    color: COLORS.textHint,
+  },
 });
 
 export default OnboardingRedFlagScreen;

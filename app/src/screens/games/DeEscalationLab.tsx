@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 
 const SCENARIOS = [
     {
@@ -69,29 +71,29 @@ export default function DeEscalationLab({ route, navigation }: any) {
     const current = SCENARIOS[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
-            <GlassCard>
+        <ScrollView style={{ gap: SPACING.regular }} showsVerticalScrollIndicator={false}>
+            <GlassCard padding="large">
                 {/* Dr. Marcie Section */}
                 <View style={styles.drMarcieSection}>
                     <View style={styles.avatarContainer}>
                         <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                     </View>
                     <View style={styles.quoteBox}>
-                        <Text style={styles.quoteText} variant="sass">Learn to de-escalate conflicts! Practice naming emotions instead of reacting.</Text>
+                        <Typography variant="sass">Learn to de-escalate conflicts! Practice naming emotions instead of reacting.</Typography>
                     </View>
                 </View>
 
-                <Text variant="header">Scenario {round + 1}</Text>
-                <Text variant="body">{current.event}</Text>
-                <View style={{ flexDirection: 'row', gap: 10, marginVertical: 10 }}>
-                    <View style={{ flex: 1, backgroundColor: 'rgba(255,255,255,0.05)', padding: 8, borderRadius: 8 }}>
-                        <Text variant="keyword">Fact</Text>
-                        <Text variant="body" style={{ fontSize: 12 }}>{current.fact}</Text>
-                    </View>
-                    <View style={{ flex: 1, backgroundColor: 'rgba(255,255,255,0.05)', padding: 8, borderRadius: 8 }}>
-                        <Text variant="keyword">Injury</Text>
-                        <Text variant="body" style={{ fontSize: 12 }}>{current.injury}</Text>
-                    </View>
+                <Typography variant="h2" style={styles.scenarioTitle}>Scenario {round + 1}</Typography>
+                <Typography variant="body" style={styles.scenarioText}>{current.event}</Typography>
+                <View style={styles.factInjuryContainer}>
+                    <GlassCard style={styles.factInjuryBox} padding="small">
+                        <Typography variant="label">Fact</Typography>
+                        <Typography variant="body" style={styles.smallText}>{current.fact}</Typography>
+                    </GlassCard>
+                    <GlassCard style={styles.factInjuryBox} padding="small">
+                        <Typography variant="label">Injury</Typography>
+                        <Typography variant="body" style={styles.smallText}>{current.injury}</Typography>
+                    </GlassCard>
                 </View>
 
                 {current.opts.map(o => (
@@ -99,19 +101,20 @@ export default function DeEscalationLab({ route, navigation }: any) {
                         key={o.id}
                         onPress={() => setChoice(o.id)}
                         style={[styles.opt, choice === o.id ? styles.selected : {}]}
+                        variant={choice === o.id ? 'primary' : 'ghost'}
                     >
-                        <Text variant="body" style={{ color: choice === o.id ? '#120016' : '#fff' }}>{o.text}</Text>
+                        <Typography variant="body" style={{ color: choice === o.id ? COLORS.backgroundPrimary : COLORS.textPrimary }}>{o.text}</Typography>
                     </SquishyButton>
                 ))}
 
-                <SquishyButton onPress={submit} style={styles.submitBtn}>
+                <SquishyButton onPress={submit} style={styles.submitBtn} disabled={!choice}>
                     <LinearGradient
-                        colors={['#db147c', '#f05d68']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
+                        colors={choice ? GRADIENTS.primary.colors : ['#666', '#666']}
+                        start={GRADIENTS.primary.start}
+                        end={GRADIENTS.primary.end}
                         style={styles.gradientButton}
                     >
-                        <Text variant="header" style={{ color: '#ffffff' }}>De-Escalate</Text>
+                        <Typography variant="h3" style={{ color: COLORS.textPrimary }}>De-Escalate</Typography>
                     </LinearGradient>
                 </SquishyButton>
             </GlassCard>
@@ -130,73 +133,89 @@ export default function DeEscalationLab({ route, navigation }: any) {
         playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
     }), [gameId, round]);
 
-    return <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />;
+    return (
+        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+            <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-    opt: {
-        padding: 14,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 8,
-        marginBottom: 8,
-        borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)'
-    },
-    selected: {
-        backgroundColor: '#37cf97',
-        borderColor: '#37cf97'
-    },
-    submitBtn: {
-        marginTop: 20,
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    gradientButton: {
+    container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 12,
-        paddingVertical: 16,
+        backgroundColor: COLORS.backgroundPrimary,
     },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        marginBottom: 16
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular
     },
     avatarContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        width: SPACING.xxlarge + SPACING.small,
+        height: SPACING.xxlarge + SPACING.small,
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular
     },
     avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: SPACING.xxlarge,
+        height: SPACING.xxlarge,
+        borderRadius: BORDER_RADIUS.round,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
         backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
-    }
+    scenarioTitle: {
+        marginBottom: SPACING.small,
+    },
+    scenarioText: {
+        marginBottom: SPACING.regular,
+    },
+    factInjuryContainer: {
+        flexDirection: 'row', 
+        gap: SPACING.small, 
+        marginVertical: SPACING.regular 
+    },
+    factInjuryBox: {
+        flex: 1,
+    },
+    smallText: {
+        fontSize: TYPOGRAPHY.fontSize.label,
+    },
+    opt: {
+        padding: SPACING.regular,
+        backgroundColor: 'rgba(255,255,255,0.1)',
+        borderRadius: BORDER_RADIUS.medium,
+        marginBottom: SPACING.small,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle
+    },
+    selected: {
+        backgroundColor: COLORS.success,
+        borderColor: COLORS.success
+    },
+    submitBtn: {
+        marginTop: SPACING.xlarge,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.large,
+        alignItems: 'center',
+        marginBottom: SPACING.xlarge,
+        ...SHADOWS.buttonGlow
+    },
+    gradientButton: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: BORDER_RADIUS.large,
+        paddingVertical: SPACING.regular,
+    },
 });

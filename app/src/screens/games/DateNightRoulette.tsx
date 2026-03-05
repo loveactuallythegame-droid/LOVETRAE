@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 export default function DateNightRoulette({ navigation }: any) {
     useEffect(() => {
@@ -10,125 +11,115 @@ export default function DateNightRoulette({ navigation }: any) {
     }, []);
 
     return (
-        <LinearGradient colors={['#2A0040', '#000000']} style={styles.container}>
-            <ScrollView contentContainerStyle={styles.content}>
-                <View style={styles.header}>
-                    <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-                        <Text variant="body">Back</Text>
-                    </SquishyButton>
-                    <Text variant="header" style={styles.title}>Date Night Roulette</Text>
-                </View>
-
-                {/* Dr. Marcie Section */}
-                <View style={styles.drMarcieSection}>
-                    <View style={styles.avatarContainer}>
-                        <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+                <ScrollView contentContainerStyle={styles.content}>
+                    <View style={styles.header}>
+                        <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
+                            <Typography variant="body">Back</Typography>
+                        </SquishyButton>
+                        <Typography variant="h1" style={styles.title}>Date Night Roulette</Typography>
                     </View>
-                    <View style={styles.quoteBox}>
-                        <Text style={styles.quoteText} variant="sass">Spin the wheel for unique date night ideas! Strengthen your connection with creative activities.</Text>
+
+                    {/* Dr. Marcie Section */}
+                    <View style={styles.drMarcieSection}>
+                        <View style={styles.avatarContainer}>
+                            <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
+                        </View>
+                        <View style={styles.quoteBox}>
+                            <Typography variant="sass">Spin the wheel for unique date night ideas! Strengthen your connection with creative activities.</Typography>
+                        </View>
                     </View>
-                </View>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Type: Wheel spin + filters</Text>
-                    <Text variant="body">Mechanics: Spin → "Picnic in car, 8 p.m., only songs from 2007."</Text>
-                </GlassCard>
+                    <GlassCard style={styles.card}>
+                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Wheel spin + filters</Typography>
+                        <Typography variant="body">Mechanics: Spin → "Picnic in car, 8 p.m., only songs from 2007."</Typography>
+                    </GlassCard>
 
-                <GlassCard style={styles.card}>
-                    <Text variant="instructions" style={{ marginBottom: 10 }}>Scoring</Text>
-                    <Text variant="body">
-                        ✅ Did it = +30{'\n'}
-                        ✅ Posted proof (no faces) = +10
-                    </Text>
-                </GlassCard>
+                    <GlassCard style={styles.card}>
+                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+                        <Typography variant="body">
+                            ✅ Did it = +30{'\n'}
+                            ✅ Posted proof (no faces) = +10
+                        </Typography>
+                    </GlassCard>
 
-                <View style={styles.actionArea}>
-                    <SquishyButton onPress={() => alert('Spinning Wheel...')} style={styles.playBtn}>
-                        <LinearGradient
-                            colors={['#db147c', '#f05d68']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
-                            style={styles.gradientButton}
-                        >
-                            <Text variant="header" style={{ color: '#ffffff' }}>Spin Wheel</Text>
-                        </LinearGradient>
-                    </SquishyButton>
-                </View>
-            </ScrollView>
-        </LinearGradient>
+                    <View style={styles.actionArea}>
+                        <SquishyButton onPress={() => alert('Spinning Wheel...')} style={styles.playBtn}>
+                            <Typography variant="h2" color={COLORS.textPrimary}>Spin Wheel</Typography>
+                        </SquishyButton>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
+        </ScreenLayout>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
-    content: { padding: 20, gap: 20 },
-    header: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 40 },
-    backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-    title: { 
-        fontSize: 22, 
-        color: '#ffffff', 
+    container: { 
         flex: 1,
-        textShadowColor: 'rgba(219, 20, 124, 0.7)',
-        textShadowOffset: {width: 0, height: 0},
-        textShadowRadius: 10,
+        backgroundColor: COLORS.backgroundPrimary,
+    },
+    content: { 
+        padding: SPACING.screenPadding, 
+        gap: SPACING.regular 
+    },
+    header: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        gap: SPACING.small, 
+        marginTop: SPACING.regular 
+    },
+    backBtn: { 
+        paddingHorizontal: SPACING.regular, 
+        paddingVertical: SPACING.small, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.large 
+    },
+    title: { 
+        flex: 1,
     },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        marginBottom: 20
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular
     },
     avatarContainer: {
         width: 50,
         height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular
     },
     avatar: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: BORDER_RADIUS.xxlarge,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
-    },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular
     },
     card: { 
-        padding: 20,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        padding: SPACING.cardPadding,
+        backgroundColor: COLORS.backgroundCard,
         borderWidth: 1,
-        borderColor: 'rgba(219, 20, 124, 0.3)',
+        borderColor: COLORS.borderSubtle,
     },
-    actionArea: { marginTop: 40, alignItems: 'center' },
+    actionArea: { 
+        marginTop: SPACING.xxlarge, 
+        alignItems: 'center' 
+    },
     playBtn: { 
         width: '80%', 
-        paddingVertical: 15, 
-        borderRadius: 20, 
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        ...SHADOWS.buttonGlow,
     },
-    gradientButton: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 20,
-        paddingVertical: 15,
-    }
 });

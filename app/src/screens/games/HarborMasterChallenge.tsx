@@ -11,14 +11,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
 
 // Components
-import { GlassCard, Text } from '../../components/ui';
+import { GlassCard, Typography, ScreenLayout, SquishyButton } from '../../components/ui';
+
+// Theme
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 // Game Constants
 const GAME_ID = 'harbor-storm';
@@ -217,274 +219,246 @@ const HarborMasterChallenge: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <View style={styles.container}>
-                <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                    <Text style={styles.loadingText}>Entering the Harbor...</Text>
-                </LinearGradient>
-            </View>
+            <ScreenLayout showHeader={false} scrollable={false}>
+                <View style={styles.loadingContainer}>
+                    <Typography variant="h2" style={styles.loadingText}>Entering the Harbor...</Typography>
+                </View>
+            </ScreenLayout>
         );
     }
 
     return (
-        <View style={styles.container}>
-            <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <Text style={styles.title}>Harbor Master's Challenge</Text>
-                        <Text style={styles.subtitle}>Navigate emotional storms together</Text>
-                        <View style={styles.scoreRow}>
-                            <Text style={styles.scoreText}>Score: {score}</Text>
-                            {isSyncing && <Text style={styles.syncText}>💾</Text>}
-                        </View>
-                        <Text style={styles.roundText}>
-                            Scenario {round + 1} of {SCENARIOS.length}
-                        </Text>
-                    </View>
+        <ScreenLayout 
+            showHeader={false} 
+            scrollable={true}
+            contentStyle={styles.content}
+        >
+            {/* Header */}
+            <View style={styles.header}>
+                <Typography variant="h1" style={styles.title}>The Love Arcade</Typography>
+                <Typography variant="h2" style={styles.subtitle}>Navigate emotional storms together</Typography>
+                <View style={styles.scoreRow}>
+                    <Typography variant="caption" style={styles.scoreText}>Score: {score}</Typography>
+                    {isSyncing && <Typography variant="caption">💾</Typography>}
+                </View>
+                <Typography variant="caption" style={styles.roundText}>
+                    Scenario {round + 1} of {SCENARIOS.length}
+                </Typography>
+            </View>
 
-                    {/* Scenario Card */}
-                    <GlassCard style={styles.scenarioCard}>
-                        <Text style={styles.scenarioTitle}>{currentScenario.title}</Text>
-                        <Text style={styles.scenarioDesc}>{currentScenario.desc}</Text>
-                    </GlassCard>
+            {/* Scenario Card */}
+            <GlassCard style={styles.scenarioCard}>
+                <Typography variant="h2" style={styles.scenarioTitle}>{currentScenario.title}</Typography>
+                <Typography variant="body" style={styles.scenarioDesc}>{currentScenario.desc}</Typography>
+            </GlassCard>
 
-                    {/* Partner 1 Choices */}
-                    <Text style={styles.sectionTitle}>🌊 {currentScenario.partner1Choice}</Text>
-                    <View style={styles.choicesContainer}>
-                        {currentScenario.choices.map((choice) => (
-                            <TouchableOpacity
-                                key={`p1-${choice.id}`}
-                                style={[
-                                    styles.choiceButton,
-                                    p1Choice === choice.id && styles.selectedChoice,
-                                    showResults && getChoiceDetails(p1Choice || '')?.healthy && p1Choice === choice.id && styles.healthyChoice,
-                                    showResults && !getChoiceDetails(p1Choice || '')?.healthy && p1Choice === choice.id && styles.unhealthyChoice
-                                ]}
-                                onPress={() => !showResults && setP1(choice.id)}
-                                disabled={showResults}
-                            >
-                                <Text style={[
-                                    styles.choiceText,
-                                    p1Choice === choice.id && styles.selectedText
-                                ]}>
-                                    {choice.text}
-                                </Text>
-                                {showResults && p1Choice === choice.id && (
-                                    <Text style={styles.pointsBadge}>+{choice.points}</Text>
-                                )}
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+            {/* Partner 1 Choices */}
+            <Typography variant="h3" style={styles.sectionTitle}>🌊 {currentScenario.partner1Choice}</Typography>
+            <View style={styles.choicesContainer}>
+                {currentScenario.choices.map((choice) => (
+                    <TouchableOpacity
+                        key={`p1-${choice.id}`}
+                        style={[
+                            styles.choiceButton,
+                            p1Choice === choice.id && styles.selectedChoice,
+                            showResults && getChoiceDetails(p1Choice || '')?.healthy && p1Choice === choice.id && styles.healthyChoice,
+                            showResults && !getChoiceDetails(p1Choice || '')?.healthy && p1Choice === choice.id && styles.unhealthyChoice
+                        ]}
+                        onPress={() => !showResults && setP1(choice.id)}
+                        disabled={showResults}
+                    >
+                        <Typography variant="body" style={[
+                            styles.choiceText,
+                            p1Choice === choice.id && styles.selectedText
+                        ]}>
+                            {choice.text}
+                        </Typography>
+                        {showResults && p1Choice === choice.id && (
+                            <Typography variant="caption" style={styles.pointsBadge}>+{choice.points}</Typography>
+                        )}
+                    </TouchableOpacity>
+                ))}
+            </View>
 
-                    {/* Partner 2 Choices */}
-                    <Text style={styles.sectionTitle}>⚓ {currentScenario.partner2Choice}</Text>
-                    <View style={styles.choicesContainer}>
-                        {currentScenario.choices.map((choice) => (
-                            <TouchableOpacity
-                                key={`p2-${choice.id}`}
-                                style={[
-                                    styles.choiceButton,
-                                    p2Choice === choice.id && styles.selectedChoice,
-                                    showResults && getChoiceDetails(p2Choice || '')?.healthy && p2Choice === choice.id && styles.healthyChoice,
-                                    showResults && !getChoiceDetails(p2Choice || '')?.healthy && p2Choice === choice.id && styles.unhealthyChoice
-                                ]}
-                                onPress={() => !showResults && setP2(choice.id)}
-                                disabled={showResults}
-                            >
-                                <Text style={[
-                                    styles.choiceText,
-                                    p2Choice === choice.id && styles.selectedText
-                                ]}>
-                                    {choice.text}
-                                </Text>
-                                {showResults && p2Choice === choice.id && (
-                                    <Text style={styles.pointsBadge}>+{choice.points}</Text>
-                                )}
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+            {/* Partner 2 Choices */}
+            <Typography variant="h3" style={styles.sectionTitle}>⚓ {currentScenario.partner2Choice}</Typography>
+            <View style={styles.choicesContainer}>
+                {currentScenario.choices.map((choice) => (
+                    <TouchableOpacity
+                        key={`p2-${choice.id}`}
+                        style={[
+                            styles.choiceButton,
+                            p2Choice === choice.id && styles.selectedChoice,
+                            showResults && getChoiceDetails(p2Choice || '')?.healthy && p2Choice === choice.id && styles.healthyChoice,
+                            showResults && !getChoiceDetails(p2Choice || '')?.healthy && p2Choice === choice.id && styles.unhealthyChoice
+                        ]}
+                        onPress={() => !showResults && setP2(choice.id)}
+                        disabled={showResults}
+                    >
+                        <Typography variant="body" style={[
+                            styles.choiceText,
+                            p2Choice === choice.id && styles.selectedText
+                        ]}>
+                            {choice.text}
+                        </Typography>
+                        {showResults && p2Choice === choice.id && (
+                            <Typography variant="caption" style={styles.pointsBadge}>+{choice.points}</Typography>
+                        )}
+                    </TouchableOpacity>
+                ))}
+            </View>
 
-                    {/* Alignment Meter */}
-                    {showResults && (
-                        <GlassCard style={styles.resultCard}>
-                            <Text style={styles.lessonTitle}>💡 Lesson:</Text>
-                            <Text style={styles.lessonText}>{currentScenario.lesson}</Text>
-                        </GlassCard>
-                    )}
+            {/* Alignment Meter */}
+            {showResults && (
+                <GlassCard style={styles.resultCard}>
+                    <Typography variant="h3" style={styles.lessonTitle}>💡 Lesson:</Typography>
+                    <Typography variant="body" style={styles.lessonText}>{currentScenario.lesson}</Typography>
+                </GlassCard>
+            )}
 
-                    {/* Submit Button */}
-                    {!showResults && (
-                        <TouchableOpacity
-                            style={[styles.submitButton, (!p1Choice || !p2Choice) && styles.disabledButton]}
-                            onPress={revealChoices}
-                            disabled={!p1Choice || !p2Choice}
-                        >
-                            <Text style={styles.submitText}>Reveal Choices</Text>
-                        </TouchableOpacity>
-                    )}
+            {/* Submit Button */}
+            {!showResults && (
+                <SquishyButton
+                    onPress={revealChoices}
+                    disabled={!p1Choice || !p2Choice}
+                    style={[styles.submitButton, (!p1Choice || !p2Choice) && styles.disabledButton]}
+                >
+                    <Typography variant="h3">Reveal Choices</Typography>
+                </SquishyButton>
+            )}
 
-                    {/* Session Info */}
-                    {session && (
-                        <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
-                    )}
-                </ScrollView>
-            </LinearGradient>
-        </View>
+            {/* Session Info */}
+            {session && (
+                <Typography variant="caption" style={styles.sessionInfo}>
+                    Session: {session.id.slice(0, 8)}...
+                </Typography>
+            )}
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    content: {
+        padding: SPACING.screenPadding,
+        paddingTop: SPACING.xlarge,
     },
-    background: {
+    loadingContainer: {
         flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    scrollContent: {
-        padding: 20,
-        paddingTop: 60,
+    loadingText: {
+        color: COLORS.textPrimary,
+        textAlign: 'center',
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: SPACING.large,
     },
     title: {
-        fontSize: 26,
-        fontWeight: 'bold',
-        color: '#fff',
+        color: COLORS.textPrimary,
         textAlign: 'center',
     },
     subtitle: {
-        fontSize: 14,
-        color: 'rgba(255,255,255,0.7)',
-        marginTop: 5,
+        color: COLORS.textSecondary,
+        marginTop: SPACING.tiny,
     },
     scoreRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: SPACING.small,
     },
     scoreText: {
-        fontSize: 20,
-        color: '#22d3ee',
-        fontWeight: 'bold',
-    },
-    syncText: {
-        marginLeft: 8,
-        fontSize: 14,
+        color: COLORS.info,
     },
     roundText: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 14,
-        marginTop: 5,
-    },
-    loadingText: {
-        color: '#fff',
-        fontSize: 18,
-        textAlign: 'center',
-        marginTop: 100,
+        color: COLORS.textHint,
+        marginTop: SPACING.tiny,
     },
     scenarioCard: {
-        padding: 20,
-        marginBottom: 20,
+        padding: SPACING.large,
+        marginBottom: SPACING.large,
         backgroundColor: 'rgba(34, 211, 238, 0.1)',
-        borderColor: '#22d3ee',
+        borderColor: COLORS.info,
         borderWidth: 1,
     },
     scenarioTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#22d3ee',
-        marginBottom: 10,
+        color: COLORS.info,
+        marginBottom: SPACING.small,
     },
     scenarioDesc: {
-        fontSize: 14,
-        color: 'rgba(255,255,255,0.9)',
-        lineHeight: 20,
+        color: COLORS.textPrimary,
+        lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
     },
     sectionTitle: {
-        fontSize: 16,
-        color: '#fff',
-        marginBottom: 12,
-        fontWeight: '600',
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.medium,
     },
     choicesContainer: {
-        marginBottom: 20,
+        marginBottom: SPACING.large,
     },
     choiceButton: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 15,
-        borderRadius: 12,
-        marginBottom: 8,
+        backgroundColor: COLORS.backgroundInput,
+        padding: SPACING.medium,
+        borderRadius: BORDER_RADIUS.large,
+        marginBottom: SPACING.small,
         borderWidth: 2,
         borderColor: 'transparent',
     },
     selectedChoice: {
-        borderColor: '#22d3ee',
+        borderColor: COLORS.info,
         backgroundColor: 'rgba(34, 211, 238, 0.2)',
     },
     healthyChoice: {
-        borderColor: '#33DEA5',
+        borderColor: COLORS.success,
         backgroundColor: 'rgba(51, 222, 165, 0.2)',
     },
     unhealthyChoice: {
-        borderColor: '#ff4444',
-        backgroundColor: 'rgba(255, 68, 68, 0.2)',
+        borderColor: COLORS.error,
+        backgroundColor: 'rgba(225, 22, 55, 0.2)',
     },
     choiceText: {
-        color: '#fff',
-        fontSize: 14,
+        color: COLORS.textPrimary,
     },
     selectedText: {
         fontWeight: 'bold',
     },
     pointsBadge: {
         position: 'absolute',
-        right: 10,
-        top: 10,
-        backgroundColor: '#FFD700',
-        color: '#000',
-        padding: 4,
-        borderRadius: 4,
-        fontSize: 12,
-        fontWeight: 'bold',
+        right: SPACING.small,
+        top: SPACING.small,
+        backgroundColor: COLORS.brightYellow,
+        color: COLORS.backgroundPrimary,
+        padding: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.small,
     },
     resultCard: {
-        padding: 15,
-        marginBottom: 20,
-        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+        padding: SPACING.medium,
+        marginBottom: SPACING.large,
+        backgroundColor: 'rgba(255, 239, 31, 0.1)',
     },
     lessonTitle: {
-        color: '#FFD700',
-        fontSize: 14,
-        fontWeight: 'bold',
-        marginBottom: 8,
+        color: COLORS.brightYellow,
+        marginBottom: SPACING.small,
     },
     lessonText: {
-        color: '#fff',
-        fontSize: 14,
+        color: COLORS.textPrimary,
         fontStyle: 'italic',
     },
     submitButton: {
-        backgroundColor: '#22d3ee',
-        paddingVertical: 15,
-        borderRadius: 12,
+        backgroundColor: COLORS.info,
+        paddingVertical: SPACING.medium,
+        borderRadius: BORDER_RADIUS.large,
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: SPACING.small,
     },
     disabledButton: {
         opacity: 0.5,
     },
-    submitText: {
-        color: '#000',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
+        color: COLORS.textDisabled,
         textAlign: 'center',
-        marginTop: 20,
+        marginTop: SPACING.xlarge,
     },
 });
 

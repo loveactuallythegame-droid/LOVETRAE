@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { Text, GlassCard } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { Typography, GlassCard, SquishyButton, RadialGradientBackground } from '../../components/ui';
+import { ScreenLayout } from '../../layout';
+import { COLORS, GRADIENTS, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
 
 export default function OnboardingMeetCute({ navigation }: any) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -49,7 +49,6 @@ export default function OnboardingMeetCute({ navigation }: any) {
     if (currentStep < questions.length - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
-      // Complete onboarding
       navigation.navigate('OnboardingCurrentVibe');
     }
   };
@@ -57,176 +56,119 @@ export default function OnboardingMeetCute({ navigation }: any) {
   const currentQuestion = questions[currentStep];
 
   return (
-    <LinearGradient
-      colors={[theme.COLORS.background, '#392830', theme.COLORS.background]}
-      style={styles.container}
-    >
+    <ScreenLayout>
+      <RadialGradientBackground />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <Text variant="header" style={styles.title}>Your Love Story</Text>
-          <Text variant="body" style={styles.subtitle}>Let's start with the beginning</Text>
+          <Typography variant="header" style={styles.title}>Your Love Story</Typography>
+          <Typography variant="body" style={styles.subtitle}>Let's start with the beginning</Typography>
         </View>
 
         <GlassCard style={styles.card}>
-          <LinearGradient
-            colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.gradientContainer}
-          >
-            <View style={styles.stepIndicator}>
-              <Text variant="small" style={{ color: theme.COLORS.textSecondary }}>
-                Step {currentStep + 1} of {questions.length}
-              </Text>
-            </View>
+          <View style={styles.stepIndicator}>
+            <Typography variant="caption" style={styles.stepText}>
+              Step {currentStep + 1} of {questions.length}
+            </Typography>
+          </View>
 
-            <Text variant="title" style={styles.questionText}>
-              {currentQuestion.question}
-            </Text>
+          <Typography variant="header" style={styles.questionText}>
+            {currentQuestion.question}
+          </Typography>
 
-            <View style={styles.optionsContainer}>
-              {currentQuestion.options.map((option) => (
-                <TouchableOpacity
-                  key={option.value}
-                  style={[
-                    styles.option,
-                    answers[currentQuestion.id] === option.value && styles.selectedOption
-                  ]}
-                  onPress={() => handleAnswer(currentQuestion.id, option.value)}
-                >
-                  <LinearGradient
-                    colors={
-                      answers[currentQuestion.id] === option.value
-                        ? [theme.COLORS.primaryGradientStart, theme.COLORS.primaryGradientEnd]
-                        : ['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.1)']
-                    }
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.optionGradient}
-                  >
-                    <Text
-                      variant="body"
-                      style={{
-                        color:
-                          answers[currentQuestion.id] === option.value
-                            ? theme.COLORS.background
-                            : theme.COLORS.textPrimary
-                      }}
-                    >
-                      {option.label}
-                    </Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              ))}
-            </View>
-
-            <TouchableOpacity
-              style={styles.continueButton}
-              onPress={nextStep}
-              disabled={!answers[currentQuestion.id]}
-            >
-              <LinearGradient
-                colors={[
-                  answers[currentQuestion.id] ? theme.COLORS.primaryGradientStart : '#666',
-                  answers[currentQuestion.id] ? theme.COLORS.primaryGradientEnd : '#666'
+          <View style={styles.optionsContainer}>
+            {currentQuestion.options.map((option) => (
+              <SquishyButton
+                key={option.value}
+                variant={answers[currentQuestion.id] === option.value ? 'primary' : 'secondary'}
+                style={[
+                  styles.option,
+                  answers[currentQuestion.id] === option.value && styles.selectedOption
                 ]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.continueGradient}
+                onPress={() => handleAnswer(currentQuestion.id, option.value)}
               >
-                <Text
-                  variant="header"
+                <Typography
+                  variant="body"
                   style={{
-                    color: answers[currentQuestion.id] ? theme.COLORS.background : theme.COLORS.textHint,
-                    textAlign: 'center'
+                    color: answers[currentQuestion.id] === option.value ? COLORS.textPrimary : COLORS.textSecondary
                   }}
                 >
-                  {currentStep === questions.length - 1 ? 'Finish Setup' : 'Next Question'}
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </LinearGradient>
+                  {option.label}
+                </Typography>
+              </SquishyButton>
+            ))}
+          </View>
+
+          <SquishyButton 
+            onPress={nextStep}
+            disabled={!answers[currentQuestion.id]}
+          >
+            <Typography variant="button">
+              {currentStep === questions.length - 1 ? 'Finish Setup' : 'Next Question'}
+            </Typography>
+          </SquishyButton>
         </GlassCard>
 
-        <GlassCard style={styles.storyCard}>
-          <Text variant="title" style={{ color: theme.COLORS.textPrimary, marginBottom: theme.SPACING.md }}>
+        <GlassCard style={styles.storyCard} variant="outlined">
+          <Typography variant="header" style={{ marginBottom: SPACING.regular }}>
             Your Story So Far
-          </Text>
-          <Text variant="body" style={{ color: theme.COLORS.textSecondary }}>
+          </Typography>
+          <Typography variant="body" style={{ color: COLORS.textSecondary }}>
             {Object.keys(answers).length > 0
               ? "You're building a beautiful narrative together. Every answer adds another layer to your unique love story."
               : "Share your story and help us understand your relationship's foundation."}
-          </Text>
+          </Typography>
         </GlassCard>
       </ScrollView>
-    </LinearGradient>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   content: {
-    padding: theme.SPACING.lg,
-    paddingBottom: theme.SPACING.xxl,
+    padding: SPACING.screenPadding,
+    paddingBottom: SPACING.xxlarge,
   },
   header: {
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.xlarge,
     alignItems: 'center',
   },
   title: {
-    fontSize: theme.TYPOGRAPHY.header.fontSize,
-    color: theme.COLORS.textPrimary,
-    marginBottom: theme.SPACING.sm,
-    textAlign: 'center',
+    marginBottom: SPACING.small,
   },
   subtitle: {
-    fontSize: theme.TYPOGRAPHY.body.fontSize,
-    color: theme.COLORS.textSecondary,
+    color: COLORS.textSecondary,
     textAlign: 'center',
   },
   card: {
-    marginBottom: theme.SPACING.lg,
-  },
-  gradientContainer: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    marginBottom: SPACING.large,
+    padding: SPACING.xlarge,
   },
   stepIndicator: {
     alignSelf: 'flex-end',
-    marginBottom: theme.SPACING.md,
+    marginBottom: SPACING.regular,
+  },
+  stepText: {
+    color: COLORS.textSecondary,
   },
   questionText: {
-    fontSize: theme.TYPOGRAPHY.title.fontSize,
-    color: theme.COLORS.textPrimary,
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.large,
   },
   optionsContainer: {
-    gap: theme.SPACING.md,
-    marginBottom: theme.SPACING.lg,
+    gap: SPACING.regular,
+    marginBottom: SPACING.large,
   },
   option: {
-    borderRadius: theme.SIZES.borderRadius,
-    overflow: 'hidden',
+    borderRadius: BORDER_RADIUS.large,
+    padding: SPACING.regular,
+    backgroundColor: COLORS.backgroundInput,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
   selectedOption: {
-    borderWidth: 2,
-    borderColor: theme.COLORS.success,
-  },
-  optionGradient: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
-  },
-  continueButton: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    overflow: 'hidden',
-  },
-  continueGradient: {
-    padding: theme.SPACING.lg,
-    borderRadius: theme.SIZES.buttonBorderRadius,
+    borderColor: COLORS.vibrantPink,
+    backgroundColor: COLORS.vibrantPink + '1A',
   },
   storyCard: {
-    padding: theme.SPACING.md,
+    padding: SPACING.xlarge,
   },
 });

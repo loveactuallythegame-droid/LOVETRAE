@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const QUESTIONS = [
   { q: "What is their go-to comfort snack this month?", a: ["Chips", "Ice Cream", "Chocolate", "Pizza"], correct: 1 },
@@ -37,14 +39,14 @@ export default function LoveMapSpeedrun({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
-        <Text variant="header">Question {index + 1}</Text>
-        <Text variant="body">{QUESTIONS[index].q}</Text>
+        <Typography variant="h2">Question {index + 1}</Typography>
+        <Typography variant="body">{QUESTIONS[index].q}</Typography>
         <View style={styles.grid}>
           {QUESTIONS[index].a.map((ans, i) => (
-            <SquishyButton key={i} onPress={() => answer(i)} style={styles.option}>
-              <Text variant="body">{ans}</Text>
+            <SquishyButton key={i} onPress={() => answer(i)} style={styles.option} variant="secondary">
+              <Typography variant="body">{ans}</Typography>
             </SquishyButton>
           ))}
         </View>
@@ -64,10 +66,21 @@ export default function LoveMapSpeedrun({ route, navigation }: any) {
     playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
   }), [gameId, index]);
 
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => finish()} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => finish()} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
-  option: { width: '48%', backgroundColor: 'rgba(255,255,255,0.1)', padding: 12, borderRadius: 8, alignItems: 'center' },
+  grid: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    gap: SPACING.small, 
+    marginTop: SPACING.regular,
+  },
+  option: { 
+    width: '48%',
+  },
 });

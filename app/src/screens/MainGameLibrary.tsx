@@ -1,8 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Text } from '../components/ui';
+import { View, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout } from '../layout';
+import { Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
 const categoriesData = [
   {
@@ -10,7 +12,7 @@ const categoriesData = [
     name: "EMOTIONAL CONNECTION",
     description: "SEEN Method focused games",
     icon: "❤️",
-    color: "#FF4081",
+    color: COLORS.vibrantPink,
     games: ["truth-or-trust", "gratitude-cloud", "eye-contact-challenge", "memory-lane-map", "vibe-check"]
   },
   {
@@ -18,7 +20,7 @@ const categoriesData = [
     name: "THE LOVE ARCADE",
     description: "Championship matches of honesty, wit, and emotional parkour",
     icon: "🎮",
-    color: "#FFD700",
+    color: COLORS.brightYellow,
     games: ["truth-teller-tower", "echo-chamber-escape", "intimacy-feud", "relational-jeopardy", "family-forge", "harbor-storm"]
   }
 ];
@@ -33,9 +35,11 @@ export default function MainGameLibrary({ navigation }: any) {
   const renderCategory = ({ item }: { item: any }) => {
     const isFeatured = item.id === 'love-arcade';
     return (
-      <TouchableOpacity 
-        style={[styles.categoryCard, isFeatured && styles.featuredCategory]} 
+      <SquishyButton 
+        variant="ghost"
+        size="large"
         onPress={() => navigation.navigate('CategorySelectionScreen', { categoryId: item.id, categoryName: item.name })}
+        style={[styles.categoryCard, isFeatured && styles.featuredCategory]}
       >
         <LinearGradient
           colors={[`${item.color}30`, `${item.color}10`, 'transparent']}
@@ -45,46 +49,48 @@ export default function MainGameLibrary({ navigation }: any) {
         >
           <View style={styles.glassCardContent}>
             <View style={styles.categoryHeader}>
-              <Text style={styles.categoryTitle}>
+              <Typography variant="h3" style={styles.categoryTitle}>
                 {item.icon} {item.name}
-              </Text>
+              </Typography>
               {isFeatured && (
-                <View style={styles.featuredBadge}>
-                  <Text style={styles.featuredBadgeText}>FEATURED</Text>
+                <View style={[styles.featuredBadge, { backgroundColor: COLORS.brightYellow }]}>
+                  <Typography variant="caption" style={styles.featuredBadgeText}>FEATURED</Typography>
                 </View>
               )}
             </View>
-            <Text style={styles.categoryDescription}>
+            <Typography variant="body" style={styles.categoryDescription}>
               {item.description}
-            </Text>
+            </Typography>
             <View style={styles.gameCountContainer}>
-              <Text style={styles.gameCountText}>
+              <Typography variant="label" style={[styles.gameCountText, { color: COLORS.aquaTeal }]}>
                 {item.games.length} GAMES
-              </Text>
+              </Typography>
             </View>
           </View>
         </LinearGradient>
-      </TouchableOpacity>
+      </SquishyButton>
     );
   };
 
   return (
-    <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>THE LOVE ARCADE</Text>
-        <Text style={styles.subtitle}>COUPLES THERAPY DISGUISED AS A GAME</Text>
-      </View>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <LinearGradient colors={[COLORS.deepCosmicPurple, COLORS.midPurple]} style={styles.container}>
+        <View style={styles.header}>
+          <Typography variant="gameTitle" style={styles.title}>THE LOVE ARCADE</Typography>
+          <Typography variant="label" style={styles.subtitle}>COUPLES THERAPY DISGUISED AS A GAME</Typography>
+        </View>
 
-      <ScrollView style={styles.content}>
-        <FlatList
-          data={categories}
-          renderItem={renderCategory}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.listContent}
-        />
-      </ScrollView>
-    </LinearGradient>
+        <ScrollView style={styles.content}>
+          <FlatList
+            data={categories}
+            renderItem={renderCategory}
+            keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.listContent}
+          />
+        </ScrollView>
+      </LinearGradient>
+    </ScreenLayout>
   );
 }
 
@@ -93,93 +99,79 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    padding: 24,
-    paddingTop: 48,
+    padding: SPACING.screenPadding,
+    paddingTop: SPACING.xxxlarge,
     alignItems: 'center',
   },
   title: {
-    fontSize: 32,
-    color: '#FFF',
+    color: COLORS.textPrimary,
     textAlign: 'center',
-    marginBottom: 8,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    textShadowColor: '#FF4081',
+    marginBottom: SPACING.small,
+    textShadowColor: COLORS.vibrantPink,
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 10,
   },
   subtitle: {
-    fontSize: 14,
-    color: '#D1C4E9',
+    color: COLORS.textSecondary,
     textAlign: 'center',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
   content: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: SPACING.regular,
   },
   listContent: {
-    paddingBottom: 24,
+    paddingBottom: SPACING.xlarge,
   },
   categoryCard: {
-    marginBottom: 16,
-    borderRadius: 20,
+    marginBottom: SPACING.regular,
+    borderRadius: BORDER_RADIUS.xxlarge,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: 'rgba(255, 64, 129, 0.5)',
+    borderColor: COLORS.borderSubtle,
+    padding: 0,
   },
   featuredCategory: {
     transform: [{ scale: 1.03 }],
-    shadowColor: '#FFD700',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
-    elevation: 10,
+    ...SHADOWS.neonSoft,
   },
   categoryGradient: {
-    borderRadius: 20,
+    borderRadius: BORDER_RADIUS.xxlarge,
   },
   glassCardContent: {
-    padding: 24,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: SPACING.screenPadding,
+    backgroundColor: COLORS.backgroundInput,
   },
   categoryHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: SPACING.small,
   },
   categoryTitle: {
     flex: 1,
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFF',
+    color: COLORS.textPrimary,
     textTransform: 'uppercase',
   },
   featuredBadge: {
-    backgroundColor: '#FFD700',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
-    marginLeft: 8,
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.medium,
+    marginLeft: SPACING.small,
   },
   featuredBadgeText: {
-    color: '#000',
-    fontSize: 10,
+    color: COLORS.backgroundPrimary,
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   categoryDescription: {
-    color: '#D1C4E9',
-    marginBottom: 8,
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.small,
   },
   gameCountContainer: {
     alignSelf: 'flex-start',
-    marginTop: 8,
+    marginTop: SPACING.small,
   },
   gameCountText: {
-    color: '#00FFFF',
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },

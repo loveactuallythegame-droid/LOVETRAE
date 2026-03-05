@@ -1,83 +1,153 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard, SquishyButton, RadialGradientBackground } from '../../components/ui';
+import { COLORS, GRADIENTS, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
+import { Ionicons } from '@expo/vector-icons';
 
-const AttachmentStyleOption = ({ title, subtitle, color, icon, gradient }) => (
-    <TouchableOpacity style={[styles.optionButton, { borderColor: `${color}50` }]}>
-         <LinearGradient colors={gradient} style={styles.iconContainer}>
-            {/* Icon would go here */}
-        </LinearGradient>
-        <View style={styles.optionTextContainer}>
-            <Text style={[styles.optionTitle, { color }]}>{title}</Text>
-            <Text style={styles.optionSubtitle}>{subtitle}</Text>
-        </View>
-    </TouchableOpacity>
+const AttachmentStyleOption = ({ title, subtitle, color, icon, onPress }: any) => (
+  <SquishyButton style={[styles.optionButton, { borderColor: color }]} onPress={onPress}>
+    <View style={[styles.iconContainer, { backgroundColor: color + '33' }]}>
+      <Ionicons name={icon} size={24} color={color} />
+    </View>
+    <View style={styles.optionTextContainer}>
+      <Typography variant="body" style={{ color }}>{title}</Typography>
+      <Typography variant="caption" style={{ color: COLORS.textSecondary }}>{subtitle}</Typography>
+    </View>
+  </SquishyButton>
 );
 
 const OnboardingAttachmentStyleScreen = () => {
-    return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#120d0f', '#181114']} style={styles.background} />
-            <ScrollView contentContainerStyle={styles.scrollContent}>
+  return (
+    <ScreenLayout>
+      <RadialGradientBackground />
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.progressContainer}>
+          <Typography variant="caption" style={styles.stepText}>Step 5 of 8</Typography>
+          <Typography variant="label" style={styles.questionCounter}>Question 9 / 10</Typography>
+        </View>
+        <View style={styles.progressBar}>
+          <View style={[styles.progressBarFill, { width: '90%' }]} />
+        </View>
 
-                <View style={styles.progressContainer}>
-                    <Text style={styles.stepText}>Step 5 of 8</Text>
-                    <Text style={styles.questionCounter}>Question 9 / 10</Text>
-                </View>
-                <View style={styles.progressBar}>
-                    <LinearGradient colors={['#a855f7', '#ee2b8c']} style={styles.progressBarFill} start={{x:0, y:0}} end={{x:1, y:0}}/>
-                </View>
+        <GlassCard style={styles.quizContainer}>
+          <Typography variant="header" style={styles.questionText}>When you feel insecure in a relationship, what is your first instinct?</Typography>
+          <Typography variant="caption" style={styles.questionSubtitle}>Select the response that feels most natural to you</Typography>
 
-                <View style={styles.quizContainer}>
-                    <Text style={styles.questionText}>When you feel insecure in a relationship, what is your first instinct?</Text>
-                    <Text style={styles.questionSubtitle}>Select the response that feels most natural to you</Text>
+          <View style={styles.optionsGrid}>
+            <AttachmentStyleOption 
+              title="Communicate Openly" 
+              subtitle="I talk about my feelings calmly" 
+              color={COLORS.mintGreen} 
+              icon="chatbubbles"
+            />
+            <AttachmentStyleOption 
+              title="Seek Reassurance" 
+              subtitle="I need constant signs of love" 
+              color={COLORS.brightYellow} 
+              icon="heart"
+            />
+            <AttachmentStyleOption 
+              title="Create Distance" 
+              subtitle="I withdraw to protect myself" 
+              color={COLORS.rosePink} 
+              icon="shield"
+            />
+            <AttachmentStyleOption 
+              title="Fluctuating Reactions" 
+              subtitle="My reaction varies unpredictably" 
+              color={COLORS.lavenderPurple} 
+              icon="sync"
+            />
+          </View>
+        </GlassCard>
 
-                    <View style={styles.optionsGrid}>
-                        <AttachmentStyleOption title="Communicate Openly" subtitle="I talk about my feelings calmly" color="#2dd4bf" gradient={['#2dd4bf', '#22d3ee']} />
-                        <AttachmentStyleOption title="Seek Reassurance" subtitle="I need constant signs of love" color="#facc15" gradient={['#facc15', '#fb923c']} />
-                        <AttachmentStyleOption title="Create Distance" subtitle="I withdraw to protect myself" color="#f472b6" gradient={['#f472b6', '#a855f7']} />
-                        <AttachmentStyleOption title="Fluctuating Reactions" subtitle="My reaction varies unpredictably" color="#a855f7" gradient={['#a855f7', '#6d28d9']} />
-                    </View>
-                </View>
-
-                 <View style={styles.navContainer}>
-                    <TouchableOpacity>
-                        <Text style={styles.navButton}>PREVIOUS</Text>
-                    </TouchableOpacity>
-                     <TouchableOpacity style={styles.nextButton}>
-                        <Text style={styles.nextButtonText}>NEXT QUESTION</Text>
-                    </TouchableOpacity>
-                </View>
-
-            </ScrollView>
-        </SafeAreaView>
-    );
+        <View style={styles.navContainer}>
+          <SquishyButton variant="ghost">
+            <Typography variant="label" style={styles.navButton}>PREVIOUS</Typography>
+          </SquishyButton>
+          <SquishyButton>
+            <Typography variant="button">NEXT QUESTION</Typography>
+          </SquishyButton>
+        </View>
+      </ScrollView>
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#120d0f' },
-    background: { ...StyleSheet.absoluteFillObject },
-    scrollContent: { padding: 24, justifyContent: 'space-between', flexGrow: 1 },
-    progressContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-    stepText: { color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', fontSize: 12, fontWeight: 'bold' },
-    questionCounter: { color: '#ee2b8c', fontWeight: 'bold' },
-    progressBar: { height: 6, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 3, marginBottom: 24 },
-    progressBarFill: { height: '100%', width: '90%', borderRadius: 3 },
-    quizContainer: { backgroundColor: 'rgba(24, 17, 20, 0.6)', padding: 24, borderRadius: 24, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)' },
-    questionText: { color: '#FFF', fontSize: 28, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 },
-    questionSubtitle: { color: 'rgba(255,255,255,0.4)', textAlign: 'center', fontStyle: 'italic', marginBottom: 24 },
-    optionsGrid: { gap: 16 },
-    optionButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.03)', padding: 16, borderRadius: 16, borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' },
-    iconContainer: { width: 40, height: 40, borderRadius: 8, justifyContent: 'center', alignItems: 'center', marginRight: 16 },
-    optionTextContainer: { flex: 1 },
-    optionTitle: { fontSize: 16, fontWeight: '500', marginBottom: 2 },
-    optionSubtitle: { color: 'rgba(255,255,255,0.4)', fontSize: 14 },
-    navContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 24 },
-    navButton: { color: 'rgba(255,255,255,0.4)', fontWeight: 'bold', fontSize: 14 },
-    nextButton: { backgroundColor: '#ee2b8c', paddingVertical: 12, paddingHorizontal: 24, borderRadius: 16 },
-    nextButtonText: { color: '#FFF', fontWeight: 'bold' },
+  scrollContent: { 
+    padding: SPACING.screenPadding, 
+    justifyContent: 'space-between', 
+    flexGrow: 1 
+  },
+  progressContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    marginBottom: SPACING.small 
+  },
+  stepText: { 
+    color: COLORS.textSecondary 
+  },
+  questionCounter: { 
+    color: COLORS.vibrantPink 
+  },
+  progressBar: { 
+    height: 6, 
+    backgroundColor: COLORS.textPrimary + '0D', 
+    borderRadius: BORDER_RADIUS.small, 
+    marginBottom: SPACING.xlarge 
+  },
+  progressBarFill: { 
+    height: '100%', 
+    backgroundColor: COLORS.vibrantPink, 
+    borderRadius: BORDER_RADIUS.small 
+  },
+  quizContainer: { 
+    padding: SPACING.xlarge 
+  },
+  questionText: { 
+    textAlign: 'center', 
+    marginBottom: SPACING.small 
+  },
+  questionSubtitle: { 
+    textAlign: 'center', 
+    marginBottom: SPACING.xxlarge,
+    color: COLORS.textSecondary,
+  },
+  optionsGrid: { 
+    gap: SPACING.regular 
+  },
+  optionButton: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    backgroundColor: COLORS.backgroundInput, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.large, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle 
+  },
+  iconContainer: { 
+    width: 48, 
+    height: 48, 
+    borderRadius: BORDER_RADIUS.medium, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginRight: SPACING.regular 
+  },
+  optionTextContainer: { 
+    flex: 1 
+  },
+  navContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    marginTop: SPACING.xlarge 
+  },
+  navButton: { 
+    color: COLORS.textSecondary 
+  },
 });
 
 export default OnboardingAttachmentStyleScreen;

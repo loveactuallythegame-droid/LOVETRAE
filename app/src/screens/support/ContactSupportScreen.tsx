@@ -1,114 +1,243 @@
-
-import React from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const ContactSupportScreen = () => {
-    return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#0a0f0f', '#230f19']} style={styles.background} />
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
+  const [subject, setSubject] = useState('');
+  const [category, setCategory] = useState('');
+  const [message, setMessage] = useState('');
 
-                <View style={styles.headingContainer}>
-                    <Text style={styles.headingTitle}>Need a hand, partner?</Text>
-                    <Text style={styles.headingSubtitle}>Our support crew is ready to help you navigate your journey.</Text>
-                </View>
+  const categories = ['Technical Issue', 'Billing', 'Feature Request', 'General Inquiry'];
 
-                <View style={styles.glassPanel}>
-                    <View style={styles.formGroup}>
-                        <Text style={styles.label}>Subject</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Briefly describe your issue"
-                            placeholderTextColor="rgba(157, 185, 185, 0.5)"
-                        />
-                    </View>
+  return (
+    <ScreenLayout showMarcie={true} marcieQuote="Need a hand, partner? I'm here to help.">
+      <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.headingContainer}>
+            <Typography variant="h1" style={styles.headingTitle}>
+              Need a hand, partner?
+            </Typography>
+            <Typography variant="body" style={styles.headingSubtitle}>
+              Our support crew is ready to help you navigate your journey.
+            </Typography>
+          </View>
 
-                    <View style={styles.formGroup}>
-                        <Text style={styles.label}>Category</Text>
-                         <View style={styles.pickerContainer}>
-                            <Text style={styles.pickerText}>Select a category</Text>
-                            <Text style={styles.pickerIcon}>▼</Text>
-                        </View>
-                    </View>
+          <GlassCard style={styles.formCard}>
+            <View style={styles.formGroup}>
+              <Typography variant="label" style={styles.label}>Subject</Typography>
+              <TextInput
+                placeholder="Briefly describe your issue"
+                placeholderTextColor={COLORS.textHint}
+                value={subject}
+                onChangeText={setSubject}
+                style={styles.textInput}
+              />
+            </View>
 
-                    <View style={styles.formGroup}>
-                        <Text style={styles.label}>Message</Text>
-                        <TextInput
-                            style={[styles.input, styles.textArea]}
-                            placeholder="Tell us more about what's happening..."
-                            placeholderTextColor="rgba(157, 185, 185, 0.5)"
-                            multiline
-                        />
-                    </View>
+            <View style={styles.formGroup}>
+              <Typography variant="label" style={styles.label}>Category</Typography>
+              <View style={styles.categoryContainer}>
+                {categories.map((cat) => (
+                  <SquishyButton
+                    key={cat}
+                    onPress={() => setCategory(cat)}
+                    variant={category === cat ? "primary" : "ghost"}
+                    size="small"
+                    style={[
+                      styles.categoryButton,
+                      category === cat && styles.categoryButtonActive
+                    ]}
+                  >
+                    <Typography 
+                      variant="small" 
+                      style={[
+                        styles.categoryText,
+                        category === cat && styles.categoryTextActive
+                      ]}
+                    >
+                      {cat}
+                    </Typography>
+                  </SquishyButton>
+                ))}
+              </View>
+            </View>
 
-                    <TouchableOpacity style={styles.submitButton}>
-                       <LinearGradient colors={['#13ecec', '#0e7e7e']} style={styles.submitButtonGradient}>
-                           <Text style={styles.submitButtonText}>Submit Ticket</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
+            <View style={styles.formGroup}>
+              <Typography variant="label" style={styles.label}>Message</Typography>
+              <TextInput
+                placeholder="Tell us more about what's happening..."
+                placeholderTextColor={COLORS.textHint}
+                value={message}
+                onChangeText={setMessage}
+                multiline
+                numberOfLines={6}
+                style={styles.textArea}
+              />
+            </View>
 
-                    <View style={styles.responseTimeIndicator}>
-                         <Text style={styles.indicatorText}>Average Response Time: 2h</Text>
-                    </View>
-                </View>
-                
-                <View style={styles.footerLinks}>
-                    <TouchableOpacity><Text style={styles.linkText}>Knowledge Base</Text></TouchableOpacity>
-                    <TouchableOpacity><Text style={styles.linkText}>Community Forums</Text></TouchableOpacity>
-                </View>
+            <SquishyButton 
+              onPress={() => {}}
+              variant="primary"
+              size="large"
+              style={styles.submitButton}
+            >
+              Submit Ticket
+            </SquishyButton>
 
-            </ScrollView>
-        </SafeAreaView>
-    );
+            <View style={styles.responseTimeIndicator}>
+              <Ionicons name="time-outline" size={16} color={COLORS.warning} />
+              <Typography variant="small" style={styles.indicatorText}>
+                Average Response Time: 2h
+              </Typography>
+            </View>
+          </GlassCard>
+          
+          <View style={styles.footerLinks}>
+            <SquishyButton 
+              onPress={() => {}}
+              variant="ghost"
+              size="medium"
+              style={styles.linkButton}
+            >
+              <View style={styles.linkContent}>
+                <Ionicons name="book-outline" size={20} color={COLORS.textSecondary} />
+                <Typography variant="body" style={styles.linkText}>Knowledge Base</Typography>
+              </View>
+            </SquishyButton>
+            <SquishyButton 
+              onPress={() => {}}
+              variant="ghost"
+              size="medium"
+              style={styles.linkButton}
+            >
+              <View style={styles.linkContent}>
+                <Ionicons name="people-outline" size={20} color={COLORS.textSecondary} />
+                <Typography variant="body" style={styles.linkText}>Community Forums</Typography>
+              </View>
+            </SquishyButton>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </ScreenLayout>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
-    background: { ...StyleSheet.absoluteFillObject },
-    scrollContainer: { flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
-    headingContainer: { alignItems: 'center', marginBottom: 30, paddingHorizontal: 10 },
-    headingTitle: { fontFamily: 'BarbieDream-Regular', fontSize: 36, color: '#FFF', textAlign: 'center', marginBottom: 10 },
-    headingSubtitle: { fontFamily: 'SweetPink-Regular', fontSize: 16, color: '#9db9b9', textAlign: 'center', maxWidth: '80%' },
-    glassPanel: {
-        width: '100%',
-        maxWidth: 640,
-        backgroundColor: 'rgba(17, 24, 24, 0.85)',
-        borderWidth: 1,
-        borderColor: 'rgba(19, 236, 236, 0.1)',
-        borderRadius: 16,
-        padding: 25,
-    },
-    formGroup: { marginBottom: 20 },
-    label: { fontFamily: 'WonderfulSometimes-Regular', color: '#FFF', fontSize: 14, textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 10 },
-    input: { 
-        backgroundColor: 'rgba(40, 57, 57, 0.5)',
-        borderRadius: 8,
-        height: 50,
-        paddingHorizontal: 15,
-        color: '#FFF',
-        fontSize: 16,
-    },
-    textArea: { height: 120, paddingTop: 15, textAlignVertical: 'top' },
-    pickerContainer: { 
-        backgroundColor: 'rgba(40, 57, 57, 0.5)',
-        borderRadius: 8,
-        height: 50,
-        paddingHorizontal: 15,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    pickerText: { color: 'rgba(157, 185, 185, 0.9)', fontSize: 16 },
-    pickerIcon: { color: '#9db9b9' },
-    submitButton: { marginTop: 10, height: 55, borderRadius: 12, overflow: 'hidden' },
-    submitButtonGradient: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    submitButtonText: { color: '#0a0f0f', fontSize: 18, fontFamily: 'BarbieDream-Regular' },
-    responseTimeIndicator: { alignSelf: 'center', backgroundColor: 'rgba(255, 140, 0, 0.1)', borderColor: 'rgba(255, 140, 0, 0.2)', borderWidth: 1, borderRadius: 20, paddingVertical: 8, paddingHorizontal: 15, marginTop: 20 },
-    indicatorText: { color: '#ff8c00', fontSize: 14, fontFamily: 'SweetPink-Regular' },
-    footerLinks: { flexDirection: 'row', justifyContent: 'space-around', width: '100%', marginTop: 30 },
-    linkText: { color: '#9db9b9', fontSize: 14, fontFamily: 'SweetPink-Regular', textDecorationLine: 'underline' }
+  container: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    padding: SPACING.lg,
+    paddingBottom: SPACING.xxl,
+  },
+  headingContainer: {
+    alignItems: 'center',
+    marginBottom: SPACING.xl,
+    paddingHorizontal: SPACING.md,
+  },
+  headingTitle: {
+    textAlign: 'center',
+    marginBottom: SPACING.md,
+  },
+  headingSubtitle: {
+    textAlign: 'center',
+    opacity: 0.7,
+  },
+  formCard: {
+    marginBottom: SPACING.lg,
+    padding: SPACING.lg,
+  },
+  formGroup: {
+    marginBottom: SPACING.lg,
+  },
+  label: {
+    marginBottom: SPACING.sm,
+  },
+  textInput: {
+    height: 48,
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.input,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    paddingHorizontal: SPACING.regular,
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.sm,
+  },
+  categoryButton: {
+    backgroundColor: `${COLORS.richPlum}80`,
+    borderWidth: 1,
+    borderColor: `${COLORS.textPrimary}10`,
+  },
+  categoryButtonActive: {
+    backgroundColor: `${COLORS.vibrantPink}20`,
+    borderColor: COLORS.vibrantPink,
+  },
+  categoryText: {
+    color: COLORS.textSecondary,
+  },
+  categoryTextActive: {
+    color: COLORS.vibrantPink,
+    fontWeight: '600',
+  },
+  textArea: {
+    minHeight: 120,
+    textAlignVertical: 'top',
+    backgroundColor: COLORS.backgroundInput,
+    borderRadius: BORDER_RADIUS.input,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.regular,
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+  },
+  submitButton: {
+    marginTop: SPACING.md,
+  },
+  responseTimeIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor: `${COLORS.warning}15`,
+    borderColor: `${COLORS.warning}30`,
+    borderWidth: 1,
+    borderRadius: BORDER_RADIUS.xlarge,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
+    marginTop: SPACING.lg,
+    gap: SPACING.xs,
+  },
+  indicatorText: {
+    color: COLORS.warning,
+  },
+  footerLinks: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: SPACING.lg,
+    marginBottom: SPACING.xl,
+  },
+  linkButton: {
+    padding: SPACING.md,
+  },
+  linkContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  linkText: {
+    textDecorationLine: 'underline',
+    opacity: 0.7,
+  },
 });
 
 export default ContactSupportScreen;

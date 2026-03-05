@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 import { GlassCard, Text, SquishyButton } from '../ui';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 import * as Haptics from 'expo-haptics';
 
 type DailyChallengeCardProps = {
@@ -32,5 +33,12 @@ export default function DailyChallengeCard({ title, onStart, durationSec = 600 }
 }
 
 const styles = StyleSheet.create({
-  btn: { alignSelf: 'flex-end', marginTop: 10, paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#33DEA5', borderRadius: 12 },
+  btn: {
+    alignSelf: 'flex-end',
+    marginTop: SPACING.small,
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.small,
+    backgroundColor: COLORS.success,
+    borderRadius: BORDER_RADIUS.large,
+  },
 });

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { Audio } from 'expo-av';
 import { speakMarcie } from '../../lib/voice-engine';
 import { useAppStore } from '../../state/store';
+import { COLORS, SPACING, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 export default function LieDetector({ route, navigation }: any) {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -70,30 +71,30 @@ export default function LieDetector({ route, navigation }: any) {
       setAnalyzing(false);
 
       if (total > 20) {
-        speakMarcie("Ooh—24/25. Only slipped on ‘uh’ once. I’ll allow it… this time.");
+        speakMarcie("Ooh—24/25. Only slipped on 'uh' once. I'll allow it… this time.");
       } else {
         speakMarcie("Hmm. Too many pauses. Are you hiding something, or just thinking?");
       }
-    }, 2000);
+    }, ANIMATIONS.duration.slower);
   }
 
   return (
-    <LinearGradient colors={['#2A0040', '#000000']} style={styles.container}>
+    <ScreenLayout showHeader={false} scrollable={true}>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn}>
-            <Text variant="body">Back</Text>
+          <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="ghost" size="small">
+            <Typography variant="body">Back</Typography>
           </SquishyButton>
-          <Text variant="header" style={styles.title}>Lie Detector: Lite™</Text>
+          <Typography variant="h1">Lie Detector: Lite™</Typography>
         </View>
 
         <GlassCard style={styles.card}>
-          <Text variant="body" style={styles.prompt}>
-            Partner A asks: "What’s one thing you almost didn’t tell me this week?"
-          </Text>
-          <Text variant="body" style={styles.subPrompt}>
+          <Typography variant="body" style={styles.prompt}>
+            Partner A asks: "What's one thing you almost didn't tell me this week?"
+          </Typography>
+          <Typography variant="caption" style={styles.subPrompt}>
             Partner B: Hold the button and answer honestly. ≤10 seconds.
-          </Text>
+          </Typography>
         </GlassCard>
 
         <View style={styles.recordContainer}>
@@ -103,58 +104,94 @@ export default function LieDetector({ route, navigation }: any) {
               else startRecording();
             }}
             style={[styles.recordBtn, recording ? styles.recording : {}]}
+            variant={recording ? 'secondary' : 'primary'}
+            size="large"
           >
-            <Text variant="header">{recording ? 'Tap to Stop' : 'Tap to Record'}</Text>
+            <Typography variant="h2">{recording ? 'Tap to Stop' : 'Tap to Record'}</Typography>
           </SquishyButton>
         </View>
 
         {analyzing && (
           <GlassCard style={styles.resultCard}>
-            <Text variant="header">Analyzing Prosody...</Text>
-            <Text variant="body">Checking pitch variance...</Text>
-            <Text variant="body">Detecting hesitation...</Text>
+            <Typography variant="h2">Analyzing Prosody...</Typography>
+            <Typography variant="body">Checking pitch variance...</Typography>
+            <Typography variant="body">Detecting hesitation...</Typography>
           </GlassCard>
         )}
 
         {result && !analyzing && (
           <GlassCard style={styles.resultCard}>
-            <Text variant="header" style={{ color: result.passed ? '#33DEA5' : '#FA1F63' }}>
+            <Typography variant="h2" style={{ color: result.passed ? COLORS.success : COLORS.error }}>
               Score: {result.score}/25
-            </Text>
+            </Typography>
             <View style={styles.statRow}>
-              <Text variant="body">Fluency:</Text>
-              <Text variant="keyword">{result.fluency}/10</Text>
+              <Typography variant="body">Fluency:</Typography>
+              <Typography variant="keyword">{result.fluency}/10</Typography>
             </View>
             <View style={styles.statRow}>
-              <Text variant="body">Steadiness:</Text>
-              <Text variant="keyword">{result.steadiness}/10</Text>
+              <Typography variant="body">Steadiness:</Typography>
+              <Typography variant="keyword">{result.steadiness}/10</Typography>
             </View>
             <View style={styles.statRow}>
-              <Text variant="body">Filler Words:</Text>
-              <Text variant="keyword">{result.fillerWords}</Text>
+              <Typography variant="body">Filler Words:</Typography>
+              <Typography variant="keyword">{result.fillerWords}</Typography>
             </View>
-            <Text variant="body" style={{ marginTop: 10, fontStyle: 'italic' }}>
+            <Typography variant="body" style={{ marginTop: SPACING.regular, fontStyle: 'italic' }}>
               {result.passed ? "Marcie: I'll allow it." : "Marcie: Try again. Less thinking, more truth."}
-            </Text>
+            </Typography>
           </GlassCard>
         )}
       </ScrollView>
-    </LinearGradient>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  content: { padding: 20, gap: 20 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  backBtn: { paddingHorizontal: 15, paddingVertical: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 12 },
-  title: { fontSize: 24, color: '#fff' },
-  card: { padding: 20, gap: 10 },
-  prompt: { fontSize: 18, textAlign: 'center', color: '#fff' },
-  subPrompt: { fontSize: 14, textAlign: 'center', color: '#ccc' },
-  recordContainer: { alignItems: 'center', justifyContent: 'center', height: 200 },
-  recordBtn: { width: 200, height: 200, borderRadius: 100, backgroundColor: '#FA1F63', alignItems: 'center', justifyContent: 'center' },
-  recording: { backgroundColor: '#ff0000', transform: [{ scale: 1.1 }] },
-  resultCard: { padding: 20, gap: 10, alignItems: 'center' },
-  statRow: { flexDirection: 'row', justifyContent: 'space-between', width: '100%' },
+  content: { 
+    padding: SPACING.screenPadding, 
+    gap: SPACING.large,
+    flexGrow: 1,
+  },
+  header: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: SPACING.regular,
+  },
+  backBtn: { 
+    paddingHorizontal: SPACING.regular, 
+    paddingVertical: SPACING.small,
+  },
+  card: { 
+    padding: SPACING.large, 
+    gap: SPACING.regular,
+  },
+  prompt: { 
+    textAlign: 'center',
+  },
+  subPrompt: { 
+    textAlign: 'center',
+  },
+  recordContainer: { 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    height: 200,
+  },
+  recordBtn: { 
+    width: 200, 
+    height: 200, 
+    borderRadius: BORDER_RADIUS.round,
+  },
+  recording: { 
+    backgroundColor: COLORS.error,
+  },
+  resultCard: { 
+    padding: SPACING.large, 
+    gap: SPACING.regular, 
+    alignItems: 'center',
+  },
+  statRow: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    width: '100%',
+  },
 });

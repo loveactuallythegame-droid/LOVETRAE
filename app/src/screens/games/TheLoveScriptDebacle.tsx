@@ -1,8 +1,11 @@
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const falseScripts = [
     { title: "If they loved me, they'd know.", category: 'Mind Reading Script' },
@@ -10,70 +13,109 @@ const falseScripts = [
     { title: 'Love is always easy.', category: 'Disneyfied Expectation' },
 ];
 
-const LoveScriptCard = ({ script, onDeconstruct }) => (
-    <TouchableOpacity style={styles.card} onPress={() => onDeconstruct(script)}>
-        <Text style={styles.cardTitle}>{script.title}</Text>
-        <Text style={styles.cardCategory}>{script.category}</Text>
-    </TouchableOpacity>
+const LoveScriptCard = ({ script, onDeconstruct }: { script: typeof falseScripts[0], onDeconstruct: (script: typeof falseScripts[0]) => void }) => (
+    <GlassCard onPress={() => onDeconstruct(script)} style={styles.card}>
+        <Typography variant="h3">{script.title}</Typography>
+        <Typography variant="caption" style={styles.cardCategory}>{script.category}</Typography>
+    </GlassCard>
 );
 
 const TheLoveScriptDebacle = () => {
     const [scripts, setScripts] = useState(falseScripts);
-    const [deconstructed, setDeconstructed] = useState([]);
+    const [deconstructed, setDeconstructed] = useState<typeof falseScripts>([]);
 
-    const handleDeconstruct = (scriptToDeconstruct) => {
+    const handleDeconstruct = (scriptToDeconstruct: typeof falseScripts[0]) => {
         setScripts(scripts.filter(s => s.title !== scriptToDeconstruct.title));
         setDeconstructed([...deconstructed, scriptToDeconstruct]);
     };
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#121212', '#1e1b4b']} style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    <Text style={styles.header}>The Love-Script Debacle</Text>
-                    
-                    <View style={styles.grid}>
-                        {scripts.map(script => (
-                            <LoveScriptCard key={script.title} script={script} onDeconstruct={handleDeconstruct} />
-                        ))}
-                    </View>
+        <ScreenLayout showHeader={false} scrollable={false}>
+            <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.deepCosmic]} style={styles.container}>
+                <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+                    <ScrollView contentContainerStyle={styles.scrollContent}>
+                        <Typography variant="h1" center style={styles.header}>The Love-Script Debacle</Typography>
+                        
+                        <View style={styles.grid}>
+                            {scripts.map(script => (
+                                <LoveScriptCard key={script.title} script={script} onDeconstruct={handleDeconstruct} />
+                            ))}
+                        </View>
 
-                    <View style={styles.deconstructionZone}>
-                        <MaterialIcons name="delete-forever" size={48} color="#f97316" />
-                        <Text style={styles.zoneTitle}>Deconstruction Zone</Text>
-                        <Text style={styles.zoneSubtitle}>Drag false scripts here to analyze.</Text>
-                        {deconstructed.length > 0 && <Text style={styles.deconstructedCount}>{deconstructed.length} deconstructed</Text>}
-                    </View>
-
-                </ScrollView>
+                        <GlassCard style={styles.deconstructionZone} variant="outlined">
+                            <MaterialIcons name="delete-forever" size={48} color={COLORS.warmOrange} />
+                            <Typography variant="h2" style={styles.zoneTitle}>Deconstruction Zone</Typography>
+                            <Typography variant="body" center style={styles.zoneSubtitle}>
+                                Drag false scripts here to analyze.
+                            </Typography>
+                            {deconstructed.length > 0 && (
+                                <Typography variant="caption" style={styles.deconstructedCount}>
+                                    {deconstructed.length} deconstructed
+                                </Typography>
+                            )}
+                        </GlassCard>
+                    </ScrollView>
+                </SafeAreaView>
             </LinearGradient>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#121212' },
-    container: { flex: 1 },
-    scrollContent: { padding: 24, alignItems: 'center' },
-    header: { color: '#fff', fontSize: 28, fontWeight: 'bold', marginBottom: 24, textAlign: 'center' },
-    grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 16, marginBottom: 24 },
-    card: { backgroundColor: 'rgba(28,28,28,0.8)', width: 300, padding: 20, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' },
-    cardTitle: { color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 8 },
-    cardCategory: { color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', fontSize: 10 },
+    container: { 
+        flex: 1 
+    },
+    safeArea: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
+    },
+    scrollContent: { 
+        padding: SPACING.screenPadding, 
+        alignItems: 'center' 
+    },
+    header: { 
+        marginBottom: SPACING.xlarge 
+    },
+    grid: { 
+        flexDirection: 'row', 
+        flexWrap: 'wrap', 
+        justifyContent: 'center', 
+        gap: SPACING.regular, 
+        marginBottom: SPACING.xlarge 
+    },
+    card: { 
+        width: 300, 
+        padding: SPACING.regular, 
+    },
+    cardCategory: { 
+        color: COLORS.textHint, 
+        textTransform: 'uppercase', 
+        marginTop: SPACING.small 
+    },
     deconstructionZone: {
         width: '100%',
-        padding: 32,
+        padding: SPACING.xxlarge,
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 2,
-        borderColor: '#f97316',
+        borderColor: COLORS.warmOrange,
         borderStyle: 'dashed',
-        borderRadius: 16,
-        backgroundColor: 'rgba(249, 115, 22, 0.05)',
+        borderRadius: BORDER_RADIUS.xlarge,
+        backgroundColor: COLORS.backgroundInput,
     },
-    zoneTitle: { color: '#f97316', fontSize: 22, fontWeight: 'bold', textTransform: 'uppercase', marginTop: 8 },
-    zoneSubtitle: { color: 'rgba(255,255,255,0.6)', marginTop: 8, textAlign: 'center' },
-    deconstructedCount: { color: '#00ffd9', marginTop: 16, fontWeight: 'bold' },
+    zoneTitle: { 
+        color: COLORS.warmOrange, 
+        textTransform: 'uppercase', 
+        marginTop: SPACING.small 
+    },
+    zoneSubtitle: { 
+        color: COLORS.textSecondary, 
+        marginTop: SPACING.small 
+    },
+    deconstructedCount: { 
+        color: COLORS.mintGreen, 
+        marginTop: SPACING.regular 
+    },
 });
 
 export default TheLoveScriptDebacle;

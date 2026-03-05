@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useAccess } from '../../lib/gating';
+import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS, GRADIENTS, BORDER_RADIUS, SPACING, SHADOWS } from '../../theme';
 import GlassCard from './GlassCard';
 import Text from './Typography';
-import { LinearGradient } from 'expo-linear-gradient';
 
 type PremiumGateProps = {
   children: ReactNode;
@@ -36,20 +37,20 @@ export default function PremiumGate({
         {children}
       </View>
       <View style={[styles.overlay, StyleSheet.absoluteFill]}>
-        <GlassCard style={styles.lockCard}>
-          <Text variant="header" style={{ fontSize: 32 }}>🔒</Text>
-          <Text variant="header">{lockMessage}</Text>
-          <Text variant="body" style={{ textAlign: 'center', marginVertical: 8 }}>
+        <GlassCard style={styles.lockCard} variant="elevated">
+          <Text variant="header" style={styles.lockIcon}>🔒</Text>
+          <Text variant="header" style={styles.lockTitle}>{lockMessage}</Text>
+          <Text variant="body" style={styles.lockDescription}>
             Get full access to all games, detailed insights, and Dr. Marcie's unfiltered wisdom.
           </Text>
-          <TouchableOpacity onPress={onUnlock}>
+          <TouchableOpacity onPress={onUnlock} style={styles.buttonContainer}>
             <LinearGradient
-              colors={['#FA1F63', '#BE1980']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
+              colors={GRADIENTS.primary.colors}
+              start={GRADIENTS.primary.start}
+              end={GRADIENTS.primary.end}
               style={styles.button}
             >
-              <Text variant="header" style={{ fontSize: 16 }}>Upgrade Now</Text>
+              <Text variant="button" style={styles.buttonText}>Upgrade Now</Text>
             </LinearGradient>
           </TouchableOpacity>
         </GlassCard>
@@ -70,18 +71,40 @@ const styles = StyleSheet.create({
   overlay: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(26, 10, 31, 0.6)',
-    padding: 16,
+    backgroundColor: COLORS.backgroundPrimary,
+    padding: SPACING.xlarge,
   },
   lockCard: {
     alignItems: 'center',
-    padding: 24,
+    padding: SPACING.xxlarge,
     maxWidth: 320,
+    width: '100%',
+  },
+  lockIcon: {
+    fontSize: 32,
+    marginBottom: SPACING.regular,
+  },
+  lockTitle: {
+    marginBottom: SPACING.small,
+    textAlign: 'center',
+  },
+  lockDescription: {
+    textAlign: 'center',
+    marginVertical: SPACING.regular,
+    color: COLORS.textSecondary,
+  },
+  buttonContainer: {
+    width: '100%',
+    marginTop: SPACING.regular,
   },
   button: {
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 24,
-    marginTop: 12,
+    paddingHorizontal: SPACING.xlarge,
+    paddingVertical: SPACING.regular,
+    borderRadius: BORDER_RADIUS.button,
+    alignItems: 'center',
+    ...SHADOWS.buttonGlow,
+  },
+  buttonText: {
+    color: COLORS.textPrimary,
   },
 });

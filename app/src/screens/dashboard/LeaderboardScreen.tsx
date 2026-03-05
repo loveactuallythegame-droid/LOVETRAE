@@ -1,171 +1,181 @@
-
 import { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image, useWindowDimensions } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text } from '../../components/ui';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-
-const DashboardHeader = () => (
-    <View style={styles.headerContainer}>
-        <View style={styles.headerLogoContainer}>
-            <Image source={require('../../../public/logos/logo-symbol.png')} style={styles.headerLogo} />
-            <Text style={styles.headerTitleText}>Love Actually...</Text>
-        </View>
-    </View>
-);
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const mockLeaderboard = [
-    { rank: 1, name: 'You', xp: 1247, avatar: 'Y', highlight: true, streak: 3 },
-    { rank: 2, name: 'Partner', xp: 1156, avatar: 'P', highlight: true, streak: 2 },
-    { rank: 3, name: 'CoupleName1', xp: 980, avatar: 'C1' },
-    { rank: 4, name: 'CoupleName2', xp: 950, avatar: 'C2' },
-    { rank: 5, name: 'CoupleName3', xp: 890, avatar: 'C3' },
-    { rank: 6, name: 'CoupleName4', xp: 820, avatar: 'C4' },
-    { rank: 7, name: 'CoupleName5', xp: 760, avatar: 'C5' },
+  { rank: 1, name: 'You', xp: 1247, avatar: 'Y', highlight: true, streak: 3 },
+  { rank: 2, name: 'Partner', xp: 1156, avatar: 'P', highlight: true, streak: 2 },
+  { rank: 3, name: 'CoupleName1', xp: 980, avatar: 'C1' },
+  { rank: 4, name: 'CoupleName2', xp: 950, avatar: 'C2' },
+  { rank: 5, name: 'CoupleName3', xp: 890, avatar: 'C3' },
+  { rank: 6, name: 'CoupleName4', xp: 820, avatar: 'C4' },
+  { rank: 7, name: 'CoupleName5', xp: 760, avatar: 'C5' },
 ];
 
-const LeaderboardRow = ({ item }) => (
-    <View style={[styles.row, item.highlight && styles.highlightedRow]}>
-        <View style={styles.rankContainer}>
-            <Text style={styles.rankText}>{item.rank}</Text>
-        </View>
-        <View style={[styles.avatar, {borderColor: item.highlight ? '#fc0c84' : 'rgba(255,255,255,0.2)'}]}>
-            <Text style={styles.avatarText}>{item.avatar}</Text>
-        </View>
-        <View style={styles.nameContainer}>
-            <Text style={styles.nameText}>{item.name}</Text>
-            {item.streak > 0 && 
-                <View style={styles.streakBadge}>
-                    <MaterialCommunityIcons name="fire" color="#f59e0b" size={14} />
-                    <Text style={styles.streakText}>{item.streak} day streak</Text>
-                </View>
-            }
-        </View>
-        <View style={styles.xpContainer}>
-            <Text style={styles.xpText}>{item.xp} XP</Text>
-        </View>
+const LeaderboardRow = ({ item }: { item: any }) => (
+  <View style={[styles.row, item.highlight && styles.highlightedRow]}>
+    <View style={styles.rankContainer}>
+      <Typography variant="body" style={styles.rankText}>{item.rank}</Typography>
     </View>
+    <View style={[styles.avatar, {borderColor: item.highlight ? COLORS.vibrantPink : COLORS.borderSubtle}]}>
+      <Typography variant="body" style={styles.avatarText}>{item.avatar}</Typography>
+    </View>
+    <View style={styles.nameContainer}>
+      <Typography variant="body" style={styles.nameText}>{item.name}</Typography>
+      {item.streak > 0 && 
+        <View style={styles.streakBadge}>
+          <MaterialCommunityIcons name="fire" color={COLORS.warmOrange} size={14} />
+          <Typography variant="caption" style={styles.streakText}>{item.streak} day streak</Typography>
+        </View>
+      }
+    </View>
+    <View style={styles.xpContainer}>
+      <Typography variant="body" style={styles.xpText}>{item.xp} XP</Typography>
+    </View>
+  </View>
 );
 
 export default function LeaderboardScreen({ navigation }: any) {
-    const [period, setPeriod] = useState('weekly');
-    const {width} = useWindowDimensions();
+  const [period, setPeriod] = useState('weekly');
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#230f19', '#0f0a0c']} style={styles.background} />
-            <DashboardHeader />
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-                <View style={styles.pageHeader}>
-                    <Text style={styles.mainTitle}>Couple Leaderboard</Text>
-                    <Text style={styles.subtitle}>See how your connection stacks up.</Text>
-                </View>
+  return (
+    <ScreenLayout showHeader={true}>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.pageHeader}>
+          <Typography variant="header" style={styles.mainTitle}>Couple Leaderboard</Typography>
+          <Typography variant="body" style={styles.subtitle}>See how your connection stacks up.</Typography>
+        </View>
 
-                <View style={styles.filterContainer}>
-                    <TouchableOpacity onPress={() => setPeriod('weekly')} style={[styles.filterButton, period === 'weekly' && styles.activeFilter]}>
-                        <Text style={styles.filterText}>Weekly</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setPeriod('monthly')} style={[styles.filterButton, period === 'monthly' && styles.activeFilter]}>
-                        <Text style={styles.filterText}>Monthly</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setPeriod('allTime')} style={[styles.filterButton, period === 'allTime' && styles.activeFilter]}>
-                        <Text style={styles.filterText}>All-Time</Text>
-                    </TouchableOpacity>
-                </View>
+        <View style={styles.filterContainer}>
+          <SquishyButton 
+            onPress={() => setPeriod('weekly')} 
+            variant={period === 'weekly' ? 'primary' : 'ghost'}
+            size="small"
+          >
+            <Typography variant={period === 'weekly' ? 'button' : 'body'}>Weekly</Typography>
+          </SquishyButton>
+          <SquishyButton 
+            onPress={() => setPeriod('monthly')} 
+            variant={period === 'monthly' ? 'primary' : 'ghost'}
+            size="small"
+          >
+            <Typography variant={period === 'monthly' ? 'button' : 'body'}>Monthly</Typography>
+          </SquishyButton>
+          <SquishyButton 
+            onPress={() => setPeriod('allTime')} 
+            variant={period === 'allTime' ? 'primary' : 'ghost'}
+            size="small"
+          >
+            <Typography variant={period === 'allTime' ? 'button' : 'body'}>All-Time</Typography>
+          </SquishyButton>
+        </View>
 
-                <View style={styles.leaderboardContainer}>
-                    <View style={styles.leaderboardHeader}>
-                        <Text style={[styles.headerCol, {flex: 0.5}]}>Rank</Text>
-                        <Text style={[styles.headerCol, {flex: 2}]}>Couple</Text>
-                        <Text style={[styles.headerCol, {flex: 1, textAlign: 'right'}]}>XP</Text>
-                    </View>
+        <GlassCard>
+          <View style={styles.leaderboardHeader}>
+            <Typography variant="label" style={[styles.headerCol, {flex: 0.5}]}>Rank</Typography>
+            <Typography variant="label" style={[styles.headerCol, {flex: 2}]}>Couple</Typography>
+            <Typography variant="label" style={[styles.headerCol, {flex: 1, textAlign: 'right'}]}>XP</Typography>
+          </View>
 
-                    {mockLeaderboard.map((item) => <LeaderboardRow key={item.rank} item={item} />)}
-                </View>
-            </ScrollView>
-        </SafeAreaView>
-    );
+          {mockLeaderboard.map((item) => (
+            <LeaderboardRow key={item.rank} item={item} />
+          ))}
+        </GlassCard>
+      </ScrollView>
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0a0708' },
-  background: { ...StyleSheet.absoluteFillObject },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20, 
-    paddingVertical: 10, 
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-    backgroundColor: 'rgba(34, 16, 25, 0.4)'
+  scrollContent: { 
+    padding: SPACING.screenPadding 
   },
-  headerLogoContainer: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  headerLogo: { width: 24, height: 24, resizeMode: 'contain', tintColor: '#fc0c84' },
-  headerTitleText: { fontFamily: 'WorkSans-Bold', textTransform: 'uppercase', fontSize: 18, color: 'white' },
-  scrollContent: { padding: 24 },
-  pageHeader: { alignItems: 'center', marginBottom: 24 },
-  mainTitle: { fontFamily: 'WorkSans-Bold', fontSize: 44, color: 'white', letterSpacing: -1 },
-  subtitle: { fontFamily: 'WorkSans-Regular', fontSize: 18, color: '#c992ac' },
+  pageHeader: { 
+    alignItems: 'center', 
+    marginBottom: SPACING.xlarge 
+  },
+  mainTitle: { 
+    marginBottom: SPACING.small,
+  },
+  subtitle: { 
+    color: COLORS.textSecondary,
+  },
   filterContainer: {
-      flexDirection: 'row', 
-      justifyContent: 'center', 
-      gap: 12, 
-      marginBottom: 24, 
-      padding: 6, 
-      borderRadius: 99,
-      backgroundColor: 'rgba(255,255,255,0.05)',
-      alignSelf: 'center'
-  },
-  filterButton: { paddingVertical: 10, paddingHorizontal: 24, borderRadius: 99 },
-  activeFilter: { backgroundColor: '#fc0c84' },
-  filterText: { fontFamily: 'WorkSans-Bold', fontSize: 14, color: 'white' },
-  leaderboardContainer: {
-      backgroundColor: 'rgba(34, 16, 25, 0.6)',
-      borderRadius: 16,
-      borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.1)',
-      overflow: 'hidden'
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    gap: SPACING.small, 
+    marginBottom: SPACING.xlarge, 
+    padding: SPACING.small, 
+    borderRadius: BORDER_RADIUS.round,
+    backgroundColor: COLORS.backgroundInput,
+    alignSelf: 'center'
   },
   leaderboardHeader: {
-      flexDirection: 'row',
-      paddingHorizontal: 20,
-      paddingVertical: 12,
-      backgroundColor: 'rgba(255,255,255,0.05)',
-      borderBottomWidth: 1,
-      borderBottomColor: 'rgba(255,255,255,0.1)'
+    flexDirection: 'row',
+    paddingVertical: SPACING.regular,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider,
   },
-  headerCol: { fontFamily: 'WorkSans-Regular', textTransform: 'uppercase', fontSize: 12, color: 'rgba(255,255,255,0.5)', letterSpacing: 1.2 },
+  headerCol: { 
+    textTransform: 'uppercase',
+    color: COLORS.textSecondary,
+  },
   row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 20,
-      paddingVertical: 12,
-      borderBottomWidth: 1,
-      borderBottomColor: 'rgba(255,255,255,0.05)'
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: SPACING.regular,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.divider,
   },
   highlightedRow: {
-      backgroundColor: 'rgba(252, 12, 132, 0.1)',
-      borderLeftWidth: 3, // Highlight bar
-      borderLeftColor: '#fc0c84'
+    backgroundColor: COLORS.backgroundInput,
+    borderLeftWidth: 3,
+    borderLeftColor: COLORS.vibrantPink,
   },
-  rankContainer: { flex: 0.5, alignItems: 'flex-start' },
-  rankText: { fontFamily: 'WorkSans-Bold', fontSize: 18, color: 'white' },
+  rankContainer: { 
+    flex: 0.5, 
+    alignItems: 'flex-start' 
+  },
+  rankText: { 
+    color: COLORS.textPrimary,
+  },
   avatar: {
-      width: 40, height: 40, 
-      borderRadius: 20, 
-      borderWidth: 2, 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      backgroundColor: 'rgba(255,255,255,0.1)',
-      marginRight: 12
+    width: 40, 
+    height: 40, 
+    borderRadius: BORDER_RADIUS.xxlarge, 
+    borderWidth: 2, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: COLORS.backgroundInput,
+    marginRight: SPACING.regular,
   },
-  avatarText: { fontFamily: 'WorkSans-Bold', color: 'white' },
-  nameContainer: { flex: 2, justifyContent: 'center' },
-  nameText: { fontFamily: 'WorkSans-Bold', fontSize: 16, color: 'white' },
-  streakBadge: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 },
-  streakText: { color: '#f59e0b', fontSize: 12, fontFamily: 'WorkSans-Regular' },
-  xpContainer: { flex: 1, alignItems: 'flex-end' },
-  xpText: { fontFamily: 'WorkSans-Bold', fontSize: 16, color: '#2dd4bf' }
+  avatarText: { 
+    color: COLORS.textPrimary,
+  },
+  nameContainer: { 
+    flex: 2, 
+    justifyContent: 'center' 
+  },
+  nameText: { 
+    color: COLORS.textPrimary,
+  },
+  streakBadge: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: SPACING.tiny, 
+    marginTop: SPACING.tiny 
+  },
+  streakText: { 
+    color: COLORS.warmOrange,
+  },
+  xpContainer: { 
+    flex: 1, 
+    alignItems: 'flex-end' 
+  },
+  xpText: { 
+    color: COLORS.mintGreen,
+  },
 });

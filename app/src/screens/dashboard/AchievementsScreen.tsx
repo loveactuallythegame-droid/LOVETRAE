@@ -1,143 +1,253 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, FlatList } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard } from '../../components/ui';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const achievements = [
-    { id: '1', title: 'Communication King', description: 'Unlock 10 deep conversations without interruption', unlocked: true, date: '2d ago', icon: 'forum', category: 'Communication' },
-    { id: '2', title: 'Conflict Crusher', description: 'Resolve a Tier 3 argument with perfect empathy', unlocked: true, date: '1w ago', icon: 'shield_with_heart', category: 'Conflict' },
-    { id: '3', title: 'Zen Master', description: 'Complete a 20-minute guided partner meditation', unlocked: true, date: 'Oct 12', icon: 'spa', category: 'Intimacy' },
-    { id: '4', title: 'First Date Redux', description: 'Recreate your very first date in the Metaverse', unlocked: false, progress: 40, icon: 'lock', category: 'Milestones' },
-    { id: '5', title: 'Golden Anniversary', description: 'Maintain a 365-day relationship streak', unlocked: false, progress: 12, icon: 'celebration', category: 'Milestones' },
-    { id: '6', title: 'World Travelers', description: 'Unlock 5 destination-based quest lines', unlocked: false, progress: 60, icon: 'explore', category: 'Milestones' },
-     { id: '7', title: 'True Empath', description: 'Identify 5 unstated partner emotions correctly', unlocked: true, date: 'Yesterday', icon: 'volunteer_activism', category: 'Communication' },
-    { id: '8', title: 'Soul Resonance', description: 'Reach Level 50 Sync with your partner', unlocked: false, progress: 80, icon: 'loyalty', category: 'Intimacy' },
+  { id: '1', title: 'Communication King', description: 'Unlock 10 deep conversations without interruption', unlocked: true, date: '2d ago', icon: 'chatbubbles', category: 'Communication' },
+  { id: '2', title: 'Conflict Crusher', description: 'Resolve a Tier 3 argument with perfect empathy', unlocked: true, date: '1w ago', icon: 'shield', category: 'Conflict' },
+  { id: '3', title: 'Zen Master', description: 'Complete a 20-minute guided partner meditation', unlocked: true, date: 'Oct 12', icon: 'leaf', category: 'Intimacy' },
+  { id: '4', title: 'First Date Redux', description: 'Recreate your very first date in the Metaverse', unlocked: false, progress: 40, icon: 'lock-closed', category: 'Milestones' },
+  { id: '5', title: 'Golden Anniversary', description: 'Maintain a 365-day relationship streak', unlocked: false, progress: 12, icon: 'trophy', category: 'Milestones' },
+  { id: '6', title: 'World Travelers', description: 'Unlock 5 destination-based quest lines', unlocked: false, progress: 60, icon: 'airplane', category: 'Milestones' },
+  { id: '7', title: 'True Empath', description: 'Identify 5 unstated partner emotions correctly', unlocked: true, date: 'Yesterday', icon: 'heart', category: 'Communication' },
+  { id: '8', title: 'Soul Resonance', description: 'Reach Level 50 Sync with your partner', unlocked: false, progress: 80, icon: 'infinite', category: 'Intimacy' },
 ];
 
 const StatCard = ({ icon, label, value }: { icon: string, label: string, value: string }) => (
-    <View style={styles.statCard}>
-        <View style={styles.statIconContainer}>
-            <Text style={styles.statIcon}>{icon}</Text>
-        </View>
-        <View>
-            <Text style={styles.statLabel}>{label}</Text>
-            <Text style={styles.statValue}>{value}</Text>
-        </View>
+  <GlassCard style={styles.statCard} variant="outlined">
+    <View style={styles.statIconContainer}>
+      <Ionicons name={icon as any} size={24} color={COLORS.vibrantPink} />
     </View>
-)
+    <View>
+      <Typography variant="caption" style={styles.statLabel}>{label}</Typography>
+      <Typography variant="body" style={styles.statValue}>{value}</Typography>
+    </View>
+  </GlassCard>
+);
 
 const AchievementCard = ({ item }: { item: any }) => {
-    if (item.unlocked) {
-        return (
-            <View style={[styles.card, styles.unlockedCard]}>
-                <View style={[styles.badgeIconContainer, styles.unlockedBadge]}>
-                   <Text style={styles.badgeIcon}>{item.icon}</Text>
-                </View>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardDescription}>{item.description}</Text>
-                <Text style={styles.cardDate}>{item.date}</Text>
-            </View>
-        )
-    }
-
+  if (item.unlocked) {
     return (
-        <View style={[styles.card, styles.lockedCard]}>
-            <View style={[styles.badgeIconContainer, styles.lockedBadge]}>
-                <Text style={styles.badgeIcon}>{item.icon}</Text>
-            </View>
-            <Text style={[styles.cardTitle, styles.lockedText]}>{item.title}</Text>
-            <Text style={[styles.cardDescription, styles.lockedText, { opacity: 0.4 }]}>{item.description}</Text>
-            <View style={styles.progressBarContainer}>
-                <View style={[styles.progressBar, { width: `${item.progress}%` }]} />
-            </View>
-            <Text style={styles.progressText}>{item.progress}% COMPLETE</Text>
+      <GlassCard style={styles.card} variant="elevated">
+        <View style={[styles.badgeIconContainer, styles.unlockedBadge]}>
+          <Ionicons name={item.icon} size={32} color={COLORS.vibrantPink} />
         </View>
-    )
-}
+        <Typography variant="body" style={styles.cardTitle}>{item.title}</Typography>
+        <Typography variant="caption" style={styles.cardDescription}>{item.description}</Typography>
+        <Typography variant="label" style={styles.cardDate}>{item.date}</Typography>
+      </GlassCard>
+    );
+  }
+
+  return (
+    <GlassCard style={[styles.card, styles.lockedCard]} variant="outlined">
+      <View style={[styles.badgeIconContainer, styles.lockedBadge]}>
+        <Ionicons name={item.icon} size={32} color={COLORS.textHint} />
+      </View>
+      <Typography variant="body" style={[styles.cardTitle, styles.lockedText]}>{item.title}</Typography>
+      <Typography variant="caption" style={[styles.cardDescription, styles.lockedText]}>{item.description}</Typography>
+      <View style={styles.progressBarContainer}>
+        <View style={[styles.progressBar, { width: `${item.progress}%` }]} />
+      </View>
+      <Typography variant="caption" style={styles.progressText}>{item.progress}% COMPLETE</Typography>
+    </GlassCard>
+  );
+};
 
 const AchievementsScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#102222', '#1a2e2e']} style={styles.background} />
-      {/* Simplified Header for the context of the app screen */}
+    <ScreenLayout showHeader={true}>
       <ScrollView>
         <View style={styles.header}>
-            <Text style={styles.headerTitle}>Achievements & Badges</Text>
-            <Text style={styles.headerSubtitle}>Track your relationship evolution across the cosmos.</Text>
-            <View style={styles.headerProgress}>
-                <Text style={styles.progressTextLabel}>12 / 40 Relics Collected</Text>
-                <View style={styles.headerProgressBarContainer}>
-                    <View style={styles.headerProgressBar} />
-                </View>
+          <Typography variant="header" style={styles.headerTitle}>Achievements & Badges</Typography>
+          <Typography variant="body" style={styles.headerSubtitle}>Track your relationship evolution across the cosmos.</Typography>
+          <View style={styles.headerProgress}>
+            <Typography variant="caption" style={styles.progressTextLabel}>12 / 40 Relics Collected</Typography>
+            <View style={styles.headerProgressBarContainer}>
+              <View style={[styles.headerProgressBar, { width: '30%' }]} />
             </View>
+          </View>
         </View>
 
         <View style={styles.statsGrid}>
-            <StatCard icon="workspace_premium" label="Total Points" value="2,450 XP"/>
-            <StatCard icon="leaderboard" label="Global Rank" value="Top 15%"/>
-            <StatCard icon="bolt" label="Current Streak" value="14 Days"/>
+          <StatCard icon="trophy" label="Total Points" value="2,450 XP"/>
+          <StatCard icon="podium" label="Global Rank" value="Top 15%"/>
+          <StatCard icon="flame" label="Current Streak" value="14 Days"/>
         </View>
 
-        {/* Filters would have state and logic */}
         <View style={styles.filterContainer}>
-            <Text style={[styles.filterText, styles.activeFilter]}>All Badges</Text>
-            <Text style={styles.filterText}>Communication</Text>
-            <Text style={styles.filterText}>Intimacy</Text>
-            <Text style={styles.filterText}>Conflict</Text>
+          <Typography variant="label" style={styles.activeFilter}>All Badges</Typography>
+          <Typography variant="caption" style={styles.filterText}>Communication</Typography>
+          <Typography variant="caption" style={styles.filterText}>Intimacy</Typography>
+          <Typography variant="caption" style={styles.filterText}>Conflict</Typography>
         </View>
 
-        <FlatList 
-            data={achievements}
-            renderItem={({item}) => <AchievementCard item={item} />}
-            keyExtractor={item => item.id}
-            numColumns={2}
-            columnWrapperStyle={{ justifyContent: 'space-around'}}
-            contentContainerStyle={styles.grid}
-        />
+        <View style={styles.grid}>
+          {achievements.map((item) => (
+            <AchievementCard key={item.id} item={item} />
+          ))}
+        </View>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#1a2e2e' },
-  background: { ...StyleSheet.absoluteFillObject },
   header: {
-      padding: 20,
-      paddingTop: 40,
-      alignItems: 'center',
+    padding: SPACING.screenPadding,
+    paddingTop: SPACING.xlarge,
+    alignItems: 'center',
   },
-  headerTitle: { fontFamily: 'BarbieDream-Regular', fontSize: 36, color: '#FFF', textAlign: 'center' },
-  headerSubtitle: { fontFamily: 'SweetPink-Regular', fontSize: 16, color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginTop: 5 },
-  headerProgress: { width: '100%', marginTop: 20 },
-  progressTextLabel: { fontFamily: 'HolidayChristmas-Regular', fontSize: 12, color: '#fc0c84', textAlign: 'right', marginBottom: 5 },
-  headerProgressBarContainer: { height: 4, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 2 },
-  headerProgressBar: { width: '30%', height: '100%', backgroundColor: '#13ecec', borderRadius: 2, shadowColor: '#13ecec', shadowRadius: 5, shadowOpacity: 1 },
-  statsGrid: { flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 10, marginBottom: 20 },
-  statCard: { backgroundColor: 'rgba(26, 46, 46, 0.8)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 15, flexDirection: 'row', alignItems: 'center', flex: 1, marginHorizontal: 5 },
-  statIconContainer: { width: 40, height: 40, borderRadius: 10, backgroundColor: 'rgba(252, 12, 132, 0.1)', justifyContent: 'center', alignItems: 'center', marginRight: 10 },
-  statIcon: { fontFamily: 'Material Icons', fontSize: 24, color: '#fc0c84' },
-  statLabel: { fontFamily: 'HolidayChristmas-Regular', color: 'rgba(255,255,255,0.5)', fontSize: 10, textTransform: 'uppercase' },
-  statValue: { fontFamily: 'WonderfulSometimes-Regular', color: '#FFF', fontSize: 18 },
-  filterContainer: { flexDirection: 'row', justifyContent: 'space-around', borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.1)', paddingHorizontal: 10, marginBottom: 20 },
-  filterText: { fontFamily: 'SweetPink-Regular', color: 'rgba(255,255,255,0.5)', paddingBottom: 10, fontSize: 14 }, 
-  activeFilter: { color: '#fc0c84', borderBottomWidth: 2, borderBottomColor: '#fc0c84', fontWeight: 'bold' },
-  grid: { paddingHorizontal: 10 },
-  card: { borderRadius: 16, padding: 20, alignItems: 'center', margin: 10, flex: 1, minHeight: 220, justifyContent: 'space-between' },
-  unlockedCard: { backgroundColor: '#1a2e2e', borderWidth: 1, borderColor: 'rgba(19, 236, 236, 0.3)', shadowColor: 'rgba(19, 236, 236, 0.3)', shadowRadius: 10 },
-  lockedCard: { backgroundColor: 'rgba(26, 46, 46, 0.5)', borderWidth: 1, borderColor: 'rgba(168, 85, 247, 0.3)', opacity: 0.7 },
-  badgeIconContainer: { width: 80, height: 80, borderRadius: 40, marginBottom: 15, justifyContent: 'center', alignItems: 'center' },
-  unlockedBadge: { backgroundColor: '#1a2e2e', borderWidth: 2, borderColor: '#fc0c84' },
-  lockedBadge: { borderStyle: 'dashed', borderWidth: 2, borderColor: 'rgba(255,255,255,0.2)' },
-  badgeIcon: { fontFamily: 'Material Icons', fontSize: 40, color: '#fc0c84' },
-  cardTitle: { fontFamily: 'BarbieDream-Regular', fontSize: 18, color: '#FFF', textAlign: 'center' },
-  cardDescription: { fontFamily: 'SweetPink-Regular', fontSize: 12, color: 'rgba(255,255,255,0.5)', textAlign: 'center', marginTop: 5 },
-  cardDate: { fontFamily: 'HolidayChristmas-Regular', fontSize: 10, textTransform: 'uppercase', color: '#fc0c84', backgroundColor: 'rgba(252, 12, 132, 0.1)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, marginTop: 10 },
-  lockedText: { color: 'rgba(255,255,255,0.4)' },
-  progressBarContainer: { height: 4, width: '80%', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 2, marginTop: 10 },
-  progressBar: { height: '100%', backgroundColor: '#A855F7', borderRadius: 2 },
-  progressText: { fontFamily: 'HolidayChristmas-Regular', fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 5 },
+  headerTitle: { 
+    textAlign: 'center',
+    marginBottom: SPACING.small,
+  },
+  headerSubtitle: { 
+    textAlign: 'center', 
+    marginTop: SPACING.small,
+    color: COLORS.textSecondary,
+  },
+  headerProgress: { 
+    width: '100%', 
+    marginTop: SPACING.large 
+  },
+  progressTextLabel: { 
+    color: COLORS.vibrantPink, 
+    textAlign: 'right', 
+    marginBottom: SPACING.small 
+  },
+  headerProgressBarContainer: { 
+    height: BORDER_RADIUS.small, 
+    backgroundColor: COLORS.divider, 
+    borderRadius: BORDER_RADIUS.small 
+  },
+  headerProgressBar: { 
+    height: '100%', 
+    backgroundColor: COLORS.aquaTeal, 
+    borderRadius: BORDER_RADIUS.small,
+  },
+  statsGrid: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-around', 
+    paddingHorizontal: SPACING.screenPadding, 
+    marginBottom: SPACING.large,
+    gap: SPACING.small,
+  },
+  statCard: { 
+    flex: 1,
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    padding: SPACING.regular,
+  },
+  statIconContainer: { 
+    width: 40, 
+    height: 40, 
+    borderRadius: BORDER_RADIUS.medium, 
+    backgroundColor: COLORS.backgroundInput, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginRight: SPACING.small 
+  },
+  statLabel: { 
+    color: COLORS.textSecondary,
+    textTransform: 'uppercase',
+  },
+  statValue: { 
+    color: COLORS.textPrimary,
+  },
+  filterContainer: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-around', 
+    borderBottomWidth: 1, 
+    borderBottomColor: COLORS.divider, 
+    paddingHorizontal: SPACING.screenPadding, 
+    marginBottom: SPACING.large,
+    paddingBottom: SPACING.regular,
+  },
+  filterText: { 
+    color: COLORS.textSecondary,
+  },
+  activeFilter: { 
+    color: COLORS.vibrantPink, 
+    borderBottomWidth: 2, 
+    borderBottomColor: COLORS.vibrantPink,
+  },
+  grid: { 
+    paddingHorizontal: SPACING.screenPadding,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: SPACING.regular,
+  },
+  card: { 
+    borderRadius: BORDER_RADIUS.large, 
+    padding: SPACING.large, 
+    alignItems: 'center', 
+    width: '48%',
+    minHeight: 200,
+    justifyContent: 'space-between',
+  },
+  unlockedBadge: { 
+    backgroundColor: COLORS.backgroundInput, 
+    borderWidth: 2, 
+    borderColor: COLORS.vibrantPink 
+  },
+  lockedBadge: { 
+    borderStyle: 'dashed', 
+    borderWidth: 2, 
+    borderColor: COLORS.borderSubtle 
+  },
+  badgeIconContainer: { 
+    width: 64, 
+    height: 64, 
+    borderRadius: 32, 
+    marginBottom: SPACING.regular, 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+  cardTitle: { 
+    textAlign: 'center',
+    marginBottom: SPACING.small,
+  },
+  cardDescription: { 
+    textAlign: 'center', 
+    marginTop: SPACING.small,
+    color: COLORS.textSecondary,
+  },
+  cardDate: { 
+    textTransform: 'uppercase',
+    color: COLORS.vibrantPink, 
+    backgroundColor: COLORS.backgroundInput, 
+    paddingVertical: SPACING.tiny, 
+    paddingHorizontal: SPACING.small, 
+    borderRadius: BORDER_RADIUS.round, 
+    marginTop: SPACING.regular,
+  },
+  lockedCard: {
+    opacity: 0.7,
+  },
+  lockedText: { 
+    color: COLORS.textHint 
+  },
+  progressBarContainer: { 
+    height: BORDER_RADIUS.small, 
+    width: '80%', 
+    backgroundColor: COLORS.divider, 
+    borderRadius: BORDER_RADIUS.small, 
+    marginTop: SPACING.regular 
+  },
+  progressBar: { 
+    height: '100%', 
+    backgroundColor: COLORS.lavenderPurple, 
+    borderRadius: BORDER_RADIUS.small 
+  },
+  progressText: { 
+    color: COLORS.textHint, 
+    marginTop: SPACING.small,
+  },
 });
 
 export default AchievementsScreen;

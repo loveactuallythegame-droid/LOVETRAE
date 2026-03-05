@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
 const PROMPTS = ["One value for our kids?", "What will they say at our funeral?", "Our signature tradition?"];
 
@@ -31,26 +33,30 @@ export default function LegacyDice({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: SPACING.regular }}>
       <GlassCard>
         {!rolled ? (
-            <View style={{ alignItems: 'center', padding: 20 }}>
-                <Text variant="header" style={{ fontSize: 60 }}>🎲</Text>
-                <SquishyButton onPress={roll} style={styles.rollBtn}><Text variant="header">Roll Legacy Dice</Text></SquishyButton>
+            <View style={{ alignItems: 'center', padding: SPACING.large }}>
+                <Typography variant="h1" style={{ fontSize: TYPOGRAPHY.fontSize.displayLarge }}>🎲</Typography>
+                <SquishyButton onPress={roll} style={styles.rollBtn}>
+                  <Typography variant="h2">Roll Legacy Dice</Typography>
+                </SquishyButton>
             </View>
         ) : (
-            <View style={{ gap: 12 }}>
-                <Text variant="body">Big Question:</Text>
-                <Text variant="header" style={{ color: '#E4E831', textAlign: 'center' }}>{prompt}</Text>
+            <View style={{ gap: SPACING.regular }}>
+                <Typography variant="body">Big Question:</Typography>
+                <Typography variant="h2" style={{ color: COLORS.brightYellow, textAlign: 'center' }}>{prompt}</Typography>
                 <TextInput
                     style={styles.input}
                     placeholder="Your thoughts..."
-                    placeholderTextColor="#666"
+                    placeholderTextColor={COLORS.textHint}
                     value={response}
                     onChangeText={setResponse}
                     multiline
                 />
-                <SquishyButton onPress={submit} style={styles.doneBtn}><Text variant="header">Save Legacy</Text></SquishyButton>
+                <SquishyButton onPress={submit} style={styles.doneBtn}>
+                  <Typography variant="h2">Save Legacy</Typography>
+                </SquishyButton>
             </View>
         )}
       </GlassCard>
@@ -69,11 +75,27 @@ export default function LegacyDice({ route, navigation }: any) {
     playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
   }), [gameId]);
 
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
-  rollBtn: { marginTop: 20, backgroundColor: '#5C1459', padding: 16, borderRadius: 12, width: '100%', alignItems: 'center' },
-  input: { backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', padding: 12, borderRadius: 8, minHeight: 80, marginTop: 12 },
-  doneBtn: { marginTop: 16, backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
+  rollBtn: { 
+    marginTop: SPACING.large,
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    color: COLORS.textPrimary, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.medium, 
+    minHeight: 80, 
+    marginTop: SPACING.regular,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+  },
+  doneBtn: { 
+    marginTop: SPACING.regular,
+  },
 });

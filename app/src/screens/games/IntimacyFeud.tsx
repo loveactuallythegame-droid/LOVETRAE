@@ -10,7 +10,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Alert } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -18,7 +17,10 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useGameSession } from '../../hooks/useGameSession';
 
 // Components
-import { GlassCard, Text } from '../../components/ui';
+import { GlassCard, Typography, ScreenLayout, SquishyButton } from '../../components/ui';
+
+// Theme
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -146,7 +148,7 @@ const IntimacyFeud: React.FC = () => {
 
             // Check if all answers found
             if (newRevealed.size === currentQuestion.answers.length) {
-                setTimeout(() => nextQuestion(), 1500);
+                setTimeout(() => nextQuestion(), ANIMATIONS.duration.slow * 3);
             }
         } else {
             // Wrong guess - add strike
@@ -217,225 +219,211 @@ const IntimacyFeud: React.FC = () => {
     // Loading state
     if (sessionLoading) {
         return (
-            <View style={styles.container}>
-                <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                    <Text style={styles.loadingText}>Loading Survey...</Text>
-                </LinearGradient>
-            </View>
+            <ScreenLayout showHeader={false} scrollable={false}>
+                <View style={styles.loadingContainer}>
+                    <Typography variant="h2" style={styles.loadingText}>Loading Survey...</Typography>
+                </View>
+            </ScreenLayout>
         );
     }
 
     return (
-        <View style={styles.container}>
-            <LinearGradient colors={['#181116', '#230f18']} style={styles.background}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <Text style={styles.title}>The Intimacy Feud</Text>
-                        <Text style={styles.subtitle}>Survey Says...</Text>
-                        <View style={styles.scoreRow}>
-                            <Text style={styles.scoreText}>Score: {score}</Text>
-                            {isSyncing && <Text style={styles.syncText}>💾</Text>}
+        <ScreenLayout 
+            showHeader={false} 
+            scrollable={true}
+            contentStyle={styles.content}
+        >
+            {/* Header */}
+            <View style={styles.header}>
+                <Typography variant="h1" style={styles.title}>The Love Arcade</Typography>
+                <Typography variant="h2" style={styles.subtitle}>Survey Says...</Typography>
+                <View style={styles.scoreRow}>
+                    <Typography variant="caption" style={styles.scoreText}>Score: {score}</Typography>
+                    {isSyncing && <Typography variant="caption">💾</Typography>}
+                </View>
+            </View>
+
+            {/* Question */}
+            <GlassCard style={styles.questionCard}>
+                <Typography variant="caption" style={styles.questionNumber}>
+                    Question {currentQuestionIndex + 1} of {SURVEY_QUESTIONS.length}
+                </Typography>
+                <Typography variant="h2" style={styles.questionText}>{currentQuestion?.question}</Typography>
+            </GlassCard>
+
+            {/* Strikes */}
+            <View style={styles.strikesContainer}>
+                <Typography variant="body" style={styles.strikesLabel}>Strikes:</Typography>
+                <View style={styles.strikesRow}>
+                    {[1, 2, 3].map((strikeNum) => (
+                        <View 
+                            key={strikeNum}
+                            style={[
+                                styles.strike,
+                                strikes >= strikeNum && styles.strikeActive
+                            ]}
+                        >
+                            <Typography variant="body" style={styles.strikeText}>X</Typography>
+                        </View>
+                    ))}
+                </View>
+            </View>
+
+            {/* Answer Board */}
+            <View style={styles.boardContainer}>
+                {currentQuestion?.answers.map((answer, index) => (
+                    <View 
+                        key={answer.text}
+                        style={[
+                            styles.answerRow,
+                            revealedAnswers.has(answer.text) && styles.answerRevealed
+                        ]}
+                    >
+                        <Typography variant="body" style={styles.answerNumber}>{index + 1}</Typography>
+                        <View style={styles.answerContent}>
+                            {revealedAnswers.has(answer.text) ? (
+                                <>
+                                    <Typography variant="body" style={styles.answerText}>{answer.text}</Typography>
+                                    <Typography variant="caption" style={styles.answerValue}>{answer.value} pts</Typography>
+                                </>
+                            ) : (
+                                <Typography variant="body" style={styles.hiddenText}>???</Typography>
+                            )}
                         </View>
                     </View>
+                ))}
+            </View>
 
-                    {/* Question */}
-                    <GlassCard style={styles.questionCard}>
-                        <Text style={styles.questionNumber}>Question {currentQuestionIndex + 1} of {SURVEY_QUESTIONS.length}</Text>
-                        <Text style={styles.questionText}>{currentQuestion?.question}</Text>
-                    </GlassCard>
+            {/* Quick Guess Buttons */}
+            <View style={styles.quickGuesses}>
+                <Typography variant="caption" style={styles.guessLabel}>Quick Guesses:</Typography>
+                <View style={styles.guessButtons}>
+                    {['Time', 'Communication', 'Trust', 'Affection'].map((guess) => (
+                        <SquishyButton
+                            key={guess}
+                            onPress={() => makeGuess(guess)}
+                            style={styles.guessButton}
+                        >
+                            <Typography variant="body" style={styles.guessButtonText}>{guess}</Typography>
+                        </SquishyButton>
+                    ))}
+                </View>
+            </View>
 
-                    {/* Strikes */}
-                    <View style={styles.strikesContainer}>
-                        <Text style={styles.strikesLabel}>Strikes:</Text>
-                        <View style={styles.strikesRow}>
-                            {[1, 2, 3].map((strikeNum) => (
-                                <View 
-                                    key={strikeNum}
-                                    style={[
-                                        styles.strike,
-                                        strikes >= strikeNum && styles.strikeActive
-                                    ]}
-                                >
-                                    <Text style={styles.strikeText}>X</Text>
-                                </View>
-                            ))}
-                        </View>
-                    </View>
+            {/* Skip Button */}
+            <SquishyButton onPress={nextQuestion} style={styles.skipButton}>
+                <Typography variant="body" style={styles.skipText}>Skip Question →</Typography>
+            </SquishyButton>
 
-                    {/* Answer Board */}
-                    <View style={styles.boardContainer}>
-                        {currentQuestion?.answers.map((answer, index) => (
-                            <View 
-                                key={answer.text}
-                                style={[
-                                    styles.answerRow,
-                                    revealedAnswers.has(answer.text) && styles.answerRevealed
-                                ]}
-                            >
-                                <Text style={styles.answerNumber}>{index + 1}</Text>
-                                <View style={styles.answerContent}>
-                                    {revealedAnswers.has(answer.text) ? (
-                                        <>
-                                            <Text style={styles.answerText}>{answer.text}</Text>
-                                            <Text style={styles.answerValue}>{answer.value} pts</Text>
-                                        </>
-                                    ) : (
-                                        <Text style={styles.hiddenText}>???</Text>
-                                    )}
-                                </View>
-                            </View>
-                        ))}
-                    </View>
-
-                    {/* Quick Guess Buttons */}
-                    <View style={styles.quickGuesses}>
-                        <Text style={styles.guessLabel}>Quick Guesses:</Text>
-                        <View style={styles.guessButtons}>
-                            {['Time', 'Communication', 'Trust', 'Affection'].map((guess) => (
-                                <TouchableOpacity
-                                    key={guess}
-                                    style={styles.guessButton}
-                                    onPress={() => makeGuess(guess)}
-                                >
-                                    <Text style={styles.guessButtonText}>{guess}</Text>
-                                </TouchableOpacity>
-                            ))}
-                        </View>
-                    </View>
-
-                    {/* Skip Button */}
-                    <TouchableOpacity style={styles.skipButton} onPress={nextQuestion}>
-                        <Text style={styles.skipText}>Skip Question →</Text>
-                    </TouchableOpacity>
-
-                    {/* Session Info */}
-                    {session && (
-                        <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
-                    )}
-                </ScrollView>
-            </LinearGradient>
-        </View>
+            {/* Session Info */}
+            {session && (
+                <Typography variant="caption" style={styles.sessionInfo}>
+                    Session: {session.id.slice(0, 8)}...
+                </Typography>
+            )}
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    content: {
+        padding: SPACING.screenPadding,
+        paddingTop: SPACING.xlarge,
     },
-    background: {
+    loadingContainer: {
         flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    scrollContent: {
-        padding: 20,
-        paddingTop: 60,
+    loadingText: {
+        color: COLORS.textPrimary,
+        textAlign: 'center',
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: SPACING.large,
     },
     title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#fff',
+        color: COLORS.textPrimary,
         textAlign: 'center',
     },
     subtitle: {
-        fontSize: 16,
-        color: 'rgba(255,255,255,0.7)',
-        marginTop: 5,
+        color: COLORS.textSecondary,
+        marginTop: SPACING.tiny,
     },
     scoreRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: SPACING.small,
     },
     scoreText: {
-        fontSize: 20,
-        color: '#db147c',
-        fontWeight: 'bold',
-    },
-    syncText: {
-        marginLeft: 8,
-        fontSize: 14,
-    },
-    loadingText: {
-        color: '#fff',
-        fontSize: 18,
-        textAlign: 'center',
-        marginTop: 100,
+        color: COLORS.gradientStart,
     },
     questionCard: {
-        padding: 20,
-        marginBottom: 15,
+        padding: SPACING.large,
+        marginBottom: SPACING.medium,
     },
     questionNumber: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 12,
-        marginBottom: 8,
+        color: COLORS.textHint,
+        marginBottom: SPACING.small,
     },
     questionText: {
-        fontSize: 18,
-        color: '#fff',
-        fontWeight: '600',
-        lineHeight: 24,
+        color: COLORS.textPrimary,
+        lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.headerMedium,
     },
     strikesContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 20,
+        marginBottom: SPACING.large,
     },
     strikesLabel: {
-        color: '#fff',
-        fontSize: 16,
-        marginRight: 10,
+        color: COLORS.textPrimary,
+        marginRight: SPACING.small,
     },
     strikesRow: {
         flexDirection: 'row',
-        gap: 8,
+        gap: SPACING.small,
     },
     strike: {
         width: 35,
         height: 35,
         borderRadius: 17,
-        backgroundColor: 'rgba(255,255,255,0.1)',
+        backgroundColor: COLORS.backgroundInput,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: 'rgba(255,255,255,0.3)',
+        borderColor: COLORS.borderSubtle,
     },
     strikeActive: {
-        backgroundColor: '#ff4444',
-        borderColor: '#ff4444',
+        backgroundColor: COLORS.error,
+        borderColor: COLORS.error,
     },
     strikeText: {
-        color: '#fff',
+        color: COLORS.textPrimary,
         fontWeight: 'bold',
-        fontSize: 16,
     },
     boardContainer: {
-        marginBottom: 20,
+        marginBottom: SPACING.large,
     },
     answerRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        padding: 15,
-        marginBottom: 8,
-        borderRadius: 10,
+        backgroundColor: COLORS.backgroundInput,
+        padding: SPACING.medium,
+        marginBottom: SPACING.small,
+        borderRadius: BORDER_RADIUS.medium,
         borderWidth: 2,
-        borderColor: 'rgba(255,255,255,0.1)',
+        borderColor: COLORS.borderSubtle,
     },
     answerRevealed: {
         backgroundColor: 'rgba(51, 222, 165, 0.1)',
-        borderColor: '#33DEA5',
+        borderColor: COLORS.success,
     },
     answerNumber: {
         width: 30,
-        color: 'rgba(255,255,255,0.5)',
+        color: COLORS.textHint,
         fontWeight: 'bold',
-        fontSize: 16,
     },
     answerContent: {
         flex: 1,
@@ -444,62 +432,54 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     answerText: {
-        color: '#fff',
-        fontSize: 16,
+        color: COLORS.textPrimary,
         flex: 1,
     },
     answerValue: {
-        color: '#33DEA5',
+        color: COLORS.success,
         fontWeight: 'bold',
-        fontSize: 14,
     },
     hiddenText: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 16,
+        color: COLORS.textDisabled,
     },
     quickGuesses: {
-        marginBottom: 20,
+        marginBottom: SPACING.large,
     },
     guessLabel: {
-        color: 'rgba(255,255,255,0.7)',
-        fontSize: 14,
-        marginBottom: 10,
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.small,
     },
     guessButtons: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 8,
+        gap: SPACING.small,
     },
     guessButton: {
         backgroundColor: 'rgba(219, 20, 124, 0.3)',
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 20,
+        paddingVertical: SPACING.small,
+        paddingHorizontal: SPACING.regular,
+        borderRadius: BORDER_RADIUS.round,
         borderWidth: 1,
-        borderColor: '#db147c',
+        borderColor: COLORS.gradientStart,
     },
     guessButtonText: {
-        color: '#fff',
-        fontSize: 13,
-        fontWeight: '600',
+        color: COLORS.textPrimary,
     },
     skipButton: {
         alignSelf: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 24,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 25,
-        marginBottom: 10,
+        paddingVertical: SPACING.medium,
+        paddingHorizontal: SPACING.xlarge,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.round,
+        marginBottom: SPACING.small,
     },
     skipText: {
-        color: 'rgba(255,255,255,0.7)',
-        fontSize: 14,
+        color: COLORS.textSecondary,
     },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
+        color: COLORS.textDisabled,
         textAlign: 'center',
-        marginTop: 20,
+        marginTop: SPACING.xlarge,
     },
 });
 

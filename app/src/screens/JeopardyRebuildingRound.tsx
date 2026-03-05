@@ -1,22 +1,24 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
   View, 
-  Text, 
   StyleSheet, 
   TouchableOpacity, 
-  ScrollView, 
   Modal, 
   TextInput,
   Alert,
   FlatList
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGameStore } from '../lib/game-store';
 import { vertexAIService } from '../lib/vertex-ai-service';
 import { JeopardyCategory, JeopardyClue, GameState } from '../lib/game-types';
 import GameRunner from '../components/games/GameRunner';
 import * as Haptics from 'expo-haptics';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../theme';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import ScreenLayout from '../layout/ScreenLayout';
 
 interface JeopardyCellProps {
   clue: JeopardyClue;
@@ -51,17 +53,18 @@ const JeopardyCell: React.FC<JeopardyCellProps> = ({
       disabled={clue.answered || !isActive}
     >
       <LinearGradient
-        colors={clue.answered ? ['#333', '#555'] : ['#ef1b6e', '#9056ef']}
+        colors={clue.answered ? [COLORS.textDisabled, COLORS.textHint] : [COLORS.vibrantPink, COLORS.lavenderPurple]}
         style={styles.cellGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <Text style={[
-          styles.cellText, 
-          clue.answered && styles.cellTextAnswered
-        ]}>
+        <Typography 
+          variant="h2" 
+          color={clue.answered ? COLORS.textDisabled : COLORS.textPrimary}
+          center
+        >
           ${clue.value}
-        </Text>
+        </Typography>
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -123,23 +126,29 @@ const ClueModal: React.FC<ClueModalProps> = ({
     >
       <View style={styles.modalContainer}>
         <LinearGradient 
-          colors={['#1a0033', '#330066']} 
+          colors={[COLORS.deepCosmic, COLORS.richPlum]} 
           style={styles.modalBackground}
         />
         
         <View style={styles.modalContent}>
           {/* Header */}
           <View style={styles.modalHeader}>
-            <Text style={styles.categoryText}>{category.toUpperCase()}</Text>
-            <Text style={styles.valueText}>${clue.value}</Text>
+            <Typography variant="label" color={COLORS.vibrantPink}>
+              {category.toUpperCase()}
+            </Typography>
+            <Typography variant="h2" color={COLORS.brightYellow}>
+              ${clue.value}
+            </Typography>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <Text style={styles.closeButtonText}>✕</Text>
+              <Typography variant="h2" color={COLORS.textPrimary}>✕</Typography>
             </TouchableOpacity>
           </View>
 
           {/* Clue */}
           <View style={styles.clueContainer}>
-            <Text style={styles.clueText}>{clue.clue}</Text>
+            <Typography variant="h3" color={COLORS.textPrimary} center>
+              {clue.clue}
+            </Typography>
           </View>
 
           {/* Buzzer or Answer Section */}
@@ -154,52 +163,68 @@ const ClueModal: React.FC<ClueModalProps> = ({
                 disabled={!buzzerEnabled}
               >
                 <LinearGradient
-                  colors={buzzerEnabled ? ['#ef1b6e', '#ff4081'] : ['#666', '#888']}
+                  colors={buzzerEnabled ? [COLORS.vibrantPink, COLORS.rosePink] : [COLORS.textHint, COLORS.textSecondary]}
                   style={styles.buzzerGradient}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                 >
-                  <Text style={styles.buzzerText}>BUZZ IN!</Text>
+                  <Typography variant="button" color={COLORS.textPrimary}>
+                    BUZZ IN!
+                  </Typography>
                 </LinearGradient>
               </TouchableOpacity>
               {!buzzerEnabled && (
-                <Text style={styles.buzzerWaitText}>Wait for the clue to finish...</Text>
+                <Typography variant="caption" color={COLORS.textSecondary} center>
+                  Wait for the clue to finish...
+                </Typography>
               )}
             </View>
           ) : (
             <View style={styles.answerContainer}>
-              <Text style={styles.answerPrompt}>Your answer:</Text>
+              <Typography variant="body" color={COLORS.textPrimary} center>
+                Your answer:
+              </Typography>
               <TextInput
                 style={styles.answerInput}
                 value={answer}
                 onChangeText={setAnswer}
                 placeholder="What is..."
-                placeholderTextColor="rgba(255, 255, 255, 0.5)"
+                placeholderTextColor={COLORS.textHint}
                 autoFocus
               />
               
               <View style={styles.answerButtons}>
-                <TouchableOpacity 
-                  style={[styles.button, styles.submitButton]} 
+                <SquishyButton 
                   onPress={handleSubmit}
                   disabled={!answer.trim()}
+                  variant="primary"
+                  style={styles.answerButton}
                 >
-                  <Text style={styles.buttonText}>Submit Answer</Text>
-                </TouchableOpacity>
+                  <Typography variant="button" color={COLORS.textPrimary}>
+                    Submit Answer
+                  </Typography>
+                </SquishyButton>
                 
-                <TouchableOpacity 
-                  style={[styles.button, styles.showAnswerButton]} 
+                <SquishyButton 
                   onPress={handleShowAnswer}
+                  variant="secondary"
+                  style={styles.answerButton}
                 >
-                  <Text style={styles.buttonText}>Show Answer</Text>
-                </TouchableOpacity>
+                  <Typography variant="button" color={COLORS.textPrimary}>
+                    Show Answer
+                  </Typography>
+                </SquishyButton>
               </View>
 
               {showAnswer && (
-                <View style={styles.answerReveal}>
-                  <Text style={styles.answerLabel}>Correct Answer:</Text>
-                  <Text style={styles.answerText}>{clue.answer}</Text>
-                </View>
+                <GlassCard variant="outlined" style={styles.answerReveal}>
+                  <Typography variant="label" color={COLORS.textSecondary}>
+                    Correct Answer:
+                  </Typography>
+                  <Typography variant="h3" color={COLORS.brightYellow}>
+                    {clue.answer}
+                  </Typography>
+                </GlassCard>
               )}
             </View>
           )}
@@ -281,7 +306,7 @@ const JeopardyRebuildingRound: React.FC<JeopardyRebuildingRoundProps> = ({
     });
   }, [answeredClues, updateGameState, triggerMarcieAnimation]);
 
-  const handleBuzz = useCallback(async () => {
+  const handleBuzzCallback = useCallback(async () => {
     if (!selectedCell || !buzzerEnabled || activePlayer) return;
 
     const timestamp = Date.now();
@@ -379,9 +404,11 @@ const JeopardyRebuildingRound: React.FC<JeopardyRebuildingRoundProps> = ({
 
   const renderCategory = ({ item: category, index }: { item: JeopardyCategory, index: number }) => (
     <View style={styles.categoryColumn} key={category.id}>
-      <View style={styles.categoryHeader}>
-        <Text style={styles.categoryTitle}>{category.name.toUpperCase()}</Text>
-      </View>
+      <GlassCard variant="outlined" style={styles.categoryHeader} padding="small">
+        <Typography variant="label" color={COLORS.textPrimary} center>
+          {category.name.toUpperCase()}
+        </Typography>
+      </GlassCard>
       {category.clues.map((clue, clueIndex) => (
         <JeopardyCell
           key={clue.id}
@@ -397,50 +424,64 @@ const JeopardyRebuildingRound: React.FC<JeopardyRebuildingRoundProps> = ({
 
   if (categories.length === 0) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading personalized categories...</Text>
-      </View>
+      <ScreenLayout showHeader={false} scrollable={false}>
+        <View style={styles.loadingContainer}>
+          <Typography variant="body" color={COLORS.textPrimary} center>
+            Loading personalized categories...
+          </Typography>
+        </View>
+      </ScreenLayout>
     );
   }
 
   return (
-    <View style={styles.container}>
-      {/* Game Board */}
-      <View style={styles.gameBoard}>
-        <FlatList
-          data={categories}
-          renderItem={renderCategory}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.boardContent}
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <View style={styles.container}>
+        {/* Game Board */}
+        <View style={styles.gameBoard}>
+          <FlatList
+            data={categories}
+            renderItem={renderCategory}
+            keyExtractor={(item) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.boardContent}
+          />
+        </View>
+
+        {/* Scores */}
+        <View style={styles.scoresContainer}>
+          <GlassCard style={styles.scoreCard} padding="medium">
+            <Typography variant="label" color={COLORS.textSecondary}>
+              Player 1
+            </Typography>
+            <Typography variant="h2" color={COLORS.textPrimary}>
+              ${scores.player1}
+            </Typography>
+          </GlassCard>
+          <GlassCard style={styles.scoreCard} padding="medium">
+            <Typography variant="label" color={COLORS.textSecondary}>
+              Player 2
+            </Typography>
+            <Typography variant="h2" color={COLORS.textPrimary}>
+              ${scores.player2}
+            </Typography>
+          </GlassCard>
+        </View>
+
+        {/* Clue Modal */}
+        <ClueModal
+          visible={!!selectedCell}
+          clue={selectedCell ? categories[selectedCell.categoryIndex].clues[selectedCell.clueIndex] : null}
+          category={selectedCell ? categories[selectedCell.categoryIndex].name : ''}
+          onAnswer={handleAnswer}
+          onClose={() => setSelectedCell(null)}
+          activePlayer={activePlayer}
+          buzzerEnabled={buzzerEnabled}
+          onBuzz={handleBuzzCallback}
         />
       </View>
-
-      {/* Scores */}
-      <View style={styles.scoresContainer}>
-        <View style={styles.scoreCard}>
-          <Text style={styles.scoreLabel}>Player 1</Text>
-          <Text style={styles.scoreValue}>${scores.player1}</Text>
-        </View>
-        <View style={styles.scoreCard}>
-          <Text style={styles.scoreLabel}>Player 2</Text>
-          <Text style={styles.scoreValue}>${scores.player2}</Text>
-        </View>
-      </View>
-
-      {/* Clue Modal */}
-      <ClueModal
-        visible={!!selectedCell}
-        clue={selectedCell ? categories[selectedCell.categoryIndex].clues[selectedCell.clueIndex] : null}
-        category={selectedCell ? categories[selectedCell.categoryIndex].name : ''}
-        onAnswer={handleAnswer}
-        onClose={() => setSelectedCell(null)}
-        activePlayer={activePlayer}
-        buzzerEnabled={buzzerEnabled}
-        onBuzz={handleBuzz}
-      />
-    </View>
+    </ScreenLayout>
   );
 };
 
@@ -485,44 +526,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  loadingText: {
-    color: '#ffffff',
-    fontSize: 18,
-    textAlign: 'center',
-  },
   gameBoard: {
     flex: 1,
-    paddingHorizontal: 8,
-    paddingTop: 20,
+    paddingHorizontal: SPACING.small,
+    paddingTop: SPACING.large,
   },
   boardContent: {
-    paddingHorizontal: 8,
+    paddingHorizontal: SPACING.small,
   },
   categoryColumn: {
-    width: 140,
-    marginHorizontal: 4,
+    width: SPACING.xxxlarge * 3,
+    marginHorizontal: SPACING.tiny,
   },
   categoryHeader: {
-    backgroundColor: 'rgba(239, 27, 110, 0.2)',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderRadius: 8,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(239, 27, 110, 0.5)',
-  },
-  categoryTitle: {
-    color: '#ffffff',
-    fontSize: 12,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    marginBottom: SPACING.small,
   },
   cell: {
-    height: 80,
-    marginVertical: 4,
-    borderRadius: 8,
+    height: SPACING.xxxlarge * 1.5,
+    marginVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.medium,
     overflow: 'hidden',
   },
   cellGradient: {
@@ -536,191 +558,88 @@ const styles = StyleSheet.create({
   cellDisabled: {
     opacity: 0.5,
   },
-  cellText: {
-    color: '#ffffff',
-    fontSize: 24,
-    fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.5)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
-  },
-  cellTextAnswered: {
-    color: 'rgba(255, 255, 255, 0.5)',
-  },
   scoresContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: SPACING.large,
+    paddingHorizontal: SPACING.large,
   },
   scoreCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    borderRadius: 12,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  scoreLabel: {
-    color: '#ffffff',
-    fontSize: 14,
-    opacity: 0.8,
-    marginBottom: 4,
-  },
-  scoreValue: {
-    color: '#ffffff',
-    fontSize: 24,
-    fontWeight: 'bold',
+    minWidth: SPACING.xxxlarge * 3,
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    backgroundColor: COLORS.backgroundPrimary,
   },
   modalBackground: {
     ...StyleSheet.absoluteFillObject,
   },
   modalContent: {
     flex: 1,
-    padding: 24,
+    padding: SPACING.xlarge,
     justifyContent: 'space-between',
   },
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 32,
-  },
-  categoryText: {
-    color: '#ef1b6e',
-    fontSize: 14,
-    fontWeight: 'bold',
-    flex: 1,
-  },
-  valueText: {
-    color: '#FFD700',
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginHorizontal: 16,
+    marginBottom: SPACING.xxlarge,
   },
   closeButton: {
-    padding: 8,
-  },
-  closeButtonText: {
-    color: '#ffffff',
-    fontSize: 24,
-    fontWeight: 'bold',
+    padding: SPACING.small,
   },
   clueContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 32,
-  },
-  clueText: {
-    color: '#ffffff',
-    fontSize: 20,
-    textAlign: 'center',
-    lineHeight: 28,
-    paddingHorizontal: 20,
+    marginBottom: SPACING.xxlarge,
   },
   buzzerContainer: {
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: SPACING.xxxlarge,
   },
   buzzerButton: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    marginBottom: 16,
+    width: SPACING.xxxlarge * 4,
+    height: SPACING.xxxlarge * 4,
+    borderRadius: BORDER_RADIUS.round,
+    marginBottom: SPACING.regular,
   },
   buzzerGradient: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 100,
-    shadowColor: '#ef1b6e',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 20,
-    elevation: 10,
-  },
-  buzzerText: {
-    color: '#ffffff',
-    fontSize: 32,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
+    borderRadius: BORDER_RADIUS.round,
+    ...SHADOWS.neonStrong,
   },
   buzzerDisabled: {
     opacity: 0.5,
   },
-  buzzerWaitText: {
-    color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 14,
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
   answerContainer: {
-    marginBottom: 40,
-  },
-  answerPrompt: {
-    color: '#ffffff',
-    fontSize: 16,
-    marginBottom: 16,
-    textAlign: 'center',
+    marginBottom: SPACING.xxxlarge,
   },
   answerInput: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: COLORS.backgroundInput,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    color: '#ffffff',
-    fontSize: 16,
-    marginBottom: 20,
+    borderColor: COLORS.borderSubtle,
+    borderRadius: BORDER_RADIUS.input,
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.regular,
+    color: COLORS.textPrimary,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+    marginBottom: SPACING.large,
+    marginTop: SPACING.regular,
   },
   answerButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: SPACING.regular,
   },
-  button: {
+  answerButton: {
     flex: 1,
-    paddingVertical: 16,
-    borderRadius: 12,
-    marginHorizontal: 8,
-  },
-  submitButton: {
-    backgroundColor: '#4CAF50',
-  },
-  showAnswerButton: {
-    backgroundColor: '#ff9800',
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   answerReveal: {
-    marginTop: 20,
-    padding: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-  },
-  answerLabel: {
-    color: '#ffffff',
-    fontSize: 14,
-    opacity: 0.7,
-    marginBottom: 8,
-  },
-  answerText: {
-    color: '#FFD700',
-    fontSize: 18,
-    fontWeight: 'bold',
+    marginTop: SPACING.large,
   },
 });
 

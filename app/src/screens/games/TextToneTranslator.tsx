@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
-import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
+import { HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS, COMPONENTS } from '../../theme';
 
 const RISKY_TEXT = "Fine. Do whatever you want.";
 
@@ -21,44 +22,50 @@ export default function TextToneTranslator({ route, navigation }: any) {
     }
   }
 
-  const inputArea = (
-    <View style={{ gap: 12 }}>
-      <GlassCard>
-        <Text variant="header">Risk Detected</Text>
-        <Text variant="sass" style={styles.risk}>"{RISKY_TEXT}"</Text>
-        <Text variant="body">Rewrite this to be safer:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="I feel frustrated because..."
-          placeholderTextColor="#666"
-          value={rewrite}
-          onChangeText={setRewrite}
-          multiline
-        />
-        <SquishyButton onPress={check} style={styles.btn}>
-            <Text variant="header">Translate</Text>
-        </SquishyButton>
-      </GlassCard>
-    </View>
+  return (
+    <ScreenLayout showHeader={true} scrollable={true}>
+      <View style={{ gap: SPACING.regular }}>
+        <Typography variant="h1" center>The Love Arcade</Typography>
+        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
+
+        <GlassCard>
+          <Typography variant="h2">Risk Detected</Typography>
+          <Typography variant="sass" style={styles.risk}>"{RISKY_TEXT}"</Typography>
+          <Typography variant="body">Rewrite this to be safer:</Typography>
+          <TextInput
+            style={styles.input}
+            placeholder="I feel frustrated because..."
+            placeholderTextColor={COLORS.textHint}
+            value={rewrite}
+            onChangeText={setRewrite}
+            multiline
+          />
+          <SquishyButton onPress={check} style={styles.btn}>
+            <Typography variant="h2">Translate</Typography>
+          </SquishyButton>
+        </GlassCard>
+      </View>
+    </ScreenLayout>
   );
-
-  const baseState = useMemo(() => ({
-    id: gameId,
-    title: 'Text Tone Translator',
-    description: 'De-escalate digital communication',
-    category: 'conflict' as const,
-    difficulty: 'medium' as const,
-    xpReward: 200,
-    currentStep: 0,
-    totalTime: 60,
-    playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
-  }), [gameId]);
-
-  return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => check()} />;
 }
 
 const styles = StyleSheet.create({
-  risk: { fontSize: 18, color: '#FA1F63', marginVertical: 12, textAlign: 'center', fontStyle: 'italic' },
-  input: { backgroundColor: 'rgba(255,255,255,0.1)', color: '#fff', padding: 12, borderRadius: 8, minHeight: 80 },
-  btn: { marginTop: 16, backgroundColor: '#33DEA5', padding: 16, borderRadius: 12, alignItems: 'center' },
+  risk: { 
+    marginVertical: SPACING.regular, 
+    textAlign: 'center',
+    color: COLORS.emotionalConnection,
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    color: COLORS.textPrimary, 
+    padding: SPACING.regular, 
+    borderRadius: BORDER_RADIUS.input, 
+    minHeight: 80,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    textAlignVertical: 'top',
+  },
+  btn: { 
+    marginTop: SPACING.regular 
+  },
 });

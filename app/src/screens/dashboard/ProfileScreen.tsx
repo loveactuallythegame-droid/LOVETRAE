@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, Image, Switch, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout } from '../../layout';
+import { Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { supabase, getProfile, upsertProfile } from '../../lib/supabase';
 import { setJSON, getJSON } from '../../lib/cache';
 import { useAppStore } from '../../state/store';
-import { isBetaActive } from '../../lib/gating';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function ProfileScreen() {
   const isBeta = useAppStore((s) => s.isBeta);
@@ -44,37 +45,113 @@ export default function ProfileScreen() {
   }
 
   return (
-    <ScrollView style={styles.root}>
-      <GlassCard>
-        <Text variant="header">Profile</Text>
-        {isBeta && (
-          <View style={styles.betaBadge}>
-            <Text variant="keyword">Beta Tester</Text>
+    <ScreenLayout showHeader={true}>
+      <ScrollView style={styles.content}>
+        <GlassCard>
+          <Typography variant="header">Profile</Typography>
+          {isBeta && (
+            <View style={styles.betaBadge}>
+              <Typography variant="label">Beta Tester</Typography>
+            </View>
+          )}
+          {avatarUrl ? (
+            <Image source={{ uri: avatarUrl }} style={styles.avatar} accessibilityLabel="User Avatar" />
+          ) : null}
+          <TextInput 
+            placeholder="Avatar URL" 
+            style={styles.input} 
+            value={avatarUrl} 
+            onChangeText={setAvatarUrl} 
+            accessibilityLabel="Avatar URL Input"
+            placeholderTextColor={COLORS.textHint}
+          />
+          <View style={styles.row}>
+            <Typography variant="body">Avatar private</Typography>
+            <Switch value={avatarPrivate} onValueChange={setAvatarPrivate} accessibilityLabel="Toggle Avatar Privacy" />
           </View>
-        )}
-        {avatarUrl ? (<Image source={{ uri: avatarUrl }} style={{ width: 100, height: 100, borderRadius: 50 }} accessibilityLabel="User Avatar" alt="User Avatar" />) : null}
-        <TextInput placeholder="Avatar URL" style={styles.input} value={avatarUrl} onChangeText={setAvatarUrl} accessibilityLabel="Avatar URL Input" />
-        <View style={styles.row}><Text variant="body">Avatar private</Text><Switch value={avatarPrivate} onValueChange={setAvatarPrivate} accessibilityLabel="Toggle Avatar Privacy" /></View>
-        <View style={styles.row}><Text variant="body">Sarcasm Level</Text><TextInput style={styles.inputSmall} keyboardType="numeric" value={String(sarcasm)} onChangeText={(v) => setSarcasm(parseInt(v) || 1)} /></View>
-        <Text variant="header" style={{ marginTop: 12 }}>Timeline</Text>
-        {timeline.map((t, i) => (<Text key={i} variant="body">• {t}</Text>))}
-        <Text variant="header" style={{ marginTop: 12 }}>Badges</Text>
-        {badges.map((b, i) => (<Text key={i} variant="keyword">{b}</Text>))}
-        <View style={styles.row}>
-          <SquishyButton style={styles.btn} onPress={save}><Text variant="header">Save</Text></SquishyButton>
-          <SquishyButton style={styles.btn} onPress={exportData}><Text variant="header">Export</Text></SquishyButton>
-          <SquishyButton style={styles.btn} onPress={requestDelete}><Text variant="header">Delete</Text></SquishyButton>
-        </View>
-      </GlassCard>
-    </ScrollView>
+          <View style={styles.row}>
+            <Typography variant="body">Sarcasm Level</Typography>
+            <TextInput 
+              style={styles.inputSmall} 
+              keyboardType="numeric" 
+              value={String(sarcasm)} 
+              onChangeText={(v) => setSarcasm(parseInt(v) || 1)} 
+              placeholderTextColor={COLORS.textHint}
+            />
+          </View>
+          
+          <Typography variant="header" style={{ marginTop: SPACING.large }}>Timeline</Typography>
+          {timeline.map((t, i) => (
+            <Typography key={i} variant="body">• {t}</Typography>
+          ))}
+          
+          <Typography variant="header" style={{ marginTop: SPACING.large }}>Badges</Typography>
+          {badges.map((b, i) => (
+            <Typography key={i} variant="label">{b}</Typography>
+          ))}
+          
+          <View style={styles.buttonRow}>
+            <SquishyButton onPress={save}>
+              <Typography variant="button">Save</Typography>
+            </SquishyButton>
+            <SquishyButton onPress={exportData} variant="secondary">
+              <Typography variant="button">Export</Typography>
+            </SquishyButton>
+            <SquishyButton onPress={requestDelete} variant="ghost">
+              <Typography variant="button">Delete</Typography>
+            </SquishyButton>
+          </View>
+        </GlassCard>
+      </ScrollView>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, padding: 16 },
-  input: { backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 10, color: '#fff', marginTop: 8 },
-  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 },
-  inputSmall: { backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 8, color: '#fff', width: 60 },
-  btn: { paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#33DEA5', borderRadius: 12, marginTop: 12 },
-  betaBadge: { backgroundColor: 'rgba(255,215,0,0.2)', padding: 4, borderRadius: 4, alignSelf: 'flex-start', marginBottom: 8 }
+  content: {
+    flex: 1,
+    padding: SPACING.screenPadding,
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    borderRadius: BORDER_RADIUS.input, 
+    padding: SPACING.regular, 
+    color: COLORS.textPrimary, 
+    marginTop: SPACING.regular,
+  },
+  row: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between', 
+    marginTop: SPACING.regular 
+  },
+  inputSmall: { 
+    backgroundColor: COLORS.backgroundInput, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    borderRadius: BORDER_RADIUS.input, 
+    padding: SPACING.small, 
+    color: COLORS.textPrimary, 
+    width: 60 
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: SPACING.small,
+    marginTop: SPACING.large,
+  },
+  betaBadge: { 
+    backgroundColor: COLORS.backgroundInput, 
+    padding: SPACING.small, 
+    borderRadius: BORDER_RADIUS.small, 
+    alignSelf: 'flex-start', 
+    marginBottom: SPACING.regular 
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: BORDER_RADIUS.xxlarge,
+    marginBottom: SPACING.regular,
+  },
 });

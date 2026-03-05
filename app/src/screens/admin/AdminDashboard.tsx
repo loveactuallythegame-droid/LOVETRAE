@@ -1,30 +1,46 @@
 
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { RadialGradientBackground } from "../../components/ui/RadialGradientBackground";
-import { Header } from "../../components/ui/Header";
+import { View, StyleSheet } from "react-native";
+import { ScreenLayout } from "../../layout";
+import { Typography, SquishyButton } from "../../components/ui";
+import { COLORS, SPACING } from "../../theme";
 
 const AdminDashboard = ({ navigation }) => {
-
-
   return (
-    <RadialGradientBackground
-      colors={["#5C1459", "#FA1F63"]}
+    <ScreenLayout
+      showHeader={true}
+      scrollable={true}
     >
-      <Header
-        logoSource={require("../../../assets/logo/mainlogoone.png")}
-      />
-      <View className="flex-1 justify-center items-center">
-        <Text className="text-white text-4xl font-wonderful-sometimes mb-8">Admin Dashboard</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("AdminAnalytics")} className="bg-white/20 p-4 rounded-lg mb-4">
-          <Text className="text-white font-barbie-dream text-lg">View Analytics</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("AdminFightModeration")} className="bg-white/20 p-4 rounded-lg mb-4">
-          <Text className="text-white font-barbie-dream text-lg">Moderate Fights</Text>
-        </TouchableOpacity>
+      <View style={styles.container}>
+        <Typography variant="h1" color={COLORS.textPrimary} style={{ marginBottom: SPACING.xlarge }}>
+          Admin Dashboard
+        </Typography>
+        <SquishyButton
+          onPress={() => navigation.navigate("AdminAnalytics")}
+          style={{ marginBottom: SPACING.regular }}
+        >
+          <Typography variant="button" color={COLORS.textPrimary}>
+            View Analytics
+          </Typography>
+        </SquishyButton>
+        <SquishyButton
+          onPress={() => navigation.navigate("AdminFightModeration")}
+        >
+          <Typography variant="button" color={COLORS.textPrimary}>
+            Moderate Fights
+          </Typography>
+        </SquishyButton>
       </View>
-    </RadialGradientBackground>
+    </ScreenLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default AdminDashboard;

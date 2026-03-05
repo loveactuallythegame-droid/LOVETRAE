@@ -1,80 +1,141 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
 const GuiltVsShameSortScreen = () => {
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.background} />
-
+        <ScreenLayout showHeader={false}>
             <View style={styles.header}>
-                <Text style={styles.headerProgress}>8 / 10</Text>
+                <Typography variant="label">8 / 10</Typography>
             </View>
             
             <View style={styles.gameContainer}>
-                <Text style={styles.title}>GUILT VS. SHAME SORT</Text>
-                <Text style={styles.subtitle}>Rapid-fire: Where does this feeling belong?</Text>
+                <Typography variant="h1" style={styles.title} center>
+                    GUILT VS. SHAME SORT
+                </Typography>
+                <Typography variant="body" style={styles.subtitle} center>
+                    Rapid-fire: Where does this feeling belong?
+                </Typography>
 
                 <View style={styles.cardContainer}>
-                    <TouchableOpacity style={[styles.actionButton, styles.fixButton]}>
-                        <Text style={styles.actionButtonText}>🔧</Text>
-                    </TouchableOpacity>
+                    <SquishyButton 
+                        variant="ghost" 
+                        style={[styles.actionButton, styles.fixButton]}
+                        onPress={() => {}}
+                    >
+                        <Typography variant="h1">🔧</Typography>
+                    </SquishyButton>
 
-                    <View style={styles.card}>
-                        <Text style={styles.cardTitle}>"I'M UNLOVABLE"</Text>
+                    <GlassCard style={styles.card}>
+                        <Typography variant="h2" style={styles.cardTitle} center>
+                            "I'M UNLOVABLE"
+                        </Typography>
                         <View style={styles.divider} />
-                        <Text style={styles.cardDescription}>This thought focuses on who you are at your core, rather than what you've done.</Text>
-                    </View>
+                        <Typography variant="body" style={styles.cardDescription} center>
+                            This thought focuses on who you are at your core, rather than what you've done.
+                        </Typography>
+                    </GlassCard>
 
-                    <TouchableOpacity style={[styles.actionButton, styles.trashButton]}>
-                        <Text style={styles.actionButtonText}>🗑️</Text>
-                    </TouchableOpacity>
+                    <SquishyButton 
+                        variant="ghost" 
+                        style={[styles.actionButton, styles.trashButton]}
+                        onPress={() => {}}
+                    >
+                        <Typography variant="h1">🗑️</Typography>
+                    </SquishyButton>
                 </View>
 
                 <View style={styles.streakContainer}>
-                    <Text style={styles.streakText}>STREAK: 12</Text>
+                    <Typography variant="label" style={styles.streakText}>
+                        STREAK: 12
+                    </Typography>
                 </View>
             </View>
 
             <View style={styles.footer}>
                 {/* Footer stats would go here */}
             </View>
-        </SafeAreaView>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#2A002A' },
-    background: { ...StyleSheet.absoluteFillObject },
-    header: { padding: 16, alignItems: 'center' },
-    headerProgress: { color: '#FFF', fontWeight: 'bold', textTransform: 'uppercase' },
-    gameContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 },
-    title: { fontSize: 32, fontWeight: 'bold', color: '#FFF', marginBottom: 8, textAlign: 'center', textTransform: 'uppercase' },
-    subtitle: { fontSize: 16, color: '#D1C4E9', marginBottom: 24, textAlign: 'center' },
-    cardContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', width: '100%' },
-    actionButton: { width: 80, height: 80, borderRadius: 40, justifyContent: 'center', alignItems: 'center', borderWidth: 2 },
-    fixButton: { borderColor: '#00FFFF', backgroundColor: 'rgba(0, 255, 255, 0.2)' },
-    trashButton: { borderColor: '#FF4081', backgroundColor: 'rgba(255, 64, 129, 0.2)' },
-    actionButtonText: { fontSize: 30 },
+    header: { 
+        padding: SPACING.lg, 
+        alignItems: 'center' 
+    },
+    gameContainer: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        padding: SPACING.lg 
+    },
+    title: { 
+        marginBottom: SPACING.sm,
+    },
+    subtitle: { 
+        color: COLORS.textSecondary, 
+        marginBottom: SPACING.xl,
+    },
+    cardContainer: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        justifyContent: 'space-around', 
+        width: '100%' 
+    },
+    actionButton: { 
+        width: SPACING.xxxlarge * 1.5, 
+        height: SPACING.xxxlarge * 1.5, 
+        borderRadius: BORDER_RADIUS.round, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        borderWidth: 2,
+    },
+    fixButton: { 
+        borderColor: COLORS.aquaTeal, 
+        backgroundColor: `${COLORS.aquaTeal}33`,
+    },
+    trashButton: { 
+        borderColor: COLORS.vibrantPink, 
+        backgroundColor: `${COLORS.vibrantPink}33`,
+    },
     card: {
-        width: 280,
-        height: 400,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 24,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 64, 129, 0.5)',
-        padding: 24,
-        alignItems: 'center',
+        width: SPACING.xxxlarge * 5.5,
+        height: SPACING.xxxlarge * 8,
+        alignItems: 'center', 
         justifyContent: 'center',
     },
-    cardTitle: { fontSize: 28, fontWeight: 'bold', color: '#FFF', textAlign: 'center', marginBottom: 16, textTransform: 'uppercase' },
-    divider: { height: 4, width: 48, backgroundColor: '#FF4081', borderRadius: 2, marginBottom: 16 },
-    cardDescription: { fontSize: 14, color: '#D1C4E9', textAlign: 'center' },
-    streakContainer: { marginTop: 24, paddingVertical: 8, paddingHorizontal: 16, borderRadius: 16, backgroundColor: 'rgba(255, 215, 0, 0.2)', borderWidth: 1, borderColor: 'rgba(255, 215, 0, 0.5)' },
-    streakText: { color: '#FFD700', fontWeight: 'bold', fontSize: 18, textTransform: 'uppercase' },
-    footer: { padding: 16, borderTopWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }
+    cardTitle: { 
+        marginBottom: SPACING.md,
+    },
+    divider: { 
+        height: SPACING.tiny, 
+        width: SPACING.xl, 
+        backgroundColor: COLORS.vibrantPink, 
+        borderRadius: SPACING.tiny / 2, 
+        marginBottom: SPACING.md 
+    },
+    cardDescription: { 
+        color: COLORS.textSecondary,
+    },
+    streakContainer: { 
+        marginTop: SPACING.xl, 
+        paddingVertical: SPACING.sm, 
+        paddingHorizontal: SPACING.lg, 
+        borderRadius: BORDER_RADIUS.xlarge, 
+        backgroundColor: `${COLORS.brightYellow}33`, 
+        borderWidth: 1, 
+        borderColor: `${COLORS.brightYellow}80`,
+    },
+    streakText: { 
+        color: COLORS.brightYellow,
+    },
+    footer: { 
+        padding: SPACING.lg, 
+        borderTopWidth: 1, 
+        borderColor: COLORS.divider,
+    },
 });
 
 export default GuiltVsShameSortScreen;

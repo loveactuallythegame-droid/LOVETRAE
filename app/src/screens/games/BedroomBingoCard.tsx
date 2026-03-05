@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header } from '../../components/ui/Header';
+import { ScreenLayout, Typography, GlassCard } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
+
 // Placeholder for Lottie Animation
 const LottieView = View; 
 
@@ -18,21 +20,21 @@ const BingoTile = ({ icon, text, isActive, isFree, onPress }: { icon: string, te
     if (isFree) {
         return (
             <LinearGradient
-                colors={['#db147c', '#f05d68']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+                colors={GRADIENTS.primary.colors}
+                start={GRADIENTS.primary.start}
+                end={GRADIENTS.primary.end}
                 style={[styles.bingoTile, styles.freeSpace]}
             >
-                <Text style={styles.bingoIcon}>💖</Text>
-                <Text style={styles.bingoText}>Free Love</Text>
+                <Typography variant="h3" center>💖</Typography>
+                <Typography variant="caption" center style={{ color: COLORS.textPrimary }}>Free Love</Typography>
             </LinearGradient>
         );
     }
 
     return (
         <TouchableOpacity style={[styles.bingoTile, isActive && styles.activeTile]} onPress={onPress}>
-            <Text style={styles.bingoIcon}>{icon}</Text>
-            <Text style={styles.bingoText}>{text}</Text>
+            <Typography variant="h3" center>{icon}</Typography>
+            <Typography variant="caption" center style={{ color: COLORS.textPrimary }}>{text}</Typography>
         </TouchableOpacity>
     );
 };
@@ -48,9 +50,11 @@ const BedroomBingoCardScreen = () => {
         setActiveTiles(newActiveTiles);
     };
 
+    const completedPercentage = (activeTiles.filter(Boolean).length / 25) * 100;
+
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#230f19', '#120d09']} style={styles.background} />
+            <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
             
             {/* Dr. Marcie Section */}
             <View style={styles.drMarcieSection}>
@@ -58,13 +62,14 @@ const BedroomBingoCardScreen = () => {
                     <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                 </View>
                 <View style={styles.quoteBox}>
-                    <Text style={styles.quoteText}>Connect intimately through shared experiences! Each tile represents a new way to deepen your bond.</Text>
+                    <Typography variant="body">Connect intimately through shared experiences! Each tile represents a new way to deepen your bond.</Typography>
                 </View>
             </View>
             
-            <Header title="Bedroom Bingo" />
+            <Typography variant="h1" center style={styles.title}>Bedroom Bingo</Typography>
+            
             <ScrollView contentContainerStyle={styles.content}>
-                <Text style={styles.subtitle}>Ignite your connection through 25 shared cosmic experiences.</Text>
+                <Typography variant="h2" center style={styles.subtitle}>Ignite your connection through 25 shared cosmic experiences.</Typography>
                 
                 {/* Marcie's "Judgey Nods" Lottie Animation Placeholder */}
                 <LottieView style={styles.lottiePlaceholder} />
@@ -81,17 +86,17 @@ const BedroomBingoCardScreen = () => {
                 </View>
 
                 <LinearGradient
-                    colors={['#a22ac4', '#9056ef']}
+                    colors={[COLORS.lavenderPurple, COLORS.softViolet]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     style={styles.progressContainer}
                 >
-                    <Text style={styles.progressTitle}>Current Progress</Text>
-                    <Text style={styles.progressSubtitle}>You're making beautiful memories together</Text>
+                    <Typography variant="h3" style={{ color: COLORS.textPrimary }}>Current Progress</Typography>
+                    <Typography variant="body" style={{ color: COLORS.textSecondary }}>You're making beautiful memories together</Typography>
                     <View style={styles.progressBar}>
-                        <LinearGradient colors={['#db147c', '#f05d68']} style={{width: `${(activeTiles.filter(Boolean).length / 25) * 100}%`, height: '100%'}} />
+                        <LinearGradient colors={GRADIENTS.primary.colors} style={{width: `${completedPercentage}%`, height: '100%'}} />
                     </View>
-                    <Text style={styles.progressText}>{activeTiles.filter(Boolean).length} / 25 Completed</Text>
+                    <Typography variant="caption" style={{ color: COLORS.textSecondary }}>{activeTiles.filter(Boolean).length} / 25 Completed</Typography>
                 </LinearGradient>
             </ScrollView>
         </SafeAreaView>
@@ -99,151 +104,108 @@ const BedroomBingoCardScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#230f19' },
-    background: { ...StyleSheet.absoluteFillObject },
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundSecondary 
+    },
+    background: { 
+        ...StyleSheet.absoluteFillObject 
+    },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        margin: SPACING.regular,
+        marginBottom: SPACING.small
     },
     avatarContainer: {
         width: 50,
         height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular
     },
     avatar: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: BORDER_RADIUS.round,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
         backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
+    title: {
+        marginVertical: SPACING.regular,
     },
-    content: { padding: 20 },
+    content: { 
+        padding: SPACING.regular 
+    },
     subtitle: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 18, 
-        color: '#db147c', 
+        color: COLORS.vibrantPink, 
         textAlign: 'center', 
-        marginBottom: 20,
+        marginBottom: SPACING.regular,
         backgroundColor: 'rgba(219, 20, 124, 0.2)',
-        padding: 8,
-        borderRadius: 12,
+        padding: SPACING.small,
+        borderRadius: BORDER_RADIUS.large,
     },
     lottiePlaceholder: { 
         height: 100, 
         width: 100, 
         alignSelf: 'center', 
-        marginBottom: 20, 
-        backgroundColor: '#ffffff20', 
-        borderRadius: 50 
+        marginBottom: SPACING.regular, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.round 
     },
     bingoGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        margin: -5,
+        margin: -SPACING.tiny,
     },
     bingoTile: {
         width: '18%', 
         aspectRatio: 1,
         margin: '1%',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 16,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xlarge,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 5,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 3,
+        padding: SPACING.tiny,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.small,
     },
     activeTile: {
         backgroundColor: 'rgba(219, 20, 124, 0.3)',
-        borderColor: '#db147c',
+        borderColor: COLORS.vibrantPink,
     },
     freeSpace: {
-        borderRadius: 16,
-    },
-    bingoIcon: {
-        fontSize: 24,
-        color: '#ffffff',
-    },
-    bingoText: {
-        fontFamily: 'SweetPink-Regular',
-        fontSize: 10,
-        color: '#ffffff',
-        textAlign: 'center',
-        marginTop: 5,
-        textTransform: 'uppercase',
+        borderRadius: BORDER_RADIUS.xlarge,
     },
     progressContainer: { 
-        borderRadius: 16,
-        padding: 20, 
-        marginTop: 30,
-        borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    progressTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 22, 
-        color: '#ffffff',
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        padding: 4,
-        borderRadius: 8,
-    },
-    progressSubtitle: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 14, 
-        color: '#ffffff', 
-        marginBottom: 15,
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 4,
-        borderRadius: 8,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular, 
+        marginTop: SPACING.xlarge,
+        borderWidth: 1,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.card,
     },
     progressBar: { 
         height: 10, 
-        backgroundColor: 'rgba(255,255,255,0.1)', 
-        borderRadius: 5, 
+        backgroundColor: COLORS.backgroundInput, 
+        borderRadius: BORDER_RADIUS.small, 
         overflow: 'hidden',
         borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        borderColor: COLORS.borderSubtle,
+        marginVertical: SPACING.regular,
     },
-    progressText: { 
-        fontFamily: 'WonderfulSometimes-Regular', 
-        fontSize: 16, 
-        color: '#ffffff', 
-        alignSelf: 'flex-end', 
-        marginTop: 10,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        padding: 4,
-        borderRadius: 8,
-    }
 });
 
 export default BedroomBingoCardScreen;

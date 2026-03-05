@@ -1,318 +1,287 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header } from '../../components/ui/Header'; // Generic Header
+
+import { ScreenLayout, Typography, GlassCard } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 const LegacyMilestone = ({ title, status, active, last }: { title: string, status: string, active?: boolean, last?: boolean }) => (
     <View style={styles.milestone}>
         <View style={styles.milestoneIconContainer}>
             <LinearGradient
-                colors={['#db147c', '#f05d68']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
+                colors={GRADIENTS.primary.colors}
+                start={GRADIENTS.primary.start}
+                end={GRADIENTS.primary.end}
                 style={styles.milestoneIconGradient}
             >
-                <Text style={styles.milestoneIcon}>{active ? 'play_circle' : (status === 'Completed' ? 'check_circle' : 'lock')}</Text>
+                <Typography variant="caption" style={styles.milestoneIcon}>
+                    {active ? '●' : (status === 'Completed' ? '✓' : '○')}
+                </Typography>
             </LinearGradient>
             {!last && <LinearGradient
-                colors={['#ef1b6e', '#c41e77', '#a22ac4', '#9056ef']}
+                colors={COLORS.progress}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
                 style={[styles.milestoneConnector, active && styles.activeConnector]} />}
         </View>
         <View style={styles.milestoneDetails}>
-            <Text style={[styles.milestoneTitle, !active && status !== 'Completed' && {color: 'rgba(255,255,255,0.4)'}]}>{title}</Text>
-            <Text style={[styles.milestoneStatus, active && {color: '#db147c'}]}>{status}</Text>
+            <Typography variant="h4" style={[styles.milestoneTitle, !active && status !== 'Completed' && {opacity: 0.4}]}>
+                {title}
+            </Typography>
+            <Typography variant="caption" style={[styles.milestoneStatus, active && {color: COLORS.vibrantPink}]}>
+                {status}
+            </Typography>
         </View>
     </View>
 )
 
 const AmazingRaceLegacyDashScreen = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#120a08', '#221410']} style={styles.background} />
-      
-      {/* Dr. Marcie Section */}
-      <View style={styles.drMarcieSection}>
-        <View style={styles.avatarContainer}>
-          <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
-        </View>
-        <View style={styles.quoteBox}>
-          <Text style={styles.quoteText}>Your legacy dash shows incredible progress! Each milestone represents real growth in your relationship journey.</Text>
-        </View>
-      </View>
-      
-      <Header title="Amazing Race: Legacy Dash" />
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <LinearGradient
-            colors={['#db147c', '#f05d68']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.progressCard}
-        >
-            <View style={styles.progressHeader}>
-                <Text style={styles.progressTitle}>Overall Team Progress</Text>
-                <Text style={styles.progressPercentage}>65%</Text>
-            </View>
-            <View style={styles.progressBarContainer}>
-                <LinearGradient 
-                    colors={['#f45925', '#f4a225', '#f4da25', '#25f48e', '#25baf4', '#a225f4']}
-                    start={{x: 0, y: 0}}
-                    end={{x: 1, y: 0}}
-                    style={[styles.progressBar, {width: '65%'}]}/>
-            </View>
-            <Text style={styles.milestoneCounter}>6/9 Milestones Completed</Text>
-        </LinearGradient>
+    <ScreenLayout showMarcie={true} marcieQuote="Your legacy dash shows incredible progress! Each milestone represents real growth in your relationship journey.">
+      <SafeAreaView style={styles.container} edges={['bottom']}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <Typography variant="h1" style={styles.title}>
+            The Love Arcade
+          </Typography>
+          <Typography variant="h2" style={styles.subtitle}>
+            +100 Games to Deepen Connection
+          </Typography>
 
-        <View style={styles.mainGrid}>
-            <LinearGradient
-                colors={['#a22ac4', '#9056ef']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.milestoneList}
-            >
-                 <LegacyMilestone title="Foundation: De-escalation" status="Completed - Day 4" />
-                 <LegacyMilestone title="Trust Rebuild: Transparency" status='Active Milestone: "The Shared Calendar Challenge"' active />
-                 <LegacyMilestone title="Communication Hub: New Rules" status="Unlocks at 75%" />
-                 <LegacyMilestone title="Future Vision: Legacy Planning" status="Final Stretch" last />
-            </LinearGradient>
-             {/* Map section would be a more complex component */}
-            <LinearGradient
-                colors={['#37cf97', '#b37dec']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.mapContainer}
-            >
-                <Text style={styles.mapPlaceholderText}>Race Map Area</Text>
-            </LinearGradient>
-        </View>
+          <LinearGradient
+              colors={GRADIENTS.primary.colors}
+              start={GRADIENTS.primary.start}
+              end={GRADIENTS.primary.end}
+              style={styles.progressCard}
+          >
+              <View style={styles.progressHeader}>
+                  <Typography variant="h3" style={styles.progressTitle}>Overall Team Progress</Typography>
+                  <Typography variant="h2" style={styles.progressPercentage}>65%</Typography>
+              </View>
+              <View style={styles.progressBarContainer}>
+                  <LinearGradient 
+                      colors={COLORS.progress}
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 0}}
+                      style={[styles.progressBar, {width: '65%'}]}/>
+              </View>
+              <Typography variant="body" style={styles.milestoneCounter}>6/9 Milestones Completed</Typography>
+          </LinearGradient>
 
-        <LinearGradient
-            colors={['#ff7600', '#ffef1f']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.moderatorCard}
-        >
-             <Text style={styles.moderatorTitle}>Race Moderator</Text>
-             <Text style={styles.moderatorName}>Dr. Marcie Liss</Text>
-            <Text style={styles.moderatorQuote}>"You're gaining speed on the Trust Rebuild! Keep pushing together."</Text>
-        </LinearGradient>
-      </ScrollView>
-    </SafeAreaView>
+          <View style={styles.mainGrid}>
+              <LinearGradient
+                  colors={[COLORS.lavenderPurple, COLORS.softViolet]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.milestoneList}
+              >
+                   <LegacyMilestone title="Foundation: De-escalation" status="Completed - Day 4" />
+                   <LegacyMilestone title="Trust Rebuild: Transparency" status='Active Milestone: "The Shared Calendar Challenge"' active />
+                   <LegacyMilestone title="Communication Hub: New Rules" status="Unlocks at 75%" />
+                   <LegacyMilestone title="Future Vision: Legacy Planning" status="Final Stretch" last />
+              </LinearGradient>
+               {/* Map section would be a more complex component */}
+              <LinearGradient
+                  colors={[COLORS.mintGreen, COLORS.softViolet]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.mapContainer}
+              >
+                  <Typography variant="h3" style={styles.mapPlaceholderText}>Race Map Area</Typography>
+              </LinearGradient>
+          </View>
+
+          <LinearGradient
+              colors={[COLORS.warmOrange, COLORS.brightYellow]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.moderatorCard}
+          >
+               <Typography variant="caption" style={styles.moderatorTitle}>Race Moderator</Typography>
+               <Typography variant="h4" style={styles.moderatorName}>Dr. Marcie Liss</Typography>
+              <Typography variant="body" style={styles.moderatorQuote}>"You're gaining speed on the Trust Rebuild! Keep pushing together."</Typography>
+          </LinearGradient>
+        </ScrollView>
+      </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#230f16' },
-    background: { ...StyleSheet.absoluteFillObject },
-    drMarcieSection: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        margin: 16,
-        marginBottom: 8
+    container: { 
+        flex: 1, 
+        backgroundColor: COLORS.backgroundPrimary 
     },
-    avatarContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 12
+    content: { 
+        padding: SPACING.lg 
     },
-    avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        resizeMode: 'cover'
+    title: { 
+        textAlign: 'center', 
+        marginBottom: SPACING.sm 
     },
-    quoteBox: {
-        flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+    subtitle: { 
+        textAlign: 'center', 
+        opacity: 0.7, 
+        marginBottom: SPACING.lg 
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
-    },
-    scrollViewContent: { padding: 20 },
     progressCard: {
-        borderRadius: 16,
-        padding: 20,
-        marginBottom: 20,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.lg,
+        marginBottom: SPACING.lg,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
-    progressHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 10 },
+    progressHeader: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'flex-end', 
+        marginBottom: SPACING.regular 
+    },
     progressTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 18, 
-        color: '#ffffff',
+        color: COLORS.textPrimary,
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
     progressPercentage: { 
-        fontFamily: 'WonderfulSometimes-Regular', 
-        fontSize: 24, 
-        color: '#ffffff', 
+        color: COLORS.textPrimary, 
         fontStyle: 'italic',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 2,
-        borderRadius: 10,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.medium,
     },
     progressBarContainer: { 
         height: 16, 
         backgroundColor: 'rgba(255,255,255,0.1)', 
-        borderRadius: 8, 
+        borderRadius: BORDER_RADIUS.medium, 
         overflow: 'hidden',
         borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        borderColor: COLORS.borderSubtle,
     },
-    progressBar: { height: '100%', borderRadius: 8 },
+    progressBar: { 
+        height: '100%', 
+        borderRadius: BORDER_RADIUS.medium 
+    },
     milestoneCounter: { 
-        fontFamily: 'SweetPink-Regular', 
-        color: '#ffffff', 
-        marginTop: 10,
+        color: COLORS.textPrimary, 
+        marginTop: SPACING.regular,
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
-    mainGrid: { flexDirection: 'row', gap: 20 },
+    mainGrid: { 
+        flexDirection: 'row', 
+        gap: SPACING.lg 
+    },
     milestoneList: { 
         flex: 1, 
-        borderRadius: 16, 
-        padding: 20,
+        borderRadius: BORDER_RADIUS.xlarge, 
+        padding: SPACING.lg,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
-    milestone: { flexDirection: 'row', marginBottom: 15 },
-    milestoneIconContainer: { alignItems: 'center', marginRight: 15 },
+    milestone: { 
+        flexDirection: 'row', 
+        marginBottom: SPACING.regular 
+    },
+    milestoneIconContainer: { 
+        alignItems: 'center', 
+        marginRight: SPACING.regular 
+    },
     milestoneIconGradient: {
         width: 40,
         height: 40,
-        borderRadius: 20,
+        borderRadius: BORDER_RADIUS.round,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+        borderColor: COLORS.borderSubtle,
     },
     milestoneIcon: { 
-        fontFamily: 'Material Icons', 
-        fontSize: 20, 
-        color: '#ffffff' 
+        color: COLORS.textPrimary,
     },
     milestoneConnector: { 
         flex: 1, 
         width: 2, 
         borderStyle: 'dashed',
-        marginTop: 5,
+        marginTop: SPACING.xs,
     },
     activeConnector: { 
-        backgroundColor: '#db147c',
+        backgroundColor: COLORS.vibrantPink,
     },
-    milestoneDetails: { flex: 1 },
+    milestoneDetails: { 
+        flex: 1 
+    },
     milestoneTitle: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 16, 
-        color: '#ffffff',
-        marginBottom: 4,
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.xs,
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 8,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.medium,
     },
     milestoneStatus: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontSize: 12, 
-        color: '#ffffff',
-        opacity: 0.8,
+        color: COLORS.textSecondary,
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 6,
+        paddingHorizontal: SPACING.xs,
+        paddingVertical: SPACING.micro,
+        borderRadius: BORDER_RADIUS.small,
     },
     mapContainer: { 
         flex: 2, 
-        borderRadius: 16, 
+        borderRadius: BORDER_RADIUS.xlarge, 
         justifyContent: 'center', 
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     mapPlaceholderText: { 
-        fontFamily: 'BarbieDream-Regular', 
-        color: '#ffffff', 
-        fontSize: 22,
+        color: COLORS.textPrimary,
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 16,
+        paddingHorizontal: SPACING.regular,
+        paddingVertical: SPACING.small,
+        borderRadius: BORDER_RADIUS.xlarge,
     },
     moderatorCard: { 
-        borderRadius: 16, 
-        padding: 20, 
-        marginTop: 20,
+        borderRadius: BORDER_RADIUS.xlarge, 
+        padding: SPACING.lg, 
+        marginTop: SPACING.lg,
         borderWidth: 2,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
+        borderColor: COLORS.borderSubtle,
+        ...SHADOWS.large,
     },
     moderatorTitle: { 
-        fontFamily: 'SweetPink-Regular', 
         textTransform: 'uppercase', 
-        color: '#ffffff', 
-        fontSize: 12, 
-        marginBottom: 5,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.xs,
+        textAlign: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        borderRadius: 8,
+        paddingHorizontal: SPACING.xs,
+        paddingVertical: SPACING.micro,
+        borderRadius: BORDER_RADIUS.small,
     },
     moderatorName: { 
-        fontFamily: 'BarbieDream-Regular', 
-        fontSize: 20, 
-        color: '#ffffff', 
-        marginBottom: 10,
+        color: COLORS.textPrimary, 
+        marginBottom: SPACING.regular,
+        textAlign: 'center',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 12,
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.xs,
+        borderRadius: BORDER_RADIUS.large,
     },
     moderatorQuote: { 
-        fontFamily: 'SweetPink-Regular', 
-        fontStyle: 'italic', 
-        color: '#ffffff',
+        color: COLORS.textPrimary, 
+        textAlign: 'center', 
+        fontStyle: 'italic',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 12,
-        borderRadius: 12,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.large,
     }
 });
 

@@ -1,7 +1,11 @@
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Switch } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, Switch } from 'react-native';
+import ScreenLayout from '../layout/ScreenLayout';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../theme';
 
 const actionSteps = [
     {
@@ -9,92 +13,134 @@ const actionSteps = [
         description: 'Active Listening: Shift your mindset to hear their needs without formulating a rebuttal.',
         category: 'MINDSET SHIFT',
         icon: '🧠',
-        color: '#FFD700'
+        color: COLORS.brightYellow
     },
     {
         title: 'THE ACTION',
         description: '10-Minute Check-in: Set aside focused, phone-free time tonight to discuss how you feel.',
         category: 'BEHAVIORAL TASK',
         icon: '💬',
-        color: '#00FFFF'
+        color: COLORS.info
     },
     {
         title: 'THE MAINTENANCE',
         description: 'Gratitude: Express one specific thing you appreciate about how they handled this talk.',
         category: 'LONG-TERM BOND',
         icon: '💖',
-        color: '#FF4081'
+        color: COLORS.vibrantPink
     },
 ];
 
 const ActionCard = ({ step }) => (
-    <View style={[styles.card, { borderColor: `${step.color}80` }]}>
+    <GlassCard style={[styles.card, { borderColor: `${step.color}80` }]}>
         <View style={styles.cardHeader}>
             <View style={[styles.iconContainer, { backgroundColor: `${step.color}20` }]}>
-                <Text style={{fontSize: 30}}>{step.icon}</Text>
+                <Typography style={{fontSize: TYPOGRAPHY.fontSize.displaySmall}}>{step.icon}</Typography>
             </View>
         </View>
-        <Text style={styles.cardTitle}>{step.title}</Text>
-        <Text style={styles.cardDescription}>{step.description}</Text>
-        <Text style={[styles.cardCategory, { color: step.color }]}>{step.category}</Text>
-    </View>
+        <Typography variant="h3" style={styles.cardTitle}>{step.title}</Typography>
+        <Typography variant="body" color={COLORS.textSecondary} style={styles.cardDescription}>{step.description}</Typography>
+        <Typography variant="caption" style={[styles.cardCategory, { color: step.color }]}>{step.category}</Typography>
+    </GlassCard>
 );
 
 const TranslatorActionPlan = () => {
     const [scheduleReflection, setScheduleReflection] = useState(true);
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
-                <ScrollView contentContainerStyle={styles.contentContainer}>
-                    <Text style={styles.headerTitle}>YOUR ACTION PLAN</Text>
-                    <Text style={styles.headerSubtitle}>CONCRETE STEPS TO HONOR YOUR DECODED CONNECTION</Text>
+        <ScreenLayout scrollable={true} showHeader={false}>
+            <Typography variant="h1" center style={styles.headerTitle}>YOUR ACTION PLAN</Typography>
+            <Typography variant="label" center color={COLORS.textSecondary} style={styles.headerSubtitle}>
+                CONCRETE STEPS TO HONOR YOUR DECODED CONNECTION
+            </Typography>
 
-                    <View style={styles.cardsContainer}>
-                        {actionSteps.map((step, index) => <ActionCard key={index} step={step} />)}
-                    </View>
+            <View style={styles.cardsContainer}>
+                {actionSteps.map((step, index) => <ActionCard key={index} step={step} />)}
+            </View>
 
-                    <View style={styles.reflectionContainer}>
-                        <View style={{flex: 1}}>
-                            <Text style={styles.reflectionTitle}>SCHEDULE REFLECTION</Text>
-                            <Text style={styles.reflectionSubtitle}>Get a reminder to revisit this plan in 48 hours.</Text>
-                        </View>
-                        <Switch 
-                            value={scheduleReflection}
-                            onValueChange={setScheduleReflection}
-                            trackColor={{ false: '#767577', true: '#00FFFF' }}
-                            thumbColor={scheduleReflection ? '#fff' : '#f4f3f4'}
-                        />
-                    </View>
+            <GlassCard style={styles.reflectionContainer}>
+                <View style={{flex: 1}}>
+                    <Typography variant="h3" style={styles.reflectionTitle}>SCHEDULE REFLECTION</Typography>
+                    <Typography variant="body" color={COLORS.textSecondary} style={styles.reflectionSubtitle}>
+                        Get a reminder to revisit this plan in 48 hours.
+                    </Typography>
+                </View>
+                <Switch 
+                    value={scheduleReflection}
+                    onValueChange={setScheduleReflection}
+                    trackColor={{ false: COLORS.textHint, true: COLORS.info }}
+                    thumbColor={scheduleReflection ? COLORS.textPrimary : COLORS.textSecondary}
+                />
+            </GlassCard>
 
-                    <TouchableOpacity style={styles.commitButton}>
-                        <Text style={{fontSize: 24}}>✅</Text>
-                        <Text style={styles.commitButtonText}>COMMIT TO PLAN</Text>
-                    </TouchableOpacity>
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+            <SquishyButton onPress={() => {}} style={styles.commitButton}>
+                <Typography style={{fontSize: TYPOGRAPHY.fontSize.headerLarge}}>✅</Typography>
+                <Typography variant="button" style={styles.commitButtonText}>COMMIT TO PLAN</Typography>
+            </SquishyButton>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#2A002A' },
-    container: { flex: 1 },
-    contentContainer: { padding: 20 },
-    headerTitle: { color: '#fff', fontSize: 36, fontWeight: '900', textAlign: 'center', textTransform: 'uppercase' },
-    headerSubtitle: { color: '#D1C4E9', fontSize: 18, textAlign: 'center', marginBottom: 30, fontWeight: 'bold', textTransform: 'uppercase' },
-    cardsContainer: { marginBottom: 30, gap: 16 },
-    card: { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 20, padding: 20, borderWidth: 1 },
-    cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
-    iconContainer: { width: 50, height: 50, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
-    cardTitle: { color: '#fff', fontSize: 20, fontWeight: 'bold', marginBottom: 8, textTransform: 'uppercase' },
-    cardDescription: { color: '#D1C4E9', fontSize: 16, lineHeight: 24, flex: 1, marginBottom: 12 },
-    cardCategory: { fontSize: 10, fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 1 },
-    reflectionContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 20, padding: 20, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)', marginBottom: 30 },
-    reflectionTitle: { color: '#fff', fontSize: 18, fontWeight: 'bold', textTransform: 'uppercase' },
-    reflectionSubtitle: { color: '#D1C4E9', fontSize: 14, marginTop: 4 },
-    commitButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FF4081', padding: 20, borderRadius: 16 },
-    commitButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold', marginLeft: 10, textTransform: 'uppercase' },
+    headerTitle: { 
+        textTransform: 'uppercase' 
+    },
+    headerSubtitle: { 
+        marginBottom: SPACING.xxlarge,
+        textTransform: 'uppercase',
+    },
+    cardsContainer: { 
+        marginBottom: SPACING.xxlarge, 
+        gap: SPACING.regular 
+    },
+    card: { 
+        marginBottom: SPACING.regular,
+    },
+    cardHeader: { 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'flex-start', 
+        marginBottom: SPACING.medium 
+    },
+    iconContainer: { 
+        width: 50, 
+        height: 50, 
+        borderRadius: BORDER_RADIUS.medium, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    cardTitle: { 
+        marginBottom: SPACING.small,
+        textTransform: 'uppercase' 
+    },
+    cardDescription: { 
+        lineHeight: TYPOGRAPHY.fontSize.bodyLarge * 1.5,
+        flex: 1, 
+        marginBottom: SPACING.regular 
+    },
+    cardCategory: { 
+        textTransform: 'uppercase',
+        letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+    },
+    reflectionContainer: { 
+        flexDirection: 'row', 
+        alignItems: 'center',
+        marginBottom: SPACING.xxlarge,
+    },
+    reflectionTitle: { 
+        textTransform: 'uppercase' 
+    },
+    reflectionSubtitle: { 
+        marginTop: SPACING.tiny 
+    },
+    commitButton: { 
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    commitButtonText: { 
+        marginLeft: SPACING.small,
+    },
 });
 
 export default TranslatorActionPlan;

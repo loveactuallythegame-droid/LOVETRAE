@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useMemo, useState, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 import { Text, GlassCard, SquishyButton } from '../../ui';
-import { MarcieHost } from '../../ai-host';
+import DrMarcieOverlay from '../../DrMarcieOverlay';
 import { GameState, GameContext, GameResult, InputType } from './types';
 import InputHandler from './InputHandler';
 import DrMarcieCommentary from './DrMarcieCommentary';
@@ -128,7 +128,7 @@ export default function GameContainer({ state, inputs, onComplete, onSkip, input
         </View>
       </GlassCard>
       <Animated.View style={[styles.marcieWrap, style]}>
-        <MarcieHost mode={'idle'} size={200} float />
+        <DrMarcieOverlay animation="idle" quote={undefined} showBubble={false} position="bottom-right" visible size="medium" />
         <DrMarcieCommentary state={state} context={{ phase, inputType: inputs[0] }} speak={phase === 'active'} />
       </Animated.View>
     </View>
@@ -157,6 +157,4 @@ const styles = StyleSheet.create({
   marcieWrap: { alignItems: 'center', gap: 8 },
   scoreRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
   actions: { marginTop: 12 },
-  btn: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: '#33DEA5', borderRadius: 10 },
-  skip: { paddingHorizontal: 12, paddingVertical: 8, backgroundColor: '#E11637', borderRadius: 10 },
 });

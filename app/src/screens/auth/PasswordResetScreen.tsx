@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { View, StyleSheet, TextInput, ActivityIndicator } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton, RadialGradientBackground } from '../../components/ui';
+import { ScreenLayout } from '../../layout';
 import * as Haptics from 'expo-haptics';
 import { resetPassword } from '../../lib/supabase';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 
 type Props = {
   onSent: () => void;
@@ -33,21 +35,54 @@ export default function PasswordResetScreen({ onSent }: Props) {
   }
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <GlassCard>
-        <Text variant="header">Reset Your Password</Text>
-        <Text variant="body">Enter your email and we’ll send you a reset link.</Text>
-        <TextInput value={email} onChangeText={setEmail} placeholder="you@example.com" keyboardType="email-address" autoCapitalize="none" style={styles.input} />
-        {error && <Text variant="sass">{error}</Text>}
-        <SquishyButton onPress={send} style={styles.btn}>
-          {loading ? <ActivityIndicator color="#fff" /> : <Text variant="header">Send Reset Link</Text>}
-        </SquishyButton>
-      </GlassCard>
-    </View>
+    <ScreenLayout showHeader={false} scrollable={false}>
+      <RadialGradientBackground />
+      <View style={styles.content}>
+        <GlassCard variant="elevated">
+          <Typography variant="header">Reset Your Password</Typography>
+          <Typography variant="body" style={styles.description}>Enter your email and we'll send you a reset link.</Typography>
+          <TextInput 
+            value={email} 
+            onChangeText={setEmail} 
+            placeholder="you@example.com" 
+            keyboardType="email-address" 
+            autoCapitalize="none" 
+            style={styles.input} 
+            placeholderTextColor={COLORS.textHint}
+          />
+          {error && <Typography variant="marcieDialogue" style={styles.error}>{error}</Typography>}
+          <SquishyButton onPress={send}>
+            {loading ? <ActivityIndicator color={COLORS.textPrimary} /> : <Typography variant="button">Send Reset Link</Typography>}
+          </SquishyButton>
+        </GlassCard>
+      </View>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  input: { backgroundColor: '#1a0a1f', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', borderRadius: 10, padding: 10, color: '#fff' },
-  btn: { alignSelf: 'flex-end', paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#33DEA5', borderRadius: 12, marginTop: 12 },
+  content: {
+    flex: 1,
+    padding: SPACING.screenPadding,
+    justifyContent: 'center',
+  },
+  description: {
+    marginTop: SPACING.small,
+    marginBottom: SPACING.large,
+    color: COLORS.textSecondary,
+  },
+  input: { 
+    backgroundColor: COLORS.backgroundInput, 
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle, 
+    borderRadius: BORDER_RADIUS.input, 
+    padding: SPACING.regular, 
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.regular,
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+  },
+  error: {
+    color: COLORS.error,
+    marginBottom: SPACING.regular,
+  },
 });

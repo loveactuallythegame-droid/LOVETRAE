@@ -1,8 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const INGREDIENTS = ["Coffee", "Tea", "News", "Music", "Cuddles", "Walk", "Silence", "Podcast"];
 
@@ -34,25 +36,36 @@ export default function RitualBuilder({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: 12 }}>
+    <View style={styles.container}>
       <GlassCard>
-        <Text variant="header">Build a Morning Ritual</Text>
-        <Text variant="body">Select 2-3 ingredients:</Text>
+        <Typography variant="h2">Build a Morning Ritual</Typography>
+        <Typography variant="body" style={styles.instructions}>Select 2-3 ingredients:</Typography>
         <View style={styles.grid}>
           {INGREDIENTS.map((ing) => (
             <SquishyButton
               key={ing}
               onPress={() => toggle(ing)}
-              style={[styles.item, selected.includes(ing) ? styles.active : {}]}
+              variant={selected.includes(ing) ? 'primary' : 'ghost'}
+              size="small"
+              style={styles.item}
             >
-              <Text variant="body" style={{ color: selected.includes(ing) ? '#000' : '#fff' }}>{ing}</Text>
+              <Typography variant="button" style={{ color: selected.includes(ing) ? COLORS.backgroundPrimary : COLORS.textPrimary }}>
+                {ing}
+              </Typography>
             </SquishyButton>
           ))}
         </View>
-        <Text variant="keyword" style={{ marginTop: 12, textAlign: 'center' }}>
+        <Typography variant="caption" center style={styles.selectedText}>
             {selected.join(" + ")}
-        </Text>
-        <SquishyButton onPress={submit} style={styles.submit}><Text variant="header">Build Ritual</Text></SquishyButton>
+        </Typography>
+        <SquishyButton 
+          onPress={submit} 
+          variant="primary"
+          size="large"
+          style={styles.submit}
+        >
+          <Typography variant="button">Build Ritual</Typography>
+        </SquishyButton>
       </GlassCard>
     </View>
   );
@@ -73,8 +86,30 @@ export default function RitualBuilder({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
-  item: { padding: 10, borderRadius: 20, borderWidth: 1, borderColor: '#fff' },
-  active: { backgroundColor: '#33DEA5', borderColor: '#33DEA5' },
-  submit: { marginTop: 16, backgroundColor: '#FA1F63', padding: 16, borderRadius: 12, alignItems: 'center' },
+  container: {
+    gap: SPACING.regular,
+  },
+  instructions: {
+    marginTop: SPACING.small,
+    marginBottom: SPACING.regular,
+  },
+  grid: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    gap: SPACING.regular, 
+    marginTop: SPACING.regular,
+  },
+  item: { 
+    paddingHorizontal: SPACING.regular,
+    paddingVertical: SPACING.small,
+    borderRadius: BORDER_RADIUS.round,
+    borderWidth: 1, 
+    borderColor: COLORS.borderSubtle,
+  },
+  selectedText: {
+    marginTop: SPACING.xlarge,
+  },
+  submit: { 
+    marginTop: SPACING.xlarge,
+  },
 });

@@ -1,7 +1,11 @@
 
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet } from 'react-native';
+import ScreenLayout from '../layout/ScreenLayout';
+import Typography from '../components/ui/Typography';
+import SquishyButton from '../components/ui/SquishyButton';
+import GlassCard from '../components/ui/GlassCard';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 
 const verdictData = {
     alex: {
@@ -23,97 +27,155 @@ const verdictData = {
 };
 
 const PerspectiveCard = ({ person, data, color }) => (
-    <View style={[styles.panelGlass, { borderColor: color, borderLeftWidth: 4 }]}>
-        <Text style={styles.personName}>{person}'S LENS</Text>
-        <Text style={[styles.personLens, { color }]}>{data.lens}</Text>
-        <Text style={styles.personQuote}>{data.quote}</Text>
-        <Text style={styles.primaryEmotion}>PRIMARY EMOTION</Text>
+    <GlassCard style={[styles.panelGlass, { borderLeftWidth: 4, borderLeftColor: color }]}>
+        <Typography variant="h3" style={styles.personName}>{person}'S LENS</Typography>
+        <Typography variant="label" style={[styles.personLens, { color }]}>{data.lens}</Typography>
+        <Typography variant="body" color={COLORS.textSecondary} style={styles.personQuote}>{data.quote}</Typography>
+        <Typography variant="caption" color={COLORS.textSecondary} style={styles.primaryEmotion}>PRIMARY EMOTION</Typography>
         <View style={styles.emotionsContainer}>
-            {data.emotions.map(e => <Text key={e} style={styles.emotionTag}>{e}</Text>)}
+            {data.emotions.map(e => (
+                <GlassCard key={e} padding="small" style={styles.emotionTag}>
+                    <Typography variant="caption">{e}</Typography>
+                </GlassCard>
+            ))}
         </View>
-    </View>
+    </GlassCard>
 );
 
 const RelationshipDiagnosisCard2 = () => {
 
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#2A002A', '#5A005A']} style={styles.container}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
-                    <Text style={styles.header}>THE <Text style={styles.headerHighlight}>"TOUGH LOVE"</Text> VERDICT</Text>
-                    <Text style={styles.subHeader}>I'VE CRUNCHED THE FEELINGS. HERE'S THE DEAL.</Text>
+        <ScreenLayout scrollable={true} showHeader={false}>
+            <Typography variant="h1" center>
+                THE <Typography variant="h1" color={COLORS.vibrantPink} style={styles.headerHighlight}>"TOUGH LOVE"</Typography> VERDICT
+            </Typography>
+            <Typography variant="label" center color={COLORS.textSecondary} style={styles.subHeader}>
+                I'VE CRUNCHED THE FEELINGS. HERE'S THE DEAL.
+            </Typography>
 
-                    <View style={styles.cardsContainer}>
-                        <PerspectiveCard person="ALEX" data={verdictData.alex} color="#00FFFF" />
-                        
-                        <View style={styles.realityCard}>
-                            <Text style={styles.realityTitle}>THE REALITY</Text>
-                            <Text style={styles.realityText}>{verdictData.reality.title}</Text>
-                             {verdictData.reality.points.map(p => (
-                                <View key={p} style={styles.realityPoint}>
-                                    <Text>✅</Text>
-                                    <Text style={styles.realityPointText}>{p}</Text>
-                                </View>
-                            ))}
+            <View style={styles.cardsContainer}>
+                <PerspectiveCard person="ALEX" data={verdictData.alex} color={COLORS.info} />
+                
+                <GlassCard variant="elevated" style={styles.realityCard}>
+                    <Typography variant="label" color={COLORS.vibrantPink} style={styles.realityTitle}>THE REALITY</Typography>
+                    <Typography variant="h2" color={COLORS.backgroundPrimary} style={styles.realityText}>{verdictData.reality.title}</Typography>
+                     {verdictData.reality.points.map(p => (
+                        <View key={p} style={styles.realityPoint}>
+                            <Typography>✅</Typography>
+                            <Typography variant="body" color={COLORS.backgroundPrimary} style={styles.realityPointText}>{p}</Typography>
                         </View>
+                    ))}
+                </GlassCard>
 
-                        <PerspectiveCard person="JORDAN" data={verdictData.jordan} color="#E040FB" />
-                    </View>
+                <PerspectiveCard person="JORDAN" data={verdictData.jordan} color={COLORS.lavenderPurple} />
+            </View>
 
-                    <View style={[styles.panelGlass, styles.roastContainer]}>
-                        <Text style={styles.roastTitle}>MARCIE'S ROAST</Text>
-                        <Text style={styles.roastText}>{verdictData.marciesRoast}</Text>
-                        <View style={styles.stingMeter}>
-                           <Text style={styles.stingMeterLabel}>STING METER</Text>
-                           <Text style={styles.stingMeterValue}>{verdictData.stingMeter}</Text>
-                        </View>
-                    </View>
+            <GlassCard style={[styles.roastContainer, { borderColor: COLORS.vibrantPink }]}>
+                <Typography variant="label" color={COLORS.vibrantPink} style={styles.roastTitle}>MARCIE'S ROAST</Typography>
+                <Typography variant="h2" color={COLORS.vibrantPink} center style={styles.roastText}>{verdictData.marciesRoast}</Typography>
+                <GlassCard padding="small" style={styles.stingMeter}>
+                   <Typography variant="caption" color={COLORS.textSecondary}>STING METER</Typography>
+                   <Typography variant="h2" color={COLORS.brightYellow}>{verdictData.stingMeter}</Typography>
+                </GlassCard>
+            </GlassCard>
 
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.mainButton}>
-                            <Text style={styles.mainButtonText}>START HEALING EXERCISE</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.secondaryButton}>
-                            <Text style={styles.secondaryButtonText}>RE-EXAMINE PERSPECTIVES</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+            <View style={styles.buttonContainer}>
+                <SquishyButton onPress={() => {}}>
+                    <Typography variant="button">START HEALING EXERCISE</Typography>
+                </SquishyButton>
+                <SquishyButton variant="ghost" onPress={() => {}}>
+                    <Typography variant="button">RE-EXAMINE PERSPECTIVES</Typography>
+                </SquishyButton>
+            </View>
+        </ScreenLayout>
     );
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#2A002A' },
-    container: { flex: 1 },
-    scrollContent: { padding: 20 },
-    header: { color: '#fff', fontSize: 36, fontWeight: 'bold', textAlign: 'center', marginBottom: 8, textTransform: 'uppercase' },
-    headerHighlight: { color: '#FF4081', fontStyle: 'italic' },
-    subHeader: { color: '#D1C4E9', fontSize: 16, textAlign: 'center', marginBottom: 24, fontWeight: 'bold', textTransform: 'uppercase' },
-    cardsContainer: { marginBottom: 24, gap: 16 },
-    panelGlass: { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 24, padding: 20, borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    personName: { color: '#fff', fontSize: 18, fontWeight: 'bold', textTransform: 'uppercase' },
-    personLens: { textTransform: 'uppercase', fontSize: 12, fontWeight: 'bold', marginBottom: 12 },
-    personQuote: { color: '#D1C4E9', fontStyle: 'italic', marginBottom: 12 },
-    primaryEmotion: { textTransform: 'uppercase', fontSize: 10, color: '#D1C4E9', marginBottom: 8, fontWeight: 'bold' },
-    emotionsContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-    emotionTag: { backgroundColor: 'rgba(0,0,0,0.3)', color: '#fff', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, fontSize: 12, fontWeight: 'bold', textTransform: 'uppercase' },
-    realityCard: { backgroundColor: '#fff', borderRadius: 24, padding: 20, marginVertical: 16, transform: [{ scale: 1.05 }], borderWidth: 2, borderColor: '#FF4081' },
-    realityTitle: { color: '#FF4081', textTransform: 'uppercase', fontSize: 12, fontWeight: 'bold', marginBottom: 12 },
-    realityText: { color: '#121212', fontSize: 20, fontWeight: 'bold', marginBottom: 12, textTransform: 'uppercase' },
-    realityPoint: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 },
-    realityPointText: { color: '#121212', fontSize: 14, fontWeight: 'bold' },
-    roastContainer: { borderColor: '#FF4081', borderWidth: 1, padding: 20, alignItems: 'center' },
-    roastTitle: { color: '#FF4081', textTransform: 'uppercase', fontSize: 12, fontWeight: 'bold', marginBottom: 12, alignSelf: 'flex-start' },
-    roastText: { color: '#FF4081', fontSize: 24, fontWeight: 'bold', textAlign: 'center', textShadowColor: 'rgba(252, 12, 132, 0.4)', textShadowRadius: 15, marginBottom: 16 },
-    stingMeter: { backgroundColor: 'rgba(255, 255, 255, 0.1)', padding: 8, borderRadius: 12, alignItems: 'center' },
-    stingMeterLabel: { color: '#D1C4E9', fontSize: 10, textTransform: 'uppercase', fontWeight: 'bold' },
-    stingMeterValue: { color: '#FFD700', fontSize: 24, fontWeight: 'bold' },
-    buttonContainer: { marginTop: 32, gap: 16 },
-    mainButton: { backgroundColor: '#FF4081', padding: 16, borderRadius: 20, alignItems: 'center' },
-    mainButtonText: { color: '#fff', fontWeight: 'bold', textTransform: 'uppercase' },
-    secondaryButton: { backgroundColor: 'rgba(255,255,255,0.1)', padding: 16, borderRadius: 20, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255, 64, 129, 0.5)' },
-    secondaryButtonText: { color: '#fff', fontWeight: 'bold', textTransform: 'uppercase' },
+    headerHighlight: { 
+        fontStyle: 'italic' 
+    },
+    subHeader: { 
+        marginBottom: SPACING.xlarge,
+        textTransform: 'uppercase',
+    },
+    cardsContainer: { 
+        marginBottom: SPACING.xlarge, 
+        gap: SPACING.regular 
+    },
+    panelGlass: { 
+        marginBottom: SPACING.regular,
+    },
+    personName: { 
+        textTransform: 'uppercase' 
+    },
+    personLens: { 
+        textTransform: 'uppercase',
+        marginBottom: SPACING.medium,
+    },
+    personQuote: { 
+        fontStyle: 'italic', 
+        marginBottom: SPACING.medium 
+    },
+    primaryEmotion: { 
+        textTransform: 'uppercase',
+        marginBottom: SPACING.small,
+    },
+    emotionsContainer: { 
+        flexDirection: 'row', 
+        flexWrap: 'wrap', 
+        gap: SPACING.small 
+    },
+    emotionTag: {
+        backgroundColor: COLORS.backgroundPrimary,
+    },
+    realityCard: { 
+        backgroundColor: COLORS.textPrimary,
+        marginVertical: SPACING.regular,
+        transform: [{ scale: 1.05 }],
+        borderWidth: 2,
+        borderColor: COLORS.vibrantPink,
+    },
+    realityTitle: { 
+        textTransform: 'uppercase',
+        marginBottom: SPACING.medium,
+    },
+    realityText: { 
+        marginBottom: SPACING.medium,
+        textTransform: 'uppercase' 
+    },
+    realityPoint: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        gap: SPACING.small, 
+        marginBottom: SPACING.tiny 
+    },
+    realityPointText: { 
+        textTransform: 'uppercase' 
+    },
+    roastContainer: { 
+        borderWidth: 1,
+        padding: SPACING.xlarge,
+        alignItems: 'center' 
+    },
+    roastTitle: { 
+        textTransform: 'uppercase',
+        marginBottom: SPACING.medium,
+        alignSelf: 'flex-start' 
+    },
+    roastText: { 
+        textShadowColor: COLORS.glowPink,
+        textShadowRadius: 15,
+        marginBottom: SPACING.large 
+    },
+    stingMeter: {
+        alignItems: 'center',
+        backgroundColor: COLORS.backgroundInput,
+    },
+    buttonContainer: { 
+        marginTop: SPACING.xxlarge, 
+        gap: SPACING.regular 
+    },
 });
 
 export default RelationshipDiagnosisCard2;

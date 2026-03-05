@@ -9,10 +9,12 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, TextInput } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 // Backend integration
 import { useGameSession } from '../../hooks/useGameSession';
@@ -199,8 +201,8 @@ const CouplesFamilyFeudGame: React.FC = () => {
     if (sessionLoading) {
         return (
             <SafeAreaView style={styles.container}>
-                <LinearGradient colors={['#120a12', '#2d1b2e']} style={styles.background}>
-                    <Text style={styles.loadingText}>Loading Survey...</Text>
+                <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background}>
+                    <Text variant="h2" style={styles.loadingText}>Loading Survey...</Text>
                 </LinearGradient>
             </SafeAreaView>
         );
@@ -208,22 +210,22 @@ const CouplesFamilyFeudGame: React.FC = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <LinearGradient colors={['#120a12', '#2d1b2e']} style={styles.background} />
+            <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background} />
             
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 {/* Header */}
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Couples Family Feud</Text>
+                    <Text variant="h1" style={styles.headerTitle}>Couples Family Feud</Text>
                     <View style={styles.scoreRow}>
-                        <Text style={styles.scoreText}>Score: {score}</Text>
-                        {isSyncing && <Text style={styles.syncText}>💾</Text>}
+                        <Text variant="h2" style={styles.scoreText}>Score: {score}</Text>
+                        {isSyncing && <Text variant="caption">💾</Text>}
                     </View>
-                    <Text style={styles.roundText}>Round {currentRound + 1} of {SURVEY_DATA.length}</Text>
+                    <Text variant="body">Round {currentRound + 1} of {SURVEY_DATA.length}</Text>
                 </View>
 
                 {/* Strikes */}
                 <View style={styles.strikesContainer}>
-                    <Text style={styles.strikesLabel}>Strikes:</Text>
+                    <Text variant="body" style={styles.strikesLabel}>Strikes:</Text>
                     <View style={styles.strikesRow}>
                         {[1, 2, 3].map((strikeNum) => (
                             <View 
@@ -233,33 +235,35 @@ const CouplesFamilyFeudGame: React.FC = () => {
                                     strikes >= strikeNum && styles.strikeActive
                                 ]}
                             >
-                                <Text style={styles.strikeText}>X</Text>
+                                <Text variant="h2" style={styles.strikeText}>X</Text>
                             </View>
                         ))}
                     </View>
                 </View>
 
                 {/* Question */}
-                <View style={styles.questionContainer}>
-                    <Text style={styles.questionText}>{survey.question}</Text>
-                </View>
+                <GlassCard style={styles.questionContainer}>
+                    <Text variant="h2" style={styles.questionText}>{survey.question}</Text>
+                </GlassCard>
 
                 {/* Answer Board */}
                 <LinearGradient
-                    colors={['#ff7600', '#ffef1f']}
+                    colors={[COLORS.warmOrange, COLORS.brightYellow]}
+                    start={GRADIENTS.primary.start}
+                    end={GRADIENTS.primary.end}
                     style={styles.board}
                 >
                     {survey.answers.map((answer, index) => (
                         <View key={index} style={styles.answerRow}>
-                            <Text style={styles.answerRank}>{index + 1}</Text>
+                            <Text variant="h2" style={styles.answerRank}>{index + 1}</Text>
                             {answer.revealed ? (
                                 <>
-                                    <Text style={styles.answerText}>{answer.text}</Text>
-                                    <Text style={styles.answerPoints}>{answer.points}</Text>
+                                    <Text variant="body" style={styles.answerText}>{answer.text}</Text>
+                                    <Text variant="h2" style={styles.answerPoints}>{answer.points}</Text>
                                 </>
                             ) : (
                                 <View style={styles.hiddenAnswer}>
-                                    <Text style={styles.hiddenText}>???</Text>
+                                    <Text variant="body" style={styles.hiddenText}>???</Text>
                                 </View>
                             )}
                         </View>
@@ -271,27 +275,26 @@ const CouplesFamilyFeudGame: React.FC = () => {
                     <TextInput 
                         style={styles.input} 
                         placeholder="Your Guess..." 
-                        placeholderTextColor="#777"
+                        placeholderTextColor={COLORS.textHint}
                         value={userGuess}
                         onChangeText={setUserGuess}
                         onSubmitEditing={submitGuess}
                     />
-                    <TouchableOpacity 
-                        style={[styles.submitButton, !userGuess.trim() && styles.disabledButton]}
+                    <SquishyButton 
                         onPress={submitGuess}
                         disabled={!userGuess.trim()}
                     >
-                        <Text style={styles.submitButtonText}>SURVEY SAYS!</Text>
-                    </TouchableOpacity>
+                        <Text variant="button">SURVEY SAYS!</Text>
+                    </SquishyButton>
                 </View>
 
                 {/* Progress */}
-                <Text style={styles.progressText}>
+                <Text variant="caption" style={styles.progressText}>
                     {revealedCount} of {survey.answers.length} answers revealed
                 </Text>
 
                 {session && (
-                    <Text style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
+                    <Text variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
                 )}
             </ScrollView>
         </SafeAreaView>
@@ -306,168 +309,118 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
     },
     scrollContainer: {
-        padding: 20,
-        paddingTop: 60,
+        padding: SPACING.regular,
+        paddingTop: SPACING.xxxlarge,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: SPACING.xlarge,
     },
     headerTitle: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#fff',
-        marginBottom: 10,
+        marginBottom: SPACING.regular,
     },
     scoreRow: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     scoreText: {
-        fontSize: 24,
-        color: '#FFD700',
-        fontWeight: 'bold',
-    },
-    syncText: {
-        marginLeft: 8,
-        fontSize: 14,
-    },
-    roundText: {
-        color: 'rgba(255,255,255,0.7)',
-        fontSize: 16,
-        marginTop: 5,
+        color: COLORS.brightYellow,
     },
     loadingText: {
-        color: '#fff',
-        fontSize: 20,
         textAlign: 'center',
-        marginTop: 100,
+        marginTop: SPACING.xxxlarge * 3,
     },
     strikesContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 20,
+        marginBottom: SPACING.xlarge,
     },
     strikesLabel: {
-        color: '#fff',
-        fontSize: 18,
-        marginRight: 15,
-        fontWeight: 'bold',
+        color: COLORS.textPrimary,
+        marginRight: SPACING.regular,
     },
     strikesRow: {
         flexDirection: 'row',
-        gap: 10,
+        gap: SPACING.regular,
     },
     strike: {
         width: 40,
         height: 40,
-        borderRadius: 20,
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.backgroundInput,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
-        borderColor: 'rgba(255,255,255,0.3)',
+        borderColor: COLORS.borderSubtle,
     },
     strikeActive: {
-        backgroundColor: '#ff4444',
-        borderColor: '#ff4444',
+        backgroundColor: COLORS.error,
+        borderColor: COLORS.error,
     },
     strikeText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 20,
+        color: COLORS.textPrimary,
     },
     questionContainer: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        padding: 20,
-        borderRadius: 15,
-        marginBottom: 20,
+        marginBottom: SPACING.xlarge,
         borderWidth: 2,
-        borderColor: '#ff7600',
+        borderColor: COLORS.warmOrange,
     },
     questionText: {
-        fontSize: 20,
-        color: '#fff',
         textAlign: 'center',
-        fontWeight: '600',
     },
     board: {
-        padding: 15,
-        borderRadius: 15,
-        marginBottom: 20,
+        padding: SPACING.regular,
+        borderRadius: BORDER_RADIUS.xlarge,
+        marginBottom: SPACING.xlarge,
     },
     answerRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.3)',
-        padding: 12,
-        marginBottom: 8,
-        borderRadius: 8,
+        backgroundColor: COLORS.backgroundPrimary,
+        padding: SPACING.regular,
+        marginBottom: SPACING.small,
+        borderRadius: BORDER_RADIUS.medium,
     },
     answerRank: {
         width: 30,
-        color: '#FFD700',
-        fontWeight: 'bold',
-        fontSize: 18,
+        color: COLORS.brightYellow,
     },
     answerText: {
         flex: 1,
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: '600',
+        color: COLORS.textPrimary,
     },
     answerPoints: {
-        color: '#FFD700',
-        fontWeight: 'bold',
-        fontSize: 16,
+        color: COLORS.brightYellow,
     },
     hiddenAnswer: {
         flex: 1,
         alignItems: 'center',
     },
     hiddenText: {
-        color: 'rgba(255,255,255,0.4)',
-        fontSize: 16,
+        color: COLORS.textHint,
     },
     inputContainer: {
-        marginBottom: 15,
+        marginBottom: SPACING.regular,
     },
     input: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 10,
-        padding: 15,
-        color: '#fff',
-        fontSize: 16,
-        marginBottom: 10,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular,
+        color: COLORS.textPrimary,
+        fontSize: TYPOGRAPHY.fontSize.bodyLarge,
+        marginBottom: SPACING.regular,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.3)',
-    },
-    submitButton: {
-        backgroundColor: '#ff7600',
-        paddingVertical: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-    },
-    disabledButton: {
-        opacity: 0.5,
-    },
-    submitButtonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
+        borderColor: COLORS.borderSubtle,
     },
     progressText: {
-        color: 'rgba(255,255,255,0.6)',
-        fontSize: 14,
         textAlign: 'center',
-        marginBottom: 10,
+        marginBottom: SPACING.regular,
     },
     sessionInfo: {
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: 10,
         textAlign: 'center',
-        marginTop: 10,
+        marginTop: SPACING.regular,
+        opacity: 0.5,
     },
 });
 

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const CASES = [
     {
@@ -65,7 +66,7 @@ export default function BPDPatternDetective({ route, navigation }: any) {
     const current = CASES[step];
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.small }}>
             <GlassCard>
                 {/* Dr. Marcie Section */}
                 <View style={styles.drMarcieSection}>
@@ -73,14 +74,17 @@ export default function BPDPatternDetective({ route, navigation }: any) {
                         <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                     </View>
                     <View style={styles.quoteBox}>
-                        <Text style={styles.quoteText} variant="sass">Investigate relationship patterns! Understanding triggers helps break destructive cycles.</Text>
+                        <Typography variant="body">Investigate relationship patterns! Understanding triggers helps break destructive cycles.</Typography>
                     </View>
                 </View>
 
-                <Text variant="header">Case File 1</Text>
-                <Text variant="body" style={{ marginBottom: 16 }}>{current.scenario}</Text>
+                <Typography variant="h1" center style={styles.gameTitle}>The Love Arcade</Typography>
+                <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
 
-                <Text variant="instructions">Map the clues to the cycle:</Text>
+                <Typography variant="h2">Case File 1</Typography>
+                <Typography variant="body" style={{ marginBottom: SPACING.regular }}>{current.scenario}</Typography>
+
+                <Typography variant="instructions">Map the clues to the cycle:</Typography>
                 <View style={styles.grid}>
                     {current.clues.map((c, i) => (
                         <SquishyButton
@@ -88,20 +92,13 @@ export default function BPDPatternDetective({ route, navigation }: any) {
                             onPress={() => mapClue(c)}
                             style={[styles.clue, mapped[c.type] ? styles.mapped : {}]}
                         >
-                            <Text variant="body" style={{ fontSize: 12 }}>{c.text}</Text>
+                            <Typography variant="caption">{c.text}</Typography>
                         </SquishyButton>
                     ))}
                 </View>
 
                 <SquishyButton onPress={checkCase} style={styles.submitBtn}>
-                    <LinearGradient
-                        colors={['#db147c', '#f05d68']}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 1 }}
-                        style={styles.gradientButton}
-                    >
-                        <Text variant="header" style={{ color: '#ffffff' }}>Submit Analysis</Text>
-                    </LinearGradient>
+                    <Typography variant="button" style={{ color: COLORS.textPrimary }}>Submit Analysis</Typography>
                 </SquishyButton>
             </GlassCard>
         </ScrollView>
@@ -123,74 +120,61 @@ export default function BPDPatternDetective({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    gameTitle: {
+        marginBottom: SPACING.small,
+    },
+    subtitle: {
+        color: COLORS.textSecondary,
+        marginBottom: SPACING.regular,
+    },
     grid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 8
+        gap: SPACING.small
     },
     clue: {
-        padding: 12,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 8,
+        padding: SPACING.regular,
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.medium,
         width: '48%',
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)'
+        borderColor: COLORS.borderSubtle
     },
     mapped: {
-        backgroundColor: '#37cf97',
-        borderColor: '#37cf97'
+        backgroundColor: COLORS.mintGreen,
+        borderColor: COLORS.mintGreen
     },
     submitBtn: {
-        marginTop: 20,
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
-        elevation: 8,
-    },
-    gradientButton: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 12,
-        paddingVertical: 16,
+        marginTop: SPACING.regular,
+        marginBottom: SPACING.regular,
     },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 20,
-        padding: 16,
-        marginBottom: 16
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.xlarge,
+        padding: SPACING.regular,
+        marginBottom: SPACING.regular
     },
     avatarContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#fcc738',
+        width: SPACING.xxlarge + SPACING.medium,
+        height: SPACING.xxlarge + SPACING.medium,
+        borderRadius: BORDER_RADIUS.round,
+        backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12
+        marginRight: SPACING.regular
     },
     avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: SPACING.xxlarge,
+        height: SPACING.xxlarge,
+        borderRadius: BORDER_RADIUS.round,
         resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
-        borderRadius: 12,
-        padding: 12
+        backgroundColor: COLORS.backgroundInput,
+        borderRadius: BORDER_RADIUS.large,
+        padding: SPACING.regular,
     },
-    quoteText: {
-        color: '#ffffff',
-        fontSize: 14,
-        lineHeight: 20
-    }
 });

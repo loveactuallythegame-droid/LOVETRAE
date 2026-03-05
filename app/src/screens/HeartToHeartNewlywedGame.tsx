@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { 
   View, 
-  Text, 
   StyleSheet, 
-  TouchableOpacity, 
   ScrollView, 
   TextInput,
   ActivityIndicator,
   Alert,
   Dimensions
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../components/ui';
+import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS } from '../theme';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { COLORS, TYPOGRAPHY, SPACING, SIZES } from '../theme';
 import { useGameStore } from '../lib/game-store';
 import { gamesApi, marcieApi } from '../lib/api';
 import { useAuth } from '../hooks/useAuth';
@@ -47,10 +44,8 @@ const newlywedQuestions = [
 ];
 
 const HeartToHeartNewlywedGameScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
   const { user } = useAuth();
-  const { updateGameProgress, currentGameSession } = useGameStore();
+  const { updateGameProgress } = useGameStore();
   
   const [gameState, setGameState] = useState<GameState>({
     currentQuestion: '',
@@ -74,7 +69,6 @@ const HeartToHeartNewlywedGameScreen = () => {
   const initializeGame = async () => {
     if (!user) {
       Alert.alert('Authentication Required', 'Please log in to play this game.');
-      navigation.goBack();
       return;
     }
 
@@ -171,7 +165,7 @@ const HeartToHeartNewlywedGameScreen = () => {
     const answerB = gameState.partnerBAnswer.toLowerCase();
     
     // Check for semantic similarity (in real app, this would use AI)
-    const semanticKeywords = {
+    const semanticKeywords: Record<string, string[]> = {
       'integrity': ['honesty', 'truth', 'authenticity', 'genuine'],
       'family': ['children', 'home', 'together', 'unity'],
       'love': ['care', 'affection', 'connection', 'bond'],
@@ -234,11 +228,11 @@ const HeartToHeartNewlywedGameScreen = () => {
       // Update global game state
       updateGameProgress('heart-to-heart-newlywed', 100);
 
-      navigation.navigate('GameResultsScreen', {
-        gameId: 'heart-to-heart-newlywed',
-        score: gameState.score,
-        sessionId: gameState.sessionId
-      });
+      // navigation.navigate('GameResultsScreen', {
+      //   gameId: 'heart-to-heart-newlywed',
+      //   score: gameState.score,
+      //   sessionId: gameState.sessionId
+      // });
 
     } catch (error) {
       console.error('Failed to finish game:', error);
@@ -250,77 +244,60 @@ const HeartToHeartNewlywedGameScreen = () => {
   // Loading state
   if (gameState.isLoading) {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout showHeader={false}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.primaryGradientStart} />
-          <Text style={styles.loadingText}>Processing your answer...</Text>
+          <Typography variant="body" style={styles.loadingText}>
+            Processing your answer...
+          </Typography>
         </View>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Intro phase
   if (gameState.gamePhase === 'intro') {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout showHeader={false}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.introContainer}>
-            <Text style={styles.gameTitle}>HEART TO HEART</Text>
-            <Text style={styles.gameSubtitle}>Newlywed Game - Deep Connection Edition</Text>
+            <Typography variant="h1" style={styles.gameTitle} center>
+              HEART TO HEART
+            </Typography>
+            <Typography variant="title" style={styles.gameSubtitle} center>
+              Newlywed Game - Deep Connection Edition
+            </Typography>
             
-            <View style={styles.introCard}>
-              <Text style={styles.introText}>
+            <GlassCard style={styles.introCard}>
+              <Typography variant="body" style={styles.introText}>
                 This isn't your typical newlywed game. We're diving deep into the 
                 emotional core of your relationship. Be prepared for vulnerability, 
                 honesty, and profound connection.
-              </Text>
+              </Typography>
               
-              <Text style={styles.introWarning}>
+              <Typography variant="caption" style={styles.introWarning}>
                 💡 Tip: The goal isn't perfect alignment, but authentic understanding.
-              </Text>
-            </View>
+              </Typography>
+            </GlassCard>
 
-            <TouchableOpacity 
-              style={styles.startButton}
-              onPress={startGame}
-              activeOpacity={0.8}
-            >
-              <LinearGradient
-                colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-                style={styles.startButtonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.startButtonText}>START CONNECTION</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+            <SquishyButton onPress={startGame}>
+              <Typography variant="button">START CONNECTION</Typography>
+            </SquishyButton>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Question phase
   if (gameState.gamePhase === 'question') {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout showHeader={false}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.progressContainer}>
-            <Text style={styles.progressText}>
+            <Typography variant="caption" style={styles.progressText}>
               STEP {gameState.step}/{gameState.totalSteps} - ALIGNMENT CHECK
-            </Text>
+            </Typography>
             <View style={styles.progressBar}>
               <LinearGradient
                 colors={[COLORS.innerLineStart, COLORS.innerLineEnd]}
@@ -334,46 +311,39 @@ const HeartToHeartNewlywedGameScreen = () => {
             </View>
           </View>
 
-          <Text style={styles.mainQuestion}>{gameState.currentQuestion}</Text>
+          <Typography variant="h1" style={styles.mainQuestion} center>
+            {gameState.currentQuestion}
+          </Typography>
 
-          <Text style={styles.instructionText}>
+          <Typography variant="body" style={styles.instructionText} center>
             Both partners should answer this question independently. 
             Honesty creates the deepest connection.
-          </Text>
+          </Typography>
 
           <View style={styles.answerButtonsContainer}>
-            <TouchableOpacity 
-              style={styles.answerButton}
+            <SquishyButton 
               onPress={() => setGameState(prev => ({ ...prev, gamePhase: 'answer' }))}
-              activeOpacity={0.8}
             >
-              <LinearGradient
-                colors={[COLORS.accentViolet, COLORS.accentRose]}
-                style={styles.answerButtonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.answerButtonText}>ANSWER NOW</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+              <Typography variant="button">ANSWER NOW</Typography>
+            </SquishyButton>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Answer phase
   if (gameState.gamePhase === 'answer') {
     return (
-      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-        <LinearGradient 
-          colors={[COLORS.background, COLORS.surface]} 
-          style={styles.backgroundGradient}
-        />
+      <ScreenLayout showHeader={false}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.answerContainer}>
-            <Text style={styles.answerTitle}>YOUR ANSWER</Text>
-            <Text style={styles.answerQuestion}>{gameState.currentQuestion}</Text>
+            <Typography variant="h1" style={styles.answerTitle} center>
+              YOUR ANSWER
+            </Typography>
+            <Typography variant="title" style={styles.answerQuestion} center>
+              {gameState.currentQuestion}
+            </Typography>
             
             <View style={styles.answerInputContainer}>
               <TextInput
@@ -390,41 +360,29 @@ const HeartToHeartNewlywedGameScreen = () => {
               />
             </View>
 
-            <TouchableOpacity 
-              style={[
-                styles.submitAnswerButton,
-                !gameState.partnerAAnswer.trim() && styles.submitAnswerButtonDisabled
-              ]}
+            <SquishyButton 
               onPress={() => handleAnswerSubmit('A', gameState.partnerAAnswer)}
               disabled={!gameState.partnerAAnswer.trim()}
-              activeOpacity={0.8}
             >
-              <LinearGradient
-                colors={[COLORS.primaryGradientStart, COLORS.primaryGradientEnd]}
-                style={styles.submitAnswerButtonGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Text style={styles.submitAnswerButtonText}>SUBMIT ANSWER</Text>
-              </LinearGradient>
-            </TouchableOpacity>
+              <Typography variant="button">SUBMIT ANSWER</Typography>
+            </SquishyButton>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </ScreenLayout>
     );
   }
 
   // Reveal phase
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <LinearGradient 
-        colors={[COLORS.background, COLORS.surface]} 
-        style={styles.backgroundGradient}
-      />
+    <ScreenLayout showHeader={false}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.revealContainer}>
-          <Text style={styles.revealTitle}>ANSWER REVEAL</Text>
-          <Text style={styles.revealQuestion}>{gameState.currentQuestion}</Text>
+          <Typography variant="h1" style={styles.revealTitle} center>
+            ANSWER REVEAL
+          </Typography>
+          <Typography variant="title" style={styles.revealQuestion} center>
+            {gameState.currentQuestion}
+          </Typography>
 
           <View style={styles.gameBoard}>
             <PartnerAnswerCard 
@@ -435,12 +393,14 @@ const HeartToHeartNewlywedGameScreen = () => {
             />
             
             <View style={styles.matchIndicator}>
-              <Text style={{ fontSize: 40 }}>💖</Text>
+              <Typography variant="h1">💖</Typography>
               <View style={styles.matchTextBox}>
-                <Text style={styles.matchText}>SEMANTIC MATCH</Text>
-                <Text style={styles.matchComment}>
+                <Typography variant="caption" style={styles.matchText}>
+                  SEMANTIC MATCH
+                </Typography>
+                <Typography variant="small" style={styles.matchComment}>
                   "{gameState.marcieFeedback}"
-                </Text>
+                </Typography>
               </View>
             </View>
 
@@ -452,62 +412,58 @@ const HeartToHeartNewlywedGameScreen = () => {
             />
           </View>
 
-          <View style={styles.scoreContainer}>
-            <Text style={styles.scoreText}>CURRENT SCORE</Text>
-            <Text style={styles.scoreValue}>${gameState.score}</Text>
-          </View>
+          <GlassCard style={styles.scoreContainer}>
+            <Typography variant="caption" style={styles.scoreText}>
+              CURRENT SCORE
+            </Typography>
+            <Typography variant="h1" style={styles.scoreValue}>
+              ${gameState.score}
+            </Typography>
+          </GlassCard>
 
-          <TouchableOpacity 
-            style={styles.nextButton}
-            onPress={nextQuestion}
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={[COLORS.accentTeal, COLORS.accentViolet]}
-              style={styles.nextButtonGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            >
-              <Text style={styles.nextButtonText}>
-                {gameState.step < gameState.totalSteps ? 'NEXT QUESTION' : 'FINISH GAME'}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+          <SquishyButton onPress={nextQuestion}>
+            <Typography variant="button">
+              {gameState.step < gameState.totalSteps ? 'NEXT QUESTION' : 'FINISH GAME'}
+            </Typography>
+          </SquishyButton>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
-const PartnerAnswerCard = ({ partnerName, answer, status, onReveal }) => (
+const PartnerAnswerCard = ({ 
+  partnerName, 
+  answer, 
+  status, 
+  onReveal 
+}: { 
+  partnerName: string; 
+  answer: string; 
+  status: 'hidden' | 'revealed'; 
+  onReveal: () => void;
+}) => (
   <View style={styles.cardContainer}>
-    <TouchableOpacity
+    <SquishyButton
+      variant="ghost"
       style={[
         styles.card, 
         status === 'hidden' && styles.cardHidden
       ]}
       onPress={onReveal}
       disabled={status === 'revealed'}
-      activeOpacity={0.8}
     >
       {status === 'hidden' ? (
-        <Text style={styles.cardHiddenText}>?</Text>
+        <Typography variant="h1" style={styles.cardHiddenText}>?</Typography>
       ) : (
-        <Text style={styles.cardAnswer}>{answer}</Text>
+        <Typography variant="body" style={styles.cardAnswer}>{answer}</Typography>
       )}
-    </TouchableOpacity>
-    <Text style={styles.partnerName}>{partnerName}</Text>
+    </SquishyButton>
+    <Typography variant="caption" style={styles.partnerName}>{partnerName}</Typography>
   </View>
 );
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  backgroundGradient: {
-    ...StyleSheet.absoluteFillObject,
-  },
   scrollContent: {
     paddingBottom: SPACING.xl,
   },
@@ -517,7 +473,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
     marginTop: SPACING.md,
   },
@@ -529,57 +484,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gameTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.xs,
-    textTransform: 'uppercase',
   },
   gameSubtitle: {
-    ...TYPOGRAPHY.title,
     color: COLORS.textSecondary,
-    textAlign: 'center',
     marginBottom: SPACING.xl,
   },
   introCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
     marginBottom: SPACING.lg,
   },
   introText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textPrimary,
     marginBottom: SPACING.md,
-    lineHeight: 22,
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
   },
   introWarning: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.accentYellow,
-    fontWeight: '600',
-  },
-  startButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 5,
-    shadowColor: COLORS.primaryGradientStart,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-  },
-  startButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  startButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
   },
   
   // Progress styles
@@ -589,15 +510,13 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
   },
   progressText: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.textSecondary,
     marginBottom: SPACING.sm,
-    textTransform: 'uppercase',
   },
   progressBar: {
-    height: 8,
+    height: SPACING.sm,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 4,
+    borderRadius: SPACING.xs,
     overflow: 'hidden',
   },
   progressBarFill: {
@@ -606,45 +525,18 @@ const styles = StyleSheet.create({
   
   // Question styles
   mainQuestion: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginHorizontal: SPACING.lg,
     marginBottom: SPACING.lg,
-    textTransform: 'uppercase',
   },
   instructionText: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textSecondary,
-    textAlign: 'center',
     marginHorizontal: SPACING.lg,
     marginBottom: SPACING.xl,
-    lineHeight: 22,
+    lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
   },
   answerButtonsContainer: {
     alignItems: 'center',
     marginBottom: SPACING.xl,
-  },
-  answerButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 4,
-    shadowColor: COLORS.accentViolet,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-  },
-  answerButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  answerButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
   },
   
   // Answer styles
@@ -653,55 +545,26 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.xl,
   },
   answerTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.sm,
-    textTransform: 'uppercase',
   },
   answerQuestion: {
-    ...TYPOGRAPHY.title,
     color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.lg,
   },
   answerInputContainer: {
     marginBottom: SPACING.xl,
   },
   answerInput: {
-    ...TYPOGRAPHY.body,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    ...TYPOGRAPHY.fontFamily.regular,
+    backgroundColor: COLORS.backgroundInput,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: SIZES.borderRadius * 2,
+    borderColor: COLORS.borderSubtle,
+    borderRadius: BORDER_RADIUS.xlarge,
     padding: SPACING.lg,
     color: COLORS.textPrimary,
-    minHeight: 120,
+    minHeight: SPACING.xxxlarge * 2.5,
     textAlignVertical: 'top',
-  },
-  submitAnswerButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 5,
-    shadowColor: COLORS.primaryGradientStart,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-  },
-  submitAnswerButtonDisabled: {
-    opacity: 0.6,
-  },
-  submitAnswerButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  submitAnswerButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
+    fontSize: TYPOGRAPHY.fontSize.bodyLarge,
   },
   
   // Reveal styles
@@ -710,16 +573,10 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.xl,
   },
   revealTitle: {
-    ...TYPOGRAPHY.header,
-    color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.sm,
-    textTransform: 'uppercase',
   },
   revealQuestion: {
-    ...TYPOGRAPHY.title,
     color: COLORS.textPrimary,
-    textAlign: 'center',
     marginBottom: SPACING.lg,
   },
   gameBoard: {
@@ -736,57 +593,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   matchText: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.accentPink,
-    fontWeight: '600',
-    textTransform: 'uppercase',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
   },
   matchComment: {
-    ...TYPOGRAPHY.small,
     color: COLORS.textSecondary,
     fontStyle: 'italic',
-    marginTop: 2,
+    marginTop: SPACING.xs / 2,
   },
   scoreContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
     marginBottom: SPACING.xl,
     alignItems: 'center',
   },
   scoreText: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.textSecondary,
-    textTransform: 'uppercase',
     marginBottom: SPACING.xs,
   },
   scoreValue: {
-    ...TYPOGRAPHY.header,
     color: COLORS.accentYellow,
-    fontSize: 32,
-  },
-  nextButton: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    elevation: 4,
-    shadowColor: COLORS.accentTeal,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-  },
-  nextButtonGradient: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    alignItems: 'center',
-  },
-  nextButtonText: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.textPrimary,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
+    fontSize: TYPOGRAPHY.fontSize.displayLarge,
   },
   
   // Partner card styles
@@ -796,35 +621,25 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '80%',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: SIZES.borderRadius * 2,
-    padding: SPACING.lg,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    minHeight: SPACING.xxxlarge * 3,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 100,
   },
   cardHidden: {
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   cardHiddenText: {
-    ...TYPOGRAPHY.header,
     color: COLORS.textSecondary,
-    fontSize: 48,
   },
   cardAnswer: {
-    ...TYPOGRAPHY.body,
     color: COLORS.textPrimary,
     textAlign: 'center',
-    fontWeight: '600',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
   },
   partnerName: {
-    ...TYPOGRAPHY.caption,
     color: COLORS.textSecondary,
     marginTop: SPACING.sm,
-    textTransform: 'uppercase',
-    fontWeight: '600',
+    fontWeight: TYPOGRAPHY.fontWeight.semiBold,
   },
 });
 

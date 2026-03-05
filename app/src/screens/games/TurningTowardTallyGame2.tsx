@@ -1,89 +1,100 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
+import { GlassCard, Typography, ScreenLayout } from '../../components/ui';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const timelineEvents = [
-    { icon: 'touch-app', color: '#00f2ff', title: 'Physical Bid', subtitle: '2m response time', status: 'Synchronized' },
-    { icon: 'chat-bubble', color: '#f90248', title: 'Verbal Bid', subtitle: 'Instant turn-toward', status: '+50pts' },
-    { icon: 'volunteer-activism', color: '#32ff00', title: 'Service Bid', subtitle: '15m response time', status: 'Processed' },
-    { icon: 'error', color: '#ff007f', title: 'Failed Sync', subtitle: 'Turned away', status: 'Missed bid penalty' },
-    { icon: 'hotel-class', color: '#8f00ff', title: 'Quality Time Bid', subtitle: 'Ongoing Session', status: 'Active' },
+    { icon: 'touch-app' as const, color: COLORS.info, title: 'Physical Bid', subtitle: '2m response time', status: 'Synchronized' },
+    { icon: 'chat-bubble' as const, color: COLORS.emotionalConnection, title: 'Verbal Bid', subtitle: 'Instant turn-toward', status: '+50pts' },
+    { icon: 'volunteer-activism' as const, color: COLORS.success, title: 'Service Bid', subtitle: '15m response time', status: 'Processed' },
+    { icon: 'error' as const, color: COLORS.error, title: 'Failed Sync', subtitle: 'Turned away', status: 'Missed bid penalty' },
+    { icon: 'hotel-class' as const, color: COLORS.lavenderPurple, title: 'Quality Time Bid', subtitle: 'Ongoing Session', status: 'Active' },
 ];
 
-const StatCard = ({ label, value, trend }) => (
-    <View style={styles.statCard}>
-        <Text style={styles.statLabel}>{label}</Text>
-        <Text style={styles.statValue}>{value}</Text>
-        <Text style={styles.statTrend}>{trend}</Text>
-    </View>
+const StatCard = ({ label, value, trend }: { label: string; value: string; trend: string }) => (
+    <GlassCard style={styles.statCard}>
+        <Typography variant="caption">{label}</Typography>
+        <Typography variant="h1">{value}</Typography>
+        <Typography variant="small" style={{ color: COLORS.success }}>{trend}</Typography>
+    </GlassCard>
 );
 
-const TimelineItem = ({ event }) => (
+const TimelineItem = ({ event }: { event: typeof timelineEvents[0] }) => (
     <View style={styles.timelineItem}>
-        <View style={styles.timelineIconContainer}>
+        <View style={[styles.timelineIconContainer, { borderColor: event.color }]}>
             <MaterialIcons name={event.icon} size={24} color={event.color} />
         </View>
         <View style={styles.timelineTextContainer}>
-            <Text style={styles.timelineTitle}>{event.title}</Text>
-            <Text style={styles.timelineSubtitle}>{event.subtitle} <Text style={{ color: event.color }}>{event.status}</Text></Text>
+            <Typography variant="body">{event.title}</Typography>
+            <Typography variant="caption">{event.subtitle} <Typography variant="caption" style={{ color: event.color }}>{event.status}</Typography></Typography>
         </View>
     </View>
 );
 
-
 const TurningTowardTallyGame2 = () => {
     return (
-        <SafeAreaView style={styles.safeArea}>
-            <LinearGradient colors={['#101322', '#1a1e3a']} style={styles.container}>
-                <ScrollView contentContainerStyle={styles.contentContainer}>
-                    <Text style={styles.headerTitle}>Turning Toward Tally</Text>
-                    <Text style={styles.headerSubtitle}>Live audit of your connection bids.</Text>
+        <ScreenLayout showHeader={true} scrollable={true}>
+            <Typography variant="h1" center>Turning Toward Tally</Typography>
+            <Typography variant="h2" center style={{ marginBottom: SPACING.xlarge }}>Live audit of your connection bids.</Typography>
 
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.statsRow}>
-                        <StatCard label="Days in Sync" value="12 Days" trend="+2%" />
-                        <StatCard label="Emotional Currency" value="4,250" trend="+540" />
-                        <StatCard label="Response Rate" value="92%" trend="+5%" />
-                    </ScrollView>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.statsRow}>
+                <StatCard label="Days in Sync" value="12 Days" trend="+2%" />
+                <StatCard label="Emotional Currency" value="4,250" trend="+540" />
+                <StatCard label="Response Rate" value="92%" trend="+5%" />
+            </ScrollView>
 
-                    <View style={styles.timelineContainer}>
-                        <Text style={styles.sectionHeader}>24-Hour Bid Timeline</Text>
-                        {timelineEvents.map((event, index) => <TimelineItem key={index} event={event} />)}
-                    </View>
+            <GlassCard style={styles.timelineContainer}>
+                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>24-Hour Bid Timeline</Typography>
+                {timelineEvents.map((event, index) => <TimelineItem key={index} event={event} />)}
+            </GlassCard>
 
-                    <View style={styles.auditorTip}>
-                        <MaterialIcons name="lightbulb" size={24} color="#ffbf00" style={{marginRight: 10}}/>
-                        <Text style={styles.auditorText}>Decrease screen time during dinner to boost Emotional Currency by <Text style={{color: '#32ff00'}}>+25%</Text>.</Text>
-                    </View>
-
-                </ScrollView>
-            </LinearGradient>
-        </SafeAreaView>
+            <View style={styles.auditorTip}>
+                <MaterialIcons name="lightbulb" size={24} color={COLORS.warning} style={{marginRight: SPACING.regular}}/>
+                <Typography variant="body" style={{ flex: 1, lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge }}>Decrease screen time during dinner to boost Emotional Currency by <Typography variant="body" style={{ color: COLORS.success }}>+25%</Typography>.</Typography>
+            </View>
+        </ScreenLayout>
     );
 }
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: '#101322' },
-    container: { flex: 1 },
-    contentContainer: { padding: 20 },
-    headerTitle: { color: '#fff', fontSize: 32, fontWeight: '900', textAlign: 'center' },
-    headerSubtitle: { color: '#929bc9', fontSize: 16, textAlign: 'center', marginBottom: 24 },
-    statsRow: { marginBottom: 24 },
-    statCard: { backgroundColor: 'rgba(26,30,58,0.7)', borderRadius: 12, padding: 16, marginRight: 12, width: 160 },
-    statLabel: { color: '#929bc9', fontSize: 12, textTransform: 'uppercase' },
-    statValue: { color: '#fff', fontSize: 24, fontWeight: 'bold', marginVertical: 4 },
-    statTrend: { color: '#0bda65', fontSize: 12 },
-    timelineContainer: { backgroundColor: 'rgba(26,30,58,0.7)', borderRadius: 12, padding: 16, marginBottom: 24 },
-    sectionHeader: { color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 16 },
-    timelineItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
-    timelineIconContainer: { width: 40, height: 40, borderRadius: 20, borderWidth: 1, justifyContent: 'center', alignItems: 'center', marginRight: 12 },
-    timelineTextContainer: { flex: 1 },
-    timelineTitle: { color: '#fff', fontWeight: 'bold' },
-    timelineSubtitle: { color: '#929bc9' },
-    auditorTip: { flexDirection: 'row', backgroundColor: 'rgba(26,30,58,0.7)', borderRadius: 12, padding: 16, alignItems: 'center' },
-    auditorText: { color: '#fff', flex: 1, lineHeight: 20 }
-
+    statsRow: { 
+        marginBottom: SPACING.xlarge 
+    },
+    statCard: { 
+        padding: SPACING.regular, 
+        marginRight: SPACING.regular, 
+        width: 160,
+        alignItems: 'center',
+    },
+    timelineContainer: { 
+        marginBottom: SPACING.xlarge 
+    },
+    timelineItem: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        marginBottom: SPACING.regular 
+    },
+    timelineIconContainer: { 
+        width: 40, 
+        height: 40, 
+        borderRadius: BORDER_RADIUS.round, 
+        borderWidth: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginRight: SPACING.regular 
+    },
+    timelineTextContainer: { 
+        flex: 1 
+    },
+    auditorTip: { 
+        flexDirection: 'row', 
+        backgroundColor: COLORS.backgroundCard, 
+        borderRadius: BORDER_RADIUS.large, 
+        padding: SPACING.regular, 
+        alignItems: 'center' 
+    },
 });
 
 export default TurningTowardTallyGame2;

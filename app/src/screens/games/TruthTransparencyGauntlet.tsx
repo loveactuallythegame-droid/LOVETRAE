@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { GlassCard, Text, SquishyButton } from '../../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScreenLayout } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
+import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 const ROUNDS = [
     {
@@ -67,23 +70,37 @@ export default function TruthTransparencyGauntlet({ route, navigation }: any) {
     const current = ROUNDS[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: 12 }}>
+        <ScrollView style={{ gap: SPACING.regular }}>
             <GlassCard>
-                <Text variant="header">Question {round + 1}</Text>
-                <Text variant="body" style={{ marginBottom: 16 }}>{current.q}</Text>
+                <Typography variant="h1" center style={styles.gameTitle}>
+                    The Love Arcade
+                </Typography>
+                <Typography variant="h2" center style={styles.subtitle}>
+                    +100 Games to Deepen Connection
+                </Typography>
+
+                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                    Question {round + 1}
+                </Typography>
+                <Typography variant="body" style={{ marginBottom: SPACING.xlarge }}>
+                    {current.q}
+                </Typography>
 
                 {current.opts.map(o => (
                     <SquishyButton
                         key={o.id}
                         onPress={() => setChoice(o.id)}
+                        variant={choice === o.id ? 'primary' : 'ghost'}
                         style={[styles.opt, choice === o.id ? styles.selected : {}]}
                     >
-                        <Text variant="body" style={{ color: choice === o.id ? '#120016' : '#fff' }}>{o.text}</Text>
+                        <Typography variant="body" style={{ color: choice === o.id ? COLORS.backgroundPrimary : COLORS.textPrimary }}>
+                            {o.text}
+                        </Typography>
                     </SquishyButton>
                 ))}
 
-                <SquishyButton onPress={submit} style={styles.submitBtn}>
-                    <Text variant="header">Lock In Answer</Text>
+                <SquishyButton onPress={submit} size="large" style={styles.submitBtn}>
+                    <Typography variant="button">Lock In Answer</Typography>
                 </SquishyButton>
             </GlassCard>
         </ScrollView>
@@ -105,24 +122,22 @@ export default function TruthTransparencyGauntlet({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    gameTitle: {
+        marginBottom: SPACING.small
+    },
+    subtitle: {
+        marginBottom: SPACING.xlarge
+    },
     opt: {
-        padding: 14,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 8,
-        marginBottom: 8,
-        borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)'
+        padding: SPACING.regular,
+        marginBottom: SPACING.small,
     },
     selected: {
-        backgroundColor: '#FFD700',
-        borderColor: '#FFD700'
+        backgroundColor: COLORS.brightYellow,
+        borderColor: COLORS.brightYellow
     },
     submitBtn: {
-        marginTop: 20,
-        backgroundColor: '#FA1F63',
-        padding: 16,
-        borderRadius: 12,
-        alignItems: 'center',
-        marginBottom: 20
+        marginTop: SPACING.xlarge,
+        marginBottom: SPACING.xlarge
     },
 });

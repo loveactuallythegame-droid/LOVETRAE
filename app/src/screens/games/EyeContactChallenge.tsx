@@ -1,17 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
-import { Text, GlassCard } from '../../components/ui';
-import { GameContainer } from '../../components/games/engine';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import theme from '../../theme';
+import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { GameContainer } from '../../components/games/engine';
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
-
-const { width, height } = Dimensions.get('window');
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS, ANIMATIONS } from '../../theme';
 
 export default function EyeContactChallenge({ route, navigation }: any) {
   const { gameId } = route.params || { gameId: 'eye-contact-challenge' };
-  const [timeRemaining, setTimeRemaining] = useState(60); // 60 seconds challenge
+  const [timeRemaining, setTimeRemaining] = useState(60);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
@@ -46,7 +45,7 @@ export default function EyeContactChallenge({ route, navigation }: any) {
             collection(db, 'game_sessions'),
             where('couple_id', '==', couple_code),
             where('gameId', '==', gameId),
-            where('userId', '!=', user.uid) // Different user
+            where('userId', '!=', user.uid)
           );
           
           const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
@@ -88,7 +87,7 @@ export default function EyeContactChallenge({ route, navigation }: any) {
         }
         return prev - 1;
       });
-    }, 1000);
+    }, ANIMATIONS.duration.slow);
   };
 
   const incrementScore = () => {
@@ -140,23 +139,26 @@ export default function EyeContactChallenge({ route, navigation }: any) {
   }, []);
 
   const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: theme.SPACING.lg }}>
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: SPACING.xxlarge }}>
       <GlassCard>
         <LinearGradient
-          colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
+          colors={[COLORS.backgroundCard, COLORS.backgroundSecondary]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.gradientContainer}
         >
-          <Text variant="header" style={{ textAlign: 'center', marginBottom: theme.SPACING.md, color: theme.COLORS.textPrimary }}>
+          <Text variant="h1" center style={styles.gameTitle}>The Love Arcade</Text>
+          <Text variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Text>
+          
+          <Text variant="h3" style={{ textAlign: 'center', marginBottom: SPACING.regular, marginTop: SPACING.regular }}>
             Eye Contact Challenge
           </Text>
           
           <View style={styles.timerContainer}>
-            <Text variant="header" style={{ fontSize: 48, color: theme.COLORS.accentOrange }}>
+            <Text variant="h1" style={{ color: COLORS.warmOrange }}>
               {timeRemaining}s
             </Text>
-            <Text variant="body" style={{ color: theme.COLORS.textSecondary, textAlign: 'center' }}>
+            <Text variant="body" center style={{ color: COLORS.textSecondary }}>
               {connectionStatus === 'connecting' ? 'Connecting to partner...' : 
                connectionStatus === 'connected' ? 'Partner connected!' : 
                'Maintain eye contact'}
@@ -165,52 +167,35 @@ export default function EyeContactChallenge({ route, navigation }: any) {
 
           {!gameStarted ? (
             <View style={styles.startContainer}>
-              <Text variant="body" style={{ textAlign: 'center', marginBottom: theme.SPACING.lg, color: theme.COLORS.textSecondary }}>
+              <Text variant="instructions" center style={{ marginBottom: SPACING.xlarge, color: COLORS.textSecondary }}>
                 Prepare to connect with your partner through sustained eye contact.
                 Tap the heart each time you feel a connection.
               </Text>
-              <TouchableOpacity 
-                style={styles.startButton} 
+              <SquishyButton 
                 onPress={startGame}
                 disabled={!partnerReady}
               >
-                <LinearGradient
-                  colors={[
-                    partnerReady ? theme.COLORS.primaryGradientStart : '#666',
-                    partnerReady ? theme.COLORS.primaryGradientEnd : '#666'
-                  ]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.gradientButton}
-                >
-                  <Text 
-                    variant="header" 
-                    style={{ 
-                      color: partnerReady ? theme.COLORS.background : theme.COLORS.textHint,
-                      textAlign: 'center'
-                    }}
-                  >
-                    {partnerReady ? 'Start Challenge' : 'Waiting for Partner...'}
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
+                <Text variant="button">
+                  {partnerReady ? 'Start Challenge' : 'Waiting for Partner...'}
+                </Text>
+              </SquishyButton>
             </View>
           ) : (
             <View style={styles.gameContainer}>
               <View style={styles.scoreContainer}>
-                <Text variant="body" style={{ color: theme.COLORS.textSecondary, marginBottom: theme.SPACING.sm }}>
+                <Text variant="caption" style={{ color: COLORS.textSecondary, marginBottom: SPACING.small }}>
                   Current Score
                 </Text>
-                <Text variant="header" style={{ fontSize: 36, color: theme.COLORS.success }}>
+                <Text variant="h2" style={{ color: COLORS.success }}>
                   {score}
                 </Text>
               </View>
               
               <View style={styles.streakContainer}>
-                <Text variant="body" style={{ color: theme.COLORS.textSecondary, marginBottom: theme.SPACING.sm }}>
+                <Text variant="caption" style={{ color: COLORS.textSecondary, marginBottom: SPACING.small }}>
                   Connection Streak
                 </Text>
-                <Text variant="header" style={{ fontSize: 24, color: theme.COLORS.accentViolet }}>
+                <Text variant="h3" style={{ color: COLORS.softViolet }}>
                   {streak}x
                 </Text>
               </View>
@@ -220,16 +205,15 @@ export default function EyeContactChallenge({ route, navigation }: any) {
                 onPress={incrementScore}
               >
                 <LinearGradient
-                  colors={[theme.COLORS.romanceHub, theme.COLORS.emotionalConnection]}
+                  colors={[COLORS.romanceHub, COLORS.emotionalConnection]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={styles.heartGradient}
                 >
                   <Text 
+                    variant="h1" 
                     style={{ 
-                      fontSize: 48, 
-                      color: theme.COLORS.background,
-                      fontWeight: 'bold'
+                      color: COLORS.backgroundPrimary,
                     }}
                   >
                     ❤️
@@ -237,7 +221,7 @@ export default function EyeContactChallenge({ route, navigation }: any) {
                 </LinearGradient>
               </TouchableOpacity>
               
-              <Text variant="sass" style={{ textAlign: 'center', marginTop: theme.SPACING.md, color: theme.COLORS.accentYellow }}>
+              <Text variant="sass" center style={{ marginTop: SPACING.regular, color: COLORS.brightYellow }}>
                 Tap when you feel a connection!
               </Text>
             </View>
@@ -245,33 +229,17 @@ export default function EyeContactChallenge({ route, navigation }: any) {
 
           {gameCompleted && (
             <View style={styles.resultsContainer}>
-              <Text variant="header" style={{ textAlign: 'center', marginBottom: theme.SPACING.md, color: theme.COLORS.success }}>
+              <Text variant="h2" center style={{ marginBottom: SPACING.regular, color: COLORS.success }}>
                 Challenge Complete!
               </Text>
-              <Text variant="body" style={{ textAlign: 'center', marginBottom: theme.SPACING.lg, color: theme.COLORS.textPrimary }}>
+              <Text variant="body" center style={{ marginBottom: SPACING.xlarge, color: COLORS.textPrimary }}>
                 You and your partner maintained eye contact and connected {score/10} times
               </Text>
-              <TouchableOpacity 
-                style={styles.finishButton} 
+              <SquishyButton 
                 onPress={() => navigation.goBack()}
               >
-                <LinearGradient
-                  colors={[theme.COLORS.primaryGradientStart, theme.COLORS.primaryGradientEnd]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.gradientButton}
-                >
-                  <Text 
-                    variant="header" 
-                    style={{ 
-                      color: theme.COLORS.background,
-                      textAlign: 'center'
-                    }}
-                  >
-                    Return to Menu
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
+                <Text variant="button">Return to Menu</Text>
+              </SquishyButton>
             </View>
           )}
         </LinearGradient>
@@ -319,23 +287,23 @@ export default function EyeContactChallenge({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
   gradientContainer: {
-    padding: theme.SPACING.md,
-    borderRadius: theme.SIZES.borderRadius,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.card,
     alignItems: 'center',
+  },
+  gameTitle: {
+    marginBottom: SPACING.small,
+  },
+  subtitle: {
+    marginBottom: SPACING.regular,
   },
   timerContainer: {
     alignItems: 'center',
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.xlarge,
   },
   startContainer: {
     alignItems: 'center',
     flex: 1,
-  },
-  startButton: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    overflow: 'hidden',
-    width: '80%',
-    marginTop: theme.SPACING.lg,
   },
   gameContainer: {
     alignItems: 'center',
@@ -343,38 +311,28 @@ const styles = StyleSheet.create({
   },
   scoreContainer: {
     alignItems: 'center',
-    marginBottom: theme.SPACING.md,
+    marginBottom: SPACING.regular,
   },
   streakContainer: {
     alignItems: 'center',
-    marginBottom: theme.SPACING.lg,
+    marginBottom: SPACING.xlarge,
   },
   heartButton: {
     width: 120,
     height: 120,
-    borderRadius: 60,
+    borderRadius: BORDER_RADIUS.round,
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: theme.SPACING.lg,
+    marginVertical: SPACING.xlarge,
   },
   heartGradient: {
     width: 120,
     height: 120,
-    borderRadius: 60,
+    borderRadius: BORDER_RADIUS.round,
     alignItems: 'center',
     justifyContent: 'center',
   },
   resultsContainer: {
     alignItems: 'center',
-  },
-  finishButton: {
-    borderRadius: theme.SIZES.buttonBorderRadius,
-    overflow: 'hidden',
-    width: '80%',
-    marginTop: theme.SPACING.lg,
-  },
-  gradientButton: {
-    padding: theme.SPACING.lg,
-    borderRadius: theme.SIZES.buttonBorderRadius,
   },
 });
