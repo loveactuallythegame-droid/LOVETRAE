@@ -22,7 +22,7 @@ export default function SoundtrackSync({ route, navigation }: any) {
 
   return (
     <ScreenLayout showHeader={true} scrollable={true}>
-      <View style={{ gap: SPACING.regular }}>
+      <View style={styles.container}>
         <Typography variant="h1" center>The Love Arcade</Typography>
         <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
 
@@ -46,6 +46,9 @@ export default function SoundtrackSync({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: SPACING.regular,
+  },
   input: { 
     backgroundColor: COLORS.backgroundInput, 
     color: COLORS.textPrimary, 

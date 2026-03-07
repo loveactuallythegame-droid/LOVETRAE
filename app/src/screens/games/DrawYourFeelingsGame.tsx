@@ -39,7 +39,7 @@ const DrawYourFeelingsGameScreen = () => {
 
                 {/* Center Canvas */}
                 <View style={styles.canvasContainer}>
-                    <Typography variant="h2" center>Draw <Typography variant="h2" style={{ fontStyle: 'italic', color: COLORS.vibrantPink }}>"Vulnerability"</Typography></Typography>
+                    <Typography variant="h2" center>Draw <Typography variant="h2" style={styles.italicHighlight}>"Vulnerability"</Typography></Typography>
                     <View style={styles.canvas}>
                         <Svg height="100%" width="100%" viewBox="0 0 800 600">
                             <Path d="M150 450 Q 250 150 400 300 T 650 100" fill="none" stroke="#40E0D0" strokeWidth="6" />
@@ -124,6 +124,10 @@ const styles = StyleSheet.create({
         flex: 1, 
         paddingHorizontal: SPACING.regular, 
         alignItems: 'center' 
+    },
+    italicHighlight: {
+        fontStyle: 'italic',
+        color: COLORS.vibrantPink,
     },
     canvas: { 
         width: '100%', 

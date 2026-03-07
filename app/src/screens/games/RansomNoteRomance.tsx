@@ -20,12 +20,12 @@ export default function RansomNoteRomance({ navigation }: any) {
                 </View>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Drag-and-drop cutout</Typography>
+                    <Typography variant="h2" style={styles.cardTitle}>Type: Drag-and-drop cutout</Typography>
                     <Typography variant="body">Mechanics: Build threat: "GIVE ME… TACOS… OR… I… SERENADE YOU."</Typography>
                 </GlassCard>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+                    <Typography variant="h2" style={styles.cardTitle}>Scoring</Typography>
                     <Typography variant="body">
                         ✅ Absurdly sweet = +20 (Marcie judges){'\n'}
                         ✅ Partner laughs (self-reported ✅) = +10
@@ -49,19 +49,19 @@ const styles = StyleSheet.create({
     },
     content: { 
         padding: SPACING.screenPadding, 
-        gap: SPACING.regular 
+        gap: SPACING.regular,
     },
     header: { 
         flexDirection: 'row', 
         alignItems: 'center', 
         gap: SPACING.small, 
-        marginTop: SPACING.regular 
+        marginTop: SPACING.regular,
     },
     backBtn: { 
         paddingHorizontal: SPACING.regular, 
         paddingVertical: SPACING.small, 
         backgroundColor: COLORS.backgroundInput, 
-        borderRadius: BORDER_RADIUS.large 
+        borderRadius: BORDER_RADIUS.large,
     },
     title: { 
         flex: 1,
@@ -72,9 +72,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.borderSubtle,
     },
+    cardTitle: {
+        marginBottom: SPACING.small,
+    },
     actionArea: { 
         marginTop: SPACING.xxlarge, 
-        alignItems: 'center' 
+        alignItems: 'center',
     },
     playBtn: { 
         width: '80%',

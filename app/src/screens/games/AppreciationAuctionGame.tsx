@@ -11,11 +11,11 @@ const PlayerCard = ({ name, coins, color, onBid }: { name: string, coins: number
         end={GRADIENTS.primary.end}
         style={[styles.playerCard, { borderColor: color }]}
     >
-        <Typography variant="h3" center style={{ color: COLORS.textPrimary }}>{name}</Typography>
-        <Typography variant="h2" center style={{ color: COLORS.textPrimary }}>{coins}</Typography>
-        <Typography variant="caption" center style={{ color: COLORS.textSecondary }}>Emotional Coins</Typography>
+        <Typography variant="h3" center style={styles.playerName}>{name}</Typography>
+        <Typography variant="h2" center style={styles.playerCoins}>{coins}</Typography>
+        <Typography variant="caption" center style={styles.playerLabel}>Emotional Coins</Typography>
         <SquishyButton onPress={onBid} style={styles.bidButton}>
-            <Typography variant="button" style={{ color: COLORS.vibrantPink }}>BID 25 COINS</Typography>
+            <Typography variant="button" style={styles.bidButtonText}>BID 25 COINS</Typography>
         </SquishyButton>
     </LinearGradient>
 );
@@ -69,10 +69,10 @@ const AppreciationAuctionGameScreen = () => {
                     end={{ x: 1, y: 1 }}
                     style={styles.appreciationCard}
                 >
-                    <Typography variant="h2" center style={{ color: COLORS.textPrimary }}>"You fold laundry like a Zen master"</Typography>
+                    <Typography variant="h2" center style={styles.appreciationText}>"You fold laundry like a Zen master"</Typography>
                     <View style={styles.bidInfo}>
-                        <Typography variant="h1" center style={{ color: COLORS.textPrimary }}>{currentBid}</Typography>
-                        <Typography variant="caption" center style={{ color: COLORS.textSecondary }}>Highest Bidder: {highestBidder}</Typography>
+                        <Typography variant="h1" center style={styles.currentBidText}>{currentBid}</Typography>
+                        <Typography variant="caption" center style={styles.highestBidderText}>Highest Bidder: {highestBidder}</Typography>
                     </View>
                 </LinearGradient>
             </LinearGradient>
@@ -180,9 +180,30 @@ const styles = StyleSheet.create({
         borderColor: COLORS.borderSubtle,
         ...SHADOWS.card,
     },
-    bidButton: { 
+    bidButton: {
         marginTop: SPACING.regular,
         backgroundColor: COLORS.textPrimary,
+    },
+    playerName: {
+        color: COLORS.textPrimary,
+    },
+    playerCoins: {
+        color: COLORS.textPrimary,
+    },
+    playerLabel: {
+        color: COLORS.textSecondary,
+    },
+    bidButtonText: {
+        color: COLORS.vibrantPink,
+    },
+    appreciationText: {
+        color: COLORS.textPrimary,
+    },
+    currentBidText: {
+        color: COLORS.textPrimary,
+    },
+    highestBidderText: {
+        color: COLORS.textSecondary,
     },
 });
 

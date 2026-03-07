@@ -208,7 +208,7 @@ const TrustBank: React.FC = () => {
                                     variant="primary"
                                     style={styles.actionButton}
                                 >
-                                    <Typography variant="button" style={{ color: COLORS.textPrimary }}>
+                                    <Typography variant="button" style={styles.depositButtonText}>
                                         + Deposit
                                     </Typography>
                                 </SquishyButton>
@@ -349,6 +349,9 @@ const styles = StyleSheet.create({
     },
     actionButton: {
         flex: 1,
+    },
+    depositButtonText: {
+        color: COLORS.textPrimary,
     },
     historyTitle: {
         marginBottom: SPACING.regular,

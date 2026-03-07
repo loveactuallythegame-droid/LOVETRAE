@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -35,7 +34,7 @@ export default function ToneShiftChallenge({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.container}>
       <GlassCard>
         <Typography variant="h2">Tone: {TONES[currentTone]}</Typography>
         <Typography variant="body" style={styles.sentence}>{SENTENCE}</Typography>
@@ -66,6 +65,9 @@ export default function ToneShiftChallenge({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: SPACING.regular,
+  },
   sentence: { 
     textAlign: 'center', 
     marginVertical: SPACING.xlarge, 

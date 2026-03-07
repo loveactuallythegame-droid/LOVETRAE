@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -21,7 +20,7 @@ export default function TurningTowardTally({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.container}>
       <GlassCard>
         <Typography variant="h2" center>Turning Toward Tally</Typography>
         <Typography variant="body" center>Did you respond to a bid (text/call/look) in {'<'}5 min?</Typography>
@@ -52,6 +51,9 @@ export default function TurningTowardTally({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: SPACING.regular,
+  },
   count: { 
     fontSize: TYPOGRAPHY.fontSize.displayLarge * 2, 
     textAlign: 'center', 

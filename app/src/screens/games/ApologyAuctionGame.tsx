@@ -46,7 +46,7 @@ const ApologyAuctionGameScreen = () => {
                     >
                         <Typography variant="caption" style={styles.partnerLabel}>Partner A</Typography>
                         <Slider
-                            style={{width: '100%', height: 40}}
+                            style={styles.slider}
                             minimumValue={0}
                             maximumValue={100}
                             step={1}
@@ -66,7 +66,7 @@ const ApologyAuctionGameScreen = () => {
                     >
                         <Typography variant="caption" style={styles.partnerLabel}>Partner B</Typography>
                         <Slider
-                            style={{width: '100%', height: 40}}
+                            style={styles.slider}
                             minimumValue={0}
                             maximumValue={100}
                             step={1}
@@ -91,7 +91,7 @@ const ApologyAuctionGameScreen = () => {
                 </LinearGradient>
 
                 <SquishyButton onPress={() => {}} style={styles.nextButton}>
-                    <Typography variant="button" style={{ color: COLORS.textPrimary }}>Next Auction</Typography>
+                    <Typography variant="button" style={styles.buttonText}>Next Auction</Typography>
                 </SquishyButton>
             </View>
         </ScreenLayout>
@@ -164,6 +164,10 @@ const styles = StyleSheet.create({
         borderColor: COLORS.borderSubtle,
         ...SHADOWS.card,
     },
+    slider: {
+        width: '100%',
+        height: 40,
+    },
     partnerLabel: { 
         color: COLORS.textPrimary, 
         marginBottom: SPACING.small,
@@ -200,6 +204,9 @@ const styles = StyleSheet.create({
     },
     nextButton: {
         marginTop: SPACING.regular,
+    },
+    buttonText: {
+        color: COLORS.textPrimary,
     },
 });
 

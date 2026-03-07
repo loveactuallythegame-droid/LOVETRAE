@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import { View, StyleSheet, ScrollView, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
 import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
@@ -138,7 +138,7 @@ export default function EyeContactChallenge({ route, navigation }: any) {
   }, []);
 
   const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: SPACING.xxlarge }}>
+    <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
       <GlassCard>
         <LinearGradient
           colors={[COLORS.backgroundCard, COLORS.backgroundSecondary]}
@@ -146,60 +146,60 @@ export default function EyeContactChallenge({ route, navigation }: any) {
           end={{ x: 1, y: 1 }}
           style={styles.gradientContainer}
         >
-          <Text variant="h1" center style={styles.gameTitle}>The Love Arcade</Text>
-          <Text variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Text>
+          <Typography variant="h1" center style={styles.gameTitle}>The Love Arcade</Typography>
+          <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
           
-          <Text variant="h3" style={{ textAlign: 'center', marginBottom: SPACING.regular, marginTop: SPACING.regular }}>
+          <Typography variant="h3" style={styles.challengeTitle}>
             Eye Contact Challenge
-          </Text>
+          </Typography>
           
           <View style={styles.timerContainer}>
-            <Text variant="h1" style={{ color: COLORS.warmOrange }}>
+            <Typography variant="h1" style={styles.timerText}>
               {timeRemaining}s
-            </Text>
-            <Text variant="body" center style={{ color: COLORS.textSecondary }}>
+            </Typography>
+            <Typography variant="body" center style={styles.statusText}>
               {connectionStatus === 'connecting' ? 'Connecting to partner...' : 
                connectionStatus === 'connected' ? 'Partner connected!' : 
                'Maintain eye contact'}
-            </Text>
+            </Typography>
           </View>
 
           {!gameStarted ? (
             <View style={styles.startContainer}>
-              <Text variant="instructions" center style={{ marginBottom: SPACING.xlarge, color: COLORS.textSecondary }}>
+              <Typography variant="body" center style={styles.startInstructions}>
                 Prepare to connect with your partner through sustained eye contact.
                 Tap the heart each time you feel a connection.
-              </Text>
+              </Typography>
               <SquishyButton 
                 onPress={startGame}
                 disabled={!partnerReady}
               >
-                <Text variant="button">
+                <Typography variant="button">
                   {partnerReady ? 'Start Challenge' : 'Waiting for Partner...'}
-                </Text>
+                </Typography>
               </SquishyButton>
             </View>
           ) : (
             <View style={styles.gameContainer}>
               <View style={styles.scoreContainer}>
-                <Text variant="caption" style={{ color: COLORS.textSecondary, marginBottom: SPACING.small }}>
+                <Typography variant="caption" style={styles.scoreLabel}>
                   Current Score
-                </Text>
-                <Text variant="h2" style={{ color: COLORS.success }}>
+                </Typography>
+                <Typography variant="h2" style={styles.scoreValue}>
                   {score}
-                </Text>
+                </Typography>
               </View>
               
               <View style={styles.streakContainer}>
-                <Text variant="caption" style={{ color: COLORS.textSecondary, marginBottom: SPACING.small }}>
+                <Typography variant="caption" style={styles.streakLabel}>
                   Connection Streak
-                </Text>
-                <Text variant="h3" style={{ color: COLORS.softViolet }}>
+                </Typography>
+                <Typography variant="h3" style={styles.streakValue}>
                   {streak}x
-                </Text>
+                </Typography>
               </View>
               
-              <TouchableOpacity 
+              <SquishyButton 
                 style={styles.heartButton} 
                 onPress={incrementScore}
               >
@@ -209,35 +209,30 @@ export default function EyeContactChallenge({ route, navigation }: any) {
                   end={{ x: 1, y: 1 }}
                   style={styles.heartGradient}
                 >
-                  <Text 
-                    variant="h1" 
-                    style={{ 
-                      color: COLORS.backgroundPrimary,
-                    }}
-                  >
+                  <Typography variant="h1" style={styles.heartEmoji}>
                     ❤️
-                  </Text>
+                  </Typography>
                 </LinearGradient>
-              </TouchableOpacity>
+              </SquishyButton>
               
-              <Text variant="sass" center style={{ marginTop: SPACING.regular, color: COLORS.brightYellow }}>
+              <Typography variant="caption" center style={styles.tapHint}>
                 Tap when you feel a connection!
-              </Text>
+              </Typography>
             </View>
           )}
 
           {gameCompleted && (
             <View style={styles.resultsContainer}>
-              <Text variant="h2" center style={{ marginBottom: SPACING.regular, color: COLORS.success }}>
+              <Typography variant="h2" center style={styles.completeTitle}>
                 Challenge Complete!
-              </Text>
-              <Text variant="body" center style={{ marginBottom: SPACING.xlarge, color: COLORS.textPrimary }}>
+              </Typography>
+              <Typography variant="body" center style={styles.completeMessage}>
                 You and your partner maintained eye contact and connected {score/10} times
-              </Text>
+              </Typography>
               <SquishyButton 
                 onPress={() => navigation.goBack()}
               >
-                <Text variant="button">Return to Menu</Text>
+                <Typography variant="button">Return to Menu</Typography>
               </SquishyButton>
             </View>
           )}
@@ -333,5 +328,55 @@ const styles = StyleSheet.create({
   },
   resultsContainer: {
     alignItems: 'center',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: SPACING.xxlarge,
+  },
+  challengeTitle: {
+    textAlign: 'center',
+    marginBottom: SPACING.regular,
+    marginTop: SPACING.regular,
+  },
+  timerText: {
+    color: COLORS.warmOrange,
+  },
+  statusText: {
+    color: COLORS.textSecondary,
+  },
+  startInstructions: {
+    marginBottom: SPACING.xlarge,
+    color: COLORS.textSecondary,
+  },
+  scoreLabel: {
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.small,
+  },
+  scoreValue: {
+    color: COLORS.success,
+  },
+  streakLabel: {
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.small,
+  },
+  streakValue: {
+    color: COLORS.softViolet,
+  },
+  heartEmoji: {
+    color: COLORS.backgroundPrimary,
+  },
+  tapHint: {
+    marginTop: SPACING.regular,
+    color: COLORS.brightYellow,
+  },
+  completeTitle: {
+    marginBottom: SPACING.regular,
+    color: COLORS.success,
+  },
+  completeMessage: {
+    marginBottom: SPACING.xlarge,
+    color: COLORS.textPrimary,
   },
 });

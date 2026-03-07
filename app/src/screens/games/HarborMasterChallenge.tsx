@@ -10,7 +10,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Alert, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 // Backend integration
@@ -256,16 +256,16 @@ const HarborMasterChallenge: React.FC = () => {
             <Typography variant="h3" style={styles.sectionTitle}>🌊 {currentScenario.partner1Choice}</Typography>
             <View style={styles.choicesContainer}>
                 {currentScenario.choices.map((choice) => (
-                    <TouchableOpacity
+                    <SquishyButton
                         key={`p1-${choice.id}`}
+                        onPress={() => !showResults && setP1(choice.id)}
+                        disabled={showResults}
                         style={[
                             styles.choiceButton,
                             p1Choice === choice.id && styles.selectedChoice,
                             showResults && getChoiceDetails(p1Choice || '')?.healthy && p1Choice === choice.id && styles.healthyChoice,
                             showResults && !getChoiceDetails(p1Choice || '')?.healthy && p1Choice === choice.id && styles.unhealthyChoice
                         ]}
-                        onPress={() => !showResults && setP1(choice.id)}
-                        disabled={showResults}
                     >
                         <Typography variant="body" style={[
                             styles.choiceText,
@@ -276,7 +276,7 @@ const HarborMasterChallenge: React.FC = () => {
                         {showResults && p1Choice === choice.id && (
                             <Typography variant="caption" style={styles.pointsBadge}>+{choice.points}</Typography>
                         )}
-                    </TouchableOpacity>
+                    </SquishyButton>
                 ))}
             </View>
 
@@ -284,16 +284,16 @@ const HarborMasterChallenge: React.FC = () => {
             <Typography variant="h3" style={styles.sectionTitle}>⚓ {currentScenario.partner2Choice}</Typography>
             <View style={styles.choicesContainer}>
                 {currentScenario.choices.map((choice) => (
-                    <TouchableOpacity
+                    <SquishyButton
                         key={`p2-${choice.id}`}
+                        onPress={() => !showResults && setP2(choice.id)}
+                        disabled={showResults}
                         style={[
                             styles.choiceButton,
                             p2Choice === choice.id && styles.selectedChoice,
                             showResults && getChoiceDetails(p2Choice || '')?.healthy && p2Choice === choice.id && styles.healthyChoice,
                             showResults && !getChoiceDetails(p2Choice || '')?.healthy && p2Choice === choice.id && styles.unhealthyChoice
                         ]}
-                        onPress={() => !showResults && setP2(choice.id)}
-                        disabled={showResults}
                     >
                         <Typography variant="body" style={[
                             styles.choiceText,
@@ -304,7 +304,7 @@ const HarborMasterChallenge: React.FC = () => {
                         {showResults && p2Choice === choice.id && (
                             <Typography variant="caption" style={styles.pointsBadge}>+{choice.points}</Typography>
                         )}
-                    </TouchableOpacity>
+                    </SquishyButton>
                 ))}
             </View>
 

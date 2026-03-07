@@ -51,7 +51,7 @@ const BidRadarGameScreen = () => {
                                 multiline
                             />
                             <SquishyButton onPress={lockBid} style={styles.lockButton}>
-                                <Typography variant="button" style={{ color: COLORS.gradientStart }}>Lock Bid</Typography>
+                                <Typography variant="button" style={styles.lockButtonText}>Lock Bid</Typography>
                             </SquishyButton>
                         </LinearGradient>
 

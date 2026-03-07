@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
-import { Typography, GlassCard, RadialGradientBackground, ScreenLayout } from '../../components/ui';
+import { View, StyleSheet, ScrollView, TextInput, Alert, TouchableOpacity } from 'react-native';
+import { Typography, GlassCard, RadialGradientBackground, ScreenLayout, SquishyButton } from '../../components/ui';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppStore } from '../../state/store';
@@ -30,7 +30,7 @@ export default function GameLibraryScreen({ navigation }: any) {
       { id: '7', name: 'Rewrite the Memory', category: 'emotional', difficulty: 'Hard', xp: 120, description: 'Shared canvas + AI narrative scoring', mechanics: 'One types fragment; both edit with hope/absurdity.', marcieIntro: ''…and then a raccoon stole his phone'? Poetic and feral.' },
       { id: '8', name: 'Guilt vs. Shame Sort', category: 'emotional', difficulty: 'Easy', xp: 40, description: 'Rapid swipe (Tinder-style)', mechanics: '"I messed up" (✅ Guilt) vs. "I'm a failure" (❌ Shame).', marcieIntro: 'Swiped 'I'm unlovable' left? Wrong. Hard right to the trash.' },
       { id: '9', name: 'Flashback Frenzy', category: 'emotional', difficulty: 'Medium', xp: 90, description: 'Async image association', mechanics: 'A sees rainy window → types emotional word → B guesses why.', marcieIntro: ''Rain' = 'that night you didn't come home'… and they guessed exactly?' },
-      { id: '10', name: 'The Denial Detector', category: 'conflict', difficulty: 'Medium', xp: 80, description: 'Voice-to-text audit', mechanics: 'Say "Everything's fine." <2x "fine" = pass.', marcieIntro: 'You said 'fine' 7 times. Congrats—you've unlocked Emotional Bottleneck.' },
+      { id: '10', name: 'The Denial Detector', category: 'conflict', difficulty: 'Medium', xp: 80, description: 'Voice-to-text audit', mechanics: 'Say "Everything\'s fine." <2x "fine" = pass.', marcieIntro: 'You said 'fine' 7 times. Congrats—you've unlocked Emotional Bottleneck.' },
       { id: '11', name: 'Six-Second Stare-Down', category: 'romance', difficulty: 'Medium', xp: 100, description: 'Real-time camera sync', mechanics: 'Front cams → AI detects mutual gaze → 6-sec timer.', marcieIntro: '2.3 seconds before laughing? Adorable. Try again.' },
       { id: '12', name: 'Gratitude Graffiti', category: 'emotional', difficulty: 'Easy', xp: 60, description: 'Shared mural', mechanics: '60 sec to write/draw appreciation—only metaphors.', marcieIntro: ''You're the guac to my toast'? Snackable and profound.' },
       { id: '13', name: 'Vulnerability Volley', category: 'emotional', difficulty: 'Medium', xp: 100, description: 'Timed text ping-pong', mechanics: 'A replies ≤15s → B validates ≤15s.', marcieIntro: 'You blocked with 'lol same'? That's not a volley—that's a miss.' },
@@ -80,19 +80,19 @@ export default function GameLibraryScreen({ navigation }: any) {
       { id: '57', name: 'Admiration Aim', category: 'romance', difficulty: 'Easy', xp: 50, description: 'AR target practice with compliments.', mechanics: 'Shoot floating "strength" words (Witty, Patient).', marcieIntro: 'Aim for "resilient," not "stubborn." They're synonyms, but one gets you kissed.' },
       { id: '58', name: 'Vow Remix', category: 'romance', difficulty: 'Medium', xp: 100, description: 'Update vows for today.', mechanics: 'Rewrite vows based on current reality ("I vow to not hide cookies").', marcieIntro: ''I vow to pretend I don't see you scrolling TikTok at 2 AM" — modern romance.' },
       { id: '59', name: 'Legacy Dice', category: 'emotional', difficulty: 'Medium', xp: 80, description: 'Define your relationship legacy.', mechanics: 'Roll -> Prompt ("Values for kids/dog"). Record answer.', marcieIntro: ''Sarcasm and snacks" isn't a legacy. But I'm not judging. Much.' },
-      { id: '60', name: 'Connection Conundrum', category: 'creative', difficulty: 'Hard', xp: 500, description: 'Marcie's Grand Finale.', mechanics: '10-round rapid fire mix. Unlocks custom ritual.', marcieIntro: 'You survived. Barely. Here's your prize: A date night plan I designed.' },
-      { id: '61', name: 'Truth Teller Tower', category: 'arcade', difficulty: 'Hard', xp: 200, description: 'Scale the lie-avalanche.', mechanics: 'Answer 5 questions. Predict partner's answer. Win badges.', marcieIntro: 'Five questions. Three lifelines. One shared brain—if you're lucky.' },
+      { id: '60', name: 'Connection Conundrum', category: 'creative', difficulty: 'Hard', xp: 500, description: 'Marcie\'s Grand Finale.', mechanics: '10-round rapid fire mix. Unlocks custom ritual.', marcieIntro: 'You survived. Barely. Here's your prize: A date night plan I designed.' },
+      { id: '61', name: 'Truth Teller Tower', category: 'arcade', difficulty: 'Hard', xp: 200, description: 'Scale the lie-avalanche.', mechanics: 'Answer 5 questions. Predict partner\'s answer. Win badges.', marcieIntro: 'Five questions. Three lifelines. One shared brain—if you're lucky.' },
       { id: '62', name: 'Escape from the Echo Chamber', category: 'arcade', difficulty: 'Hard', xp: 250, description: 'Break the love script.', mechanics: 'Solve 5 encrypted files by combining clues. <90s per puzzle.', marcieIntro: 'You're not escaping a room. You're escaping repetition.' },
       { id: '63', name: 'The Intimacy Feud', category: 'arcade', difficulty: 'Medium', xp: 200, description: 'You vs. 100 recovered couples.', mechanics: 'Guess top survey answers. Match partner for bonus points.', marcieIntro: 'Tonight's opponent? The Ghost of the Old Script. Let's go!' },
       { id: '64', name: 'Relational Jeopardy!', category: 'arcade', difficulty: 'Hard', xp: 300, description: 'Categories by rebuilt couples.', mechanics: 'Buzz in, wager points, face Final Jeopardy. 3 categories.', marcieIntro: 'Welcome to Relational Jeopardy! Categories are "Potent Promises."' },
       { id: '65', name: 'Family Feud: New Reality', category: 'arcade', difficulty: 'Medium', xp: 200, description: 'You vs. The Ghosts of the Past.', mechanics: 'Guess top survey answers from couples who forged families. Match partner for double points.', marcieIntro: 'You're building something truer. Stop saying "just a". Let's go!' },
-      { id: '66', name: 'The Newlywed Game', category: 'arcade', difficulty: 'Medium', xp: 250, description: 'Heart-to-Heart Edition.', mechanics: 'Guess partner's emotional needs (e.g., "What does your heart need?"). Points for empathy.', marcieIntro: 'You're not guessing snacks. You're guessing soul weather.' },
+      { id: '66', name: 'The Newlywed Game', category: 'arcade', difficulty: 'Medium', xp: 250, description: 'Heart-to-Heart Edition.', mechanics: 'Guess partner\'s emotional needs (e.g., "What does your heart need?"). Points for empathy.', marcieIntro: 'You're not guessing snacks. You're guessing soul weather.' },
       { id: '67', name: 'Chopped: Family Kitchen', category: 'arcade', difficulty: 'Hard', xp: 300, description: 'Cook a response to chaos.', mechanics: 'Choose Base + Seasoning to handle a meltdown/trigger. Judges are your future selves.', marcieIntro: 'No perfection. Just presence. Let's see what you can make from the scraps.' },
-      { id: '68', name: 'Legacy Dash', category: 'arcade', difficulty: 'Hard', xp: 400, description: 'The Amazing Race.', mechanics: '5 challenges to unlock your family legacy. Finish line: Child's 18th birthday.', marcieIntro: 'Build a legacy that outlasts the lie. Ready? GO!' },
+      { id: '68', name: 'Legacy Dash', category: 'arcade', difficulty: 'Hard', xp: 400, description: 'The Amazing Race.', mechanics: '5 challenges to unlock your family legacy. Finish line: Child\'s 18th birthday.', marcieIntro: 'Build a legacy that outlasts the lie. Ready? GO!' },
       { id: '69', name: 'BPD Pattern Detective', category: 'arcade', difficulty: 'Hard', xp: 200, description: 'Decode the storm cycle.', mechanics: 'Watch a scenario. Drag clues to map Trigger, Thought, Reaction, Aftermath.', marcieIntro: 'Love isn't blind—it's forensic. Decode the cycle before it hits.' },
       { id: '70', name: 'Validation Game Show', category: 'arcade', difficulty: 'Medium', xp: 250, description: 'Spin for connection.', mechanics: 'Spin the wheel of responses. Choose the one that builds a bridge, not a wall.', marcieIntro: 'Welcome to The Validation Game Show. The jackpot is "I feel seen."' },
       { id: '71', name: 'Connection Constructor', category: 'arcade', difficulty: 'Hard', xp: 300, description: 'Build Secure Harbor City.', mechanics: 'Complete challenges to build landmarks like the Identity Library and Repair Shop.', marcieIntro: 'Love isn't a feeling. It's infrastructure. Let's lay the first brick.' },
-      { id: '72', name: 'Harbor Master's Challenge', category: 'arcade', difficulty: 'Hard', xp: 400, description: 'Choose Your Own Adventure.', mechanics: 'Co-captains face 5 future scenarios. Align choices for harmony.', marcieIntro: 'You've built your harbor. Now, let's see if it holds in a squall.' },
+      { id: '72', name: 'Harbor Master\'s Challenge', category: 'arcade', difficulty: 'Hard', xp: 400, description: 'Choose Your Own Adventure.', mechanics: 'Co-captains face 5 future scenarios. Align choices for harmony.', marcieIntro: 'You've built your harbor. Now, let's see if it holds in a squall.' },
 
       // PHOENIX PROTOCOL EDITION
       { id: '73', name: 'Truth & Transparency Gauntlet', category: 'arcade', difficulty: 'Hard', xp: 200, description: 'Cash Cab for integrity.', mechanics: 'Rapid-fire questions in a cab driving through storm of lies. Match answers for bonus.', marcieIntro: 'Welcome to the cab. The fare is integrity. Don't make me pull over.' },
@@ -111,7 +111,7 @@ export default function GameLibraryScreen({ navigation }: any) {
       // WORD-WOUND EDITION
       { id: '83', name: 'Deal or No Deal: Accountability', category: 'arcade', difficulty: 'Hard', xp: 500, description: 'The suitcases hold truth.', mechanics: 'Open cases of defensive vs accountability statements. Accept the deal.', marcieIntro: 'The Banker offers one deal: Full Responsibility. Take it or walk.' },
       { id: '84', name: 'Family Feud: Safety Edition', category: 'arcade', difficulty: 'Medium', xp: 500, description: 'You vs. Ghosts of Past.', mechanics: 'Guess top answers from trauma therapists. Sync for safety.', marcieIntro: 'Tonight's opponent? The Ghosts of the Past. Let's play.' },
-      { id: '85', name: 'Newlywed Game: Heart Edition', category: 'arcade', difficulty: 'Medium', xp: 450, description: 'Guess soul weather.', mechanics: 'Guess partner's deep emotional state. Points for empathetic accuracy.', marcieIntro: 'Not guessing snacks. Guessing soul weather after the storm.' },
+      { id: '85', name: 'Newlywed Game: Heart Edition', category: 'arcade', difficulty: 'Medium', xp: 450, description: 'Guess soul weather.', mechanics: 'Guess partner\'s deep emotional state. Points for empathetic accuracy.', marcieIntro: 'Not guessing snacks. Guessing soul weather after the storm.' },
       { id: '86', name: 'Jeopardy: Rebuilding Round', category: 'arcade', difficulty: 'Hard', xp: 2000, description: 'The new social contract.', mechanics: 'Categories: Linguistic Geneva Convention, Amends as Architecture.', marcieIntro: 'Categories are Potent Promises. Win Relational Integrity.' },
       { id: '87', name: 'The Amazing Race: Crossroads', category: 'arcade', difficulty: 'Hard', xp: 600, description: 'Race to conscious choice.', mechanics: '5 challenges leading to The Crossroads: Commitment or Dignified Separation.', marcieIntro: 'The prize is conscious choice. Run to the crossroads.' },
     ];
@@ -250,7 +250,7 @@ export default function GameLibraryScreen({ navigation }: any) {
       'BPD Pattern Detective': 'PlayBPDPatternDetective',
       'Validation Game Show': 'PlayValidationGameShow',
       'Connection Constructor': 'PlayConnectionConstructor',
-      'Harbor Master's Challenge': 'PlayHarborMasterChallenge',
+      'Harbor Master\'s Challenge': 'PlayHarborMasterChallenge',
       'Truth & Transparency Gauntlet': 'PlayTruthTransparencyGauntlet',
       'Timeline Detective': 'PlayTimelineDetective',
       'Layers of Hurt Escape Room': 'PlayLayersOfHurt',
@@ -278,13 +278,13 @@ export default function GameLibraryScreen({ navigation }: any) {
   }
 
   const CategoryTab = ({ id, label }: { id: CategoryKey; label: string }) => (
-    <TouchableOpacity
+    <SquishyButton
       onPress={() => setCat(id)}
       style={[styles.tabItem, cat === id ? styles.tabItemActive : {}]}
     >
-      <Typography variant="body" style={[styles.tabText, cat === id && { color: COLORS.vibrantPink }]}>{label}</Typography>
+      <Typography variant="body" style={[styles.tabText, cat === id && styles.tabTextActive]}>{label}</Typography>
       {cat === id && <View style={styles.activeLine} />}
-    </TouchableOpacity>
+    </SquishyButton>
   );
 
   return (
@@ -294,9 +294,9 @@ export default function GameLibraryScreen({ navigation }: any) {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconBtn}>
+            <SquishyButton onPress={() => navigation.goBack()} style={styles.iconBtn}>
               <Ionicons name="arrow-back" size={24} color={COLORS.textPrimary} />
-            </TouchableOpacity>
+            </SquishyButton>
             <Typography variant="h1" style={styles.title}>Game Library</Typography>
           </View>
           <View style={styles.headerRight}>
@@ -309,7 +309,7 @@ export default function GameLibraryScreen({ navigation }: any) {
         {/* Search & Sort */}
         <View style={styles.controls}>
           <GlassCard style={styles.searchBar}>
-            <Ionicons name="search" size={20} color={COLORS.vibrantPink} style={{ marginRight: SPACING.small }} />
+            <Ionicons name="search" size={20} color={COLORS.vibrantPink} style={styles.searchIcon} />
             <TextInput
               style={styles.input}
               placeholder="Find a mini-game to play..."
@@ -338,10 +338,10 @@ export default function GameLibraryScreen({ navigation }: any) {
         {/* Game Grid */}
         <ScrollView contentContainerStyle={styles.gridScroll}>
           <View style={styles.grid}>
-            {loading && <Typography variant="body">Loading games...</Typography>}
+            {loading && <Typography variant="body" style={styles.loadingText}>Loading games...</Typography>}
             {!loading && filtered.length === 0 && (
-              <View style={{ width: '100%', alignItems: 'center', marginTop: SPACING.xlarge }}>
-                <Typography variant="body" style={{ opacity: 0.5 }}>No games found matching your search.</Typography>
+              <View style={styles.emptyState}>
+                <Typography variant="body" style={styles.emptyStateText}>No games found matching your search.</Typography>
               </View>
             )}
             {!loading && filtered.map((g) => (
@@ -380,7 +380,7 @@ export default function GameLibraryScreen({ navigation }: any) {
               </View>
             ))}
           </View>
-          <View style={{ height: 100 }} />
+          <View style={styles.bottomSpacer} />
         </ScrollView>
 
       </ScreenLayout>
@@ -390,6 +390,7 @@ export default function GameLibraryScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: COLORS.backgroundPrimary },
+  loadingText: { textAlign: 'center', marginTop: SPACING.large },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: SPACING.screenPadding, paddingVertical: SPACING.small },
   headerLeft: { flexDirection: 'row', alignItems: 'center', gap: SPACING.small },
   headerRight: { flexDirection: 'row', alignItems: 'center', gap: SPACING.small },
@@ -398,6 +399,7 @@ const styles = StyleSheet.create({
 
   controls: { flexDirection: 'row', paddingHorizontal: SPACING.screenPadding, gap: SPACING.small, marginTop: SPACING.small },
   searchBar: { flex: 1, flexDirection: 'row', alignItems: 'center', paddingHorizontal: SPACING.regular, height: 50, backgroundColor: COLORS.backgroundCard },
+  searchIcon: { marginRight: SPACING.small },
   input: { flex: 1, color: COLORS.textPrimary, fontSize: TYPOGRAPHY.fontSize.bodyLarge },
   sortBtn: { width: 50, height: 50, borderRadius: BORDER_RADIUS.xlarge, backgroundColor: COLORS.backgroundInput, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: COLORS.borderSubtle },
 
@@ -406,10 +408,13 @@ const styles = StyleSheet.create({
   tabItem: { paddingBottom: SPACING.regular, alignItems: 'center', justifyContent: 'center' },
   tabItemActive: {},
   tabText: { fontSize: TYPOGRAPHY.fontSize.bodyMedium, color: COLORS.textHint, fontWeight: TYPOGRAPHY.fontWeight.semiBold as any },
+  tabTextActive: { color: COLORS.vibrantPink },
   activeLine: { position: 'absolute', bottom: 0, height: 2, width: '100%', backgroundColor: COLORS.vibrantPink, borderRadius: BORDER_RADIUS.small },
 
   gridScroll: { padding: SPACING.screenPadding },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.regular },
+  emptyState: { width: '100%', alignItems: 'center', marginTop: SPACING.xlarge },
+  emptyStateText: { opacity: 0.5 },
   gameCardWrapper: { width: '47%', marginBottom: SPACING.small },
   gameCard: { backgroundColor: COLORS.backgroundCard, borderRadius: BORDER_RADIUS.xlarge, overflow: 'hidden', borderWidth: 1, borderColor: COLORS.borderSubtle },
   cardImage: { height: 100, justifyContent: 'space-between', padding: SPACING.small },
@@ -418,6 +423,7 @@ const styles = StyleSheet.create({
   gameTitle: { fontSize: TYPOGRAPHY.fontSize.bodyMedium, marginBottom: SPACING.tiny },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.tiny },
   metaText: { fontSize: TYPOGRAPHY.fontSize.bodySmall, color: COLORS.textHint, textTransform: 'capitalize' },
+  bottomSpacer: { height: 100 },
 
   badge: { alignSelf: 'flex-end', flexDirection: 'row', alignItems: 'center', gap: SPACING.tiny, paddingHorizontal: SPACING.small, paddingVertical: SPACING.tiny, backgroundColor: COLORS.backgroundPrimary + '99', borderRadius: BORDER_RADIUS.round, borderWidth: 1, borderColor: COLORS.warning },
   badgeDot: { width: 6, height: 6, borderRadius: BORDER_RADIUS.round, backgroundColor: COLORS.warning },

@@ -134,7 +134,7 @@ export default function ChallengeScreen({ route, navigation }: any) {
 
   return (
     <ScreenLayout showHeader={false} scrollable={true}>
-      <View style={{ flex: 1, padding: SPACING.regular, gap: SPACING.small }}>
+      <View style={styles.container}>
         <GlassCard>
           {/* Dr. Marcie Section */}
           <View style={styles.drMarcieSection}>
@@ -154,20 +154,20 @@ export default function ChallengeScreen({ route, navigation }: any) {
               <Typography variant="body">Back</Typography>
             </SquishyButton>
             <Typography variant="h2">{title}</Typography>
-            <Typography variant="caption" accessibilityLiveRegion="polite" style={{ color: warn ? COLORS.error : COLORS.success }}>{mm}:{ss}</Typography>
+            <Typography variant="caption" accessibilityLiveRegion="polite" style={warn ? styles.timerWarn : styles.timerSuccess}>{mm}:{ss}</Typography>
           </View>
           <View style={styles.progress}>
             <LinearGradient colors={[COLORS.gradientStart, COLORS.gradientEnd]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.progressFill}>
-              <View style={{ width: `${barProgress}%`, height: '100%' }} />
+              <View style={[styles.progressBar, { width: `${barProgress}%` }]} />
             </LinearGradient>
             <Typography variant="caption">Question {questionIndex + 1} of 3</Typography>
           </View>
-          <View style={{ marginTop: SPACING.small }}>
+          <View style={styles.questionContainer}>
             <Typography variant="h2">{questions[questionIndex].title}</Typography>
             <Typography variant="body">{questions[questionIndex].text}</Typography>
-            <Typography variant="body" style={{ opacity: 0.8 }}>{questions[questionIndex].desc}</Typography>
+            <Typography variant="body" style={styles.questionDesc}>{questions[questionIndex].desc}</Typography>
           </View>
-          <View style={{ marginTop: SPACING.small }}>
+          <View style={styles.inputContainer}>
             <TextInput
               value={answer}
               onChangeText={onAnswerChange}
@@ -177,22 +177,22 @@ export default function ChallengeScreen({ route, navigation }: any) {
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
             />
-            <Typography variant="caption" style={{ alignSelf: 'flex-end' }}>{answer.length}/500</Typography>
+            <Typography variant="caption" style={styles.charCount}>{answer.length}/500</Typography>
           </View>
           {!!score && (
-            <View style={{ marginTop: SPACING.small }}>
+          <View style={styles.scoreContainer}>
               <Typography variant="h2">Honesty Score</Typography>
-              <Typography variant="body" style={{ color: score > 75 ? COLORS.mintGreen : score > 50 ? COLORS.brightYellow : COLORS.error }}>{score}</Typography>
+              <Typography variant="body" style={score > 75 ? styles.scoreHigh : score > 50 ? styles.scoreMedium : styles.scoreLow}>{score}</Typography>
             </View>
           )}
           {!!commentary && (
-            <View style={{ marginTop: SPACING.small }}>
-              <Typography variant="body" style={{ fontStyle: 'italic' }}>{commentary}</Typography>
+          <View style={styles.commentaryContainer}>
+              <Typography variant="body" style={styles.commentaryText}>{commentary}</Typography>
             </View>
           )}
-          <View style={{ marginTop: SPACING.regular }}>
+          <View style={styles.buttonContainer}>
             <SquishyButton onPress={nextQuestion}>
-              <Typography variant="button" style={{ color: COLORS.textPrimary }}>{questionIndex < 2 ? 'Next' : 'Submit'}</Typography>
+              <Typography variant="button" style={styles.buttonText}>{questionIndex < 2 ? 'Next' : 'Submit'}</Typography>
             </SquishyButton>
           </View>
         </GlassCard>
@@ -279,5 +279,56 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(252, 199, 56, 0.2)',
     borderRadius: BORDER_RADIUS.large,
     padding: SPACING.regular,
+  },
+},
+  container: {
+    flex: 1,
+    padding: SPACING.regular,
+    gap: SPACING.small,
+  },
+  timerWarn: {
+    color: COLORS.error,
+  },
+  timerSuccess: {
+    color: COLORS.success,
+  },
+  progressBar: {
+    height: '100%',
+  },
+  questionContainer: {
+    marginTop: SPACING.small,
+  },
+  questionDesc: {
+    opacity: 0.8,
+  },
+  inputContainer: {
+    marginTop: SPACING.small,
+  },
+  charCount: {
+    alignSelf: 'flex-end',
+  },
+  scoreContainer: {
+    marginTop: SPACING.small,
+  },
+  scoreHigh: {
+    color: COLORS.mintGreen,
+  },
+  scoreMedium: {
+    color: COLORS.brightYellow,
+  },
+  scoreLow: {
+    color: COLORS.error,
+  },
+  commentaryContainer: {
+    marginTop: SPACING.small,
+  },
+  commentaryText: {
+    fontStyle: 'italic',
+  },
+  buttonContainer: {
+    marginTop: SPACING.regular,
+  },
+  buttonText: {
+    color: COLORS.textPrimary,
   },
 });

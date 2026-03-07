@@ -114,7 +114,7 @@ const SixSecondKissGame: React.FC<GameProps> = ({ session, updateScore, isSyncin
     }, [isHolding]);
 
     return (
-      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <Animated.View style={[styles.touchZoneAnimated, { transform: [{ scale: scaleAnim }] }]}>
         <LinearGradient
           colors={GRADIENTS.primary.colors}
           start={GRADIENTS.primary.start}
@@ -266,6 +266,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: SPACING.sm,
+  },
+  touchZoneAnimated: {
+    // Base style for animated touch zone
   },
   touchZone: {
     width: 120,

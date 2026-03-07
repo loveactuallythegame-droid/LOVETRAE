@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout } from '../../components/ui';
 import { GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
@@ -70,7 +69,7 @@ export default function TruthTransparencyGauntlet({ route, navigation }: any) {
     const current = ROUNDS[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
             <GlassCard>
                 <Typography variant="h1" center style={styles.gameTitle}>
                     The Love Arcade
@@ -79,10 +78,10 @@ export default function TruthTransparencyGauntlet({ route, navigation }: any) {
                     +100 Games to Deepen Connection
                 </Typography>
 
-                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                <Typography variant="h3" style={styles.questionTitle}>
                     Question {round + 1}
                 </Typography>
-                <Typography variant="body" style={{ marginBottom: SPACING.xlarge }}>
+                <Typography variant="body" style={styles.questionText}>
                     {current.q}
                 </Typography>
 
@@ -93,7 +92,10 @@ export default function TruthTransparencyGauntlet({ route, navigation }: any) {
                         variant={choice === o.id ? 'primary' : 'ghost'}
                         style={[styles.opt, choice === o.id ? styles.selected : {}]}
                     >
-                        <Typography variant="body" style={{ color: choice === o.id ? COLORS.backgroundPrimary : COLORS.textPrimary }}>
+                        <Typography 
+                            variant="body" 
+                            style={choice === o.id ? styles.selectedOptionText : styles.optionText}
+                        >
                             {o.text}
                         </Typography>
                     </SquishyButton>
@@ -122,11 +124,20 @@ export default function TruthTransparencyGauntlet({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollContent: {
+        gap: SPACING.regular,
+    },
     gameTitle: {
         marginBottom: SPACING.small
     },
     subtitle: {
         marginBottom: SPACING.xlarge
+    },
+    questionTitle: {
+        marginBottom: SPACING.regular,
+    },
+    questionText: {
+        marginBottom: SPACING.xlarge,
     },
     opt: {
         padding: SPACING.regular,
@@ -135,6 +146,12 @@ const styles = StyleSheet.create({
     selected: {
         backgroundColor: COLORS.brightYellow,
         borderColor: COLORS.brightYellow
+    },
+    optionText: {
+        color: COLORS.textPrimary,
+    },
+    selectedOptionText: {
+        color: COLORS.backgroundPrimary,
     },
     submitBtn: {
         marginTop: SPACING.xlarge,

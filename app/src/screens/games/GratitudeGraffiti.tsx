@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, TextInput, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, ScrollView, Dimensions } from 'react-native';
 import { Typography, GlassCard, ScreenLayout, SquishyButton } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS } from '../../theme';
@@ -91,7 +91,7 @@ export default function GratitudeGraffiti({ route, navigation }: any) {
   };
 
   const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: SPACING.xlarge }}>
+    <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
       <GlassCard>
         <LinearGradient
           colors={[COLORS.backgroundCard, 'rgba(240, 93, 104, 0.1)']}
@@ -128,10 +128,10 @@ export default function GratitudeGraffiti({ route, navigation }: any) {
           >
             <Typography 
               variant="h3" 
-              style={{ 
-                color: inputText.trim() ? COLORS.textPrimary : COLORS.textDisabled,
-                textAlign: 'center'
-              }}
+              style={[
+                styles.addButtonText,
+                { color: inputText.trim() ? COLORS.textPrimary : COLORS.textDisabled }
+              ]}
             >
               Add Message
             </Typography>
@@ -147,8 +147,8 @@ export default function GratitudeGraffiti({ route, navigation }: any) {
         <ScrollView style={styles.messagesContainer}>
           {messages.map((msg) => (
             <View key={msg.id} style={[styles.messageBubble, styles.myMessage]}>
-              <Typography variant="body" style={{ color: COLORS.textPrimary }}>{msg.text}</Typography>
-              <Typography variant="caption" style={{ color: COLORS.textHint, marginTop: SPACING.small, alignSelf: 'flex-end' }}>
+              <Typography variant="body" style={styles.messageText}>{msg.text}</Typography>
+              <Typography variant="caption" style={styles.messageAuthor}>
                 Me
               </Typography>
             </View>
@@ -156,8 +156,8 @@ export default function GratitudeGraffiti({ route, navigation }: any) {
           
           {partnerMessages.map((msg, index) => (
             <View key={`partner-${index}`} style={[styles.messageBubble, styles.partnerMessage]}>
-              <Typography variant="body" style={{ color: COLORS.textPrimary }}>{msg}</Typography>
-              <Typography variant="caption" style={{ color: COLORS.textHint, marginTop: SPACING.small, alignSelf: 'flex-end' }}>
+              <Typography variant="body" style={styles.messageText}>{msg}</Typography>
+              <Typography variant="caption" style={styles.messageAuthor}>
                 Partner
               </Typography>
             </View>
@@ -206,6 +206,12 @@ export default function GratitudeGraffiti({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: SPACING.xlarge,
+  },
   gradientContainer: {
     padding: SPACING.medium,
     borderRadius: BORDER_RADIUS.card,
@@ -237,6 +243,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.gradientStart,
     padding: SPACING.regular,
   },
+  addButtonText: {
+    textAlign: 'center',
+  },
   disabledButton: {
     backgroundColor: COLORS.textDisabled,
     opacity: 0.5,
@@ -258,6 +267,14 @@ const styles = StyleSheet.create({
     padding: SPACING.medium,
     marginVertical: SPACING.small,
     maxWidth: '80%',
+  },
+  messageText: {
+    color: COLORS.textPrimary,
+  },
+  messageAuthor: {
+    color: COLORS.textHint,
+    marginTop: SPACING.small,
+    alignSelf: 'flex-end',
   },
   myMessage: {
     alignSelf: 'flex-end',

@@ -44,7 +44,7 @@ export default function TouchMap({ navigation }: any) {
         </View>
 
         <GlassCard style={styles.card}>
-          <Typography variant="body" center style={{ marginBottom: SPACING.xlarge }}>
+          <Typography variant="body" center style={styles.instructionText}>
             Tap zones to set comfort level.
           </Typography>
           <View style={styles.legend}>
@@ -61,11 +61,11 @@ export default function TouchMap({ navigation }: any) {
             ))}
           </View>
 
-          <SquishyButton style={[styles.btn, { marginTop: SPACING.xxlarge }]}>
+          <SquishyButton style={[styles.btn, styles.syncButton]}>
              <Typography variant="h2" color={COLORS.textPrimary}>Sync with Partner</Typography>
           </SquishyButton>
 
-          <Typography variant="sass" center style={{ marginTop: SPACING.xxlarge }}>
+          <Typography variant="sass" center style={styles.hintText}>
              "They marked 'Chest' yellow... you green. Wanna unpack that?"
           </Typography>
         </GlassCard>
@@ -101,6 +101,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.borderSubtle,
   },
+  instructionText: {
+    marginBottom: SPACING.xlarge,
+  },
   legend: { 
     flexDirection: 'row', 
     gap: SPACING.xlarge, 
@@ -127,5 +130,11 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.large, 
     alignItems: 'center', 
     width: '100%',
+  },
+  syncButton: {
+    marginTop: SPACING.xxlarge,
+  },
+  hintText: {
+    marginTop: SPACING.xxlarge,
   },
 });

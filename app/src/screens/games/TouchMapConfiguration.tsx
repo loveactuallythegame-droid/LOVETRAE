@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
@@ -51,7 +51,7 @@ const TouchMapConfiguration = ({ navigation }: any) => {
                         <MaterialIcons name="arrow-back" size={24} color={COLORS.textPrimary} />
                     </SquishyButton>
                     <Typography variant="h1" style={styles.headerTitle}>Touch Map</Typography>
-                    <View style={{ width: 24 }} />
+                    <View style={styles.headerSpacer} />
                 </View>
 
                 <Typography variant="body" center style={styles.subtitle}>
@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
     },
+    headerSpacer: {
+        width: 24,
+    },
     subtitle: {
         color: COLORS.textSecondary,
         marginBottom: SPACING.xxlarge,
@@ -139,7 +142,7 @@ const styles = StyleSheet.create({
     head: {
         width: 80,
         height: 80,
-        borderRadius: 40,
+        borderRadius: BORDER_RADIUS.round,
         marginBottom: SPACING.tiny,
     },
     neck: {
@@ -166,7 +169,7 @@ const styles = StyleSheet.create({
         width: 120,
         height: 60,
         borderBottomWidth: 0,
-        borderRadius: 0,
+        borderRadius: BORDER_RADIUS.none,
     },
     stomach: {
         width: 110,
@@ -208,7 +211,7 @@ const styles = StyleSheet.create({
     legendColor: {
         width: 20,
         height: 20,
-        borderRadius: 10,
+        borderRadius: BORDER_RADIUS.small,
         marginRight: SPACING.small,
     },
     saveButton: {

@@ -46,15 +46,15 @@ export default function DenialDetector({ navigation }: any) {
           <GlassCard style={styles.card} padding="large">
             <Typography variant="h2" center>"Fine" Count: {count}</Typography>
             {count < 2 ? (
-              <Typography variant="body" center style={{ color: COLORS.success }}>
+              <Typography variant="body" center style={styles.successText}>
                 Low Denial! (+15 XP). You're actually expressing feelings.
               </Typography>
             ) : (
-              <Typography variant="body" center style={{ color: COLORS.error }}>
+              <Typography variant="body" center style={styles.errorText}>
                 Denial Champion. (-5 XP). You said 'fine' {count} times. You are not fine.
               </Typography>
             )}
-            <Typography variant="sass" center style={{ marginTop: SPACING.xlarge }}>
+            <Typography variant="sass" center style={styles.marcieText}>
                 Marcie: {count < 2 ? "Proud of you." : "Emotional Bottleneck unlocked. 🏆"}
             </Typography>
             <SquishyButton onPress={() => { setTranscript(''); setCount(null); }} style={[styles.btn, styles.tryAgainBtn]}>
@@ -68,6 +68,15 @@ export default function DenialDetector({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  successText: {
+    color: COLORS.success,
+  },
+  errorText: {
+    color: COLORS.error,
+  },
+  marcieText: {
+    marginTop: SPACING.xlarge,
+  },
   container: { 
     flex: 1,
     backgroundColor: COLORS.backgroundPrimary

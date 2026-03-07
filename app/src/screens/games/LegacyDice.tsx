@@ -33,19 +33,19 @@ export default function LegacyDice({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.container}>
       <GlassCard>
         {!rolled ? (
-            <View style={{ alignItems: 'center', padding: SPACING.large }}>
-                <Typography variant="h1" style={{ fontSize: TYPOGRAPHY.fontSize.displayLarge }}>🎲</Typography>
+            <View style={styles.diceContainer}>
+                <Typography variant="h1" style={styles.diceEmoji}>🎲</Typography>
                 <SquishyButton onPress={roll} style={styles.rollBtn}>
                   <Typography variant="h2">Roll Legacy Dice</Typography>
                 </SquishyButton>
             </View>
         ) : (
-            <View style={{ gap: SPACING.regular }}>
+            <View style={styles.promptContainer}>
                 <Typography variant="body">Big Question:</Typography>
-                <Typography variant="h2" style={{ color: COLORS.brightYellow, textAlign: 'center' }}>{prompt}</Typography>
+                <Typography variant="h2" style={styles.promptText}>{prompt}</Typography>
                 <TextInput
                     style={styles.input}
                     placeholder="Your thoughts..."
@@ -83,8 +83,25 @@ export default function LegacyDice({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: SPACING.regular,
+  },
+  diceContainer: {
+    alignItems: 'center',
+    padding: SPACING.large,
+  },
+  diceEmoji: {
+    fontSize: TYPOGRAPHY.fontSize.displayLarge,
+  },
   rollBtn: { 
     marginTop: SPACING.large,
+  },
+  promptContainer: {
+    gap: SPACING.regular,
+  },
+  promptText: {
+    color: COLORS.brightYellow,
+    textAlign: 'center',
   },
   input: { 
     backgroundColor: COLORS.backgroundInput, 

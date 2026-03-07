@@ -66,7 +66,7 @@ export default function BPDPatternDetective({ route, navigation }: any) {
     const current = CASES[step];
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.small }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
                 {/* Dr. Marcie Section */}
                 <View style={styles.drMarcieSection}>
@@ -82,7 +82,7 @@ export default function BPDPatternDetective({ route, navigation }: any) {
                 <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
 
                 <Typography variant="h2">Case File 1</Typography>
-                <Typography variant="body" style={{ marginBottom: SPACING.regular }}>{current.scenario}</Typography>
+                <Typography variant="body" style={styles.scenarioText}>{current.scenario}</Typography>
 
                 <Typography variant="instructions">Map the clues to the cycle:</Typography>
                 <View style={styles.grid}>
@@ -98,7 +98,7 @@ export default function BPDPatternDetective({ route, navigation }: any) {
                 </View>
 
                 <SquishyButton onPress={checkCase} style={styles.submitBtn}>
-                    <Typography variant="button" style={{ color: COLORS.textPrimary }}>Submit Analysis</Typography>
+                    <Typography variant="button" style={styles.submitButtonText}>Submit Analysis</Typography>
                 </SquishyButton>
             </GlassCard>
         </ScrollView>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
@@ -65,12 +64,12 @@ const RoleSwapRoastArGame = () => {
                         <MaterialIcons name={isRecording ? 'stop' : 'radio-button-checked'} size={40} color={COLORS.textPrimary} />
                     </SquishyButton>
                     <View style={styles.actionsContainer}>
-                        <TouchableOpacity style={styles.actionButton}>
+                        <SquishyButton onPress={() => {}} style={styles.actionButton}>
                             <MaterialIcons name="face-retouching-natural" size={24} color={COLORS.textPrimary} />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.actionButton}>
+                        </SquishyButton>
+                        <SquishyButton onPress={() => {}} style={styles.actionButton}>
                             <MaterialIcons name="share" size={24} color={COLORS.textPrimary} />
-                        </TouchableOpacity>
+                        </SquishyButton>
                     </View>
                 </View>
             </View>

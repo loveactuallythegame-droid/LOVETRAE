@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -26,14 +26,14 @@ export default function EmpathyEcho({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.gapContainer}>
       <GlassCard>
-        <Text variant="h2" center style={styles.gameTitle}>The Love Arcade</Text>
-        <Text variant="h3" center style={styles.subtitle}>+100 Games to Deepen Connection</Text>
+        <Typography variant="h2" center style={styles.gameTitle}>The Love Arcade</Typography>
+        <Typography variant="h3" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
         
-        <Text variant="h3" style={{ marginTop: SPACING.large }}>Partner's Worry</Text>
-        <Text variant="sass" style={styles.worry}>"{WORRY}"</Text>
-        <Text variant="instructions">Respond with validation ONLY (no fixing):</Text>
+        <Typography variant="h3" style={styles.sectionTitle}>Partner's Worry</Typography>
+        <Typography variant="h3" style={styles.worry}>"{WORRY}"</Typography>
+        <Typography variant="body">Respond with validation ONLY (no fixing):</Typography>
         <TextInput
             style={styles.input}
             placeholder="That sounds really hard..."
@@ -43,7 +43,7 @@ export default function EmpathyEcho({ route, navigation }: any) {
             multiline
         />
         <SquishyButton onPress={check} style={styles.btn}>
-            <Text variant="button">Send Echo</Text>
+            <Typography variant="button">Send Echo</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -65,6 +65,12 @@ export default function EmpathyEcho({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  gapContainer: {
+    gap: SPACING.regular,
+  },
+  sectionTitle: {
+    marginTop: SPACING.large,
+  },
   gameTitle: {
     marginBottom: SPACING.small,
   },

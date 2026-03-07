@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenLayout, Typography, GlassCard } from '../../components/ui';
+import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 // Placeholder for Lottie Animation
@@ -25,16 +25,16 @@ const BingoTile = ({ icon, text, isActive, isFree, onPress }: { icon: string, te
                 style={[styles.bingoTile, styles.freeSpace]}
             >
                 <Typography variant="h3" center>💖</Typography>
-                <Typography variant="caption" center style={{ color: COLORS.textPrimary }}>Free Love</Typography>
+                <Typography variant="caption" center style={styles.freeSpaceText}>Free Love</Typography>
             </LinearGradient>
         );
     }
 
     return (
-        <TouchableOpacity style={[styles.bingoTile, isActive && styles.activeTile]} onPress={onPress}>
+        <SquishyButton style={[styles.bingoTile, isActive && styles.activeTile]} onPress={onPress}>
             <Typography variant="h3" center>{icon}</Typography>
-            <Typography variant="caption" center style={{ color: COLORS.textPrimary }}>{text}</Typography>
-        </TouchableOpacity>
+            <Typography variant="caption" center style={styles.tileText}>{text}</Typography>
+        </SquishyButton>
     );
 };
 
@@ -90,12 +90,12 @@ const BedroomBingoCardScreen = () => {
                     end={{ x: 1, y: 1 }}
                     style={styles.progressContainer}
                 >
-                    <Typography variant="h3" style={{ color: COLORS.textPrimary }}>Current Progress</Typography>
-                    <Typography variant="body" style={{ color: COLORS.textSecondary }}>You're making beautiful memories together</Typography>
+                    <Typography variant="h3" style={styles.progressTitle}>Current Progress</Typography>
+                    <Typography variant="body" style={styles.progressSubtitle}>You're making beautiful memories together</Typography>
                     <View style={styles.progressBar}>
-                        <LinearGradient colors={GRADIENTS.primary.colors} style={{width: `${completedPercentage}%`, height: '100%'}} />
+                        <LinearGradient colors={GRADIENTS.primary.colors} style={[styles.progressFill, {width: `${completedPercentage}%`}]} />
                     </View>
-                    <Typography variant="caption" style={{ color: COLORS.textSecondary }}>{activeTiles.filter(Boolean).length} / 25 Completed</Typography>
+                    <Typography variant="caption" style={styles.progressCount}>{activeTiles.filter(Boolean).length} / 25 Completed</Typography>
                 </LinearGradient>
             </ScrollView>
         </ScreenLayout>
@@ -204,6 +204,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.borderSubtle,
         marginVertical: SPACING.regular,
+    },
+    progressFill: {
+        height: '100%',
     },
 });
 

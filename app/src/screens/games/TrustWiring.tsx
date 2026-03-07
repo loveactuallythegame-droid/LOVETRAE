@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout } from '../../components/ui';
 import { GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
@@ -67,7 +66,7 @@ export default function TrustWiring({ route, navigation }: any) {
     const current = CHALLENGES[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
             <GlassCard>
                 <Typography variant="h1" center style={styles.gameTitle}>
                     The Love Arcade
@@ -76,12 +75,12 @@ export default function TrustWiring({ route, navigation }: any) {
                     +100 Games to Deepen Connection
                 </Typography>
 
-                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                <Typography variant="h3" style={styles.challengeTitle}>
                     Challenge {round + 1}
                 </Typography>
 
                 <View style={styles.console}>
-                    <Typography variant="keyword" style={{ color: COLORS.brightYellow }}>
+                    <Typography variant="keyword" style={styles.alarmText}>
                         ALARM: {current.alarm}
                     </Typography>
                     <Typography variant="body">
@@ -89,7 +88,7 @@ export default function TrustWiring({ route, navigation }: any) {
                     </Typography>
                 </View>
 
-                <Typography variant="instructions" style={{ marginBottom: SPACING.regular }}>
+                <Typography variant="instructions" style={styles.instructions}>
                     Partner A, select tool:
                 </Typography>
                 <View style={styles.tools}>
@@ -124,11 +123,17 @@ export default function TrustWiring({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollContent: {
+        gap: SPACING.regular,
+    },
     gameTitle: {
         marginBottom: SPACING.small
     },
     subtitle: {
         marginBottom: SPACING.xlarge
+    },
+    challengeTitle: {
+        marginBottom: SPACING.regular,
     },
     console: {
         backgroundColor: COLORS.backgroundPrimary,
@@ -137,6 +142,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.brightYellow,
         marginBottom: SPACING.xlarge
+    },
+    alarmText: {
+        color: COLORS.brightYellow,
+    },
+    instructions: {
+        marginBottom: SPACING.regular,
     },
     tools: { 
         gap: SPACING.regular 

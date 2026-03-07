@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
@@ -86,21 +85,21 @@ export default function SecrecyAudit({ route, navigation }: any) {
       <GlassCard>
         {index < QUESTIONS.length ? (
             <>
-                <Typography variant="h2" center style={{ marginBottom: SPACING.xlarge }}>{QUESTIONS[index].text}</Typography>
-                <View style={{ flexDirection: 'row', gap: SPACING.large, justifyContent: 'center' }}>
-                    <SquishyButton onPress={() => answer(true)} style={[styles.btn, { backgroundColor: COLORS.success }]}>
+                <Typography variant="h2" center style={styles.questionText}>{QUESTIONS[index].text}</Typography>
+                <View style={styles.buttonRow}>
+                    <SquishyButton onPress={() => answer(true)} style={styles.yesBtn}>
                         <Typography variant="h2">YES</Typography>
                     </SquishyButton>
-                    <SquishyButton onPress={() => answer(false)} style={[styles.btn, { backgroundColor: COLORS.error }]}>
+                    <SquishyButton onPress={() => answer(false)} style={styles.noBtn}>
                         <Typography variant="h2">NO</Typography>
                     </SquishyButton>
                 </View>
-                <Typography variant="caption" center style={{ marginTop: SPACING.regular }}>Question {index + 1} / {QUESTIONS.length}</Typography>
+                <Typography variant="caption" center style={styles.progressText}>Question {index + 1} / {QUESTIONS.length}</Typography>
             </>
         ) : (
-            <View style={{ alignItems: 'center' }}>
+            <View style={styles.completeContainer}>
                 <Typography variant="h2">Audit Complete</Typography>
-                <Typography variant="body" style={{ marginTop: SPACING.regular }}>Transparency Score: {transparencyScore}%</Typography>
+                <Typography variant="body" style={styles.scoreText}>Transparency Score: {transparencyScore}%</Typography>
             </View>
         )}
       </GlassCard>
@@ -122,4 +121,37 @@ const styles = StyleSheet.create({
     minWidth: 100, 
     alignItems: 'center' 
   },
+  questionText: {
+    marginBottom: SPACING.xlarge
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: SPACING.large,
+    justifyContent: 'center'
+  },
+  yesBtn: {
+    paddingHorizontal: SPACING.xlarge,
+    paddingVertical: SPACING.large,
+    borderRadius: BORDER_RADIUS.xlarge,
+    minWidth: 100,
+    alignItems: 'center',
+    backgroundColor: COLORS.success
+  },
+  noBtn: {
+    paddingHorizontal: SPACING.xlarge,
+    paddingVertical: SPACING.large,
+    borderRadius: BORDER_RADIUS.xlarge,
+    minWidth: 100,
+    alignItems: 'center',
+    backgroundColor: COLORS.error
+  },
+  progressText: {
+    marginTop: SPACING.regular
+  },
+  completeContainer: {
+    alignItems: 'center'
+  },
+  scoreText: {
+    marginTop: SPACING.regular
+  }
 });

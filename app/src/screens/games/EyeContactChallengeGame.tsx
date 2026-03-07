@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenLayout, GlassCard, Text } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const StatDisplay = ({ label, value, color }: { label: string, value: string, color?: string }) => (
     <View>
-        <Text variant="caption">{label}</Text>
-        <Text variant="h3" style={color ? { color } : {}}>{value}</Text>
+        <Typography variant="caption">{label}</Typography>
+        <Typography variant="h3" style={color ? { color } : {}}>{value}</Typography>
     </View>
 );
 
@@ -20,25 +20,25 @@ const EyeContactChallengeGameScreen = () => {
             <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background} />
 
             <View style={styles.header}>
-                <Text variant="h1" center>The Love Arcade</Text>
-                <Text variant="h2" center>+100 Games to Deepen Connection</Text>
+                <Typography variant="h1" center>The Love Arcade</Typography>
+                <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
             </View>
 
             <View style={styles.videoFeedsContainer}>
                 <ImageBackground source={player1Img} style={styles.videoFeed} imageStyle={styles.videoImage}>
                     <GlassCard style={styles.playerNameCard}>
-                        <Text variant="caption">PLAYER 1: ALEX</Text>
+                        <Typography variant="caption">PLAYER 1: ALEX</Typography>
                     </GlassCard>
                 </ImageBackground>
 
                 <GlassCard style={styles.timerContainer}>
-                    <Text variant="h1" style={{ color: COLORS.error }}>00:48</Text>
-                    <Text variant="caption" style={styles.timerLabel}>Don't Look Away</Text>
+                    <Typography variant="h1" style={styles.timerText}>00:48</Typography>
+                    <Typography variant="caption" style={styles.timerLabel}>Don't Look Away</Typography>
                 </GlassCard>
 
                 <ImageBackground source={player2Img} style={styles.videoFeed} imageStyle={styles.videoImage}>
                     <GlassCard style={styles.playerNameCard}>
-                        <Text variant="caption">PLAYER 2: SAM</Text>
+                        <Typography variant="caption">PLAYER 2: SAM</Typography>
                     </GlassCard>
                 </ImageBackground>
             </View>
@@ -92,6 +92,9 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         borderWidth: 1, 
         borderColor: COLORS.borderSubtle
+    },
+    timerText: {
+        color: COLORS.error
     },
     timerLabel: { 
         marginTop: SPACING.small, 

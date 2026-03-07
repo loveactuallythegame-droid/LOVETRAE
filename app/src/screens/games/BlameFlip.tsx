@@ -44,7 +44,7 @@ export default function BlameFlip({ navigation }: any) {
 
           <GlassCard style={styles.card}>
             <Typography variant="h2" center>Fix the Sentence</Typography>
-            <Typography variant="body" center style={{ marginBottom: SPACING.regular }}>
+            <Typography variant="body" center style={styles.instructionText}>
               Change "You make me feel..." to an "I" statement.
             </Typography>
 
@@ -58,12 +58,12 @@ export default function BlameFlip({ navigation }: any) {
 
             {!success ? (
               <SquishyButton onPress={swapToI} style={styles.btn}>
-                <Typography variant="button" style={{ color: COLORS.textPrimary }}>Flip It</Typography>
+                <Typography variant="button" style={styles.buttonText}>Flip It</Typography>
               </SquishyButton>
             ) : (
-               <View style={{ marginTop: SPACING.regular }}>
-                 <Typography variant="h2" center style={{ color: COLORS.mintGreen }}>Nice Flip! (+10 XP)</Typography>
-                 <Typography variant="body" center style={{ marginTop: SPACING.small }}>
+               <View style={styles.successContainer}>
+                 <Typography variant="h2" center style={styles.successText}>Nice Flip! (+10 XP)</Typography>
+                 <Typography variant="body" center style={styles.feedbackText}>
                    Marcie: "'You never listen' → 'I feel unheard when…'—YES. Now say it without an eye roll."
                  </Typography>
                </View>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -151,7 +151,7 @@ export default function DefensivenessDetox({ route, navigation }: any) {
   const currentScenario = DEFENSIVENESS_SCENARIOS[currentScenarioIndex];
 
   const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: SPACING.xlarge }} showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
       {!gameCompleted ? (
         <GlassCard padding="large">
           <LinearGradient
@@ -175,7 +175,7 @@ export default function DefensivenessDetox({ route, navigation }: any) {
 
             <View style={styles.responsesContainer}>
               {currentScenario.responses.map((response) => (
-                <TouchableOpacity
+                <SquishyButton
                   key={response.id}
                   style={[
                     styles.responseOption,
@@ -196,18 +196,15 @@ export default function DefensivenessDetox({ route, navigation }: any) {
                   >
                     <Typography
                       variant="body"
-                      style={{
-                        color:
-                          selectedResponse === response.id
-                            ? COLORS.backgroundPrimary
-                            : COLORS.textPrimary,
-                        lineHeight: 20
-                      }}
+                      style={[
+                        styles.responseText,
+                        selectedResponse === response.id && styles.responseTextSelected
+                      ]}
                     >
                       {response.text}
                     </Typography>
                   </LinearGradient>
-                </TouchableOpacity>
+                </SquishyButton>
               ))}
             </View>
 
@@ -215,27 +212,28 @@ export default function DefensivenessDetox({ route, navigation }: any) {
               <View style={styles.feedbackContainer}>
                 <Typography 
                   variant="sass" 
-                  style={{
-                    color: selectedResponse && 
-                           currentScenario.responses.find(r => r.id === selectedResponse)?.defensive 
-                           ? COLORS.warning 
-                           : COLORS.success
-                  }}
+                  style={[
+                  styles.feedbackText,
+                  selectedResponse && 
+                    currentScenario.responses.find(r => r.id === selectedResponse)?.defensive 
+                      ? styles.feedbackTextWarning 
+                      : styles.feedbackTextSuccess
+                ]}
                 >
                   {feedback}
                 </Typography>
               </View>
             )}
 
-            <TouchableOpacity 
+            <SquishyButton 
               style={styles.nextButton} 
               onPress={nextScenario}
               disabled={selectedResponse === null}
             >
               <LinearGradient
                 colors={[
-                  selectedResponse ? GRADIENTS.primary.colors[0] : '#666',
-                  selectedResponse ? GRADIENTS.primary.colors[1] : '#666'
+                  selectedResponse ? GRADIENTS.primary.colors[0] : COLORS.textHint,
+                  selectedResponse ? GRADIENTS.primary.colors[1] : COLORS.textHint
                 ]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
@@ -243,15 +241,15 @@ export default function DefensivenessDetox({ route, navigation }: any) {
               >
                 <Typography 
                   variant="h3" 
-                  style={{ 
-                    color: selectedResponse ? COLORS.backgroundPrimary : COLORS.textHint,
-                    textAlign: 'center'
-                  }}
+                  style={[
+                    styles.nextButtonText,
+                    selectedResponse ? styles.nextButtonTextActive : styles.nextButtonTextDisabled
+                  ]}
                 >
                   {currentScenarioIndex === DEFENSIVENESS_SCENARIOS.length - 1 ? 'Finish Game' : 'Next Scenario'}
                 </Typography>
               </LinearGradient>
-            </TouchableOpacity>
+            </SquishyButton>
           </LinearGradient>
         </GlassCard>
       ) : (
@@ -262,18 +260,18 @@ export default function DefensivenessDetox({ route, navigation }: any) {
             end={{ x: 1, y: 1 }}
             style={styles.gradientContainer}
           >
-            <Typography variant="h1" center style={{ color: COLORS.success, marginBottom: SPACING.regular }}>
+            <Typography variant="h1" center style={styles.completeTitle}>
               Game Complete!
             </Typography>
-            <Typography variant="body" center style={{ marginBottom: SPACING.xlarge }}>
+            <Typography variant="body" center style={styles.completeScore}>
               Your final score: {score}
             </Typography>
-            <Typography variant="body" center style={{ marginBottom: SPACING.xlarge }}>
+            <Typography variant="body" center style={styles.completeScore}>
               {score > 50 
                 ? "Great job recognizing defensive patterns and choosing constructive responses!" 
                 : "Remember, recognizing defensiveness is the first step to changing the pattern."}
             </Typography>
-            <TouchableOpacity 
+            <SquishyButton 
               style={styles.finishButton} 
               onPress={() => {
                 if (sessionId) {
@@ -296,12 +294,12 @@ export default function DefensivenessDetox({ route, navigation }: any) {
                 <Typography 
                   variant="h3" 
                   center
-                  style={{ color: COLORS.backgroundPrimary }}
+                  style={styles.returnButtonText}
                 >
                   Return to Menu
                 </Typography>
               </LinearGradient>
-            </TouchableOpacity>
+            </SquishyButton>
           </LinearGradient>
         </GlassCard>
       )}
@@ -310,18 +308,13 @@ export default function DefensivenessDetox({ route, navigation }: any) {
         <GlassCard style={styles.partnerCard} padding="medium">
           <Typography 
             variant="sass" 
-            style={{ 
-              color: COLORS.aquaTeal, 
-              marginBottom: SPACING.small 
-            }}
+            style={styles.partnerChoiceLabel}
           >
             Partner's Choice:
           </Typography>
           <Typography 
             variant="body" 
-            style={{ 
-              color: COLORS.textSecondary 
-            }}
+            style={styles.partnerChoiceText}
           >
             {partnerResponse}
           </Typography>
@@ -371,6 +364,51 @@ export default function DefensivenessDetox({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: SPACING.xlarge,
+  },
+  responseText: {
+    color: COLORS.textPrimary,
+    lineHeight: 20,
+  },
+  responseTextSelected: {
+    color: COLORS.backgroundPrimary,
+  },
+  feedbackText: {
+    lineHeight: 20,
+  },
+  feedbackTextWarning: {
+    color: COLORS.warning,
+  },
+  feedbackTextSuccess: {
+    color: COLORS.success,
+  },
+  nextButtonText: {
+    textAlign: 'center',
+  },
+  nextButtonTextActive: {
+    color: COLORS.backgroundPrimary,
+  },
+  nextButtonTextDisabled: {
+    color: COLORS.textHint,
+  },
+  completeTitle: {
+    color: COLORS.success,
+    marginBottom: SPACING.regular,
+  },
+  completeScore: {
+    marginBottom: SPACING.xlarge,
+  },
+  partnerChoiceLabel: {
+    color: COLORS.aquaTeal,
+    marginBottom: SPACING.small,
+  },
+  partnerChoiceText: {
+    color: COLORS.textSecondary,
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS.backgroundPrimary,
@@ -433,5 +471,8 @@ const styles = StyleSheet.create({
   },
   partnerCard: {
     marginTop: SPACING.regular,
+  },
+  returnButtonText: {
+    color: COLORS.backgroundPrimary,
   },
 });

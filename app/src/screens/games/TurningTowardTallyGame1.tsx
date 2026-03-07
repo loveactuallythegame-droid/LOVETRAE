@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -38,7 +37,7 @@ const recentBids = [
 
 const BidRow = ({ bid }: { bid: typeof recentBids[0] }) => (
     <View style={styles.bidRow}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+        <View style={styles.bidRowContent}>
             <View style={styles.bidIconContainer}>
                 <MaterialIcons name={bid.icon} size={24} color={COLORS.vibrantPink} />
             </View>
@@ -48,7 +47,7 @@ const BidRow = ({ bid }: { bid: typeof recentBids[0] }) => (
             </View>
         </View>
         <View style={[styles.statusContainer, bid.status === 'Turned Toward' ? styles.statusToward : styles.statusAway]}>
-            <Typography variant="caption" style={{ color: bid.status === 'Turned Toward' ? COLORS.success : COLORS.error }}>{bid.status.toUpperCase()}</Typography>
+            <Typography variant="caption" style={bid.status === 'Turned Toward' ? styles.statusTextToward : styles.statusTextAway}>{bid.status.toUpperCase()}</Typography>
         </View>
     </View>
 );
@@ -57,7 +56,7 @@ const TurningTowardTallyGame1 = () => {
     return (
         <ScreenLayout showHeader={true} scrollable={true}>
             <Typography variant="h1" center>Turning Toward Tally</Typography>
-            <Typography variant="h2" center style={{ marginBottom: SPACING.xlarge }}>Bid Responsiveness Scorecard</Typography>
+            <Typography variant="h2" center style={styles.subtitle}>Bid Responsiveness Scorecard</Typography>
 
             <View style={styles.statsGrid}>
                 <GlassCard style={styles.statBox}>
@@ -75,7 +74,7 @@ const TurningTowardTallyGame1 = () => {
             </View>
 
             <GlassCard style={styles.bidsTable}>
-                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>Recent Bid Activity</Typography>
+                <Typography variant="h3" style={styles.bidsTableTitle}>Recent Bid Activity</Typography>
                 <View>
                     {recentBids.map((bid, index) => <BidRow key={index} bid={bid} />)}
                 </View>
@@ -89,6 +88,9 @@ const TurningTowardTallyGame1 = () => {
 };
 
 const styles = StyleSheet.create({
+    subtitle: {
+        marginBottom: SPACING.xlarge,
+    },
     statsGrid: { 
         flexDirection: 'row', 
         justifyContent: 'space-around', 
@@ -102,6 +104,9 @@ const styles = StyleSheet.create({
     bidsTable: { 
         marginBottom: SPACING.xlarge 
     },
+    bidsTableTitle: {
+        marginBottom: SPACING.regular,
+    },
     bidRow: { 
         flexDirection: 'row', 
         alignItems: 'center', 
@@ -109,6 +114,11 @@ const styles = StyleSheet.create({
         padding: SPACING.regular, 
         borderBottomWidth: 1, 
         borderBottomColor: COLORS.divider 
+    },
+    bidRowContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
     },
     bidIconContainer: { 
         width: 40, 
@@ -133,6 +143,12 @@ const styles = StyleSheet.create({
         backgroundColor: `${COLORS.error}20`, 
         borderWidth: 1, 
         borderColor: `${COLORS.error}50` 
+    },
+    statusTextToward: {
+        color: COLORS.success,
+    },
+    statusTextAway: {
+        color: COLORS.error,
     },
     primaryButton: { 
         backgroundColor: COLORS.vibrantPink, 

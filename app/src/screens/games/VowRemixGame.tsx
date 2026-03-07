@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
@@ -18,7 +17,7 @@ const VowRemixGame = () => {
             </View>
 
             <GlassCard style={styles.card}>
-                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>I vow to...</Typography>
+                <Typography variant="h3" style={styles.vowTitle}>I vow to...</Typography>
                 <TextInput
                     style={styles.textInput}
                     multiline
@@ -32,7 +31,7 @@ const VowRemixGame = () => {
             <View style={styles.sliderContainer}>
                 <Typography variant="label">Clarity: {clarity.toFixed(1)}</Typography>
                 <Slider
-                    style={{ width: '100%', height: 40 }}
+                    style={styles.slider}
                     minimumValue={1}
                     maximumValue={10}
                     step={0.1}
@@ -46,7 +45,7 @@ const VowRemixGame = () => {
 
             <SquishyButton onPress={() => {}} style={styles.submitButton}>
                 <MaterialIcons name="send" size={24} color={COLORS.textPrimary} />
-                <Typography variant="button" style={{ marginLeft: SPACING.small }}>Submit Vow</Typography>
+                <Typography variant="button" style={styles.buttonText}>Submit Vow</Typography>
             </SquishyButton>
         </ScreenLayout>
     );
@@ -89,6 +88,16 @@ const styles = StyleSheet.create({
         borderRadius: BORDER_RADIUS.button, 
         alignItems: 'center', 
         justifyContent: 'center' 
+    },
+    vowTitle: {
+        marginBottom: SPACING.regular,
+    },
+    slider: {
+        width: '100%',
+        height: 40,
+    },
+    buttonText: {
+        marginLeft: SPACING.small,
     },
 });
 

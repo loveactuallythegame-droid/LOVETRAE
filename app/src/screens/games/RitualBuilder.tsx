@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -49,7 +48,10 @@ export default function RitualBuilder({ route, navigation }: any) {
               size="small"
               style={styles.item}
             >
-              <Typography variant="button" style={{ color: selected.includes(ing) ? COLORS.backgroundPrimary : COLORS.textPrimary }}>
+              <Typography 
+                variant="button" 
+                style={selected.includes(ing) ? styles.selectedIngredientText : styles.unselectedIngredientText}
+              >
                 {ing}
               </Typography>
             </SquishyButton>
@@ -105,6 +107,12 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.round,
     borderWidth: 1, 
     borderColor: COLORS.borderSubtle,
+  },
+  selectedIngredientText: {
+    color: COLORS.backgroundPrimary,
+  },
+  unselectedIngredientText: {
+    color: COLORS.textPrimary,
   },
   selectedText: {
     marginTop: SPACING.xlarge,

@@ -11,7 +11,7 @@ export default function TheIcebergDive({ navigation }: any) {
 
   return (
     <ScreenLayout showHeader={true} scrollable={true}>
-      <View style={{ gap: SPACING.regular }}>
+      <View style={styles.container}>
         <Typography variant="h1" center>The Love Arcade</Typography>
         <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
 
@@ -23,12 +23,12 @@ export default function TheIcebergDive({ navigation }: any) {
         </View>
 
         <GlassCard>
-          <Typography variant="body" style={{ marginBottom: SPACING.regular }}>Type: Nested dropdown</Typography>
+          <Typography variant="body" style={styles.typeText}>Type: Nested dropdown</Typography>
           <Typography variant="body">Mechanics: Surface ("I'm annoyed") → drill down → "Fear of invisibility" → unlock "Core Need" badge.</Typography>
         </GlassCard>
 
         <GlassCard>
-          <Typography variant="body" style={{ marginBottom: SPACING.regular }}>Scoring</Typography>
+          <Typography variant="body" style={styles.scoringTitle}>Scoring</Typography>
           <Typography variant="body">
             Reached core = +25{'\n'}
             Shared with partner = +10
@@ -46,6 +46,9 @@ export default function TheIcebergDive({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: SPACING.regular,
+  },
   header: { 
     flexDirection: 'row', 
     alignItems: 'center', 
@@ -53,6 +56,12 @@ const styles = StyleSheet.create({
   },
   title: { 
     flex: 1,
+  },
+  typeText: {
+    marginBottom: SPACING.regular,
+  },
+  scoringTitle: {
+    marginBottom: SPACING.regular,
   },
   actionArea: { 
     marginTop: SPACING.xlarge, 

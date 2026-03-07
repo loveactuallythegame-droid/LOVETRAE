@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
 import { View, StyleSheet, Alert, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton, ScreenLayout } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
 import { supabase, createGameSession, updateGameSession } from '../../lib/supabase';
@@ -54,7 +54,7 @@ export default function ConflictDice({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputArea}>
       <GlassCard>
         {/* Dr. Marcie Section */}
         <View style={styles.drMarcieSection}>
@@ -62,13 +62,13 @@ export default function ConflictDice({ route, navigation }: any) {
             <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
           </View>
           <View style={styles.quoteBox}>
-            <Text variant="sass">Practice conflict resolution with random scenarios! Constraints make communication more creative.</Text>
+            <Typography variant="sass">Practice conflict resolution with random scenarios! Constraints make communication more creative.</Typography>
           </View>
         </View>
 
         {!rolled ? (
-          <View style={{ alignItems: 'center', padding: SPACING.xlarge }}>
-            <Text variant="h1" style={{ fontSize: TYPOGRAPHY.fontSize.displayLarge }}>🎲</Text>
+          <View style={styles.rollContainer}>
+            <Typography variant="h1" style={styles.diceEmoji}>🎲</Typography>
             <SquishyButton onPress={roll} style={styles.rollBtn}>
               <LinearGradient
                 colors={GRADIENTS.primary.colors}
@@ -76,19 +76,19 @@ export default function ConflictDice({ route, navigation }: any) {
                 end={GRADIENTS.primary.end}
                 style={styles.gradientButton}
               >
-                <Text variant="h2" style={{ color: COLORS.textPrimary }}>Roll Dice</Text>
+                <Typography variant="h2" style={styles.rollButtonText}>Roll Dice</Typography>
               </LinearGradient>
             </SquishyButton>
           </View>
         ) : (
-          <View style={{ gap: SPACING.regular }}>
+          <View style={styles.resultContainer}>
             <View>
-              <Text variant="body">Scenario:</Text>
-              <Text variant="h2" style={{ color: COLORS.vibrantPink }}>{scenario}</Text>
+              <Typography variant="body">Scenario:</Typography>
+              <Typography variant="h2" style={styles.scenarioText}>{scenario}</Typography>
             </View>
             <View>
-              <Text variant="body">Constraint:</Text>
-              <Text variant="h2" style={{ color: COLORS.mintGreen }}>{constraint}</Text>
+              <Typography variant="body">Constraint:</Typography>
+              <Typography variant="h2" style={styles.constraintText}>{constraint}</Typography>
             </View>
             <SquishyButton onPress={finish} style={styles.doneBtn}>
               <LinearGradient
@@ -97,7 +97,7 @@ export default function ConflictDice({ route, navigation }: any) {
                 end={GRADIENTS.primary.end}
                 style={styles.gradientButton}
               >
-                <Text variant="h2" style={{ color: COLORS.textPrimary }}>We Did It</Text>
+                <Typography variant="h2" style={styles.doneButtonText}>We Did It</Typography>
               </LinearGradient>
             </SquishyButton>
           </View>
@@ -172,5 +172,31 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backgroundInput,
     borderRadius: BORDER_RADIUS.large,
     padding: SPACING.regular,
+  },
+},
+  inputArea: {
+    gap: SPACING.regular,
+  },
+  rollContainer: {
+    alignItems: 'center',
+    padding: SPACING.xlarge,
+  },
+  diceEmoji: {
+    fontSize: TYPOGRAPHY.fontSize.displayLarge,
+  },
+  rollButtonText: {
+    color: COLORS.textPrimary,
+  },
+  resultContainer: {
+    gap: SPACING.regular,
+  },
+  scenarioText: {
+    color: COLORS.vibrantPink,
+  },
+  constraintText: {
+    color: COLORS.mintGreen,
+  },
+  doneButtonText: {
+    color: COLORS.textPrimary,
   },
 });

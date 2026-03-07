@@ -74,20 +74,20 @@ export default function AvoidanceArcade({ navigation }: any) {
 
           <GlassCard style={styles.scoreboard}>
             <Typography variant="h2">Score: {score}</Typography>
-            <Typography variant="h2" style={{ color: timeLeft < 10 ? COLORS.error : COLORS.success }}>{timeLeft}s</Typography>
+            <Typography variant="h2" style={timeLeft < 10 ? styles.timerTextUrgent : styles.timerTextNormal}>{timeLeft}s</Typography>
           </GlassCard>
 
           {!active ? (
-            <GlassCard style={{ padding: SPACING.regular, alignItems: 'center', gap: SPACING.regular }}>
+            <GlassCard style={styles.instructionCard}>
               <Typography variant="h2">Whac-A-Mole: Avoidance Edition</Typography>
               <Typography variant="body" center>
                 Tap the avoidance phrases before they disappear!
               </Typography>
               <SquishyButton onPress={startGame} style={styles.btn}>
-                <Typography variant="button" style={{ color: COLORS.textPrimary }}>Start</Typography>
+                <Typography variant="button" style={styles.buttonText}>Start</Typography>
               </SquishyButton>
               {timeLeft === 0 && (
-                  <Typography variant="body" style={{ marginTop: SPACING.regular, fontStyle: 'italic', color: COLORS.error }}>
+                  <Typography variant="body" style={styles.gameOverText}>
                       Marcie: "Game over. Don't avoid real life now."
                   </Typography>
               )}

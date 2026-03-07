@@ -35,12 +35,12 @@ export default function DreamDecoder({ route, navigation }: any) {
   const options = DREAMS.map(d => d.dream).sort(() => Math.random() - 0.5);
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.gapContainer}>
       <GlassCard padding="large">
         <Typography variant="h2">Surface Conflict</Typography>
         <Typography variant="sass" style={styles.conflict}>"{DREAMS[index].conflict}"</Typography>
         <Typography variant="body">What is the underlying dream?</Typography>
-        <View style={{ gap: SPACING.small, marginTop: SPACING.small }}>
+        <View style={styles.optionsContainer}>
           {options.map((opt, i) => (
             <SquishyButton key={i} onPress={() => guess(opt)} style={styles.btn} variant="ghost">
               <Typography variant="body">{opt}</Typography>
@@ -71,6 +71,13 @@ export default function DreamDecoder({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  gapContainer: {
+    gap: SPACING.regular,
+  },
+  optionsContainer: {
+    gap: SPACING.small,
+    marginTop: SPACING.small,
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS.backgroundPrimary,

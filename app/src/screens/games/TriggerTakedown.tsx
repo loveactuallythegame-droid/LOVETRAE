@@ -35,10 +35,10 @@ export default function TriggerTakedown({ navigation }: any) {
                         </Typography>
 
                         <GlassCard style={styles.card}>
-                            <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                            <Typography variant="h3" style={styles.cardTitle}>
                                 Trigger Takedown (AR)
                             </Typography>
-                            <Typography variant="instructions" style={{ marginBottom: SPACING.regular }}>
+                            <Typography variant="instructions" style={styles.cardInstruction}>
                                 Type: Async AR interaction
                             </Typography>
                             <Typography variant="body">
@@ -47,7 +47,7 @@ export default function TriggerTakedown({ navigation }: any) {
                         </GlassCard>
 
                         <GlassCard style={styles.card}>
-                            <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                            <Typography variant="h3" style={styles.cardTitle}>
                                 Scoring
                             </Typography>
                             <Typography variant="body">
@@ -98,6 +98,12 @@ const styles = StyleSheet.create({
     },
     card: { 
         padding: SPACING.xlarge 
+    },
+    cardTitle: {
+        marginBottom: SPACING.regular,
+    },
+    cardInstruction: {
+        marginBottom: SPACING.regular,
     },
     actionArea: { 
         marginTop: SPACING.xxlarge, 

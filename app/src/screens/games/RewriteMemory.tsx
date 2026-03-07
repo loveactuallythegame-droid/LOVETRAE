@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 
 export default function RewriteMemory({ navigation }: any) {

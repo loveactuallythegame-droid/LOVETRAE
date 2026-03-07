@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { ScreenLayout } from '../../components/ui';
 import { Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
@@ -147,7 +146,7 @@ export default function TruthOrTrust({ route, navigation }: any) {
     const responseColor = currentQuestion?.type === 'truth' ? COLORS.emotionalConnection : COLORS.romanceHub;
 
     const inputArea = (
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: SPACING.xxlarge }}>
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
             {!gameCompleted ? (
                 <>
                     <GlassCard>
@@ -159,7 +158,7 @@ export default function TruthOrTrust({ route, navigation }: any) {
                         </Typography>
 
                         <LinearGradient
-                            colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
+                            colors={GRADIENTS.romanceHub}
                             start={{ x: 0, y: 0 }}
                             end={{ x: 1, y: 1 }}
                             style={styles.gradientContainer}
@@ -167,23 +166,16 @@ export default function TruthOrTrust({ route, navigation }: any) {
                             <View style={styles.headerContainer}>
                                 <Typography 
                                     variant="h3" 
-                                    style={{ 
-                                        marginBottom: SPACING.regular, 
-                                        color: responseColor,
-                                        textTransform: 'uppercase',
-                                        letterSpacing: TYPOGRAPHY.letterSpacing.wide
-                                    }}
+                                    style={[
+                                        styles.responseType,
+                                        { color: responseColor }
+                                    ]}
                                 >
                                     {responseType}
                                 </Typography>
                                 <Typography 
                                     variant="caption" 
-                                    style={{ 
-                                        position: 'absolute', 
-                                        right: SPACING.regular, 
-                                        top: SPACING.regular,
-                                        color: COLORS.textHint 
-                                    }}
+                                    style={styles.questionCounter}
                                 >
                                     {currentQuestionIndex + 1}/{TRUTH_OR_TRUST_QUESTIONS.length}
                                 </Typography>
@@ -191,40 +183,34 @@ export default function TruthOrTrust({ route, navigation }: any) {
                             
                             <Typography 
                                 variant="body" 
-                                style={{ 
-                                    marginBottom: SPACING.xlarge, 
-                                    color: COLORS.textPrimary,
-                                    fontSize: TYPOGRAPHY.fontSize.headerMedium
-                                }}
+                                style={styles.questionText}
                             >
                                 {currentQuestion?.question || currentQuestion?.challenge}
                             </Typography>
 
                             <Typography 
                                 variant="caption" 
-                                style={{ 
-                                    color: COLORS.textHint, 
-                                    marginBottom: SPACING.small 
-                                }}
+                                style={styles.responseLabel}
                             >
                                 Your response:
                             </Typography>
                             
                             <View style={styles.responseContainer}>
-                                <TouchableOpacity 
-                                    style={styles.responseBox} 
+                                <SquishyButton 
                                     onPress={() => {}}
+                                    variant="ghost"
+                                    style={styles.responseBox}
                                 >
                                     <Typography 
                                         variant="body" 
-                                        style={{ 
-                                            color: currentResponse ? COLORS.textPrimary : COLORS.textHint,
-                                            fontStyle: currentResponse ? 'normal' : 'italic'
-                                        }}
+                                        style={[
+                                            styles.responsePlaceholder,
+                                            currentResponse ? styles.responseText : null
+                                        ]}
                                     >
                                         {currentResponse || 'Tap to share your response...'}
                                     </Typography>
-                                </TouchableOpacity>
+                                </SquishyButton>
                             </View>
                             
                             <SquishyButton
@@ -243,18 +229,13 @@ export default function TruthOrTrust({ route, navigation }: any) {
                         <GlassCard style={styles.partnerCard}>
                             <Typography 
                                 variant="sass" 
-                                style={{ 
-                                    color: COLORS.aquaTeal, 
-                                    marginBottom: SPACING.small 
-                                }}
+                                style={styles.partnerLabel}
                             >
                                 Partner Responded:
                             </Typography>
                             <Typography 
                                 variant="body" 
-                                style={{ 
-                                    color: COLORS.textSecondary 
-                                }}
+                                style={styles.partnerResponse}
                             >
                                 {partnerResponse}
                             </Typography>
@@ -264,15 +245,15 @@ export default function TruthOrTrust({ route, navigation }: any) {
             ) : (
                 <GlassCard>
                     <LinearGradient
-                        colors={['rgba(229, 20, 124, 0.2)', 'rgba(240, 93, 104, 0.2)']}
+                        colors={GRADIENTS.romanceHub}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 1 }}
                         style={styles.gradientContainer}
                     >
-                        <Typography variant="h3" style={{ marginBottom: SPACING.regular, color: COLORS.success }}>
+                        <Typography variant="h3" style={styles.completedTitle}>
                             Game Completed!
                         </Typography>
-                        <Typography variant="body" style={{ marginBottom: SPACING.xlarge, color: COLORS.textPrimary }}>
+                        <Typography variant="body" style={styles.completedText}>
                             You and your partner have shared {TRUTH_OR_TRUST_QUESTIONS.length} meaningful moments together.
                         </Typography>
                         <SquishyButton 
@@ -336,6 +317,12 @@ export default function TruthOrTrust({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        flex: 1,
+    },
+    scrollContent: {
+        paddingBottom: SPACING.xxlarge,
+    },
     gameTitle: {
         marginBottom: SPACING.small
     },
@@ -352,19 +339,62 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginBottom: SPACING.regular,
     },
+    responseType: {
+        marginBottom: SPACING.regular,
+        textTransform: 'uppercase',
+        letterSpacing: TYPOGRAPHY.letterSpacing.wide,
+    },
+    questionCounter: {
+        position: 'absolute',
+        right: SPACING.regular,
+        top: SPACING.regular,
+        color: COLORS.textHint,
+    },
+    questionText: {
+        marginBottom: SPACING.xlarge,
+        color: COLORS.textPrimary,
+        fontSize: TYPOGRAPHY.fontSize.headerMedium,
+    },
+    responseLabel: {
+        color: COLORS.textHint,
+        marginBottom: SPACING.small,
+    },
     responseContainer: {
         marginBottom: SPACING.xlarge,
     },
     responseBox: {
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundColor: COLORS.backgroundInput,
         borderWidth: 1,
         borderColor: COLORS.borderSubtle,
         borderRadius: BORDER_RADIUS.large,
         padding: SPACING.regular,
         minHeight: 100,
     },
+    responsePlaceholder: {
+        color: COLORS.textHint,
+        fontStyle: 'italic',
+    },
+    responseText: {
+        color: COLORS.textPrimary,
+        fontStyle: 'normal',
+    },
     partnerCard: {
         marginTop: SPACING.regular,
         padding: SPACING.regular,
+    },
+    partnerLabel: {
+        color: COLORS.aquaTeal,
+        marginBottom: SPACING.small,
+    },
+    partnerResponse: {
+        color: COLORS.textSecondary,
+    },
+    completedTitle: {
+        marginBottom: SPACING.regular,
+        color: COLORS.success,
+    },
+    completedText: {
+        marginBottom: SPACING.xlarge,
+        color: COLORS.textPrimary,
     },
 });

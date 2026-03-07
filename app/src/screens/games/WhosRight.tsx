@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
@@ -55,7 +54,7 @@ export default function WhosRight({ route, navigation }: any) {
         {TRANSCRIPT.map((seg, i) => (
           <View key={i} style={styles.row}>
             <Typography variant="body">{seg.text}</Typography>
-            <View style={{ flexDirection: 'row', gap: SPACING.small }}>
+            <View style={styles.badgeRow}>
               {(['criticism', 'contempt', 'defensiveness', 'stonewalling'] as Segment['label'][]).map((l) => (
                 <Pressable key={l} onPress={() => toggle(i, l)} style={[styles.badge, selected[i] === l ? styles.badgeOn : {}]}>
                   <Typography variant="caption">{l}</Typography>
@@ -97,6 +96,10 @@ const styles = StyleSheet.create({
   row: { 
     marginTop: SPACING.regular, 
     gap: SPACING.small 
+  },
+  badgeRow: {
+    flexDirection: 'row',
+    gap: SPACING.small,
   },
   badge: { 
     paddingHorizontal: SPACING.small, 

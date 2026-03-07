@@ -32,12 +32,12 @@ export default function ApologyOlympics({ navigation }: any) {
                 </View>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="instructions" style={{ marginBottom: SPACING.regular }}>Type: Speed rewrite + AI rubric</Typography>
+                    <Typography variant="instructions" style={styles.instructionsText}>Type: Speed rewrite + AI rubric</Typography>
                     <Typography variant="body">Mechanics: Rewrite "Sorry you felt that way" in {'<'}60s. Must avoid: but, if, you, however.</Typography>
                 </GlassCard>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="instructions" style={{ marginBottom: SPACING.regular }}>Scoring (AI Rubric)</Typography>
+                    <Typography variant="instructions" style={styles.instructionsText}>Scoring (AI Rubric)</Typography>
                     <Typography variant="body">
                         Ownership ("I did X") = +10{'\n'}
                         Impact named ("…made you feel Y") = +10{'\n'}
@@ -48,7 +48,7 @@ export default function ApologyOlympics({ navigation }: any) {
 
                 <View style={styles.actionArea}>
                     <SquishyButton onPress={() => alert('Rubric loaded. Ready?')} style={styles.playBtn}>
-                        <Typography variant="button" style={{ color: COLORS.textPrimary }}>Start Rewrite</Typography>
+                        <Typography variant="button" style={styles.buttonText}>Start Rewrite</Typography>
                     </SquishyButton>
                 </View>
             </ScrollView>
@@ -124,5 +124,11 @@ const styles = StyleSheet.create({
     },
     playBtn: { 
         width: '80%', 
+    },
+    instructionsText: {
+        marginBottom: SPACING.regular,
+    },
+    buttonText: {
+        color: COLORS.textPrimary,
     },
 });

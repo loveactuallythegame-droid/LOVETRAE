@@ -34,12 +34,12 @@ export default function CommitmentCountdown({ navigation }: any) {
                     </GlassCard>
 
                     <GlassCard style={styles.card}>
-                        <Typography variant="instructions" style={{ marginBottom: SPACING.small }}>Type: Shared 30-day streak</Typography>
+                        <Typography variant="instructions" style={styles.instructionText}>Type: Shared 30-day streak</Typography>
                         <Typography variant="body">Mechanics: Daily micro-action ("Text one appreciation").</Typography>
                     </GlassCard>
 
                     <GlassCard style={styles.card}>
-                        <Typography variant="instructions" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+                        <Typography variant="instructions" style={styles.instructionText}>Scoring</Typography>
                         <Typography variant="body">
                             ✅ Daily = +5{'\n'}
                             ✅ 7-day streak = +20{'\n'}
@@ -49,7 +49,7 @@ export default function CommitmentCountdown({ navigation }: any) {
 
                     <View style={styles.actionArea}>
                         <SquishyButton onPress={() => alert('Checking Streak...')} style={styles.playBtn}>
-                            <Typography variant="button" style={{ color: COLORS.textPrimary }}>Check In</Typography>
+                            <Typography variant="button" style={styles.buttonText}>Check In</Typography>
                         </SquishyButton>
                     </View>
                 </ScrollView>
@@ -115,6 +115,12 @@ const styles = StyleSheet.create({
     },
     card: { 
         padding: SPACING.regular,
+    },
+    instructionText: {
+        marginBottom: SPACING.small,
+    },
+    buttonText: {
+        color: COLORS.textPrimary,
     },
     actionArea: { 
         marginTop: SPACING.xxlarge, 

@@ -69,7 +69,7 @@ const CommitmentDiceGameScreen = () => {
                         <Typography variant="label" center style={styles.reasonLabel}>The Reason</Typography>
                         <Typography variant="h3" center style={styles.reasonText}>{reason}</Typography>
                         <SquishyButton onPress={rollDice} disabled={isRolling} style={styles.rollButton}>
-                            <Typography variant="button" style={{ color: COLORS.gradientStart }}>
+                            <Typography variant="button" style={styles.buttonText}>
                                 {isRolling ? 'ROLLING...' : 'ROLL AGAIN'}
                             </Typography>
                         </SquishyButton>
@@ -229,6 +229,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: SPACING.small,
         paddingVertical: SPACING.micro,
         borderRadius: BORDER_RADIUS.medium,
+    },
+    buttonText: {
+        color: COLORS.gradientStart,
     },
 });
 

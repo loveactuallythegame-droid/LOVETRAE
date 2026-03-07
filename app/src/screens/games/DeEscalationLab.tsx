@@ -70,7 +70,7 @@ export default function DeEscalationLab({ route, navigation }: any) {
     const current = SCENARIOS[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }} showsVerticalScrollIndicator={false}>
+        <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
             <GlassCard padding="large">
                 {/* Dr. Marcie Section */}
                 <View style={styles.drMarcieSection}>
@@ -102,7 +102,7 @@ export default function DeEscalationLab({ route, navigation }: any) {
                         style={[styles.opt, choice === o.id ? styles.selected : {}]}
                         variant={choice === o.id ? 'primary' : 'ghost'}
                     >
-                        <Typography variant="body" style={{ color: choice === o.id ? COLORS.backgroundPrimary : COLORS.textPrimary }}>{o.text}</Typography>
+                        <Typography variant="body" style={choice === o.id ? styles.selectedText : styles.optionText}>{o.text}</Typography>
                     </SquishyButton>
                 ))}
 
@@ -113,7 +113,7 @@ export default function DeEscalationLab({ route, navigation }: any) {
                         end={GRADIENTS.primary.end}
                         style={styles.gradientButton}
                     >
-                        <Typography variant="h3" style={{ color: COLORS.textPrimary }}>De-Escalate</Typography>
+                        <Typography variant="h3" style={styles.buttonText}>De-Escalate</Typography>
                     </LinearGradient>
                 </SquishyButton>
             </GlassCard>
@@ -122,21 +122,17 @@ export default function DeEscalationLab({ route, navigation }: any) {
 
     const baseState = useMemo(() => ({
         id: gameId,
-        title: 'The De-Escalation Lab',
-        description: 'Simulated trigger training',
-        category: 'arcade' as const,
+        title: 'De-Escalation Lab',
+        description: 'Practice de-escalation techniques',
+        category: 'communication' as const,
         difficulty: 'medium' as const,
         xpReward: 300,
-        currentStep: round,
-        totalTime: 300,
+        currentStep: 0,
+        totalTime: 120,
         playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
-    }), [gameId, round]);
+    }), [gameId]);
 
-    return (
-        <ScreenLayout showHeader={false} scrollable={true}>
-            <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />
-        </ScreenLayout>
-    );
+    return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />;
 }
 
 const styles = StyleSheet.create({
@@ -144,34 +140,33 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.backgroundPrimary,
     },
+    scrollContainer: {
+        gap: SPACING.regular,
+    },
     drMarcieSection: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: BORDER_RADIUS.xlarge,
-        padding: SPACING.regular,
-        marginBottom: SPACING.regular
+        marginBottom: SPACING.regular,
     },
     avatarContainer: {
-        width: SPACING.xxlarge + SPACING.small,
-        height: SPACING.xxlarge + SPACING.small,
+        width: SPACING.xxlarge,
+        height: SPACING.xxlarge,
         borderRadius: BORDER_RADIUS.round,
         backgroundColor: COLORS.brightYellow,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: SPACING.regular
+        marginRight: SPACING.regular,
     },
     avatar: {
-        width: SPACING.xxlarge,
-        height: SPACING.xxlarge,
+        width: SPACING.xlarge,
+        height: SPACING.xlarge,
         borderRadius: BORDER_RADIUS.round,
-        resizeMode: 'cover'
     },
     quoteBox: {
         flex: 1,
-        backgroundColor: 'rgba(252, 199, 56, 0.2)',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: BORDER_RADIUS.large,
-        padding: SPACING.regular
+        padding: SPACING.regular,
     },
     scenarioTitle: {
         marginBottom: SPACING.small,
@@ -180,41 +175,37 @@ const styles = StyleSheet.create({
         marginBottom: SPACING.regular,
     },
     factInjuryContainer: {
-        flexDirection: 'row', 
-        gap: SPACING.small, 
-        marginVertical: SPACING.regular 
+        flexDirection: 'row',
+        gap: SPACING.small,
+        marginBottom: SPACING.regular,
     },
     factInjuryBox: {
         flex: 1,
     },
     smallText: {
-        fontSize: TYPOGRAPHY.fontSize.label,
+        fontSize: TYPOGRAPHY.fontSize.small,
     },
     opt: {
-        padding: SPACING.regular,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: BORDER_RADIUS.medium,
         marginBottom: SPACING.small,
-        borderWidth: 1,
-        borderColor: COLORS.borderSubtle
     },
     selected: {
-        backgroundColor: COLORS.success,
-        borderColor: COLORS.success
+        borderColor: COLORS.gradientStart,
+    },
+    selectedText: {
+        color: COLORS.backgroundPrimary,
+    },
+    optionText: {
+        color: COLORS.textPrimary,
     },
     submitBtn: {
-        marginTop: SPACING.xlarge,
+        marginTop: SPACING.regular,
+    },
+    gradientButton: {
         padding: SPACING.regular,
         borderRadius: BORDER_RADIUS.large,
         alignItems: 'center',
-        marginBottom: SPACING.xlarge,
-        ...SHADOWS.buttonGlow
     },
-    gradientButton: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: BORDER_RADIUS.large,
-        paddingVertical: SPACING.regular,
+    buttonText: {
+        color: COLORS.textPrimary,
     },
 });

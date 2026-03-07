@@ -49,7 +49,7 @@ export default function JeopardyRebuilding({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.small }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
                 {!q ? (
                     <View style={styles.board}>
@@ -89,8 +89,11 @@ export default function JeopardyRebuilding({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        gap: SPACING.small,
+    },
     board: { 
-        gap: SPACING.small 
+        gap: SPACING.small,
     },
     boardTitle: {
         textAlign: 'center',

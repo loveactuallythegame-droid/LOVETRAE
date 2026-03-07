@@ -117,7 +117,7 @@ export default function GratitudeCloud({ route, navigation }: any) {
   const cloudStyle = useAnimatedStyle(() => ({ transform: [{ scale: pulse.value }] }));
   
   const inputArea = (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: SPACING.xlarge }}>
+    <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
       <GlassCard>
         <View style={styles.gradientContainer}>
           <Typography variant="body" style={styles.inputLabel}>
@@ -140,13 +140,11 @@ export default function GratitudeCloud({ route, navigation }: any) {
             <Typography 
               key={`me_${i}`} 
               variant="body"
-              style={[styles.word, { 
+              style={[styles.word, styles.myWord, { 
                 position: 'absolute', 
                 left: c.left, 
                 top: c.top, 
                 fontSize: c.size, 
-                color: COLORS.brightYellow,
-                fontWeight: 'bold'
               }]}
             >
               {c.text}
@@ -156,13 +154,11 @@ export default function GratitudeCloud({ route, navigation }: any) {
             <Typography 
               key={`partner_${i}`} 
               variant="body"
-              style={[styles.word, { 
+              style={[styles.word, styles.partnerWord, { 
                 position: 'absolute', 
                 left: Math.random() * (width - 100), 
                 top: Math.random() * 160, 
                 fontSize: TYPOGRAPHY.fontSize.bodyLarge + 2, 
-                color: COLORS.softViolet,
-                fontWeight: '600'
               }]}
             >
               {w}
@@ -203,6 +199,12 @@ export default function GratitudeCloud({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: SPACING.xlarge,
+  },
   gradientContainer: {
     padding: SPACING.medium,
     borderRadius: BORDER_RADIUS.card,
@@ -240,5 +242,13 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
+  },
+  myWord: {
+    color: COLORS.brightYellow,
+    fontWeight: 'bold',
+  },
+  partnerWord: {
+    color: COLORS.softViolet,
+    fontWeight: '600',
   },
 });

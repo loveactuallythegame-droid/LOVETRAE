@@ -68,11 +68,10 @@ export default function GuiltShameSort({ navigation }: any) {
           {feedback ? (
             <Typography 
               variant="h2" 
-              style={{ 
-                color: feedback === "Correct!" ? COLORS.success : COLORS.emotionalConnection, 
-                textAlign: 'center',
-                marginBottom: SPACING.medium,
-              }}
+              style={[
+                styles.feedbackText,
+                { color: feedback === "Correct!" ? COLORS.success : COLORS.emotionalConnection }
+              ]}
             >
               {feedback}
             </Typography>
@@ -150,6 +149,10 @@ const styles = StyleSheet.create({
   },
   cardText: {
     textAlign: 'center',
+  },
+  feedbackText: {
+    textAlign: 'center',
+    marginBottom: SPACING.medium,
   },
   actions: {
     flexDirection: 'row',

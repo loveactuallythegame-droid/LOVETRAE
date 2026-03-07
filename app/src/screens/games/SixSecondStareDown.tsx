@@ -20,12 +20,12 @@ export default function SixSecondStareDown({ navigation }: any) {
                 </View>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Real-time camera sync</Typography>
+                    <Typography variant="h2" style={styles.cardTitle}>Type: Real-time camera sync</Typography>
                     <Typography variant="body">Mechanics: Front cams → AI detects mutual gaze → 6-sec timer.</Typography>
                 </GlassCard>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+                    <Typography variant="h2" style={styles.cardTitle}>Scoring</Typography>
                     <Typography variant="body">
                         ✅ 6 sec eye contact = +25{'\n'}
                         ✅ Sync blink (±0.5s) = +10
@@ -71,6 +71,9 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.backgroundCard,
         borderWidth: 1,
         borderColor: COLORS.borderSubtle,
+    },
+    cardTitle: {
+        marginBottom: SPACING.small
     },
     actionArea: { 
         marginTop: SPACING.xxlarge, 

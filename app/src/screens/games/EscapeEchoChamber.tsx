@@ -17,7 +17,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useGameSession } from '../../hooks/useGameSession';
 
 // Components
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 
 // Theme
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
@@ -201,7 +201,7 @@ const EscapeEchoChamber: React.FC = () => {
             <ScreenLayout showHeader={false} scrollable={true}>
                 <View style={styles.container}>
                     <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background}>
-                        <Text variant="h2" center style={styles.loadingText}>Entering the Echo Chamber...</Text>
+                        <Typography variant="h2" center style={styles.loadingText}>Entering the Echo Chamber...</Typography>
                     </LinearGradient>
                 </View>
             </ScreenLayout>
@@ -218,17 +218,17 @@ const EscapeEchoChamber: React.FC = () => {
                     <ScrollView contentContainerStyle={styles.scrollContent}>
                         {/* Header */}
                         <View style={styles.header}>
-                            <Text variant="h1" center>The Love Arcade</Text>
-                            <Text variant="h2" center>+100 Games to Deepen Connection</Text>
-                            <Text variant="h3" center style={styles.gameTitle}>Escape the Echo Chamber</Text>
-                            <Text variant="body" center style={styles.subtitle}>Break the love script</Text>
+                            <Typography variant="h1" center>The Love Arcade</Typography>
+                            <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
+                            <Typography variant="h3" center style={styles.gameTitle}>Escape the Echo Chamber</Typography>
+                            <Typography variant="body" center style={styles.subtitle}>Break the love script</Typography>
                             <View style={styles.progressContainer}>
-                                <Text variant="caption">
+                                <Typography variant="caption">
                                     Puzzle {currentStage + 1} of {PUZZLES.length}
-                                </Text>
+                                </Typography>
                                 <View style={styles.scoreRow}>
-                                    <Text variant="caption" style={styles.scoreText}>Score: {score}</Text>
-                                    {isSyncing && <Text variant="caption">💾</Text>}
+                                    <Typography variant="caption" style={styles.scoreText}>Score: {score}</Typography>
+                                    {isSyncing && <Typography variant="caption">💾</Typography>}
                                 </View>
                             </View>
                         </View>
@@ -245,8 +245,8 @@ const EscapeEchoChamber: React.FC = () => {
 
                         {/* Puzzle Card */}
                         <GlassCard style={styles.puzzleCard}>
-                            <Text variant="h3">{currentPuzzle?.title}</Text>
-                            <Text variant="body" style={styles.puzzleDescription}>{currentPuzzle?.description}</Text>
+                            <Typography variant="h3">{currentPuzzle?.title}</Typography>
+                            <Typography variant="body" style={styles.puzzleDescription}>{currentPuzzle?.description}</Typography>
                             
                             {attempts > 1 && (
                                 <SquishyButton 
@@ -254,15 +254,15 @@ const EscapeEchoChamber: React.FC = () => {
                                     onPress={() => setShowHint(!showHint)}
                                     style={styles.hintButton}
                                 >
-                                    <Text variant="button">
+                                    <Typography variant="button">
                                         {showHint ? 'Hide Hint' : 'Need a Hint?'}
-                                    </Text>
+                                    </Typography>
                                 </SquishyButton>
                             )}
                             
                             {showHint && (
                                 <GlassCard style={styles.hintBox}>
-                                    <Text variant="body">💡 {currentPuzzle?.hint}</Text>
+                                    <Typography variant="body">💡 {currentPuzzle?.hint}</Typography>
                                 </GlassCard>
                             )}
                         </GlassCard>
@@ -284,23 +284,23 @@ const EscapeEchoChamber: React.FC = () => {
                                 onPress={checkAnswer}
                                 disabled={!userInput.trim()}
                             >
-                                <Text variant="button">Decrypt File</Text>
+                                <Typography variant="button">Decrypt File</Typography>
                             </SquishyButton>
                         </View>
 
                         {/* Attempts Counter */}
-                        <Text variant="caption" center style={styles.attemptsText}>
+                        <Typography variant="caption" center style={styles.attemptsText}>
                             Attempts: {attempts} {attempts > 0 && '(Fewer attempts = more points!)'}
-                        </Text>
+                        </Typography>
 
                         {/* Reset Button */}
                         <SquishyButton variant="ghost" onPress={resetGame} style={styles.resetButton}>
-                            <Text variant="button">Start Over</Text>
+                            <Typography variant="button">Start Over</Typography>
                         </SquishyButton>
 
                         {/* Session Info */}
                         {session && (
-                            <Text variant="caption" center style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
+                            <Typography variant="caption" center style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Typography>
                         )}
                     </ScrollView>
                 </LinearGradient>

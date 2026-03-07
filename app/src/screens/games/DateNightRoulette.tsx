@@ -32,12 +32,12 @@ export default function DateNightRoulette({ navigation }: any) {
                     </View>
 
                     <GlassCard style={styles.card}>
-                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Wheel spin + filters</Typography>
+                        <Typography variant="h2" style={styles.cardTitle}>Type: Wheel spin + filters</Typography>
                         <Typography variant="body">Mechanics: Spin → "Picnic in car, 8 p.m., only songs from 2007."</Typography>
                     </GlassCard>
 
                     <GlassCard style={styles.card}>
-                        <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+                        <Typography variant="h2" style={styles.cardTitle}>Scoring</Typography>
                         <Typography variant="body">
                             ✅ Did it = +30{'\n'}
                             ✅ Posted proof (no faces) = +10
@@ -113,6 +113,9 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.backgroundCard,
         borderWidth: 1,
         borderColor: COLORS.borderSubtle,
+    },
+    cardTitle: {
+        marginBottom: SPACING.small,
     },
     actionArea: { 
         marginTop: SPACING.xxlarge, 

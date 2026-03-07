@@ -58,7 +58,7 @@ const SixSecondKissChallenge2 = () => {
         isHolding: boolean;
         scaleAnim: Animated.Value;
     }) => (
-        <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+        <Animated.View style={[styles.playerTouchPointAnimated, { transform: [{ scale: scaleAnim }] }]}>
             <LinearGradient
                 colors={GRADIENTS.primary.colors}
                 start={GRADIENTS.primary.start}
@@ -170,6 +170,9 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         justifyContent: 'space-between', 
         width: '100%' 
+    },
+    playerTouchPointAnimated: {
+        // Animated transform applied inline via style prop
     },
     touchPoint: { 
         width: 140, 

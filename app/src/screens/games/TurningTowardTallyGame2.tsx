@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlassCard, Typography, ScreenLayout } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -17,7 +16,7 @@ const StatCard = ({ label, value, trend }: { label: string; value: string; trend
     <GlassCard style={styles.statCard}>
         <Typography variant="caption">{label}</Typography>
         <Typography variant="h1">{value}</Typography>
-        <Typography variant="small" style={{ color: COLORS.success }}>{trend}</Typography>
+        <Typography variant="small" style={styles.trendText}>{trend}</Typography>
     </GlassCard>
 );
 
@@ -28,7 +27,7 @@ const TimelineItem = ({ event }: { event: typeof timelineEvents[0] }) => (
         </View>
         <View style={styles.timelineTextContainer}>
             <Typography variant="body">{event.title}</Typography>
-            <Typography variant="caption">{event.subtitle} <Typography variant="caption" style={{ color: event.color }}>{event.status}</Typography></Typography>
+            <Typography variant="caption">{event.subtitle} <Typography variant="caption" style={[styles.eventStatus, { color: event.color }]}>{event.status}</Typography></Typography>
         </View>
     </View>
 );
@@ -37,7 +36,7 @@ const TurningTowardTallyGame2 = () => {
     return (
         <ScreenLayout showHeader={true} scrollable={true}>
             <Typography variant="h1" center>Turning Toward Tally</Typography>
-            <Typography variant="h2" center style={{ marginBottom: SPACING.xlarge }}>Live audit of your connection bids.</Typography>
+            <Typography variant="h2" center style={styles.subtitle}>Live audit of your connection bids.</Typography>
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.statsRow}>
                 <StatCard label="Days in Sync" value="12 Days" trend="+2%" />
@@ -46,19 +45,22 @@ const TurningTowardTallyGame2 = () => {
             </ScrollView>
 
             <GlassCard style={styles.timelineContainer}>
-                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>24-Hour Bid Timeline</Typography>
+                <Typography variant="h3" style={styles.timelineTitle}>24-Hour Bid Timeline</Typography>
                 {timelineEvents.map((event, index) => <TimelineItem key={index} event={event} />)}
             </GlassCard>
 
             <View style={styles.auditorTip}>
-                <MaterialIcons name="lightbulb" size={24} color={COLORS.warning} style={{marginRight: SPACING.regular}}/>
-                <Typography variant="body" style={{ flex: 1, lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge }}>Decrease screen time during dinner to boost Emotional Currency by <Typography variant="body" style={{ color: COLORS.success }}>+25%</Typography>.</Typography>
+                <MaterialIcons name="lightbulb" size={24} color={COLORS.warning} style={styles.tipIcon}/>
+                <Typography variant="body" style={styles.tipText}>Decrease screen time during dinner to boost Emotional Currency by <Typography variant="body" style={styles.tipHighlight}>+25%</Typography>.</Typography>
             </View>
         </ScreenLayout>
     );
 }
 
 const styles = StyleSheet.create({
+    subtitle: {
+        marginBottom: SPACING.xlarge,
+    },
     statsRow: { 
         marginBottom: SPACING.xlarge 
     },
@@ -68,8 +70,14 @@ const styles = StyleSheet.create({
         width: 160,
         alignItems: 'center',
     },
+    trendText: {
+        color: COLORS.success,
+    },
     timelineContainer: { 
         marginBottom: SPACING.xlarge 
+    },
+    timelineTitle: {
+        marginBottom: SPACING.regular,
     },
     timelineItem: { 
         flexDirection: 'row', 
@@ -94,6 +102,19 @@ const styles = StyleSheet.create({
         borderRadius: BORDER_RADIUS.large, 
         padding: SPACING.regular, 
         alignItems: 'center' 
+    },
+    tipIcon: {
+        marginRight: SPACING.regular,
+    },
+    tipText: {
+        flex: 1,
+        lineHeight: TYPOGRAPHY.lineHeight.relaxed * TYPOGRAPHY.fontSize.bodyLarge,
+    },
+    tipHighlight: {
+        color: COLORS.success,
+    },
+    eventStatus: {
+        // Dynamic color applied inline
     },
 });
 

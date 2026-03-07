@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
@@ -40,7 +39,7 @@ export default function NeedsDecoder({ navigation }: any) {
         {step === 2 && (
           <GlassCard style={styles.card}>
             <Typography variant="h2">Partner B: Decode It</Typography>
-            <Typography variant="h1" style={{ fontSize: TYPOGRAPHY.fontSize.displayLarge, textAlign: 'center' }}>{emojis}</Typography>
+            <Typography variant="h1" style={styles.emojiDisplay}>{emojis}</Typography>
             <Typography variant="body">What does A need?</Typography>
             <TextInput
               style={styles.input}
@@ -57,10 +56,10 @@ export default function NeedsDecoder({ navigation }: any) {
 
         {step === 3 && (
           <GlassCard style={styles.card}>
-            <Typography variant="h2" style={{ color: COLORS.brightYellow, textAlign: 'center' }}>Decoded?</Typography>
+            <Typography variant="h2" style={styles.decodedTitle}>Decoded?</Typography>
             <Typography variant="body">Emojis: <Typography variant="keyword">{emojis}</Typography></Typography>
             <Typography variant="body">Guess: <Typography variant="keyword">{guess}</Typography></Typography>
-            <Typography variant="body" style={{ marginTop: SPACING.large, fontStyle: 'italic', color: COLORS.error }}>
+            <Typography variant="body" style={styles.marcieQuote}>
               Marcie: "If they guessed 'I need a divorce', we have a problem. If they guessed 'snacks', marry them again."
             </Typography>
             <SquishyButton onPress={() => { setStep(1); setEmojis(''); setGuess(''); }} style={styles.btn}>
@@ -102,5 +101,18 @@ const styles = StyleSheet.create({
   },
   btn: { 
     marginTop: SPACING.regular,
-  }
+  },
+  emojiDisplay: {
+    fontSize: TYPOGRAPHY.fontSize.displayLarge,
+    textAlign: 'center',
+  },
+  decodedTitle: {
+    color: COLORS.brightYellow,
+    textAlign: 'center',
+  },
+  marcieQuote: {
+    marginTop: SPACING.large,
+    fontStyle: 'italic',
+    color: COLORS.error,
+  },
 });

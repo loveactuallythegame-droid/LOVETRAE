@@ -20,7 +20,7 @@ export default function FlashbackFrenzy({ navigation }: any) {
 
         <GlassCard style={styles.card}>
           <View style={styles.imagePlaceholder}>
-            <Typography variant="h1" style={{ fontSize: TYPOGRAPHY.fontSize.displayLarge }}>🌧️ 🪟</Typography>
+            <Typography variant="h1" style={styles.emojiText}>🌧️ 🪟</Typography>
             <Typography variant="body">Image: Rainy Window</Typography>
           </View>
         </GlassCard>
@@ -64,7 +64,7 @@ export default function FlashbackFrenzy({ navigation }: any) {
             <Typography variant="h2" color={COLORS.success} center>Match Analysis</Typography>
             <Typography variant="body">Emotion: <Typography variant="keyword">{emotion}</Typography></Typography>
             <Typography variant="body">Guess: <Typography variant="keyword">{guess}</Typography></Typography>
-            <Typography variant="body" style={{ marginTop: SPACING.regular, fontStyle: 'italic', color: COLORS.romanceHub }}>
+            <Typography variant="body" style={styles.marcieQuote}>
               Marcie: "Spot on. Listening level: 100. (+15 XP)"
             </Typography>
             <SquishyButton onPress={() => { setStep(1); setEmotion(''); setGuess(''); }} style={styles.btn}>
@@ -97,5 +97,13 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.large, 
     alignItems: 'center', 
     justifyContent: 'center' 
-  }
+  },
+  emojiText: {
+    fontSize: TYPOGRAPHY.fontSize.displayLarge,
+  },
+  marcieQuote: { 
+    marginTop: SPACING.regular, 
+    fontStyle: 'italic', 
+    color: COLORS.romanceHub 
+  },
 });

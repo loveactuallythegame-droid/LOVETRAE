@@ -51,10 +51,10 @@ export default function DealOrNoDealAccountability({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }} showsVerticalScrollIndicator={false}>
+        <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
             <GlassCard padding="large">
                 <Typography variant="h2" style={styles.cardTitle}>The Banker's Offer</Typography>
-                <Typography variant="body" style={{ marginBottom: SPACING.regular }}>
+                <Typography variant="body" style={styles.descriptionText}>
                     "I offer the Full Responsibility Declaration:
                     1. Naming the crime as verbal violence.
                     2. Specificity of harm.
@@ -79,20 +79,16 @@ export default function DealOrNoDealAccountability({ route, navigation }: any) {
     const baseState = useMemo(() => ({
         id: gameId,
         title: 'Deal or No Deal: Accountability',
-        description: 'The suitcases hold truth',
-        category: 'arcade' as const,
+        description: 'Take full responsibility',
+        category: 'accountability' as const,
         difficulty: 'hard' as const,
         xpReward: 500,
-        currentStep: round,
-        totalTime: 300,
+        currentStep: 0,
+        totalTime: 60,
         playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
-    }), [gameId, round]);
+    }), [gameId]);
 
-    return (
-        <ScreenLayout showHeader={false} scrollable={true}>
-            <GameContainer state={baseState} inputs={["custom"]} inputArea={inputArea} onComplete={finish} />
-        </ScreenLayout>
-    );
+    return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />;
 }
 
 const styles = StyleSheet.create({
@@ -100,35 +96,37 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.backgroundPrimary,
     },
+    scrollContainer: {
+        gap: SPACING.regular,
+    },
     cardTitle: {
-        marginBottom: SPACING.small,
+        color: COLORS.textPrimary,
+        marginBottom: SPACING.regular,
+    },
+    descriptionText: {
+        marginBottom: SPACING.regular,
     },
     question: {
+        marginBottom: SPACING.large,
+    },
+    opts: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         marginTop: SPACING.regular,
-        marginBottom: SPACING.small,
     },
-    opts: { 
-        flexDirection: 'row', 
-        gap: SPACING.regular, 
-        marginTop: SPACING.xlarge 
+    btn: {
+        width: '45%',
     },
-    btn: { 
-        flex: 1, 
-        padding: SPACING.large, 
-        borderRadius: BORDER_RADIUS.large, 
-        alignItems: 'center',
-        ...SHADOWS.buttonGlow
+    deal: {
+        backgroundColor: COLORS.success,
     },
-    deal: { 
-        backgroundColor: COLORS.success 
-    },
-    nodeal: { 
-        backgroundColor: COLORS.error 
+    nodeal: {
+        backgroundColor: COLORS.error,
     },
     dealText: {
-        color: COLORS.backgroundPrimary,
+        color: COLORS.textPrimary,
     },
     nodealText: {
         color: COLORS.textPrimary,
-    }
+    },
 });

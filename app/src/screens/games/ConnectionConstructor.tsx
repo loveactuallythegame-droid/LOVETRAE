@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenLayout, Header, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, Header, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 const attachmentBlocks = [
@@ -18,10 +18,10 @@ const AttachmentBlock = ({ block }: { block: { name: string, type: string, icon:
         end={GRADIENTS.primary.end}
         style={styles.block}
     >
-        <Text variant="h2" style={styles.blockIcon}>{block.icon}</Text>
+        <Typography variant="h2" style={styles.blockIcon}>{block.icon}</Typography>
         <View>
-            <Text variant="body" style={styles.blockName}>{block.name}</Text>
-            <Text variant="caption" style={styles.blockType}>{block.type}</Text>
+            <Typography variant="body" style={styles.blockName}>{block.name}</Typography>
+            <Typography variant="caption" style={styles.blockType}>{block.type}</Typography>
         </View>
     </LinearGradient>
 );
@@ -39,7 +39,7 @@ const ConnectionConstructorScreen = () => {
                     <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                 </View>
                 <View style={styles.quoteBox}>
-                    <Text variant="sass">Build your connection with essential elements! Construct a safe and secure relationship.</Text>
+                    <Typography variant="sass">Build your connection with essential elements! Construct a safe and secure relationship.</Typography>
                 </View>
             </View>
             
@@ -51,7 +51,7 @@ const ConnectionConstructorScreen = () => {
                     end={GRADIENTS.primary.end}
                     style={styles.toolbox}
                 >
-                    <Text variant="h2" style={styles.toolboxTitle}>The Toolbox</Text>
+                    <Typography variant="h2" style={styles.toolboxTitle}>The Toolbox</Typography>
                     <ScrollView>
                         {attachmentBlocks.map((block, index) => <AttachmentBlock key={index} block={block} />)}
                     </ScrollView>
@@ -64,7 +64,7 @@ const ConnectionConstructorScreen = () => {
                         end={GRADIENTS.primary.end}
                         style={styles.dropZone}
                     >
-                        <Text variant="body" style={styles.dropZoneText}>Drop Block Here</Text>
+                        <Typography variant="body" style={styles.dropZoneText}>Drop Block Here</Typography>
                     </LinearGradient>
                     <LinearGradient
                         colors={[COLORS.warmOrange, COLORS.brightYellow]}
@@ -72,16 +72,16 @@ const ConnectionConstructorScreen = () => {
                         end={GRADIENTS.primary.end}
                         style={styles.safetyBarContainer}
                     >
-                        <Text variant="h2" style={styles.safetyBarTitle}>Relationship Safety Level</Text>
+                        <Typography variant="h2" style={styles.safetyBarTitle}>Relationship Safety Level</Typography>
                         <View style={styles.safetyBar}>
                             <LinearGradient 
                                 colors={GRADIENTS.primary.colors} 
                                 start={GRADIENTS.primary.start} 
                                 end={GRADIENTS.primary.end} 
-                                style={{ width: `${safetyLevel}%`, height: '100%' }} 
+                                style={[styles.progressFill, { width: `${safetyLevel}%` }]}
                             />
                         </View>
-                         <Text variant="h2" style={styles.safetyPercentage}>{safetyLevel}%</Text>
+                         <Typography variant="h2" style={styles.safetyPercentage}>{safetyLevel}%</Typography>
                     </LinearGradient>
                 </View>
             </View>
@@ -217,6 +217,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: SPACING.small,
         paddingVertical: SPACING.tiny,
         borderRadius: BORDER_RADIUS.large,
+    },
+    progressFill: {
+        height: '100%',
     },
 });
 

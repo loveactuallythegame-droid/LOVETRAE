@@ -52,7 +52,7 @@ export default function AppreciationAuction({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputArea}>
       <GlassCard>
         {/* Dr. Marcie Section */}
         <View style={styles.drMarcieSection}>
@@ -69,10 +69,10 @@ export default function AppreciationAuction({ route, navigation }: any) {
         <Typography variant="keyword" center>Balance: {coins} Coins</Typography>
         <View style={styles.actions}>
           <SquishyButton onPress={() => bid(LOTS[index].cost)} style={styles.bidBtn}>
-            <Typography variant="button" style={{ color: COLORS.textPrimary }}>Bid {LOTS[index].cost}</Typography>
+            <Typography variant="button" style={styles.buttonText}>Bid {LOTS[index].cost}</Typography>
           </SquishyButton>
           <SquishyButton onPress={pass} style={styles.passBtn}>
-            <Typography variant="button" style={{ color: COLORS.textPrimary }}>Pass</Typography>
+            <Typography variant="button" style={styles.buttonText}>Pass</Typography>
           </SquishyButton>
         </View>
       </GlassCard>
@@ -95,7 +95,13 @@ export default function AppreciationAuction({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  lot: { 
+  inputArea: {
+    gap: SPACING.regular,
+  },
+  buttonText: {
+    color: COLORS.textPrimary,
+  },
+  lot: {
     textAlign: 'center', 
     marginVertical: SPACING.regular, 
     color: COLORS.textPrimary,

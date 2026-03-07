@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { Typography } from '../../components/ui';
 
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS } from '../../theme';
 
 const DreamDecoderGameScreen = () => {
@@ -12,8 +13,8 @@ const DreamDecoderGameScreen = () => {
                 <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.backgroundPrimary]} style={styles.background} />
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <View style={styles.header}>
-                        <Text variant="h1" center>The Love Arcade</Text>
-                        <Text variant="h2" center>+100 Games to Deepen Connection</Text>
+                        <Typography variant="h1" center>The Love Arcade</Typography>
+                        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
                     </View>
 
                     <View style={styles.mainLayout}>
@@ -21,34 +22,34 @@ const DreamDecoderGameScreen = () => {
                         <View style={styles.leftPanel}>
                             <View style={styles.drMarcieImage} />
                             <GlassCard style={styles.speechBubble}>
-                                <Text variant="sass">"Not about dishes, darling. It's about feeling seen."</Text>
+                                <Typography variant="body">"Not about dishes, darling. It's about feeling seen."</Typography>
                             </GlassCard>
                         </View>
 
                         {/* Right Panel - Game */}
                         <View style={styles.rightPanel}>
                             <GlassCard>
-                                <Text variant="caption">Core Conflict Identification</Text>
-                                <Text variant="h2">Surface Conflict: <Text variant="sass" style={{ color: COLORS.brightYellow }}>Dishes in Sink</Text></Text>
-                                <Text variant="body" style={styles.cardBody}>The surface fight is about chores, but what lies beneath? Provide clues to help your partner decode the hidden dream.</Text>
+                                <Typography variant="caption">Core Conflict Identification</Typography>
+                                <Typography variant="h2">Surface Conflict: <Typography variant="body" style={styles.highlightText}>Dishes in Sink</Typography></Typography>
+                                <Typography variant="body" style={styles.cardBody}>The surface fight is about chores, but what lies beneath? Provide clues to help your partner decode the hidden dream.</Typography>
                                 <TextInput 
                                     style={styles.clueInput} 
                                     placeholder="e.g., 'Validation', 'Balance', 'Time'..." 
                                     placeholderTextColor={COLORS.textHint}
                                 />
                                 <SquishyButton onPress={() => {}}>
-                                    <Text variant="button">Submit Clue</Text>
+                                    <Typography variant="button">Submit Clue</Typography>
                                 </SquishyButton>
                             </GlassCard>
 
                             <View style={styles.hintCardsContainer}>
                                 <GlassCard style={styles.hintCard}>
-                                    <Text variant="caption">Partner's Last Guess</Text>
-                                    <Text variant="body" style={styles.hintText}>"Is it about needing more help?"</Text>
+                                    <Typography variant="caption">Partner's Last Guess</Typography>
+                                    <Typography variant="body" style={styles.hintText}>"Is it about needing more help?"</Typography>
                                 </GlassCard>
-                                <GlassCard style={[styles.hintCard, { opacity: 0.5 }]}>
-                                    <Text variant="caption">Dream Unlock</Text>
-                                    <Text variant="body" style={styles.hintText}>Waiting for 3 clues...</Text>
+                                <GlassCard style={[styles.hintCard, styles.hintCardDimmed]}>
+                                    <Typography variant="caption">Dream Unlock</Typography>
+                                    <Typography variant="body" style={styles.hintText}>Waiting for 3 clues...</Typography>
                                 </GlassCard>
                             </View>
                         </View>
@@ -60,6 +61,12 @@ const DreamDecoderGameScreen = () => {
 };
 
 const styles = StyleSheet.create({
+    highlightText: {
+        color: COLORS.brightYellow,
+    },
+    hintCardDimmed: {
+        opacity: 0.5,
+    },
     container: { 
         flex: 1, 
         backgroundColor: COLORS.backgroundSecondary 

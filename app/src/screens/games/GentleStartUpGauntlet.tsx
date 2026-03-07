@@ -73,11 +73,11 @@ export default function GentleStartUpGauntlet({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputWrapper}>
       <GlassCard>
         <Typography variant="h2">Rewrite this Harsh Start-Up</Typography>
         <Typography variant="sass" style={styles.harsh}>"{HARSH_STARTUPS[index]}"</Typography>
-        <Typography variant="body" style={{ marginTop: SPACING.small }}>Use: "I feel... about... I need..."</Typography>
+        <Typography variant="body" style={styles.instructionText}>Use: "I feel... about... I need..."</Typography>
         <TextInput
           style={styles.input}
           placeholder="I feel..."
@@ -114,11 +114,17 @@ export default function GentleStartUpGauntlet({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  inputWrapper: {
+    gap: SPACING.regular,
+  },
   harsh: {
     fontSize: TYPOGRAPHY.fontSize.headerMedium,
     textAlign: 'center',
     marginVertical: SPACING.regular,
     color: COLORS.vibrantPink
+  },
+  instructionText: {
+    marginTop: SPACING.small,
   },
   input: {
     backgroundColor: COLORS.backgroundInput,

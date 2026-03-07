@@ -31,7 +31,7 @@ export default function MemoryLaneGPS({ navigation }: any) {
                 </Typography>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="instructions" style={{ marginBottom: SPACING.sm }}>
+                    <Typography variant="instructions" style={styles.cardLabel}>
                         Type: Map pin + media proof
                     </Typography>
                     <Typography variant="body">
@@ -40,7 +40,7 @@ export default function MemoryLaneGPS({ navigation }: any) {
                 </GlassCard>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="instructions" style={{ marginBottom: SPACING.sm }}>
+                    <Typography variant="instructions" style={styles.cardLabel}>
                         Scoring
                     </Typography>
                     <Typography variant="body">
@@ -95,6 +95,9 @@ const styles = StyleSheet.create({
     },
     card: { 
         padding: SPACING.lg 
+    },
+    cardLabel: {
+        marginBottom: SPACING.sm,
     },
     actionArea: { 
         marginTop: SPACING.xl, 

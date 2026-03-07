@@ -6,7 +6,7 @@ import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '
 import { LinearGradient } from 'expo-linear-gradient';
 
 const WheelSegment = ({ color, d, label, rotation }: { color: string, d: string, label: string, rotation: string }) => (
-    <View style={{ position: 'absolute', width: '100%', height: '100%' }}>
+    <View style={styles.segmentContainer}>
         <Svg height="100%" width="100%" viewBox="0 0 100 100">
             <Path d={d} fill={color} />
         </Svg>
@@ -65,7 +65,7 @@ const DateNightRouletteWheelScreen = () => {
                         end={{ x: 1, y: 1 }}
                         style={styles.wheelContainer}
                     >
-                        <View style={{ transform: [{ rotate: '-90deg' }] }}>
+                        <View style={styles.wheelRotate}>
                              {segments.map((seg) => <WheelSegment key={seg.label} {...seg} />)}
                         </View>
                         <LinearGradient
@@ -241,6 +241,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
         padding: SPACING.tiny,
         borderRadius: BORDER_RADIUS.small,
+    },
+    segmentContainer: {
+        ...StyleSheet.absoluteFillObject,
+    },
+    wheelRotate: {
+        transform: [{ rotate: '-90deg' }],
     },
 });
 

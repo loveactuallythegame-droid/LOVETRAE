@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -43,10 +42,10 @@ export default function RitualRoulette({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.container}>
       <GlassCard>
-        <View style={{ alignItems: 'center', padding: SPACING.large }}>
-            <Typography variant="h1" style={{ fontSize: TYPOGRAPHY.fontSize.displayLarge }}>🎰</Typography>
+        <View style={styles.contentWrapper}>
+            <Typography variant="h1" style={styles.iconText}>🎰</Typography>
             <Typography variant="sass" style={styles.res}>{result || "?"}</Typography>
             <SquishyButton onPress={spin} style={styles.btn} disabled={spinning}>
                 <Typography variant="h2">{spinning ? "Spinning..." : "Spin Wheel"}</Typography>
@@ -81,6 +80,16 @@ export default function RitualRoulette({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: { 
+    gap: SPACING.regular 
+  },
+  contentWrapper: { 
+    alignItems: 'center', 
+    padding: SPACING.large 
+  },
+  iconText: { 
+    fontSize: TYPOGRAPHY.fontSize.displayLarge 
+  },
   res: { 
     textAlign: 'center', 
     marginVertical: SPACING.large, 

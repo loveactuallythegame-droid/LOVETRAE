@@ -10,5 +10,8 @@ export { default as PremiumGate } from './PremiumGate';
 export { default as Header } from './Header';
 export { ScreenLayout } from '../../layout';
 
+// Layout Primitives - Import from './layout'
+export { VStack, HStack, Spacer, Section } from './layout';
+
 // Re-export types
 export type { TrustThermometerProps } from './TrustThermometer';

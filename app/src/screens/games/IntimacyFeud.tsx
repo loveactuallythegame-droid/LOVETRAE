@@ -9,7 +9,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions, Alert } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
     strike: {
         width: 35,
         height: 35,
-        borderRadius: 17,
+        borderRadius: BORDER_RADIUS.round,
         backgroundColor: COLORS.backgroundInput,
         justifyContent: 'center',
         alignItems: 'center',

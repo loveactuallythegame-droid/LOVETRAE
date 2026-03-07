@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenLayout, Header, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, Header, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 
 const initialTower = [
@@ -19,7 +19,7 @@ const JengaBlock = ({ text }: { text: string | null }) => (
         end={GRADIENTS.primary.end}
         style={[styles.jengaBlock, !text && styles.emptyBlock]}
     >
-        {text && <Text variant="caption">{text}</Text>}
+        {text && <Typography variant="caption">{text}</Typography>}
     </LinearGradient>
 );
 
@@ -37,7 +37,7 @@ const CompromiseJengaGameScreen = () => {
                     <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                 </View>
                 <View style={styles.quoteBox}>
-                    <Text variant="sass">Build a compromise tower! Stack concessions to create a stable solution together.</Text>
+                    <Typography variant="sass">Build a compromise tower! Stack concessions to create a stable solution together.</Typography>
                 </View>
             </View>
             
@@ -49,7 +49,7 @@ const CompromiseJengaGameScreen = () => {
                     end={GRADIENTS.primary.end}
                     style={styles.sidebar}
                 >
-                    <Text variant="h2" style={styles.sidebarTitle}>Compromise Warehouse</Text>
+                    <Typography variant="h2" style={styles.sidebarTitle}>Compromise Warehouse</Typography>
                     {/* Placeholder for draggable blocks */}
                 </LinearGradient>
                 <ScrollView contentContainerStyle={styles.gameStage}>
@@ -59,11 +59,11 @@ const CompromiseJengaGameScreen = () => {
                         end={GRADIENTS.primary.end}
                         style={styles.stabilityMeter}
                     >
-                        <Text variant="h2" style={styles.meterTitle}>STABILITY: {stability}%</Text>
+                        <Typography variant="h2" style={styles.meterTitle}>STABILITY: {stability}%</Typography>
                         <View style={styles.meterBar}>
                             <LinearGradient 
                                 colors={GRADIENTS.primary.colors} 
-                                style={{width: `${stability}%`, height: '100%'}} 
+                                style={[styles.progressFill, {width: `${stability}%`}]} 
                             />
                         </View>
                     </LinearGradient>
@@ -80,7 +80,7 @@ const CompromiseJengaGameScreen = () => {
                             end={GRADIENTS.primary.end}
                             style={styles.dropZone}
                          >
-                            <Text variant="body" style={styles.dropZoneText}>Drop Block Here</Text>
+                            <Typography variant="body" style={styles.dropZoneText}>Drop Block Here</Typography>
                         </LinearGradient>
                     </View>
 
@@ -90,8 +90,8 @@ const CompromiseJengaGameScreen = () => {
                         end={GRADIENTS.primary.end}
                         style={styles.hostContainer}
                     >
-                        <Text variant="body" style={styles.hostQuote}>"Gravity always wins... and so does resentment if you aren't careful with your foundation!"</Text>
-                        <Text variant="caption" style={styles.hostName}>- Dr. Marcie Liss</Text>
+                        <Typography variant="body" style={styles.hostQuote}>"Gravity always wins... and so does resentment if you aren't careful with your foundation!"</Typography>
+                        <Typography variant="caption" style={styles.hostName}>- Dr. Marcie Liss</Typography>
                     </LinearGradient>
 
                 </ScrollView>
@@ -234,6 +234,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: SPACING.small,
         paddingVertical: SPACING.tiny,
         borderRadius: BORDER_RADIUS.medium,
+    },
+    progressFill: {
+        height: '100%',
     },
 });
 

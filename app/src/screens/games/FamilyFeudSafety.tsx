@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -63,17 +63,17 @@ export default function FamilyFeudSafety({ route, navigation }: any) {
     const current = SURVEYS[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
-                <Text variant="h1" center style={styles.gameTitle}>The Love Arcade</Text>
-                <Text variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Text>
+                <Typography variant="h1" center style={styles.gameTitle}>The Love Arcade</Typography>
+                <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
                 
-                <Text variant="h3" style={{ marginTop: SPACING.large }}>Survey Says...</Text>
-                <Text variant="body" style={{ marginBottom: SPACING.large }}>{current.q}</Text>
+                <Typography variant="h3" style={styles.roundTitle}>Survey Says...</Typography>
+                <Typography variant="body" style={styles.questionText}>{current.q}</Typography>
 
                 {current.answers.map((a, i) => (
                     <SquishyButton key={i} onPress={() => guess(i)} style={styles.ansBtn}>
-                        <Text variant="button">{a.text} ??</Text>
+                        <Typography variant="button">{a.text} ??</Typography>
                     </SquishyButton>
                 ))}
 
@@ -97,11 +97,20 @@ export default function FamilyFeudSafety({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        gap: SPACING.regular,
+    },
     gameTitle: {
         marginBottom: SPACING.small,
     },
     subtitle: {
         marginBottom: SPACING.regular,
+    },
+    roundTitle: {
+        marginTop: SPACING.large,
+    },
+    questionText: {
+        marginBottom: SPACING.large,
     },
     ansBtn: {
         backgroundColor: COLORS.backgroundInput,

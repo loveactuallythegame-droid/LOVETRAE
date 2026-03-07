@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenLayout, Header, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, Header, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS } from '../../theme';
 
 const topics = [{icon: 'rebase_edit', text: 'The Dishwasher'}, {icon: 'schedule', text: 'Being Late'}, {icon: 'phone_android', text: 'Screen Time'}];
@@ -14,8 +14,8 @@ const Dice = ({ result, color }: { result: {icon: string, text: string}, color: 
         end={GRADIENTS.primary.end}
         style={[styles.dice, {borderColor: color}]}
     >
-        <Text variant="h1" style={styles.diceIcon}>{result.icon}</Text>
-        <Text variant="body" style={styles.diceText}>{result.text}</Text>
+        <Typography variant="h1" style={styles.diceIcon}>{result.icon}</Typography>
+        <Typography variant="body" style={styles.diceText}>{result.text}</Typography>
     </LinearGradient>
 );
 
@@ -47,7 +47,7 @@ const ConflictDiceGameScreen = () => {
                     <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                 </View>
                 <View style={styles.quoteBox}>
-                    <Text variant="sass">Practice conflict resolution with random scenarios! Constraints make communication more creative.</Text>
+                    <Typography variant="sass">Practice conflict resolution with random scenarios! Constraints make communication more creative.</Typography>
                 </View>
             </View>
             
@@ -59,15 +59,15 @@ const ConflictDiceGameScreen = () => {
                     end={GRADIENTS.primary.end}
                     style={styles.refereeSidebar}
                 >
-                    <Text variant="h2" style={styles.sidebarTitle}>Referee</Text>
-                    <Text variant="body" style={styles.refereeName}>Dr. Marcie Liss</Text>
-                     <Text variant="body" style={styles.refereeQuote}>"Use 'I feel' instead of 'You always' to avoid a yellow card."</Text>
+                    <Typography variant="h2" style={styles.sidebarTitle}>Referee</Typography>
+                    <Typography variant="body" style={styles.refereeName}>Dr. Marcie Liss</Typography>
+                     <Typography variant="body" style={styles.refereeQuote}>"Use 'I feel' instead of 'You always' to avoid a yellow card."</Typography>
                 </LinearGradient>
 
                 <ScrollView contentContainerStyle={styles.arena}>
                     <View style={styles.diceContainer}>
                         <Dice result={topic} color={COLORS.lavenderPurple} />
-                        <Text variant="h1" style={styles.vs}>VS</Text>
+                        <Typography variant="h1" style={styles.vs}>VS</Typography>
                         <Dice result={constraint} color={COLORS.vibrantPink} />
                     </View>
 
@@ -76,9 +76,9 @@ const ConflictDiceGameScreen = () => {
                         disabled={isRolling}
                         style={styles.rollButton}
                     >
-                        <Text variant="button" style={{ color: COLORS.vibrantPink }}>
+                        <Typography variant="button" style={styles.buttonText}>
                             {isRolling ? 'ROLLING...' : 'ROLL DICE'}
-                        </Text>
+                        </Typography>
                     </SquishyButton>
                 </ScrollView>
 
@@ -88,7 +88,7 @@ const ConflictDiceGameScreen = () => {
                     end={GRADIENTS.primary.end}
                     style={styles.hallOfFameSidebar}
                 >
-                    <Text variant="h2" style={styles.sidebarTitle}>Hall of Fame</Text>
+                    <Typography variant="h2" style={styles.sidebarTitle}>Hall of Fame</Typography>
                     {/* Fame items would be populated from state */}
                 </LinearGradient>
             </View>
@@ -204,6 +204,9 @@ const styles = StyleSheet.create({
         borderRadius: BORDER_RADIUS.xlarge,
         marginTop: SPACING.xlarge,
         ...SHADOWS.large,
+    },
+    buttonText: {
+        color: COLORS.vibrantPink,
     },
 });
 

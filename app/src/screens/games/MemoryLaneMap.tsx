@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Typography, GlassCard, ScreenLayout } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
@@ -91,7 +90,7 @@ export default function MemoryLaneMap({ route, navigation }: any) {
           value={pin.name} 
           onChangeText={(t) => update('name', t)} 
         />
-        <View style={{ flexDirection: 'row', gap: SPACING.small }}>
+        <View style={styles.inputRow}>
           <TextInput 
             placeholder="lat" 
             placeholderTextColor={COLORS.textHint}
@@ -142,5 +141,9 @@ const styles = StyleSheet.create({
   },
   inputSmall: { 
     flex: 1,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    gap: SPACING.small,
   },
 });

@@ -32,7 +32,7 @@ export default function CommitmentDice({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputAreaGap}>
       <GlassCard>
         {/* Dr. Marcie Section */}
         <View style={styles.drMarcieSection}>
@@ -48,16 +48,16 @@ export default function CommitmentDice({ route, navigation }: any) {
         <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
 
         {!rolled ? (
-            <View style={{ alignItems: 'center', padding: SPACING.regular }}>
+            <View style={styles.rollContainer}>
                 <Typography variant="h1" center>🎲</Typography>
                 <SquishyButton onPress={roll} style={styles.rollBtn}>
-                  <Typography variant="button" style={{ color: COLORS.textPrimary }}>Roll for Commitment</Typography>
+                  <Typography variant="button" style={styles.buttonText}>Roll for Commitment</Typography>
                 </SquishyButton>
             </View>
         ) : (
-            <View style={{ gap: SPACING.regular }}>
+            <View style={styles.resultContainer}>
                 <Typography variant="body">Prompt:</Typography>
-                <Typography variant="h2" center style={{ color: COLORS.gradientStart }}>{prompt}</Typography>
+                <Typography variant="h2" center style={styles.promptText}>{prompt}</Typography>
                 <TextInput
                     style={styles.input}
                     placeholder="Your commitment..."
@@ -67,7 +67,7 @@ export default function CommitmentDice({ route, navigation }: any) {
                     multiline
                 />
                 <SquishyButton onPress={submit} style={styles.doneBtn}>
-                  <Typography variant="button" style={{ color: COLORS.textPrimary }}>Commit</Typography>
+                  <Typography variant="button" style={styles.buttonText}>Commit</Typography>
                 </SquishyButton>
             </View>
         )}
@@ -91,6 +91,22 @@ export default function CommitmentDice({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  inputAreaGap: {
+    gap: SPACING.regular,
+  },
+  rollContainer: {
+    alignItems: 'center',
+    padding: SPACING.regular,
+  },
+  resultContainer: {
+    gap: SPACING.regular,
+  },
+  promptText: {
+    color: COLORS.gradientStart,
+  },
+  buttonText: {
+    color: COLORS.textPrimary,
+  },
   gameTitle: {
     marginBottom: SPACING.small,
   },

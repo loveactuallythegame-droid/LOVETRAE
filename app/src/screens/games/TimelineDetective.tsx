@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
@@ -52,7 +51,7 @@ export default function TimelineDetective({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.medium }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
                 <Typography variant="h2">Investigation Board</Typography>
                 <Typography variant="instructions">Place evidence on the timeline:</Typography>
@@ -97,6 +96,9 @@ export default function TimelineDetective({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        gap: SPACING.medium,
+    },
     timeline: {
         height: 100,
         backgroundColor: COLORS.backgroundInput,

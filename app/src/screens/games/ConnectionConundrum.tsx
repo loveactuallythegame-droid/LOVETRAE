@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton, ScreenLayout } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
 import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 export default function ConnectionConundrum({ route, navigation }: any) {
   const { gameId } = route.params;
@@ -28,7 +28,7 @@ export default function ConnectionConundrum({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputArea}>
       <GlassCard>
         {/* Dr. Marcie Section */}
         <View style={styles.drMarcieSection}>
@@ -36,14 +36,14 @@ export default function ConnectionConundrum({ route, navigation }: any) {
             <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
           </View>
           <View style={styles.quoteBox}>
-            <Text variant="sass">Solve the connection conundrum! Test your relationship knowledge in rapid-fire challenges.</Text>
+            <Typography variant="sass">Solve the connection conundrum! Test your relationship knowledge in rapid-fire challenges.</Typography>
           </View>
         </View>
 
-        <Text variant="h2">Round {round}/10</Text>
-        <Text variant="body" style={{ textAlign: 'center', marginVertical: SPACING.xlarge }}>
+        <Typography variant="h2">Round {round}/10</Typography>
+        <Typography variant="body" style={styles.challengeText}>
             [Rapid Fire Challenge Placeholder]
-        </Text>
+        </Typography>
         <SquishyButton onPress={next} style={styles.btn}>
             <LinearGradient
               colors={GRADIENTS.primary.colors}
@@ -51,7 +51,7 @@ export default function ConnectionConundrum({ route, navigation }: any) {
               end={GRADIENTS.primary.end}
               style={styles.gradientButton}
             >
-                <Text variant="h2" style={{ color: COLORS.textPrimary }}>Solve & Next</Text>
+                <Typography variant="h2" style={styles.buttonText}>Solve & Next</Typography>
             </LinearGradient>
         </SquishyButton>
       </GlassCard>
@@ -115,5 +115,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backgroundInput,
     borderRadius: BORDER_RADIUS.large,
     padding: SPACING.regular,
+  },
+  inputArea: {
+    gap: SPACING.regular,
+  },
+  challengeText: {
+    textAlign: 'center',
+    marginVertical: SPACING.xlarge,
+  },
+  buttonText: {
+    color: COLORS.textPrimary,
   },
 });

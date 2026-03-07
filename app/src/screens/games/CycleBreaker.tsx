@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton, ScreenLayout } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
 import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
+import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 export default function CycleBreaker({ route, navigation }: any) {
     const { gameId } = route.params;
@@ -54,7 +54,7 @@ export default function CycleBreaker({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
                 {/* Dr. Marcie Section */}
                 <View style={styles.drMarcieSection}>
@@ -62,28 +62,28 @@ export default function CycleBreaker({ route, navigation }: any) {
                         <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                     </View>
                     <View style={styles.quoteBox}>
-                        <Text variant="sass">Break free from destructive cycles! Identify triggers and rewrite reactions.</Text>
+                        <Typography variant="sass">Break free from destructive cycles! Identify triggers and rewrite reactions.</Typography>
                     </View>
                 </View>
 
-                <Text variant="h2">Current Space: {pos}</Text>
+                <Typography variant="h2">Current Space: {pos}</Typography>
 
-                {pos === 0 && <Text variant="body">Start. Roll to move.</Text>}
+                {pos === 0 && <Typography variant="body">Start. Roll to move.</Typography>}
 
                 {pos === 2 && (
                     <View>
-                        <Text variant="instructions">Trigger: Late Phone Call.</Text>
+                        <Typography variant="instructions">Trigger: Late Phone Call.</Typography>
                         <SquishyButton onPress={roll} style={styles.actionBtn}>
-                            <Text variant="body">Action: Name 'Catastrophic Thought'</Text>
+                            <Typography variant="body">Action: Name 'Catastrophic Thought'</Typography>
                         </SquishyButton>
                     </View>
                 )}
 
                 {pos === 6 && (
                     <View>
-                        <Text variant="instructions">Rewrite the reaction.</Text>
+                        <Typography variant="instructions">Rewrite the reaction.</Typography>
                         <SquishyButton onPress={roll} style={styles.actionBtn}>
-                            <Text variant="body">Action: Say 'My alarm is loud' instead of attacking</Text>
+                            <Typography variant="body">Action: Say 'My alarm is loud' instead of attacking</Typography>
                         </SquishyButton>
                     </View>
                 )}
@@ -96,7 +96,7 @@ export default function CycleBreaker({ route, navigation }: any) {
                             end={GRADIENTS.primary.end}
                             style={styles.gradientButton}
                         >
-                            <Text variant="h2" style={{ color: COLORS.textPrimary }}>Roll Die</Text>
+                            <Typography variant="h2" style={styles.rollButtonText}>Roll Die</Typography>
                         </LinearGradient>
                     </SquishyButton>
                 )}
@@ -176,5 +176,11 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.backgroundInput,
         borderRadius: BORDER_RADIUS.large,
         padding: SPACING.regular,
+    },
+    scrollView: {
+        gap: SPACING.regular,
+    },
+    rollButtonText: {
+        color: COLORS.textPrimary,
     },
 });

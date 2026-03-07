@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
@@ -15,9 +15,9 @@ const wordBank = [
 ];
 
 const RansomWord = ({ word, onSelect }: { word: any, onSelect: (word: any) => void }) => (
-    <TouchableOpacity style={[styles.clipping, styles[word.style as keyof typeof styles]]} onPress={() => onSelect(word)}>
+    <SquishyButton onPress={() => onSelect(word)} style={[styles.clipping, styles[word.style as keyof typeof styles]]}>
         <Typography variant="body" style={styles.clippingText}>{word.text}</Typography>
-    </TouchableOpacity>
+    </SquishyButton>
 );
 
 const TheRansomNoteGame = ({ navigation }: any) => {
@@ -35,7 +35,7 @@ const TheRansomNoteGame = ({ navigation }: any) => {
                         <Typography variant="body">Back</Typography>
                     </SquishyButton>
                     <Typography variant="h1" style={styles.headerTitle}>The Ransom Note</Typography>
-                    <View style={{ width: 24 }} />
+                    <View style={styles.spacer} />
                 </View>
 
                 <Typography variant="h2" style={styles.objective}>Invite your partner on a date... or else.</Typography>
@@ -89,6 +89,9 @@ const styles = StyleSheet.create({
     headerTitle: {
         flex: 1,
         textAlign: 'center',
+    },
+    spacer: {
+        width: 24,
     },
     objective: { 
         color: COLORS.textSecondary, 

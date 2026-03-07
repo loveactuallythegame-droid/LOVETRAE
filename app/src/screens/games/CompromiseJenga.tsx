@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert, ScrollView, Image } from 'react-native';
-import { GlassCard, Text, SquishyButton, ScreenLayout } from '../../components/ui';
+import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -28,7 +28,7 @@ export default function CompromiseJenga({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputArea}>
       <GlassCard>
         {/* Dr. Marcie Section */}
         <View style={styles.drMarcieSection}>
@@ -36,11 +36,11 @@ export default function CompromiseJenga({ route, navigation }: any) {
             <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
           </View>
           <View style={styles.quoteBox}>
-            <Text variant="sass">Build a compromise tower! Stack concessions to create a stable solution together.</Text>
+            <Typography variant="body">Build a compromise tower! Stack concessions to create a stable solution together.</Typography>
           </View>
         </View>
 
-        <Text variant="h2">Compromise Tower</Text>
+        <Typography variant="h2">Compromise Tower</Typography>
         <View style={styles.tower}>
             {blocks.map((b, i) => (
                 <LinearGradient
@@ -50,12 +50,12 @@ export default function CompromiseJenga({ route, navigation }: any) {
                     end={GRADIENTS.primary.end}
                     style={styles.block}
                 >
-                    <Text variant="body" style={{ color: COLORS.textPrimary, textAlign: 'center' }}>{b}</Text>
+                    <Typography variant="body" style={styles.blockText}>{b}</Typography>
                 </LinearGradient>
             ))}
-            {blocks.length === 0 && <Text variant="body" style={{ textAlign: 'center', opacity: 0.5 }}>No blocks yet</Text>}
+            {blocks.length === 0 && <Typography variant="body" style={styles.emptyText}>No blocks yet</Typography>}
         </View>
-        <Text variant="body">Add a concession:</Text>
+        <Typography variant="body">Add a concession:</Typography>
         <TextInput
             style={styles.input}
             placeholder="e.g. I will cook on Mon/Wed"
@@ -70,7 +70,7 @@ export default function CompromiseJenga({ route, navigation }: any) {
                 end={GRADIENTS.primary.end}
                 style={styles.gradientButton}
             >
-                <Text variant="h2" style={{ color: COLORS.deepCosmic }}>Stack Block</Text>
+                <Typography variant="h2" style={styles.stackButtonText}>Stack Block</Typography>
             </LinearGradient>
         </SquishyButton>
         <SquishyButton onPress={finish} style={styles.done}>
@@ -80,7 +80,7 @@ export default function CompromiseJenga({ route, navigation }: any) {
                 end={GRADIENTS.primary.end}
                 style={styles.gradientButton}
             >
-                <Text variant="h2" style={{ color: COLORS.textPrimary }}>Finish Tower</Text>
+                <Typography variant="h2" style={styles.finishButtonText}>Finish Tower</Typography>
             </LinearGradient>
         </SquishyButton>
       </GlassCard>
@@ -103,6 +103,9 @@ export default function CompromiseJenga({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  inputArea: {
+    gap: SPACING.regular,
+  },
   tower: { minHeight: 100, justifyContent: 'flex-end', gap: SPACING.tiny, marginBottom: SPACING.regular },
   block: { 
     padding: SPACING.medium, 
@@ -134,6 +137,20 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.large, 
     alignItems: 'center',
     ...SHADOWS.buttonGlow,
+  },
+  blockText: {
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+  },
+  emptyText: {
+    textAlign: 'center',
+    opacity: 0.5,
+  },
+  stackButtonText: {
+    color: COLORS.deepCosmic,
+  },
+  finishButtonText: {
+    color: COLORS.textPrimary,
   },
   gradientButton: {
     flex: 1,

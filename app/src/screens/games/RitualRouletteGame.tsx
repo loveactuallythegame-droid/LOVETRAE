@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, Animated } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, ANIMATIONS } from '../../theme';
@@ -49,8 +48,19 @@ const RitualRouletteGame = () => {
                         </View>
                         <Animated.View style={[styles.wheel, { transform: [{ rotate: spin }] }]}>
                             {rituals.map((ritual, i) => (
-                                <View key={i} style={[styles.wheelSection, { transform: [{ rotate: `${(360 / rituals.length) * i}deg` }] }]}>
-                                    <MaterialIcons name={ritual.icon as any} size={32} color={COLORS.textPrimary} style={{ transform: [{ translateY: -150 }]}} />
+                                <View 
+                                    key={i} 
+                                    style={[
+                                        styles.wheelSection, 
+                                        { transform: [{ rotate: `${(360 / rituals.length) * i}deg` }] }
+                                    ]}
+                                >
+                                    <MaterialIcons 
+                                        name={ritual.icon as any} 
+                                        size={32} 
+                                        color={COLORS.textPrimary} 
+                                        style={styles.wheelIcon} 
+                                    />
                                 </View>
                             ))}
                             <SquishyButton onPress={spinWheel} style={styles.spinButton}>
@@ -66,15 +76,15 @@ const RitualRouletteGame = () => {
                         </GlassCard>
                         <GlassCard style={styles.logProofCard}>
                             <Typography variant="h3" style={styles.logProofTitle}>Log Proof</Typography>
-                            <TouchableOpacity style={styles.uploadZone}>
+                            <SquishyButton onPress={() => {}} style={styles.uploadZone}>
                                 <MaterialIcons name="add-a-photo" size={32} color={COLORS.textSecondary} />
                                 <Typography variant="body" style={styles.uploadText}>Snap a photo together</Typography>
-                            </TouchableOpacity>
+                            </SquishyButton>
                             <Typography variant="caption" center style={styles.orText}>OR</Typography>
-                            <TouchableOpacity style={styles.voiceNoteZone}>
+                            <SquishyButton onPress={() => {}} style={styles.voiceNoteZone}>
                                 <MaterialIcons name="mic" size={24} color={COLORS.textPrimary} />
                                 <Typography variant="body" style={styles.voiceNoteText}>Record a Voice Note</Typography>
-                            </TouchableOpacity>
+                            </SquishyButton>
                             <SquishyButton onPress={() => {}}>
                                 <Typography variant="button">SUBMIT PROOF</Typography>
                             </SquishyButton>
@@ -127,6 +137,9 @@ const styles = StyleSheet.create({
         height: '100%', 
         justifyContent: 'center', 
         alignItems: 'center' 
+    },
+    wheelIcon: { 
+        transform: [{ translateY: -150 }]
     },
     spinButton: { 
         width: 100, 

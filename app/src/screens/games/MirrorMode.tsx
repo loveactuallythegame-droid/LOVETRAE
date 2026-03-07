@@ -30,19 +30,19 @@ export default function MirrorMode({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputAreaContainer}>
       <GlassCard>
         <Typography variant="h2">Mirror Mode</Typography>
         <Typography variant="body">Record a 15s video describing your partner.</Typography>
         <View style={styles.cam}>
-          <Typography variant="body" style={{ color: COLORS.textHint }}>[Camera Feed Mock]</Typography>
+          <Typography variant="body" style={styles.cameraPlaceholder}>[Camera Feed Mock]</Typography>
           {recording && <View style={styles.recDot} />}
         </View>
         <SquishyButton onPress={toggleRecord} style={styles.btn} variant={recording ? 'secondary' : 'primary'}>
           <Typography variant="h2">{recording ? "Stop" : "Record"}</Typography>
         </SquishyButton>
 
-        <Typography variant="body" style={{ marginTop: SPACING.regular }}>Guess a word they used:</Typography>
+        <Typography variant="body" style={styles.guessLabel}>Guess a word they used:</Typography>
         <TextInput
           style={styles.input}
           placeholder="e.g. Kind"
@@ -77,6 +77,9 @@ export default function MirrorMode({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  inputAreaContainer: {
+    gap: SPACING.regular,
+  },
   cam: { 
     height: 150, 
     backgroundColor: COLORS.backgroundPrimary, 
@@ -84,6 +87,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center',
     marginTop: SPACING.regular,
+  },
+  cameraPlaceholder: {
+    color: COLORS.textHint,
   },
   recDot: { 
     width: 10, 
@@ -95,6 +101,9 @@ const styles = StyleSheet.create({
     right: SPACING.regular,
   },
   btn: { 
+    marginTop: SPACING.regular,
+  },
+  guessLabel: {
     marginTop: SPACING.regular,
   },
   input: { 

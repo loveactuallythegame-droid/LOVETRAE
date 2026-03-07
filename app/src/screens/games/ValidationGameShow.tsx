@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
@@ -62,19 +61,19 @@ export default function ValidationGameShow({ route, navigation }: any) {
     const current = ROUNDS[round];
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
                 <Typography variant="h2" center>Round {round + 1}</Typography>
-                <Typography variant="sass" center style={{ marginBottom: SPACING.regular }}>Partner A says: "{current.statement}"</Typography>
+                <Typography variant="sass" center style={styles.statementText}>Partner A says: "{current.statement}"</Typography>
 
-                <Typography variant="instructions" center style={{ marginBottom: SPACING.regular }}>Partner B, choose your response:</Typography>
+                <Typography variant="instructions" center style={styles.instructionsText}>Partner B, choose your response:</Typography>
                 {current.options.map(o => (
                     <SquishyButton
                         key={o.id}
                         onPress={() => setChoice(o.id)}
                         style={[styles.opt, choice === o.id ? styles.selected : {}]}
                     >
-                        <Typography variant="body" style={{ color: choice === o.id ? COLORS.backgroundPrimary : COLORS.textPrimary }}>{o.text}</Typography>
+                        <Typography variant="body" style={choice === o.id ? styles.optionTextSelected : styles.optionText}>{o.text}</Typography>
                     </SquishyButton>
                 ))}
 
@@ -101,6 +100,15 @@ export default function ValidationGameShow({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        gap: SPACING.regular,
+    },
+    statementText: {
+        marginBottom: SPACING.regular,
+    },
+    instructionsText: {
+        marginBottom: SPACING.regular,
+    },
     opt: {
         padding: SPACING.regular,
         backgroundColor: COLORS.backgroundInput,
@@ -112,6 +120,12 @@ const styles = StyleSheet.create({
     selected: {
         backgroundColor: COLORS.brightYellow,
         borderColor: COLORS.brightYellow
+    },
+    optionText: {
+        color: COLORS.textPrimary,
+    },
+    optionTextSelected: {
+        color: COLORS.backgroundPrimary,
     },
     submitBtn: {
         marginTop: SPACING.xlarge,

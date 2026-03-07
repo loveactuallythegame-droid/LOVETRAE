@@ -20,12 +20,12 @@ export default function ForeplayForecast({ navigation }: any) {
         </View>
 
         <GlassCard style={styles.card}>
-          <Typography variant="instructions" style={{ marginBottom: SPACING.small }}>Type: Live mood slider</Typography>
+          <Typography variant="instructions" style={styles.instructionText}>Type: Live mood slider</Typography>
           <Typography variant="body">Mechanics: A sets arousal bar (0–100). B performs non-sexual acts (compliment, neck rub) to raise it.</Typography>
         </GlassCard>
 
         <GlassCard style={styles.card}>
-          <Typography variant="instructions" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+          <Typography variant="instructions" style={styles.instructionText}>Scoring</Typography>
           <Typography variant="body">
             ✅ +20 points in 5 mins = +30{'\n'}
             ✅ A names what helped = +10
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   backBtn: { paddingHorizontal: SPACING.regular, paddingVertical: SPACING.small },
   title: { fontSize: TYPOGRAPHY.fontSize.headerLarge, color: COLORS.textPrimary, flex: 1 },
   card: { padding: SPACING.cardPadding },
+  instructionText: { marginBottom: SPACING.small },
   actionArea: { marginTop: SPACING.xlarge, alignItems: 'center' },
   playBtn: { width: '80%', paddingVertical: SPACING.regular }
 });

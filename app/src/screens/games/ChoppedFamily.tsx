@@ -103,190 +103,142 @@ const ChoppedFamily: React.FC = () => {
     const [round, setRound] = useState(0);
     const [baseChoice, setBaseChoice] = useState<string | null>(null);
     const [seasoningChoice, setSeasoningChoice] = useState<string | null>(null);
-    const [score, setScore] = useState(0);
-    const [gameCompleted, setGameCompleted] = useState(false);
-    const [completedRounds, setCompletedRounds] = useState(0);
+    const [totalScore, setTotalScore] = useState(0);
+    const [gameComplete, setGameComplete] = useState(false);
 
     const currentBasket = BASKETS[round];
 
     // Calculate round score
     const calculateRoundScore = () => {
         if (!baseChoice || !seasoningChoice) return 0;
-        
-        const basePoints = currentBasket.baseIngredients.find(b => b.id === baseChoice)?.points || 0;
-        const seasoningPoints = currentBasket.seasoningIngredients.find(s => s.id === seasoningChoice)?.points || 0;
-        
-        // Bonus for synergistic pairing
-        let synergyBonus = 0;
-        if (baseChoice === seasoningChoice) {
-            synergyBonus = 50; // Aligned choices
-        }
-        
-        return basePoints + seasoningPoints + synergyBonus;
+        const base = currentBasket.baseIngredients.find(b => b.id === baseChoice);
+        const seasoning = currentBasket.seasoningIngredients.find(s => s.id === seasoningChoice);
+        return (base?.points || 0) + (seasoning?.points || 0);
     };
 
-    // Submit dish
+    // Submit dish for the round
     const submitDish = async () => {
-        if (!baseChoice || !seasoningChoice) {
-            Alert.alert("Incomplete Dish", "Select both a Base and a Seasoning!");
-            return;
-        }
+        if (!baseChoice || !seasoningChoice) return;
 
         const roundScore = calculateRoundScore();
-        const newScore = score + roundScore;
-        setScore(newScore);
-        setCompletedRounds(prev => prev + 1);
+        const newTotal = totalScore + roundScore;
+        setTotalScore(newTotal);
 
-        // Save to backend
-        await updateScore(newScore, false, [{
-            round: round + 1,
-            basket: currentBasket.name,
-            base: baseChoice,
-            seasoning: seasoningChoice,
-            roundScore
-        }]);
+        // Update backend score
+        await updateScore(roundScore);
 
-        // Show feedback
-        let feedback = "Good effort!";
-        if (roundScore >= 250) feedback = "Five-Star Response! Standing ovation!";
-        else if (roundScore >= 200) feedback = "Chef's kiss! Beautifully balanced.";
-        else if (roundScore >= 150) feedback = "Solid dish. Room for growth.";
-
-        Alert.alert(
-            `Round ${round + 1} Complete!`,
-            `${feedback}\n\nScore: ${roundScore} points`,
-            [
-                {
-                    text: round < BASKETS.length - 1 ? 'Next Round' : 'Finish',
-                    onPress: () => {
-                        if (round < BASKETS.length - 1) {
-                            setRound(prev => prev + 1);
-                            setBaseChoice(null);
-                            setSeasoningChoice(null);
-                        } else {
-                            finishGame(newScore);
-                        }
-                    }
-                }
-            ]
-        );
+        if (round < BASKETS.length - 1) {
+            // Next round
+            setRound(prev => prev + 1);
+            setBaseChoice(null);
+            setSeasoningChoice(null);
+        } else {
+            // Game complete
+            setGameComplete(true);
+            await completeGame(newTotal, { 
+                roundsCompleted: BASKETS.length,
+                finalScore: newTotal 
+            });
+            
+            Alert.alert(
+                'Service Complete!',
+                `Final Score: ${newTotal}/${MAX_SCORE}\n\n${newTotal >= 400 ? 'Perfect plating! You two are culinary soulmates.' : 'Good effort! Even chopped contestants get a second chance.'}`,
+                [{ text: 'Back to Kitchen', onPress: () => navigation.goBack() }]
+            );
+        }
     };
 
-    // Finish game
-    const finishGame = async (finalScore: number) => {
-        setGameCompleted(true);
-        
-        let badge = 'Line Cook';
-        if (finalScore >= 1200) badge = 'Master Chef';
-        else if (finalScore >= 900) badge = 'Sous Chef';
-        else if (finalScore >= 600) badge = 'Home Cook';
-
-        await completeGame(finalScore, [{
-            completed: true,
-            badge,
-            roundsCompleted: BASKETS.length
-        }]);
-
-        Alert.alert(
-            'Kitchen Closed! 👨‍🍳',
-            `Final Score: ${finalScore}/${MAX_SCORE * BASKETS.length}\nBadge: ${badge}`,
-            [
-                { 
-                    text: 'View Results', 
-                    onPress: () => navigation.navigate('GameResults', { 
-                        score: finalScore, 
-                        badge,
-                        gameId: GAME_ID,
-                        sessionId: session?.id 
-                    }) 
-                },
-                { text: 'Exit', onPress: () => navigation.goBack() }
-            ]
-        );
-    };
-
-    // Loading state
     if (sessionLoading) {
         return (
-            <ScreenLayout showHeader={false} scrollable={true}>
-                    <Typography variant="h1" center style={styles.loadingText}>The Love Arcade</Typography>
-                <Typography variant="body" center>Preparing the Kitchen...</Typography>
+            <ScreenLayout showHeader={true} scrollable={true}>
+                <Typography variant="h1" center style={styles.loadingText}>Heating up the kitchen...</Typography>
             </ScreenLayout>
         );
     }
 
     return (
-        <ScreenLayout showHeader={false} scrollable={true}>
+        <ScreenLayout showHeader={true} scrollable={true}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                    <Typography variant="h1" center style={styles.gameTitle}>The Love Arcade</Typography>
-                    <Typography variant="h2" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
-
                     {/* Header */}
                     <View style={styles.header}>
-                        <Typography variant="h2" center>Chopped: Family Forge</Typography>
-                        <Typography variant="body" center style={styles.subtitleText}>Cook the perfect response</Typography>
-                        <View style={styles.scoreRow}>
-                            <Typography variant="caption" style={styles.scoreText}>Score: {score}</Typography>
-                            {isSyncing && <Typography variant="caption">💾</Typography>}
-                        </View>
-                        <Typography variant="caption" center style={styles.roundText}>
-                            Round {round + 1} of {BASKETS.length}
+                        <Typography variant="h1" center style={styles.gameTitle}>Chopped: Family Forge</Typography>
+                        <Typography variant="body" center style={styles.subtitleText}>
+                            Craft the perfect response to family challenges
                         </Typography>
                     </View>
 
-                    {/* Basket Card */}
+                    {/* Score Display */}
+                    <View style={styles.scoreRow}>
+                        <Typography variant="body">Total Score:</Typography>
+                        <Typography variant="h2" style={styles.scoreText}>{totalScore}</Typography>
+                    </View>
+                    <Typography variant="caption" center style={styles.roundText}>
+                        Round {round + 1} of {BASKETS.length}
+                    </Typography>
+
+                    {/* Current Basket */}
                     <GlassCard style={styles.basketCard}>
                         <View style={styles.basketHeader}>
                             <Typography variant="h2" style={styles.basketEmoji}>🧺</Typography>
-                            <Typography variant="h3">{currentBasket.name}</Typography>
+                            <Typography variant="h2">{currentBasket.name}</Typography>
                         </View>
-                        <Typography variant="body" style={styles.scenario}>{currentBasket.scenario}</Typography>
+                        <Typography variant="body" style={styles.scenario}>
+                            Scenario: {currentBasket.scenario}
+                        </Typography>
                     </GlassCard>
 
                     {/* Base Ingredients */}
-                    <Typography variant="label" style={styles.sectionTitle}>Base (Core Action):</Typography>
+                    <Typography variant="h3" style={styles.sectionTitle}>Choose Your Base Ingredient:</Typography>
                     <View style={styles.ingredientsContainer}>
-                        {currentBasket.baseIngredients.map((ingredient) => (
+                        {currentBasket.baseIngredients.map((ing) => (
                             <SquishyButton
-                                key={`base-${ingredient.id}`}
-                                variant={baseChoice === ingredient.id ? 'primary' : 'secondary'}
-                                onPress={() => setBaseChoice(ingredient.id)}
+                                key={ing.id}
+                                onPress={() => setBaseChoice(ing.id)}
                                 style={[
                                     styles.ingredientButton,
-                                    baseChoice === ingredient.id && styles.selectedIngredient
+                                    baseChoice === ing.id && styles.selectedIngredient
                                 ]}
                             >
-                                <Typography variant="body" style={[
-                                    styles.ingredientText,
-                                    baseChoice === ingredient.id && styles.selectedText
-                                ]}>
-                                    {ingredient.text}
+                                <Typography 
+                                    variant="body" 
+                                    style={[
+                                        styles.ingredientText,
+                                        baseChoice === ing.id && styles.selectedText
+                                    ]}
+                                >
+                                    {ing.text}
                                 </Typography>
-                                <Typography variant="caption" style={styles.pointsText}>+{ingredient.points} pts</Typography>
+                                <Typography variant="caption" style={styles.pointsText}>
+                                    {ing.points} points
+                                </Typography>
                             </SquishyButton>
                         ))}
                     </View>
 
-                    {/* Seasoning Ingredients */}
-                    <Typography variant="label" style={styles.sectionTitle}>Seasoning (Tone/Delivery):</Typography>
+                    {/* Seasoning */}
+                    <Typography variant="h3" style={styles.sectionTitle}>Choose Your Seasoning:</Typography>
                     <View style={styles.ingredientsContainer}>
-                        {currentBasket.seasoningIngredients.map((ingredient) => (
+                        {currentBasket.seasoningIngredients.map((ing) => (
                             <SquishyButton
-                                key={`season-${ingredient.id}`}
-                                variant={seasoningChoice === ingredient.id ? 'primary' : 'secondary'}
-                                onPress={() => setSeasoningChoice(ingredient.id)}
+                                key={ing.id}
+                                onPress={() => setSeasoningChoice(ing.id)}
                                 style={[
                                     styles.ingredientButton,
-                                    seasoningChoice === ingredient.id && styles.selectedSeasoning
+                                    seasoningChoice === ing.id && styles.selectedSeasoning
                                 ]}
                             >
-                                <Typography variant="body" style={[
-                                    styles.ingredientText,
-                                    seasoningChoice === ingredient.id && styles.selectedText
-                                ]}>
-                                    {ingredient.text}
+                                <Typography 
+                                    variant="body"
+                                    style={[
+                                        styles.ingredientText,
+                                        seasoningChoice === ing.id && styles.selectedText
+                                    ]}
+                                >
+                                    {ing.text}
                                 </Typography>
-                                <Typography variant="caption" style={styles.pointsText}>+{ingredient.points} pts</Typography>
+                                <Typography variant="caption" style={styles.pointsText}>
+                                    {ing.points} points
+                                </Typography>
                             </SquishyButton>
                         ))}
                     </View>
@@ -294,7 +246,7 @@ const ChoppedFamily: React.FC = () => {
                     {/* Preview */}
                     {baseChoice && seasoningChoice && (
                         <GlassCard style={styles.previewCard}>
-                            <Typography variant="label" style={styles.previewTitle}>Your Dish Preview:</Typography>
+                            <Typography variant="h3" style={styles.previewTitle}>Your Dish Preview:</Typography>
                             <Typography variant="body" style={styles.previewText}>
                                 {currentBasket.baseIngredients.find(b => b.id === baseChoice)?.text}
                             </Typography>
@@ -314,7 +266,7 @@ const ChoppedFamily: React.FC = () => {
                         disabled={!baseChoice || !seasoningChoice}
                         style={[styles.submitButton, (!baseChoice || !seasoningChoice) && styles.disabledButton]}
                     >
-                        <Typography variant="button" style={{ color: COLORS.textPrimary }}>
+                        <Typography variant="button" style={styles.buttonText}>
                             {round < BASKETS.length - 1 ? 'Plate the Dish' : 'Complete Service'}
                         </Typography>
                     </SquishyButton>
@@ -447,6 +399,9 @@ const styles = StyleSheet.create({
     sessionInfo: {
         color: COLORS.textHint,
         marginTop: SPACING.regular,
+    },
+    buttonText: {
+        color: COLORS.textPrimary,
     },
 });
 

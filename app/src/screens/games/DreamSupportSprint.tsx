@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -21,13 +21,13 @@ export default function DreamSupportSprint({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.gapContainer}>
       <GlassCard>
-        <Text variant="h2" center style={styles.gameTitle}>The Love Arcade</Text>
-        <Text variant="h3" center style={styles.subtitle}>+100 Games to Deepen Connection</Text>
+        <Typography variant="h2" center style={styles.gameTitle}>The Love Arcade</Typography>
+        <Typography variant="h3" center style={styles.subtitle}>+100 Games to Deepen Connection</Typography>
         
-        <Text variant="h3" style={{ marginTop: SPACING.large }}>Dream Support</Text>
-        <Text variant="body">Partner's Dream:</Text>
+        <Typography variant="h3" style={styles.sectionTitle}>Dream Support</Typography>
+        <Typography variant="body">Partner's Dream:</Typography>
         <TextInput
             style={styles.input}
             placeholder="e.g. Learn Guitar"
@@ -35,7 +35,7 @@ export default function DreamSupportSprint({ route, navigation }: any) {
             value={dream}
             onChangeText={setDream}
         />
-        <Text variant="body" style={{ marginTop: SPACING.regular }}>Your Specific Support:</Text>
+        <Typography variant="body" style={styles.inputLabel}>Your Specific Support:</Typography>
         <TextInput
             style={styles.input}
             placeholder="e.g. I will take the kids for 1hr on Saturdays"
@@ -45,7 +45,7 @@ export default function DreamSupportSprint({ route, navigation }: any) {
             multiline
         />
         <SquishyButton onPress={submit} style={styles.btn}>
-            <Text variant="button">Commit Support</Text>
+            <Typography variant="button">Commit Support</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -67,6 +67,15 @@ export default function DreamSupportSprint({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  gapContainer: {
+    gap: SPACING.regular,
+  },
+  sectionTitle: {
+    marginTop: SPACING.large,
+  },
+  inputLabel: {
+    marginTop: SPACING.regular,
+  },
   gameTitle: {
     marginBottom: SPACING.small,
   },

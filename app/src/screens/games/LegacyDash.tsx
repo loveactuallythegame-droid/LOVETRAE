@@ -57,7 +57,7 @@ export default function LegacyDash({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
                 <Typography variant="h2">Leg {stage}/4</Typography>
 
@@ -127,6 +127,9 @@ export default function LegacyDash({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        gap: SPACING.regular,
+    },
     actionBtn: {
         marginTop: SPACING.large,
         marginBottom: SPACING.large,

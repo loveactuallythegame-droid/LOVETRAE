@@ -103,7 +103,7 @@ export default function ApologyAuction({ route, navigation }: any) {
 
   return (
     <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Genuine apologies are the foundation of trust! Choose the most heartfelt option to win this auction.">
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.content}>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
         <Typography variant="h1" style={styles.title}>
           The Love Arcade
         </Typography>
@@ -118,10 +118,10 @@ export default function ApologyAuction({ route, navigation }: any) {
             end={{ x: 1, y: 1 }}
             style={styles.gradientContainer}
           >
-            <Typography variant="h3" style={{ marginBottom: SPACING.md, color: COLORS.textPrimary }}>
+            <Typography variant="h3" style={styles.roundText}>
               Round {round} of 5
             </Typography>
-            <Typography variant="body" style={{ marginBottom: SPACING.lg, color: COLORS.textSecondary }}>
+            <Typography variant="body" style={styles.instructionText}>
               Select the most genuine apology for the situation
             </Typography>
 
@@ -146,16 +146,11 @@ export default function ApologyAuction({ route, navigation }: any) {
                       style={styles.squishyButton}
                       onPress={() => selectCard(card.id)}
                     >
-                      <Typography variant="body" style={{ 
-                        color: selectedCard === card.id ? COLORS.backgroundPrimary : COLORS.textPrimary,
-                        textAlign: 'center'
-                      }}>
+                      <Typography variant="body" style={[styles.cardText, selectedCard === card.id && styles.selectedCardText]}>
                         {card.text}
                       </Typography>
                       <View style={styles.cardFooter}>
-                        <Typography variant="caption" style={{ 
-                          color: selectedCard === card.id ? COLORS.backgroundPrimary : COLORS.mintGreen 
-                        }}>
+                        <Typography variant="caption" style={[styles.cardValue, selectedCard === card.id && styles.selectedCardValue]}>
                           Value: {card.value} pts
                         </Typography>
                       </View>
@@ -170,7 +165,7 @@ export default function ApologyAuction({ route, navigation }: any) {
               onPress={submitBid} 
               disabled={!selectedCard}
             >
-              <Typography variant="button" style={{ color: COLORS.textPrimary }}>
+              <Typography variant="button" style={styles.buttonText}>
                 Bid Apology
               </Typography>
             </SquishyButton>
@@ -179,10 +174,10 @@ export default function ApologyAuction({ route, navigation }: any) {
         
         {partnerResponse && (
           <GlassCard style={styles.partnerCard}>
-            <Typography variant="caption" style={{ color: COLORS.mintGreen, marginBottom: SPACING.sm }}>
+            <Typography variant="caption" style={styles.partnerLabel}>
               Partner's Choice:
             </Typography>
-            <Typography variant="body" style={{ color: COLORS.textSecondary }}>
+            <Typography variant="body" style={styles.partnerText}>
               {partnerResponse.selectedCard 
                 ? `Selected card with value: ${partnerResponse.selectedCard}`
                 : 'Partner is selecting...'}
@@ -204,6 +199,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.backgroundPrimary,
   },
+  scrollView: {
+    flex: 1,
+  },
   content: {
     padding: SPACING.lg,
     paddingBottom: SPACING.xxxlarge,
@@ -220,6 +218,14 @@ const styles = StyleSheet.create({
   gradientContainer: {
     padding: SPACING.md,
     borderRadius: BORDER_RADIUS.xlarge,
+  },
+  roundText: {
+    marginBottom: SPACING.md,
+    color: COLORS.textPrimary,
+  },
+  instructionText: {
+    marginBottom: SPACING.lg,
+    color: COLORS.textSecondary,
   },
   cardsContainer: {
     flexDirection: 'row',
@@ -242,6 +248,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: SPACING.md,
   },
+  cardText: {
+    color: COLORS.textPrimary,
+    textAlign: 'center',
+  },
+  selectedCardText: {
+    color: COLORS.backgroundPrimary,
+  },
   selectedCard: {
     backgroundColor: COLORS.success,
     borderColor: COLORS.success,
@@ -250,13 +263,29 @@ const styles = StyleSheet.create({
     marginTop: SPACING.sm,
     alignItems: 'flex-end',
   },
+  cardValue: {
+    color: COLORS.mintGreen,
+  },
+  selectedCardValue: {
+    color: COLORS.backgroundPrimary,
+  },
   submitButton: {
     marginTop: SPACING.md,
     opacity: 0.7,
   },
+  buttonText: {
+    color: COLORS.textPrimary,
+  },
   partnerCard: {
     marginTop: SPACING.md,
     padding: SPACING.md,
+  },
+  partnerLabel: {
+    color: COLORS.mintGreen,
+    marginBottom: SPACING.sm,
+  },
+  partnerText: {
+    color: COLORS.textSecondary,
   },
   scoreContainer: {
     marginTop: SPACING.lg,

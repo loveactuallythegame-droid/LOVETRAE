@@ -58,7 +58,7 @@ export default function StressTest({ route, navigation }: any) {
 
   return (
     <ScreenLayout showHeader={true} scrollable={true}>
-      <View style={{ gap: SPACING.regular }}>
+      <View style={styles.container}>
         <Typography variant="h1" center>The Love Arcade</Typography>
         <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
 
@@ -77,7 +77,7 @@ export default function StressTest({ route, navigation }: any) {
                   ]} 
                 />
               </View>
-              <View style={{ flexDirection: 'row', gap: SPACING.small }}>
+              <View style={styles.buttonRow}>
                 <SquishyButton onPress={() => set(d, scores[d] - 10)} variant="ghost" size="small">
                   <Typography variant="h2">-</Typography>
                 </SquishyButton>
@@ -101,6 +101,13 @@ export default function StressTest({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: SPACING.regular,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: SPACING.small,
+  },
   row: { 
     marginTop: SPACING.regular, 
     gap: SPACING.small 

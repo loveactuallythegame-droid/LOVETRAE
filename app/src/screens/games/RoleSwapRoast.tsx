@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
@@ -86,7 +85,7 @@ export default function RoleSwapRoast({ route, navigation }: any) {
     <View>
       <GlassCard>
         <Typography variant="body">Use camera, toggle filters, and deliver your impression</Typography>
-        <View style={{ flexDirection: 'row', gap: SPACING.small, marginTop: SPACING.regular }}>
+        <View style={styles.buttonRow}>
           <SquishyButton onPress={toggleHelium} style={styles.btn}>
             <Typography variant="h3">Helium {helium ? 'On' : 'Off'}</Typography>
           </SquishyButton>
@@ -94,7 +93,7 @@ export default function RoleSwapRoast({ route, navigation }: any) {
             <Typography variant="h3">AR {arOn ? 'On' : 'Off'}</Typography>
           </SquishyButton>
         </View>
-        <View style={{ flexDirection: 'row', gap: SPACING.small, marginTop: SPACING.regular }}>
+        <View style={styles.buttonRow}>
           <SquishyButton onPress={addLaugh} style={styles.btn}>
             <Typography variant="h3">Laugh +1</Typography>
           </SquishyButton>
@@ -102,7 +101,7 @@ export default function RoleSwapRoast({ route, navigation }: any) {
             <Typography variant="h3">Cast Partner Vote</Typography>
           </SquishyButton>
         </View>
-        <View style={{ marginTop: SPACING.regular }}>
+        <View style={styles.scoreContainer}>
           <Typography variant="caption" style={styles.scoreText}>Accuracy {accuracy}%</Typography>
           <Typography variant="caption" style={styles.scoreText}>Partner Votes {partnerVotes}</Typography>
         </View>
@@ -127,5 +126,13 @@ const styles = StyleSheet.create({
   },
   scoreText: {
     color: COLORS.textSecondary
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: SPACING.small,
+    marginTop: SPACING.regular
+  },
+  scoreContainer: {
+    marginTop: SPACING.regular
   }
 });

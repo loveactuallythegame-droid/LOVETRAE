@@ -56,7 +56,7 @@ export default function ApologyWorkshop({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
                 {/* Dr. Marcie Section */}
                 <View style={styles.drMarcieSection}>
@@ -113,6 +113,9 @@ export default function ApologyWorkshop({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        gap: SPACING.regular,
+    },
     actionBtn: {
         marginTop: SPACING.regular,
         marginBottom: SPACING.regular,

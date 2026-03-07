@@ -11,9 +11,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert, TextInput } from 'react-native';
+import { Typography } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 // Backend integration
@@ -224,7 +225,7 @@ const CouplesJeopardyGame: React.FC = () => {
         return (
             <ScreenLayout showHeader={false} scrollable={true}>
                 <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background}>
-                    <Text variant="h2" style={styles.loadingText}>Loading Jeopardy...</Text>
+                    <Typography variant="h2" style={styles.loadingText}>Loading Jeopardy...</Typography>
                 </LinearGradient>
             </ScreenLayout>
         );
@@ -240,7 +241,7 @@ const CouplesJeopardyGame: React.FC = () => {
                     <ScrollView contentContainerStyle={styles.scrollContent}>
                         {showWager && (
                             <View style={styles.dailyDoubleBanner}>
-                                <Text variant="h1">DAILY DOUBLE!</Text>
+                                <Typography variant="h1">DAILY DOUBLE!</Typography>
                                 <TextInput
                                     style={styles.wagerInput}
                                     placeholder={`Wager up to $${score}`}
@@ -253,9 +254,9 @@ const CouplesJeopardyGame: React.FC = () => {
                         )}
 
                         <GlassCard style={styles.questionCard}>
-                            <Text variant="caption" style={styles.categoryLabel}>{categories[selectedClue.catIndex].name}</Text>
-                            <Text variant="h1" style={styles.valueLabel}>${clue.value}</Text>
-                            <Text variant="h2" style={styles.questionText}>{clue.question}</Text>
+                            <Typography variant="caption" style={styles.categoryLabel}>{categories[selectedClue.catIndex].name}</Typography>
+                            <Typography variant="h1" style={styles.valueLabel}>${clue.value}</Typography>
+                            <Typography variant="h2" style={styles.questionText}>{clue.question}</Typography>
                         </GlassCard>
 
                         <TextInput
@@ -271,7 +272,7 @@ const CouplesJeopardyGame: React.FC = () => {
                             onPress={submitAnswer}
                             disabled={!userAnswer.trim() || (showWager && wager <= 0)}
                         >
-                            <Text variant="button">Answer</Text>
+                            <Typography variant="button">Answer</Typography>
                         </SquishyButton>
                     </ScrollView>
                 </LinearGradient>
@@ -286,10 +287,10 @@ const CouplesJeopardyGame: React.FC = () => {
             
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View style={styles.header}>
-                    <Text variant="h1" style={styles.mainTitle}>Couple's Jeopardy</Text>
+                    <Typography variant="h1" style={styles.mainTitle}>Couple's Jeopardy</Typography>
                     <View style={styles.scoreDisplay}>
-                        <Text variant="h1" style={styles.scoreText}>${score}</Text>
-                        {isSyncing && <Text variant="caption">💾</Text>}
+                        <Typography variant="h1" style={styles.scoreText}>${score}</Typography>
+                        {isSyncing && <Typography variant="caption">💾</Typography>
                     </View>
                 </View>
 
@@ -300,7 +301,7 @@ const CouplesJeopardyGame: React.FC = () => {
                     {categories.map((category, catIndex) => (
                         <View key={category.name} style={styles.categoryColumn}>
                             <View style={styles.categoryHeader}>
-                                <Text variant="caption" style={styles.categoryTitle}>{category.name}</Text>
+                                <Typography variant="caption" style={styles.categoryTitle}>{category.name}</Typography>
                             </View>
                             {category.clues.map((clue, clueIndex) => (
                                 <SquishyButton
@@ -317,14 +318,14 @@ const CouplesJeopardyGame: React.FC = () => {
                                         colors={clue.revealed ? ['#000040', '#000040'] : ['#060ce9', '#000080']}
                                         style={styles.cardGradient}
                                     >
-                                        <Text variant="h2" style={[
+                                        <Typography variant="h2" style={[
                                             styles.cardValue,
                                             clue.revealed && styles.playedCardValue
                                         ]}>
                                             {clue.revealed ? '—' : `$${clue.value}`}
-                                        </Text>
+                                        </Typography>
                                         {clue.dailyDouble && !clue.revealed && (
-                                            <Text variant="caption" style={styles.ddBadge}>DD</Text>
+                                            <Typography variant="caption" style={styles.ddBadge}>DD</Typography>
                                         )}
                                     </LinearGradient>
                                 </SquishyButton>
@@ -334,7 +335,7 @@ const CouplesJeopardyGame: React.FC = () => {
                 </LinearGradient>
 
                 {session && (
-                    <Text variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
+                    <Typography variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Typography>
                 )}
             </ScrollView>
         </ScreenLayout>
@@ -417,7 +418,8 @@ const styles = StyleSheet.create({
         color: COLORS.brightYellow,
     },
     playedCardValue: {
-        color: 'rgba(255,215,0,0.3)',
+        color: COLORS.brightYellow,
+        opacity: 0.3,
     },
     ddBadge: {
         position: 'absolute',
@@ -425,7 +427,7 @@ const styles = StyleSheet.create({
         right: 2,
         backgroundColor: COLORS.brightYellow,
         color: COLORS.deepCosmic,
-        padding: 2,
+        padding: SPACING.tiny,
         borderRadius: BORDER_RADIUS.small,
     },
     dailyDoubleBanner: {

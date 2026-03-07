@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { Audio } from 'expo-av';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -121,7 +120,7 @@ export default function LieDetector({ route, navigation }: any) {
 
         {result && !analyzing && (
           <GlassCard style={styles.resultCard}>
-            <Typography variant="h2" style={{ color: result.passed ? COLORS.success : COLORS.error }}>
+            <Typography variant="h2" style={[styles.scoreText, { color: result.passed ? COLORS.success : COLORS.error }]}>
               Score: {result.score}/25
             </Typography>
             <View style={styles.statRow}>
@@ -136,7 +135,7 @@ export default function LieDetector({ route, navigation }: any) {
               <Typography variant="body">Filler Words:</Typography>
               <Typography variant="keyword">{result.fillerWords}</Typography>
             </View>
-            <Typography variant="body" style={{ marginTop: SPACING.regular, fontStyle: 'italic' }}>
+            <Typography variant="body" style={styles.resultMessage}>
               {result.passed ? "Marcie: I'll allow it." : "Marcie: Try again. Less thinking, more truth."}
             </Typography>
           </GlassCard>
@@ -189,9 +188,16 @@ const styles = StyleSheet.create({
     gap: SPACING.regular, 
     alignItems: 'center',
   },
+  scoreText: {
+    // color is dynamic based on result.passed
+  },
   statRow: { 
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     width: '100%',
+  },
+  resultMessage: {
+    marginTop: SPACING.regular,
+    fontStyle: 'italic',
   },
 });

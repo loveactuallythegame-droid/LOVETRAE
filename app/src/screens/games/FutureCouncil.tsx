@@ -45,7 +45,7 @@ export default function FutureCouncil({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <ScrollView style={{ gap: SPACING.regular }}>
+    <ScrollView style={styles.scrollContent}>
       <GlassCard>
         <Typography variant="h2">Scenario 1: Relapse Prevention</Typography>
         <Typography variant="body">An old dating app contact messages: "Hey."</Typography>
@@ -88,6 +88,7 @@ export default function FutureCouncil({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  scrollContent: { gap: SPACING.regular },
   entry: {
     backgroundColor: COLORS.backgroundInput,
     padding: SPACING.regular,

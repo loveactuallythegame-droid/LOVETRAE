@@ -49,8 +49,8 @@ export default function TransparencyToss({ navigation }: any) {
             <GlassCard style={styles.card}>
               <Typography variant="h2" center>Truth Tossed!</Typography>
               <Typography variant="body" style={styles.truthText}>"{toss}"</Typography>
-              <Typography variant="body" center style={{ marginTop: SPACING.xlarge }}>Partner: Verify this truth.</Typography>
-              <SquishyButton onPress={handleVerify} style={[styles.btn, { backgroundColor: COLORS.success }]}>
+              <Typography variant="body" center style={styles.verifyLabel}>Partner: Verify this truth.</Typography>
+              <SquishyButton onPress={handleVerify} style={[styles.btn, styles.verifyButton]}>
                 <Typography variant="h2" color={COLORS.textPrimary}>✅ Verify (+10 XP)</Typography>
               </SquishyButton>
             </GlassCard>
@@ -117,5 +117,11 @@ const styles = StyleSheet.create({
     color: COLORS.brightYellow, 
     textAlign: 'center',
     marginTop: SPACING.regular,
-  }
+  },
+  verifyLabel: {
+    marginTop: SPACING.xlarge,
+  },
+  verifyButton: {
+    backgroundColor: COLORS.success,
+  },
 });

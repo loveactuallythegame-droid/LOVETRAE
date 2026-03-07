@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout } from '../../components/ui';
 import { Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
@@ -68,12 +67,12 @@ export default function TriggerTriage({ route, navigation }: any) {
                 <View style={styles.sliderContainer}>
                     <Typography 
                         variant="h3" 
-                        style={{ color: painLevel > 7 ? COLORS.error : COLORS.success }}
+                        style={[styles.painLevelText, { color: painLevel > 7 ? COLORS.error : COLORS.success }]}
                     >
                         {painLevel}
                     </Typography>
                     <Slider
-                        style={{ width: '100%', height: 40 }}
+                        style={styles.slider}
                         minimumValue={1}
                         maximumValue={10}
                         step={1}
@@ -90,19 +89,19 @@ export default function TriggerTriage({ route, navigation }: any) {
                     value={trigger} 
                     onChangeText={setTrigger} 
                 />
-                <Typography variant="body" style={{ marginTop: SPACING.regular }}>
+                <Typography variant="body" style={styles.deescalationLabel}>
                     De-escalation Script / Coping Strategy:
                 </Typography>
                 <TextInput 
                     placeholder="I feel triggered because... I need..." 
                     placeholderTextColor={COLORS.textHint}
-                    style={[styles.input, { height: 80 }]} 
+                    style={[styles.input, styles.multilineInput]} 
                     multiline 
                     value={script} 
                     onChangeText={setScript} 
                 />
                 {painLevel > 6 && (
-                    <View style={{ marginTop: SPACING.regular }}>
+                    <View style={styles.suggestionContainer}>
                         <Typography variant="keyword">
                             Suggested: "I am feeling a level {painLevel} trigger. Can we pause for 20 mins?"
                         </Typography>
@@ -126,6 +125,13 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         marginVertical: SPACING.regular 
     },
+    painLevelText: {
+        // color is dynamic based on painLevel
+    },
+    slider: {
+        width: '100%',
+        height: 40,
+    },
     input: { 
         backgroundColor: COLORS.backgroundSecondary, 
         borderWidth: 1, 
@@ -134,5 +140,14 @@ const styles = StyleSheet.create({
         padding: SPACING.regular, 
         color: COLORS.textPrimary, 
         marginTop: SPACING.small 
+    },
+    deescalationLabel: {
+        marginTop: SPACING.regular,
+    },
+    multilineInput: {
+        height: 80,
+    },
+    suggestionContainer: {
+        marginTop: SPACING.regular,
     },
 });

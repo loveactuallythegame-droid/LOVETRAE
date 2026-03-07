@@ -24,7 +24,7 @@ const ForeplaySliderGame1Screen = () => {
 
           <View style={styles.sliderContainer}>
             <Slider
-              style={{ height: 400, width: 200, transform: [{ rotate: '-90deg' }] }}
+              style={styles.slider}
               minimumValue={0}
               maximumValue={100}
               value={sliderValue}
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   sliderSection: { flexDirection: 'row', alignItems: 'center', gap: SPACING.regular },
   intensityMarkers: { height: 380, justifyContent: 'space-between', alignItems: 'flex-end' },
   sliderContainer: { justifyContent: 'center', alignItems: 'center', height: 450, width: 50 },
+  slider: { height: 400, width: 200, transform: [{ rotate: '-90deg' }] },
   statsContainer: { gap: SPACING.regular, width: 200 },
   statBox: { padding: SPACING.regular },
   statLabel: { color: COLORS.textSecondary },

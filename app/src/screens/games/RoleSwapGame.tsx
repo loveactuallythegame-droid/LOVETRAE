@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -39,14 +38,22 @@ const RoleSwapGame = () => {
         <ScreenLayout showHeader={false} scrollable={false}>
             <View style={styles.header}>
                 <Typography variant="h1" center>Role Swap</Typography>
-                <Typography variant="h2" center style={{ color: COLORS.lavenderPurple }}>Step Into Their Shoes</Typography>
+                <Typography variant="h2" center style={styles.subtitleText}>Step Into Their Shoes</Typography>
             </View>
 
             <ScrollView style={styles.chatContainer}>
                 {messages.map(msg => (
                     <View key={msg.id} style={[styles.messageRow, msg.isSelf ? styles.messageRowSelf : {}]}>
-                        <GlassCard style={[styles.messageBubble, msg.isSelf ? styles.messageBubbleSelf : {}, { borderColor: msg.userColor }]}>
-                            <Typography variant="caption" style={{ color: msg.userColor }}>{msg.user} as {msg.as}</Typography>
+                        <GlassCard 
+                            style={[
+                                styles.messageBubble, 
+                                msg.isSelf ? styles.messageBubbleSelf : {}, 
+                                { borderColor: msg.userColor }
+                            ]}
+                        >
+                            <Typography variant="caption" style={[styles.userLabel, { color: msg.userColor }]}>
+                                {msg.user} as {msg.as}
+                            </Typography>
                             <Typography variant="body">{msg.text}</Typography>
                         </GlassCard>
                     </View>
@@ -84,6 +91,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1, 
         borderColor: COLORS.borderSubtle 
     },
+    subtitleText: {
+        color: COLORS.lavenderPurple
+    },
     chatContainer: { 
         flex: 1, 
         padding: SPACING.regular 
@@ -104,6 +114,8 @@ const styles = StyleSheet.create({
         borderLeftWidth: 0, 
         borderRightWidth: 4, 
         borderRightColor: COLORS.lavenderPurple 
+    },
+    userLabel: {
     },
     inputSection: { 
         padding: SPACING.regular, 

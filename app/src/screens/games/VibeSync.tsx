@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -40,7 +39,7 @@ export default function VibeSync({ navigation }: any) {
         <View style={styles.sliderContainer}>
           <Typography variant="h1" style={styles.value}>{myVibe}%</Typography>
           <Slider
-            style={{ width: '100%', height: 40 }}
+            style={styles.slider}
             minimumValue={0}
             maximumValue={100}
             step={1}
@@ -57,10 +56,10 @@ export default function VibeSync({ navigation }: any) {
         </View>
 
         {step === 3 && (
-           <View style={{ marginTop: SPACING.xlarge, alignItems: 'center', gap: SPACING.regular }}>
+           <View style={styles.resultsContainer}>
              <Typography variant="body">Partner's Vibe (Simulated)</Typography>
-             <Typography variant="h1" style={{ color: COLORS.brightYellow }}>{partnerVibe}%</Typography>
-             <Typography variant="h2" center style={{ color: COLORS.success }}>{msg}</Typography>
+             <Typography variant="h1" style={styles.partnerValue}>{partnerVibe}%</Typography>
+             <Typography variant="h2" center style={styles.messageText}>{msg}</Typography>
            </View>
         )}
 
@@ -71,7 +70,7 @@ export default function VibeSync({ navigation }: any) {
         )}
 
         {step === 3 && (
-           <SquishyButton onPress={() => setStep(1)} style={[styles.btn, { marginTop: SPACING.xlarge }]}>
+           <SquishyButton onPress={() => setStep(1)} style={styles.playAgainBtn}>
              <Typography variant="button">Play Again</Typography>
            </SquishyButton>
         )}
@@ -103,6 +102,10 @@ const styles = StyleSheet.create({
     gap: SPACING.regular, 
     paddingVertical: SPACING.xlarge 
   },
+  slider: {
+    width: '100%',
+    height: 40,
+  },
   value: { 
     fontSize: TYPOGRAPHY.fontSize.displayLarge * 1.5, 
     color: COLORS.emotionalConnection 
@@ -112,10 +115,28 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', 
     width: '100%' 
   },
+  resultsContainer: {
+    marginTop: SPACING.xlarge,
+    alignItems: 'center',
+    gap: SPACING.regular,
+  },
+  partnerValue: {
+    color: COLORS.brightYellow,
+  },
+  messageText: {
+    color: COLORS.success,
+  },
   btn: { 
     backgroundColor: COLORS.emotionalConnection, 
     padding: SPACING.regular, 
     borderRadius: BORDER_RADIUS.button, 
     alignItems: 'center' 
-  }
+  },
+  playAgainBtn: {
+    backgroundColor: COLORS.emotionalConnection,
+    padding: SPACING.regular,
+    borderRadius: BORDER_RADIUS.button,
+    alignItems: 'center',
+    marginTop: SPACING.xlarge,
+  },
 });

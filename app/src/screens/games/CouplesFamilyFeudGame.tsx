@@ -10,9 +10,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert, TextInput } from 'react-native';
+import { Typography } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 // Backend integration
@@ -201,7 +202,7 @@ const CouplesFamilyFeudGame: React.FC = () => {
         return (
             <ScreenLayout showHeader={false} scrollable={true}>
                 <LinearGradient colors={[COLORS.backgroundSecondary, COLORS.richPlum]} style={styles.background}>
-                    <Text variant="h2" style={styles.loadingText}>Loading Survey...</Text>
+                    <Typography variant="h2" style={styles.loadingText}>Loading Survey...</Typography>
                 </LinearGradient>
             </ScreenLayout>
         );
@@ -214,17 +215,17 @@ const CouplesFamilyFeudGame: React.FC = () => {
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 {/* Header */}
                 <View style={styles.header}>
-                    <Text variant="h1" style={styles.headerTitle}>Couples Family Feud</Text>
+                    <Typography variant="h1" style={styles.headerTitle}>Couples Family Feud</Typography>
                     <View style={styles.scoreRow}>
-                        <Text variant="h2" style={styles.scoreText}>Score: {score}</Text>
-                        {isSyncing && <Text variant="caption">💾</Text>}
+                        <Typography variant="h2" style={styles.scoreText}>Score: {score}</Typography>
+                        {isSyncing && <Typography variant="caption">💾</Typography>}
                     </View>
-                    <Text variant="body">Round {currentRound + 1} of {SURVEY_DATA.length}</Text>
+                    <Typography variant="body">Round {currentRound + 1} of {SURVEY_DATA.length}</Typography>
                 </View>
 
                 {/* Strikes */}
                 <View style={styles.strikesContainer}>
-                    <Text variant="body" style={styles.strikesLabel}>Strikes:</Text>
+                    <Typography variant="body" style={styles.strikesLabel}>Strikes:</Typography>
                     <View style={styles.strikesRow}>
                         {[1, 2, 3].map((strikeNum) => (
                             <View 
@@ -234,7 +235,7 @@ const CouplesFamilyFeudGame: React.FC = () => {
                                     strikes >= strikeNum && styles.strikeActive
                                 ]}
                             >
-                                <Text variant="h2" style={styles.strikeText}>X</Text>
+                                <Typography variant="h2" style={styles.strikeText}>X</Typography>
                             </View>
                         ))}
                     </View>
@@ -242,7 +243,7 @@ const CouplesFamilyFeudGame: React.FC = () => {
 
                 {/* Question */}
                 <GlassCard style={styles.questionContainer}>
-                    <Text variant="h2" style={styles.questionText}>{survey.question}</Text>
+                    <Typography variant="h2" style={styles.questionText}>{survey.question}</Typography>
                 </GlassCard>
 
                 {/* Answer Board */}
@@ -254,15 +255,15 @@ const CouplesFamilyFeudGame: React.FC = () => {
                 >
                     {survey.answers.map((answer, index) => (
                         <View key={index} style={styles.answerRow}>
-                            <Text variant="h2" style={styles.answerRank}>{index + 1}</Text>
+                            <Typography variant="h2" style={styles.answerRank}>{index + 1}</Typography>
                             {answer.revealed ? (
                                 <>
-                                    <Text variant="body" style={styles.answerText}>{answer.text}</Text>
-                                    <Text variant="h2" style={styles.answerPoints}>{answer.points}</Text>
+                                    <Typography variant="body" style={styles.answerText}>{answer.text}</Typography>
+                                    <Typography variant="h2" style={styles.answerPoints}>{answer.points}</Typography>
                                 </>
                             ) : (
                                 <View style={styles.hiddenAnswer}>
-                                    <Text variant="body" style={styles.hiddenText}>???</Text>
+                                    <Typography variant="body" style={styles.hiddenText}>???</Typography>
                                 </View>
                             )}
                         </View>
@@ -283,17 +284,17 @@ const CouplesFamilyFeudGame: React.FC = () => {
                         onPress={submitGuess}
                         disabled={!userGuess.trim()}
                     >
-                        <Text variant="button">SURVEY SAYS!</Text>
+                        <Typography variant="button">SURVEY SAYS!</Typography>
                     </SquishyButton>
                 </View>
 
                 {/* Progress */}
-                <Text variant="caption" style={styles.progressText}>
+                <Typography variant="caption" style={styles.progressText}>
                     {revealedCount} of {survey.answers.length} answers revealed
-                </Text>
+                </Typography>
 
                 {session && (
-                    <Text variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Text>
+                    <Typography variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Typography>
                 )}
             </ScrollView>
         </ScreenLayout>

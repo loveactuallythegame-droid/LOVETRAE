@@ -39,7 +39,7 @@ export default function LoveMapSpeedrun({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputWrapper}>
       <GlassCard>
         <Typography variant="h2">Question {index + 1}</Typography>
         <Typography variant="body">{QUESTIONS[index].q}</Typography>
@@ -74,6 +74,9 @@ export default function LoveMapSpeedrun({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  inputWrapper: {
+    gap: SPACING.regular,
+  },
   grid: { 
     flexDirection: 'row', 
     flexWrap: 'wrap', 

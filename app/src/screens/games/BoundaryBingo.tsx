@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, FlatList, Image } from 'react-native';
 
 import { ScreenLayout, GlassCard, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS, SHADOWS } from '../../theme';

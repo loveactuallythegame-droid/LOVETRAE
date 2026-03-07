@@ -20,12 +20,12 @@ export default function RepairReportCard({ navigation }: any) {
                 </View>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Type: Weekly slider survey</Typography>
+                    <Typography variant="h2" style={styles.cardTitle}>Type: Weekly slider survey</Typography>
                     <Typography variant="body">Mechanics: Rate 5 areas (Listening, Space, Humor, Touch, Honesty).</Typography>
                 </GlassCard>
 
                 <GlassCard style={styles.card}>
-                    <Typography variant="h2" style={{ marginBottom: SPACING.small }}>Scoring</Typography>
+                    <Typography variant="h2" style={styles.cardTitle}>Scoring</Typography>
                     <Typography variant="body">
                         ✅ Improvement vs. last week = +5/area{'\n'}
                         ✅ Honesty +10% = +15
@@ -49,19 +49,19 @@ const styles = StyleSheet.create({
     },
     content: { 
         padding: SPACING.screenPadding, 
-        gap: SPACING.regular 
+        gap: SPACING.regular,
     },
     header: { 
         flexDirection: 'row', 
         alignItems: 'center', 
         gap: SPACING.small, 
-        marginTop: SPACING.regular 
+        marginTop: SPACING.regular,
     },
     backBtn: { 
         paddingHorizontal: SPACING.regular, 
         paddingVertical: SPACING.small, 
         backgroundColor: COLORS.backgroundInput, 
-        borderRadius: BORDER_RADIUS.large 
+        borderRadius: BORDER_RADIUS.large,
     },
     title: { 
         flex: 1,
@@ -72,9 +72,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: COLORS.borderSubtle,
     },
+    cardTitle: {
+        marginBottom: SPACING.small,
+    },
     actionArea: { 
         marginTop: SPACING.xxlarge, 
-        alignItems: 'center' 
+        alignItems: 'center',
     },
     playBtn: { 
         width: '80%',

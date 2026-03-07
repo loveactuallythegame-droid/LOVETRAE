@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
@@ -22,8 +21,8 @@ const SafetyAndEmpathyFeud = () => {
         <ScreenLayout showHeader={false} scrollable={true}>
             <View style={styles.container}>
                 <GlassCard style={styles.headerContainer}>
-                    <Typography variant="h2" center style={{ color: COLORS.error }}>"Things that make me feel safe during a talk"</Typography>
-                    <Typography variant="caption" center style={{ marginTop: SPACING.small }}>Survey Says...</Typography>
+                    <Typography variant="h2" center style={styles.titleText}>"Things that make me feel safe during a talk"</Typography>
+                    <Typography variant="caption" center style={styles.subtitleText}>Survey Says...</Typography>
                 </GlassCard>
 
                 <View style={styles.gameLayout}>
@@ -43,7 +42,7 @@ const SafetyAndEmpathyFeud = () => {
                                 placeholder="Type your guess here..."
                                 placeholderTextColor={COLORS.textSecondary}
                             />
-                            <MaterialIcons name="send" size={24} color={COLORS.error} style={{ position: 'absolute', right: SPACING.regular }} />
+                            <MaterialIcons name="send" size={24} color={COLORS.error} style={styles.sendIcon} />
                         </View>
                         <View style={styles.strikeContainer}>
                             {[...Array(3)].map((_, i) => (
@@ -72,6 +71,12 @@ const styles = StyleSheet.create({
         padding: SPACING.large, 
         alignItems: 'center', 
         marginBottom: SPACING.xlarge 
+    },
+    titleText: {
+        color: COLORS.error
+    },
+    subtitleText: {
+        marginTop: SPACING.small
     },
     gameLayout: { 
         flexDirection: 'row', 
@@ -115,6 +120,10 @@ const styles = StyleSheet.create({
         borderRadius: BORDER_RADIUS.medium, 
         padding: SPACING.regular, 
         color: COLORS.textPrimary 
+    },
+    sendIcon: {
+        position: 'absolute',
+        right: SPACING.regular
     },
     strikeContainer: { 
         flexDirection: 'row', 

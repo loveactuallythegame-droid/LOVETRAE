@@ -53,7 +53,7 @@ export default function LayersOfHurt({ route, navigation }: any) {
     }
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.small }}>
+        <ScrollView style={styles.scrollView}>
             <GlassCard>
                 <Typography variant="h2">
                     Layer {box}: {box === 1 ? 'Social Betrayal' : box === 2 ? 'Digital Deception' : 'The Grieving'}
@@ -112,6 +112,9 @@ export default function LayersOfHurt({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        gap: SPACING.small,
+    },
     instruction: {
         marginTop: SPACING.medium,
         marginBottom: SPACING.medium,

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, ScreenLayout } from '../../components/ui';
 import GlobalMarcieOverlay from '../../components/ai-host/GlobalMarcieOverlay';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
@@ -36,7 +35,7 @@ const VibeSyncScreen = () => {
     <ScreenLayout showHeader={true} scrollable={false}>
       <View style={styles.content}>
         <Typography variant="h1" center>Synchronize Your Vibes</Typography>
-        <Typography variant="body" center style={{ marginBottom: SPACING.xxlarge }}>Tap and hold when you feel the connection</Typography>
+        <Typography variant="body" center style={styles.subtitle}>Tap and hold when you feel the connection</Typography>
 
         <View style={styles.syncContainer}>
           <Animated.View style={[styles.ring, { transform: [{ rotate: ring1Rotation }] }]} />
@@ -109,6 +108,9 @@ const styles = StyleSheet.create({
       paddingHorizontal: SPACING.xlarge,
       paddingVertical: SPACING.small,
       borderRadius: BORDER_RADIUS.xlarge,
+  },
+  subtitle: {
+      marginBottom: SPACING.xxlarge,
   }
 });
 

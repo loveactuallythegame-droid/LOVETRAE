@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
 export default function EscapismRoom({ navigation }: any) {
@@ -40,23 +40,23 @@ export default function EscapismRoom({ navigation }: any) {
       <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.container}>
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.header}>
-            <Text variant="h1" center>The Love Arcade</Text>
-            <Text variant="h2" center>+100 Games to Deepen Connection</Text>
+            <Typography variant="h1" center>The Love Arcade</Typography>
+            <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
           </View>
 
           <GlassCard style={styles.card}>
-            <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-              <Text variant="h3">Riddle</Text>
-              <Text variant="h3" style={{color: timeLeft < 10 ? COLORS.error : COLORS.success}}>{timeLeft}s</Text>
+            <View style={styles.riddleHeader}>
+              <Typography variant="h3">Riddle</Typography>
+              <Typography variant="h3" style={timeLeft < 10 ? styles.timerWarning : styles.timerNormal}>{timeLeft}s</Typography>
             </View>
 
-            <Text variant="body" style={{ marginTop: SPACING.regular }}>
+            <Typography variant="body" style={styles.riddleText}>
               "I have a black mirror but no reflection. I connect you to the world but disconnect you from the person next to you. What am I?"
-            </Text>
+            </Typography>
 
             {!active && !solved && (
-              <SquishyButton onPress={start} style={{marginTop: SPACING.large}}>
-                <Text variant="button">Start Timer</Text>
+              <SquishyButton onPress={start} style={styles.startButton}>
+                <Typography variant="button">Start Timer</Typography>
               </SquishyButton>
             )}
 
@@ -70,24 +70,24 @@ export default function EscapismRoom({ navigation }: any) {
                       onChangeText={setAnswer}
                   />
                   <SquishyButton onPress={checkAnswer}>
-                      <Text variant="button">Unlock Door</Text>
+                      <Typography variant="button">Unlock Door</Typography>
                   </SquishyButton>
               </>
             )}
 
             {solved && (
-              <View style={{marginTop: SPACING.large}}>
-                  <Text variant="h2" center style={{color: COLORS.success}}>ESCAPED!</Text>
-                  <Text variant="body" center style={{ fontStyle: 'italic', marginTop: SPACING.regular }}>
+              <View style={styles.resultContainer}>
+                  <Typography variant="h2" center style={styles.successText}>ESCAPED!</Typography>
+                  <Typography variant="body" center style={styles.marcieQuote}>
                       Marcie: "Correct. Now put it down."
-                  </Text>
+                  </Typography>
               </View>
             )}
 
             {!solved && !active && timeLeft === 0 && (
-              <Text variant="body" center style={{color: COLORS.error, marginTop: SPACING.large}}>
+              <Typography variant="body" center style={styles.failureText}>
                   Trapped in the Binge Basement. Try again.
-              </Text>
+              </Typography>
             )}
           </GlassCard>
         </ScrollView>
@@ -114,6 +114,22 @@ const styles = StyleSheet.create({
     padding: SPACING.large, 
     gap: SPACING.regular 
   },
+  riddleHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  timerWarning: {
+    color: COLORS.error,
+  },
+  timerNormal: {
+    color: COLORS.success,
+  },
+  riddleText: {
+    marginTop: SPACING.regular,
+  },
+  startButton: {
+    marginTop: SPACING.large,
+  },
   input: { 
     backgroundColor: COLORS.backgroundInput, 
     borderRadius: BORDER_RADIUS.medium, 
@@ -123,5 +139,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.borderSubtle,
     marginVertical: SPACING.regular,
+  },
+  resultContainer: {
+    marginTop: SPACING.large,
+  },
+  successText: {
+    color: COLORS.success,
+  },
+  marcieQuote: {
+    fontStyle: 'italic',
+    marginTop: SPACING.regular,
+  },
+  failureText: {
+    color: COLORS.error,
+    marginTop: SPACING.large,
   },
 });

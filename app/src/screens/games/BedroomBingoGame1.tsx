@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../theme';
@@ -19,14 +19,14 @@ const BingoTile = ({ text, isActive, isFree, onPress }: { text: string, isActive
         end={{ x: 1, y: 1 }}
         style={[styles.bingoTile, isActive && styles.activeTile, isFree && styles.freeSpace]}
     >
-        <TouchableOpacity 
+        <SquishyButton 
             style={styles.tileButton}
             onPress={onPress}
             disabled={isFree}
         >
-            {isFree && <Typography variant="h2" center style={{ color: COLORS.textPrimary }}>💖</Typography>}
-            <Typography variant="caption" center style={{ color: COLORS.textPrimary }}>{text}</Typography>
-        </TouchableOpacity>
+            {isFree && <Typography variant="h2" center style={styles.freeIcon}>💖</Typography>}
+            <Typography variant="caption" center style={styles.tileText}>{text}</Typography>
+        </SquishyButton>
     </LinearGradient>
 );
 
@@ -87,8 +87,8 @@ const BedroomBingoGame1Screen = () => {
                             end={{ x: 1, y: 1 }}
                             style={styles.hostBubble}
                         >
-                            <Typography variant="h3" style={{ color: COLORS.textPrimary }}>Dr. Marcie Liss</Typography>
-                            <Typography variant="sass" style={{ color: COLORS.textPrimary }}>"Keep the fire burning, lovebirds! One more square for a diagonal Bingo!"</Typography>
+                            <Typography variant="h3" style={styles.hostName}>Dr. Marcie Liss</Typography>
+                            <Typography variant="sass" style={styles.hostQuote}>"Keep the fire burning, lovebirds! One more square for a diagonal Bingo!"</Typography>
                         </LinearGradient>
                         <LinearGradient
                             colors={[COLORS.warmOrange, COLORS.brightYellow]}
@@ -96,8 +96,8 @@ const BedroomBingoGame1Screen = () => {
                             end={{ x: 1, y: 1 }}
                             style={styles.multipliersContainer}
                         >
-                            <Typography variant="caption" style={{ color: COLORS.textPrimary }}>Active Multipliers</Typography>
-                            <Typography variant="body" style={{ color: COLORS.textPrimary }}>Evening Bonus: 2x Progress</Typography>
+                            <Typography variant="caption" style={styles.multiplierTitle}>Active Multipliers</Typography>
+                            <Typography variant="body" style={styles.multiplierText}>Evening Bonus: 2x Progress</Typography>
                         </LinearGradient>
                     </LinearGradient>
                 </View>
@@ -109,12 +109,12 @@ const BedroomBingoGame1Screen = () => {
                 end={{ x: 1, y: 1 }}
                 style={styles.footer}
             >
-                <Typography variant="h3" center style={{ color: COLORS.textPrimary }}>Bingo Status: {completedLines}/5 Lines Complete</Typography>
+                <Typography variant="h3" center style={styles.footerTitle}>Bingo Status: {completedLines}/5 Lines Complete</Typography>
                  <View style={styles.progressBar}>
-                    <LinearGradient colors={[COLORS.textPrimary, COLORS.textSecondary]} style={{width: `${progressPercentage}%`, height: '100%'}} />
+                    <LinearGradient colors={[COLORS.textPrimary, COLORS.textSecondary]} style={[styles.progressFill, {width: `${progressPercentage}%`}]} />
                 </View>
                 <SquishyButton onPress={() => {}} style={styles.submitButton}>
-                    <Typography variant="button" style={{ color: COLORS.vibrantPink }}>SUBMIT LINE</Typography>
+                    <Typography variant="button" style={styles.submitButtonText}>SUBMIT LINE</Typography>
                 </SquishyButton>
             </LinearGradient>
         </ScreenLayout>
@@ -244,6 +244,9 @@ const styles = StyleSheet.create({
     },
     submitButton: { 
         backgroundColor: COLORS.textPrimary,
+    },
+    progressFill: {
+        height: '100%',
     },
 });
 

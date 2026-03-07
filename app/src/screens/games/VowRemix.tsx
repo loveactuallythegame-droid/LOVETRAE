@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -21,7 +20,7 @@ export default function VowRemix({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputWrapper}>
       <GlassCard>
         <Typography variant="h2" center>Vow Remix</Typography>
         <Typography variant="body" center>Complete the sentence:</Typography>
@@ -78,5 +77,8 @@ const styles = StyleSheet.create({
     padding: SPACING.regular, 
     borderRadius: BORDER_RADIUS.button, 
     alignItems: 'center' 
+  },
+  inputWrapper: {
+    gap: SPACING.regular,
   },
 });

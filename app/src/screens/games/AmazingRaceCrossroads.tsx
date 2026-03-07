@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
@@ -48,21 +48,21 @@ const AmazingRaceCrossroadsScreen = () => {
                     >
                         <Typography variant="h3" style={styles.hubTitle}>DETOUR</Typography>
                         <Typography variant="body" style={styles.hubDescription}>Choose your communication style for the next 500 miles:</Typography>
-                        <TouchableOpacity 
+                        <SquishyButton 
                             style={[styles.optionButton, detour === 'candor' && styles.selectedOption]}
                             onPress={() => handleDetourSelect('candor')}
                         >
                             <Typography variant="h4" style={styles.optionTitle}>Radical Candor</Typography>
                             <Typography variant="body" style={styles.optionDescription}>High intensity, direct feedback, zero filters.</Typography>
-                        </TouchableOpacity>
+                        </SquishyButton>
                         <Typography variant="body" style={styles.orText}>-- OR --</Typography>
-                        <TouchableOpacity 
+                        <SquishyButton 
                             style={[styles.optionButton, detour === 'soft' && styles.selectedOption]}
                              onPress={() => handleDetourSelect('soft')}
                         >
                             <Typography variant="h4" style={styles.optionTitle}>Softened Start-up</Typography>
                             <Typography variant="body" style={styles.optionDescription}>Low impact, high empathy, gradual entry.</Typography>
-                        </TouchableOpacity>
+                        </SquishyButton>
                     </LinearGradient>
 
                     <LinearGradient

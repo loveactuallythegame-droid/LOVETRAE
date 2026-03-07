@@ -53,18 +53,18 @@ export default function MicroBetrayalGolf({ navigation }: any) {
         </Typography>
 
         <GlassCard style={styles.course}>
-          <View style={[styles.hole, hole ? {backgroundColor: COLORS.success} : {}]}>
+          <View style={[styles.hole, hole && styles.holeSuccess]}>
             <Typography variant="caption">REPAIR</Typography>
           </View>
 
-          <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={styles.ballContainer}>
             <Typography variant="h1">{hole ? '⛳️' : '⚪️'}</Typography>
           </View>
 
           <View style={styles.controls}>
             <Typography variant="body">Angle: {Math.round(angle)}°</Typography>
             <Slider
-              style={{ width: '100%', height: 40 }}
+              style={styles.slider}
               minimumValue={-45}
               maximumValue={45}
               value={angle}
@@ -74,7 +74,7 @@ export default function MicroBetrayalGolf({ navigation }: any) {
 
             <Typography variant="body">Power: {Math.round(power)}%</Typography>
             <Slider
-              style={{ width: '100%', height: 40 }}
+              style={styles.slider}
               minimumValue={0}
               maximumValue={100}
               value={power}
@@ -95,17 +95,13 @@ export default function MicroBetrayalGolf({ navigation }: any) {
 
           <Typography 
             variant="body" 
-            style={{
-              marginTop: SPACING.lg, 
-              textAlign: 'center', 
-              color: hole ? COLORS.success : COLORS.textPrimary
-            }}
+            style={[styles.feedback, hole && styles.feedbackSuccess]}
           >
             {feedback}
           </Typography>
 
           {hole && (
-            <Typography variant="sass" style={{marginTop: SPACING.md, textAlign: 'center'}}>
+            <Typography variant="sass" style={styles.marcieComment}>
               Marcie: "Sunk it in {strokes} strokes? Impressive."
             </Typography>
           )}
@@ -155,5 +151,29 @@ const styles = StyleSheet.create({
   controls: { 
     gap: SPACING.sm, 
     marginVertical: SPACING.lg 
+  },
+  holeSuccess: {
+    backgroundColor: COLORS.success,
+  },
+  ballContainer: {
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  slider: {
+    width: '100%',
+    height: 40,
+  },
+  feedback: {
+    marginTop: SPACING.lg,
+    textAlign: 'center',
+    color: COLORS.textPrimary,
+  },
+  feedbackSuccess: {
+    color: COLORS.success,
+  },
+  marcieComment: {
+    marginTop: SPACING.md,
+    textAlign: 'center',
   },
 });

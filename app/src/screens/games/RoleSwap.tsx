@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -19,9 +18,9 @@ export default function RoleSwap({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.container}>
       <GlassCard>
-        <Typography variant="h2" style={{ marginBottom: SPACING.regular }}>Role Swap</Typography>
+        <Typography variant="h2" style={styles.titleText}>Role Swap</Typography>
         <Typography variant="body">Partner says:</Typography>
         <Typography variant="sass" style={styles.line}>"{CONFLICT}"</Typography>
         <Typography variant="body">Reply AS THEM (defend yourself as they would):</Typography>
@@ -60,6 +59,12 @@ export default function RoleSwap({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: { 
+    gap: SPACING.regular 
+  },
+  titleText: { 
+    marginBottom: SPACING.regular 
+  },
   line: { 
     textAlign: 'center', 
     marginVertical: SPACING.large, 

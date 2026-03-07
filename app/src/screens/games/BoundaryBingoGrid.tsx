@@ -74,7 +74,7 @@ const BoundaryBingoGridScreen = () => {
                         <GlassCard style={styles.progressContainer}>
                             <Typography variant="h2" center style={styles.progressTitle}>Integrity Scan Result: {progress.toFixed(1)}%</Typography>
                             <View style={styles.progressBar}>
-                                <LinearGradient colors={GRADIENTS.primary.colors} start={GRADIENTS.primary.start} end={GRADIENTS.primary.end} style={{width: `${progress}%`, height: '100%'}} />
+                                <LinearGradient colors={GRADIENTS.primary.colors} start={GRADIENTS.primary.start} end={GRADIENTS.primary.end} style={[styles.progressFill, {width: `${progress}%`}]} />
                             </View>
                              <Typography variant="caption" center style={styles.progressSubtitle}>{verifiedCount}/{bingoTilesData.length} boundary squares mutually verified.</Typography>
                         </GlassCard>
@@ -85,7 +85,7 @@ const BoundaryBingoGridScreen = () => {
                         <Typography variant="h2" style={styles.auditorName}>Marcie</Typography>
                         <Typography variant="body" style={styles.auditorQuote}>"Integrity scan complete. Boundary verified."</Typography>
                         <SquishyButton onPress={() => {}} style={styles.sidebarButton}>
-                            <Typography variant="button" style={{ color: COLORS.gradientStart }}>Upload Evidence</Typography>
+                            <Typography variant="button" style={styles.sidebarButtonText}>Upload Evidence</Typography>
                         </SquishyButton>
                     </GlassCard>
 
@@ -256,6 +256,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: SPACING.small,
         backgroundColor: COLORS.textPrimary,
+    },
+    progressFill: {
+        height: '100%',
     },
 });
 

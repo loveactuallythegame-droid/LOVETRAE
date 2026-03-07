@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SPACING, BORDER_RADIUS, GRADIENTS } from '../../theme';
@@ -145,7 +145,7 @@ export default function TheIceberg({ route, navigation }: any) {
 
   return (
     <ScreenLayout showHeader={true} scrollable={true}>
-      <View style={{ gap: SPACING.regular }}>
+      <View style={styles.container}>
         <Typography variant="h1" center>The Love Arcade</Typography>
         <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
 
@@ -190,13 +190,13 @@ export default function TheIceberg({ route, navigation }: any) {
               
               <View style={styles.sliderContainer}>
                 <View style={styles.sliderRow}>
-                  <Typography variant="caption" style={{ width: 100 }}>
+                  <Typography variant="caption" style={styles.sliderLabel}>
                     Visible: {aboveSliderValue}%
                   </Typography>
                   <View style={styles.sliderTrack}>
                     <View style={[styles.sliderFill, { width: `${aboveSliderValue}%`, backgroundColor: COLORS.gradientStart }]} />
                   </View>
-                  <View style={{ flexDirection: 'row', gap: SPACING.small }}>
+                  <View style={styles.buttonRow}>
                     <SquishyButton onPress={() => handleAboveSliderChange(Math.max(0, aboveSliderValue - 10))} variant="ghost" size="small">
                       <Typography variant="h2">-</Typography>
                     </SquishyButton>
@@ -207,13 +207,13 @@ export default function TheIceberg({ route, navigation }: any) {
                 </View>
                 
                 <View style={styles.sliderRow}>
-                  <Typography variant="caption" style={{ width: 100 }}>
+                  <Typography variant="caption" style={styles.sliderLabel}>
                     Hidden: {belowSliderValue}%
                   </Typography>
                   <View style={styles.sliderTrack}>
                     <View style={[styles.sliderFill, { width: `${belowSliderValue}%`, backgroundColor: COLORS.lavenderPurple }]} />
                   </View>
-                  <View style={{ flexDirection: 'row', gap: SPACING.small }}>
+                  <View style={styles.buttonRow}>
                     <SquishyButton onPress={() => handleBelowSliderChange(Math.max(0, belowSliderValue - 10))} variant="ghost" size="small">
                       <Typography variant="h2">-</Typography>
                     </SquishyButton>
@@ -257,7 +257,7 @@ export default function TheIceberg({ route, navigation }: any) {
                   }
                   navigation.goBack();
                 }}
-                style={{ marginTop: SPACING.regular }}
+                style={styles.returnButton}
               >
                 <Typography variant="h2">Return to Menu</Typography>
               </SquishyButton>
@@ -272,7 +272,7 @@ export default function TheIceberg({ route, navigation }: any) {
             </Typography>
             <View style={styles.partnerSliderContainer}>
               <View style={styles.sliderRow}>
-                <Typography variant="caption" style={{ width: 100 }}>
+                <Typography variant="caption" style={styles.sliderLabel}>
                   Visible: {partnerResponse.above}%
                 </Typography>
                 <View style={styles.partnerSlider}>
@@ -280,7 +280,7 @@ export default function TheIceberg({ route, navigation }: any) {
                 </View>
               </View>
               <View style={styles.sliderRow}>
-                <Typography variant="caption" style={{ width: 100 }}>
+                <Typography variant="caption" style={styles.sliderLabel}>
                   Hidden: {partnerResponse.below}%
                 </Typography>
                 <View style={styles.partnerSlider}>
@@ -296,6 +296,9 @@ export default function TheIceberg({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: SPACING.regular,
+  },
   gradientContainer: {
     padding: SPACING.regular,
     borderRadius: BORDER_RADIUS.large,
@@ -336,6 +339,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: SPACING.regular,
   },
+  sliderLabel: {
+    width: 100,
+  },
   sliderTrack: {
     flex: 1,
     height: SPACING.small,
@@ -347,6 +353,13 @@ const styles = StyleSheet.create({
   sliderFill: {
     height: '100%',
     borderRadius: BORDER_RADIUS.round,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: SPACING.small,
+  },
+  returnButton: {
+    marginTop: SPACING.regular,
   },
   partnerCard: {
     marginTop: SPACING.regular,

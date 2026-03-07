@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout, GlassCard, Text, Typography, SquishyButton } from '../../components/ui';
 import ResultsScreen from '../../components/games/engine/ResultsScreen';
 import { speakMarcie } from '../../lib/voice-engine';

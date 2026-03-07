@@ -2,11 +2,11 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
+import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
 
 const WaveformBar = ({ height, color }: { height: number, color: string }) => (
-    <View style={{ height, width: 4, backgroundColor: color, borderRadius: BORDER_RADIUS.small, marginHorizontal: 2 }} />
+    <View style={[styles.waveformBar, { height, backgroundColor: color }]} />
 );
 
 const EmpathyEchoGameScreen = () => {
@@ -19,43 +19,43 @@ const EmpathyEchoGameScreen = () => {
                 <LinearGradient colors={[COLORS.backgroundPrimary, COLORS.backgroundSecondary]} style={styles.background} />
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <View style={styles.header}>
-                        <Text variant="h1" center>The Love Arcade</Text>
-                        <Text variant="h2" center>+100 Games to Deepen Connection</Text>
+                        <Typography variant="h1" center>The Love Arcade</Typography>
+                        <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
                     </View>
 
                     <View style={styles.gameLayout}>
                         {/* Partner A Panel */}
                         <GlassCard style={styles.partnerPanel}>
-                            <Text variant="h3">Partner A's Heart</Text>
+                            <Typography variant="h3">Partner A's Heart</Typography>
                             <View style={styles.waveformContainer}>
                                 {partnerAWave.map((h, i) => <WaveformBar key={i} height={h * 2} color={COLORS.mintGreen} />)}
                             </View>
                             <SquishyButton variant="secondary" onPress={() => {}}>
-                                <Text variant="button">Play</Text>
+                                <Typography variant="button">Play</Typography>
                             </SquishyButton>
                         </GlassCard>
 
                         {/* Partner B Panel */}
-                        <GlassCard style={[styles.partnerPanel, { borderColor: COLORS.softViolet }]}>
-                            <Text variant="h3">Your Echo</Text>
+                        <GlassCard style={[styles.partnerPanel, styles.partnerPanelActive]}>
+                            <Typography variant="h3">Your Echo</Typography>
                             <View style={styles.waveformContainer}>
                                 {partnerBWave.map((h, i) => <WaveformBar key={i} height={h * 1.5} color={COLORS.lavenderPurple} />)}
                             </View>
                             <SquishyButton variant="secondary" onPress={() => {}}>
-                                <Text variant="button">Stop</Text>
+                                <Typography variant="button">Stop</Typography>
                             </SquishyButton>
                         </GlassCard>
                     </View>
 
                     <GlassCard style={styles.gaugeContainer}>
-                        <Text variant="h2" center>Empathy Score: 72</Text>
-                        <Text variant="body" center style={styles.gaugeFeedback}>"You're drifting toward 'fixing'. Try acknowledging the feeling without offering a solution yet."</Text>
+                        <Typography variant="h2" center>Empathy Score: 72</Typography>
+                        <Typography variant="body" center style={styles.gaugeFeedback}>"You're drifting toward 'fixing'. Try acknowledging the feeling without offering a solution yet."</Typography>
                         <View style={styles.buttonRow}>
                             <SquishyButton variant="ghost" onPress={() => {}} style={styles.actionButton}>
-                                <Text variant="button">Try Again</Text>
+                                <Typography variant="button">Try Again</Typography>
                             </SquishyButton>
                             <SquishyButton onPress={() => {}} style={styles.actionButton}>
-                                <Text variant="button">Submit Echo</Text>
+                                <Typography variant="button">Submit Echo</Typography>
                             </SquishyButton>
                         </View>
                     </GlassCard>
@@ -66,6 +66,14 @@ const EmpathyEchoGameScreen = () => {
 };
 
 const styles = StyleSheet.create({
+    waveformBar: {
+        width: 4,
+        borderRadius: BORDER_RADIUS.small,
+        marginHorizontal: 2,
+    },
+    partnerPanelActive: {
+        borderColor: COLORS.softViolet,
+    },
     container: { 
         flex: 1, 
         backgroundColor: COLORS.backgroundPrimary 

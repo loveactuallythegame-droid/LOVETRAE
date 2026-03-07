@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS } from '../../theme';
@@ -19,14 +19,14 @@ const BingoTile = ({ icon, text, isActive, isFree, onPress }: { icon?: string, t
         end={{ x: 1, y: 1 }}
         style={[styles.bingoTile, isActive && styles.activeTile, isFree && styles.freeSpace]}
     >
-        <TouchableOpacity 
+        <SquishyButton 
             style={styles.tileButton}
             onPress={onPress}
             disabled={isFree}
         >
-            {icon && <Typography variant="h2" center style={{ color: COLORS.textPrimary }}>{icon}</Typography>}
+            {icon && <Typography variant="h2" center style={styles.tileIcon}>{icon}</Typography>}
             <Typography variant="caption" center style={[styles.bingoText, isFree && styles.freeSpaceText]}>{text}</Typography>
-        </TouchableOpacity>
+        </SquishyButton>
     </LinearGradient>
 );
 
@@ -80,9 +80,9 @@ const BedroomBingoGame2Screen = () => {
                     end={{ x: 1, y: 1 }}
                     style={styles.footerContainer}
                 >
-                     <Typography variant="h3" style={{ color: COLORS.textPrimary }}>{completedCount} / 24 Acts Completed</Typography>
+                     <Typography variant="h3" style={styles.completedCount}>{completedCount} / 24 Acts Completed</Typography>
                     <SquishyButton onPress={() => {}} style={styles.nextChallengeButton}>
-                        <Typography variant="button" style={{ color: COLORS.vibrantPink }}>Next Challenge</Typography>
+                        <Typography variant="button" style={styles.nextChallengeText}>Next Challenge</Typography>
                     </SquishyButton>
                 </LinearGradient>
 
@@ -92,8 +92,8 @@ const BedroomBingoGame2Screen = () => {
                     end={{ x: 1, y: 1 }}
                     style={styles.hostContainer}
                 >
-                    <Typography variant="sass" style={{ color: COLORS.textPrimary }}>"Keep going, darling... you're almost there. I can feel the tension from here."</Typography>
-                    <Typography variant="caption" style={{ color: COLORS.textSecondary, textAlign: 'right' }}>Dr. Marcie Liss</Typography>
+                    <Typography variant="sass" style={styles.hostQuote}>"Keep going, darling... you're almost there. I can feel the tension from here."</Typography>
+                    <Typography variant="caption" style={styles.hostSignature}>Dr. Marcie Liss</Typography>
                 </LinearGradient>
             </ScrollView>
         </ScreenLayout>

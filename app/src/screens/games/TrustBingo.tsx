@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout } from '../../components/ui';
 import { GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
@@ -66,7 +65,7 @@ export default function TrustBingo({ route, navigation }: any) {
     ];
 
     const inputArea = (
-        <ScrollView style={{ gap: SPACING.regular }}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
             <GlassCard>
                 <Typography variant="h1" center style={styles.gameTitle}>
                     The Love Arcade
@@ -75,7 +74,7 @@ export default function TrustBingo({ route, navigation }: any) {
                     +100 Games to Deepen Connection
                 </Typography>
 
-                <Typography variant="h3" style={{ marginBottom: SPACING.regular }}>
+                <Typography variant="h3" style={styles.boardTitle}>
                     This Week's Board
                 </Typography>
                 <View style={styles.grid}>
@@ -114,11 +113,17 @@ export default function TrustBingo({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+    scrollContent: {
+        gap: SPACING.regular,
+    },
     gameTitle: {
         marginBottom: SPACING.small
     },
     subtitle: {
         marginBottom: SPACING.xlarge
+    },
+    boardTitle: {
+        marginBottom: SPACING.regular,
     },
     grid: {
         flexDirection: 'row',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header, GlassCard, Text, SquishyButton, ScreenLayout } from '../../components/ui';
+import { Header, GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
 const AntidoteCard = ({ name, description, effect, color }: any) => (
@@ -11,9 +11,9 @@ const AntidoteCard = ({ name, description, effect, color }: any) => (
         end={GRADIENTS.primary.end}
         style={[styles.antidoteCard, { borderColor: color }]}
     >
-        <Text variant="caption" style={styles.antidoteName}>{name}</Text>
-        <Text variant="small" style={styles.antidoteDescription}>{description}</Text>
-        <Text variant="caption" style={styles.antidoteEffect}>{effect}</Text>
+        <Typography variant="caption" style={styles.antidoteName}>{name}</Typography>
+        <Typography variant="small" style={styles.antidoteDescription}>{description}</Typography>
+        <Typography variant="caption" style={styles.antidoteEffect}>{effect}</Typography>
     </LinearGradient>
 );
 
@@ -25,12 +25,12 @@ const GameNode = ({ type, title, subtitle, color, isCurrent }: any) => (
             end={GRADIENTS.primary.end}
             style={[styles.nodeIcon, { borderColor: color }, isCurrent && styles.currentNodeIcon]}
         >
-            {isCurrent ? <Image source={{uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGhRsraipFZhqqSH-91yEjVqjtkysAnF6g9bojd-2VYt6U-1fXEa6i8RHsTzu1UBuG3qtNKYgH8ynKH7B7mfChtT_UugqnJjcY0am1HRyYUJT1TZBr664q9ejEI17_OZIbr_dw8ou8c_kKHS3PTY3l-x8i6AzD1szhKkookc6aQgepcSkQaYRB4ypkVPZb5STfLPIQZSZVZlrN2XgXY230WkVUNrsDJ-qM-U-shBYdZpOw9HPbaPBA1i26h8xeKwhgzDj67qGnUEZi'}} style={styles.playerAvatar} /> : <Text variant="h2" style={{ color: COLORS.textPrimary }}>!</Text>}
+            {isCurrent ? <Image source={{uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDGhRsraipFZhqqSH-91yEjVqjtkysAnF6g9bojd-2VYt6U-1fXEa6i8RHsTzu1UBuG3qtNKYgH8ynKH7B7mfChtT_UugqnJjcY0am1HRyYUJT1TZBr664q9ejEI17_OZIbr_dw8ou8c_kKHS3PTY3l-x8i6AzD1szhKkookc6aQgepcSkQaYRB4ypkVPZb5STfLPIQZSZVZlrN2XgXY230WkVUNrsDJ-qM-U-shBYdZpOw9HPbaPBA1i26h8xeKwhgzDj67qGnUEZi'}} style={styles.playerAvatar} /> : <Typography variant="h2" style={styles.nodeText}>!</Typography>}
         </LinearGradient>
         <View style={styles.nodeLine} />
         <View style={styles.nodeTextContainer}>
-            <Text variant="body" style={styles.nodeTitle}>{title}</Text>
-            <Text variant="caption" style={styles.nodeSubtitle}>{subtitle}</Text>
+            <Typography variant="body" style={styles.nodeTitle}>{title}</Typography>
+            <Typography variant="caption" style={styles.nodeSubtitle}>{subtitle}</Typography>
         </View>
     </View>
 );
@@ -47,7 +47,7 @@ const CycleBreakerBoardGameScreen = () => {
                     <Image source={require('../../assets/images/MarcieAvatar.png')} style={styles.avatar} />
                 </View>
                 <View style={styles.quoteBox}>
-                    <Text variant="sass">Break free from destructive cycles! Identify triggers and rewrite reactions.</Text>
+                    <Typography variant="sass">Break free from destructive cycles! Identify triggers and rewrite reactions.</Typography>
                 </View>
             </View>
             
@@ -65,10 +65,10 @@ const CycleBreakerBoardGameScreen = () => {
                             end={GRADIENTS.primary.end}
                             style={styles.glassPanel}
                          >
-                             <Text variant="h2" style={styles.sidebarTitle}>Dr. Marcie's Advice</Text>
-                             <Text variant="body" style={styles.sidebarText}>"Notice the tension rising. Your partner's silence is a defensive trigger..."</Text>
+                             <Typography variant="h2" style={styles.sidebarTitle}>Dr. Marcie's Advice</Typography>
+                             <Typography variant="body" style={styles.sidebarText}>"Notice the tension rising. Your partner's silence is a defensive trigger..."</Typography>
                              <SquishyButton style={styles.rollButton}>
-                                <Text variant="button" style={{ color: COLORS.vibrantPink }}>ROLL DICE</Text>
+                                <Typography variant="button" style={styles.buttonText}>ROLL DICE</Typography>
                              </SquishyButton>
                          </LinearGradient>
                     </LinearGradient>
@@ -78,41 +78,80 @@ const CycleBreakerBoardGameScreen = () => {
                             colors={[COLORS.warmOrange, COLORS.brightYellow]}
                             start={GRADIENTS.primary.start}
                             end={GRADIENTS.primary.end}
-                            style={[styles.glassPanel, styles.statusHeader]}
+                            style={styles.statusHeader}
                         >
-                            <Text variant="h2" style={styles.statusTitle}>Phase 2: Trust Renovation</Text>
-                            <Text variant="body" style={styles.statusSubtitle}>Progress: 65%</Text>
+                             <Typography variant="h2" style={styles.statusTitle}>Round 1</Typography>
+                             <Typography variant="caption" style={styles.statusSubtitle}>Identify Cycle Trigger</Typography>
                         </LinearGradient>
 
                         <View style={styles.gameBoard}>
-                           <GameNode type="trigger" title="Misunderstanding" subtitle="Node 12" color={COLORS.error} isCurrent={false} />
-                           <GameNode type="response" title="Active Listening" subtitle="Node 13" color={COLORS.vibrantPink} isCurrent={false} />
-                           <GameNode type="trigger" title="Past Trauma Loop" subtitle="Node 14" color={COLORS.warning} isCurrent={true} />
+                            <GameNode 
+                                type="start" 
+                                title="Start" 
+                                subtitle="Roll to Begin" 
+                                color={COLORS.success}
+                                isCurrent={false}
+                            />
+                            <GameNode 
+                                type="trap" 
+                                title="Trigger Trap" 
+                                subtitle="Defensive Silence" 
+                                color={COLORS.warning}
+                                isCurrent={true}
+                            />
+                            <GameNode 
+                                type="choice" 
+                                title="Choice Point" 
+                                subtitle="React or Reflect" 
+                                color={COLORS.info}
+                                isCurrent={false}
+                            />
+                            <GameNode 
+                                type="antidote" 
+                                title="Antidote" 
+                                subtitle="Break the Cycle" 
+                                color={COLORS.vibrantPink}
+                                isCurrent={false}
+                            />
+                            <GameNode 
+                                type="finish" 
+                                title="Finish" 
+                                subtitle="New Pattern Set" 
+                                color={COLORS.success}
+                                isCurrent={false}
+                            />
                         </View>
-                        
-                         <View style={styles.antidoteHand}>
-                            <AntidoteCard name="Transparency" description="Share a hidden truth." effect="+12 Trust" color={COLORS.info} />
-                            <AntidoteCard name="Vulnerability" description="Open up to bypass defenses." effect="+20 Bond" color={COLORS.rosePink} />
-                            <AntidoteCard name="Reflection" description="Pause the loop for 1 turn." effect="Break Node" color={COLORS.success} />
-                            <AntidoteCard name="Boundaries" description="Establish safety node." effect="+15 Safety" color={COLORS.warning} />
+
+                        <View style={styles.antidoteHand}>
+                            <AntidoteCard 
+                                name="Time-Out" 
+                                description="Pause for 20 mins" 
+                                effect="Skip trigger" 
+                                color={COLORS.mintGreen}
+                            />
+                            <AntidoteCard 
+                                name="Soft Start" 
+                                description="Use 'I feel...'" 
+                                effect="Reduce damage" 
+                                color={COLORS.brightYellow}
+                            />
+                            <AntidoteCard 
+                                name="Repair" 
+                                description="Apologize first" 
+                                effect="Heal 50%" 
+                                color={COLORS.vibrantPink}
+                            />
                         </View>
                     </View>
 
                     <LinearGradient
-                        colors={GRADIENTS.primary.colors}
+                        colors={[COLORS.lavenderPurple, COLORS.softViolet]}
                         start={GRADIENTS.primary.start}
                         end={GRADIENTS.primary.end}
                         style={styles.rightSidebar}
                     >
-                         <LinearGradient
-                            colors={[COLORS.lavenderPurple, COLORS.softViolet]}
-                            start={GRADIENTS.primary.start}
-                            end={GRADIENTS.primary.end}
-                            style={styles.glassPanel}
-                         >
-                            <Text variant="h2" style={styles.sidebarTitle}>Connection Stats</Text>
-                             {/* Add stats bars here */}
-                         </LinearGradient>
+                        <Typography variant="h2" style={styles.sidebarTitle}>Cycle History</Typography>
+                        <Typography variant="body" style={styles.sidebarText}>Last 3 arguments followed the same pattern. Time to break it!</Typography>
                     </LinearGradient>
                 </View>
             </ScrollView>
@@ -153,35 +192,33 @@ const styles = StyleSheet.create({
         borderRadius: BORDER_RADIUS.large,
         padding: SPACING.regular,
     },
-    scrollContainer: { flexGrow: 1, padding: SPACING.small },
-    mainLayout: { flexDirection: 'row' },
+    scrollContainer: { flexGrow: 1 },
+    mainLayout: { flexDirection: 'row', flex: 1, padding: SPACING.regular },
     leftSidebar: { 
-        width: 200, 
-        marginRight: SPACING.regular,
+        width: 180, 
+        padding: SPACING.regular,
         borderRadius: BORDER_RADIUS.xlarge,
         borderWidth: 2,
         borderColor: COLORS.borderSubtle,
         ...SHADOWS.large,
     },
-    centerContent: { flex: 1, marginRight: SPACING.regular },
     rightSidebar: { 
-        width: 200,
+        width: 180, 
+        padding: SPACING.regular,
         borderRadius: BORDER_RADIUS.xlarge,
         borderWidth: 2,
         borderColor: COLORS.borderSubtle,
         ...SHADOWS.large,
     },
-    glassPanel: { 
-        borderRadius: BORDER_RADIUS.xlarge, 
-        padding: SPACING.regular, 
-        marginBottom: SPACING.regular,
+    glassPanel: {
+        borderRadius: BORDER_RADIUS.xlarge,
         borderWidth: 2,
         borderColor: COLORS.borderSubtle,
-        ...SHADOWS.large,
+        padding: SPACING.regular,
     },
     sidebarTitle: { 
         color: COLORS.textPrimary, 
-        textTransform: 'uppercase', 
+        textAlign: 'center', 
         marginBottom: SPACING.regular,
         backgroundColor: COLORS.backgroundInput,
         paddingHorizontal: SPACING.small,
@@ -189,17 +226,26 @@ const styles = StyleSheet.create({
         borderRadius: BORDER_RADIUS.large,
     },
     sidebarText: { 
-        color: COLORS.textPrimary,
+        color: COLORS.textPrimary, 
+        textAlign: 'center',
         backgroundColor: COLORS.backgroundInput,
         padding: SPACING.small,
         borderRadius: BORDER_RADIUS.medium,
     },
+    centerContent: { 
+        flex: 1, 
+        paddingHorizontal: SPACING.regular 
+    },
     rollButton: { 
-        padding: SPACING.regular, 
-        borderRadius: BORDER_RADIUS.medium, 
-        alignItems: 'center', 
+        alignItems: 'center',
         marginTop: SPACING.regular,
         ...SHADOWS.large,
+    },
+    buttonText: {
+        color: COLORS.vibrantPink,
+    },
+    nodeText: {
+        color: COLORS.textPrimary,
     },
     statusHeader: { 
         alignItems: 'center',

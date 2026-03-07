@@ -28,14 +28,14 @@ export default function FloodingForecast({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputContainer}>
       <GlassCard>
         <Typography variant="h2">Heart Rate Monitor</Typography>
         <Typography variant="keyword" style={styles.bpm}>{bpm} BPM</Typography>
         <View style={styles.barWrap}>
           <View style={[styles.bar, { width: `${(bpm / 120) * 100}%`, backgroundColor: bpm > 100 ? COLORS.error : COLORS.success }]} />
         </View>
-        <Typography variant="body" style={{ textAlign: 'center', marginTop: SPACING.small }}>
+        <Typography variant="body" style={styles.statusText}>
           {bpm > 100 ? "FLOODING IMMINENT" : "Safe Zone"}
         </Typography>
         <SquishyButton onPress={calmDown} style={styles.btn}>
@@ -69,6 +69,9 @@ export default function FloodingForecast({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  inputContainer: { 
+    gap: SPACING.regular 
+  },
   bpm: { 
     fontSize: TYPOGRAPHY.fontSize.displayLarge, 
     textAlign: 'center', 
@@ -82,6 +85,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden' 
   },
   bar: { height: '100%' },
+  statusText: { 
+    textAlign: 'center', 
+    marginTop: SPACING.small 
+  },
   btn: { marginTop: SPACING.regular },
   checkBtn: { marginTop: SPACING.regular },
 });

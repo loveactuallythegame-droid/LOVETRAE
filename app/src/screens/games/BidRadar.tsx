@@ -50,7 +50,7 @@ export default function BidRadar({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputArea}>
       <GlassCard>
         {/* Dr. Marcie Section */}
         <View style={styles.drMarcieSection}>
@@ -77,17 +77,17 @@ export default function BidRadar({ route, navigation }: any) {
                 onPress={() => setIsReceived(false)}
                 style={[styles.toggleBtn, !isReceived ? styles.activeBtn : {}]}
             >
-                <Typography variant="body" style={{color: !isReceived ? COLORS.backgroundPrimary : COLORS.textPrimary}}>I Made It</Typography>
+                <Typography variant="body" style={isReceived ? styles.toggleTextInactive : styles.toggleTextActive}>I Made It</Typography>
             </SquishyButton>
             <SquishyButton
                 onPress={() => setIsReceived(true)}
                 style={[styles.toggleBtn, isReceived ? styles.activeBtn : {}]}
             >
-                <Typography variant="body" style={{color: isReceived ? COLORS.backgroundPrimary : COLORS.textPrimary}}>I Received It</Typography>
+                <Typography variant="body" style={isReceived ? styles.toggleTextActive : styles.toggleTextInactive}>I Received It</Typography>
             </SquishyButton>
         </View>
         <SquishyButton onPress={submit} style={styles.submitBtn}>
-          <Typography variant="button" style={{ color: COLORS.textPrimary }}>Submit to Marcie</Typography>
+          <Typography variant="button" style={styles.buttonText}>Submit to Marcie</Typography>
         </SquishyButton>
       </GlassCard>
     </View>
@@ -109,6 +109,9 @@ export default function BidRadar({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  inputArea: {
+    gap: SPACING.regular,
+  },
   input: {
     backgroundColor: COLORS.backgroundInput,
     borderRadius: BORDER_RADIUS.medium,
@@ -137,6 +140,15 @@ const styles = StyleSheet.create({
   },
   activeBtn: {
     backgroundColor: COLORS.mintGreen,
+  },
+  toggleTextActive: {
+    color: COLORS.backgroundPrimary,
+  },
+  toggleTextInactive: {
+    color: COLORS.textPrimary,
+  },
+  buttonText: {
+    color: COLORS.textPrimary,
   },
   submitBtn: {
     marginTop: SPACING.regular,

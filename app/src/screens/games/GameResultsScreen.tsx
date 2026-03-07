@@ -102,7 +102,7 @@ export default function GameResultsScreen({ route, navigation }: any) {
                 <Typography variant="h1" color={badgeColor}>
                   {percentage}%
                 </Typography>
-                <Typography variant="body" color={COLORS.textSecondary} style={{ marginTop: SPACING.small }}>
+                <Typography variant="body" color={COLORS.textSecondary} style={styles.scoreLabel}>
                   {score}/{maxScore} points
                 </Typography>
               </View>
@@ -111,7 +111,7 @@ export default function GameResultsScreen({ route, navigation }: any) {
                 <Typography variant="body" color={COLORS.textSecondary}>
                   XP Earned:
                 </Typography>
-                <Typography variant="h2" color={COLORS.aquaTeal} style={{ marginLeft: SPACING.small }}>
+                <Typography variant="h2" color={COLORS.aquaTeal} style={styles.xpValue}>
                   +{xpEarned}
                 </Typography>
               </View>
@@ -146,7 +146,7 @@ export default function GameResultsScreen({ route, navigation }: any) {
                 end={{ x: 1, y: 1 }}
                 style={styles.gradientContainer}
               >
-                <Typography variant="body" color={COLORS.textSecondary} style={{ marginBottom: SPACING.small }}>
+                <Typography variant="body" color={COLORS.textSecondary} style={styles.statLabel}>
                   Responses
                 </Typography>
                 <Typography variant="h2" color={COLORS.textPrimary}>
@@ -162,7 +162,7 @@ export default function GameResultsScreen({ route, navigation }: any) {
                 end={{ x: 1, y: 1 }}
                 style={styles.gradientContainer}
               >
-                <Typography variant="body" color={COLORS.textSecondary} style={{ marginBottom: SPACING.small }}>
+                <Typography variant="body" color={COLORS.textSecondary} style={styles.statLabel}>
                   Completion
                 </Typography>
                 <Typography variant="h2" color={COLORS.textPrimary}>
@@ -178,7 +178,7 @@ export default function GameResultsScreen({ route, navigation }: any) {
                 end={{ x: 1, y: 1 }}
                 style={styles.gradientContainer}
               >
-                <Typography variant="body" color={COLORS.textSecondary} style={{ marginBottom: SPACING.small }}>
+                <Typography variant="body" color={COLORS.textSecondary} style={styles.statLabel}>
                   Time
                 </Typography>
                 <Typography variant="h2" color={COLORS.textPrimary}>
@@ -240,11 +240,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: SPACING.xlarge,
   },
+  scoreLabel: {
+    marginTop: SPACING.small,
+  },
   xpContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: SPACING.xlarge,
+  },
+  xpValue: {
+    marginLeft: SPACING.small,
   },
   badgeContainer: {
     alignSelf: 'center',
@@ -277,6 +283,9 @@ const styles = StyleSheet.create({
   statCard: {
     flex: 1,
     marginHorizontal: SPACING.tiny,
+  },
+  statLabel: {
+    marginBottom: SPACING.small,
   },
   buttonContainer: {
     marginTop: SPACING.xlarge,

@@ -14,7 +14,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, Alert, ScrollView, TouchableOpacity, Animated as RNAnimated } from 'react-native';
+import { View, StyleSheet, Alert, ScrollView, Animated as RNAnimated } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -416,19 +416,19 @@ const TruthTellerTower: React.FC = () => {
                         </Typography>
                         <View style={styles.optionsContainer}>
                             {currentQuestion?.options.map((option) => (
-                                <TouchableOpacity
+                                <SquishyButton
                                     key={option.id}
-                                    style={[
-                                        styles.optionButton,
-                                        myAnswer === option.id && styles.selectedOption,
-                                        eliminatedOptions.includes(option.id) && styles.eliminatedOption
-                                    ]}
                                     onPress={() => handleAnswerSelect(option.id)}
                                     disabled={eliminatedOptions.includes(option.id)}
+                                    variant={myAnswer === option.id ? 'primary' : 'ghost'}
+                                    style={[
+                                        styles.optionButton,
+                                        eliminatedOptions.includes(option.id) && styles.eliminatedOption
+                                    ]}
                                 >
                                     <Typography variant="h4" style={styles.optionLabel}>{option.id}:</Typography>
                                     <Typography variant="body" style={styles.optionText}>{option.text}</Typography>
-                                </TouchableOpacity>
+                                </SquishyButton>
                             ))}
                         </View>
 
@@ -438,16 +438,14 @@ const TruthTellerTower: React.FC = () => {
                         </Typography>
                         <View style={styles.optionsContainer}>
                             {currentQuestion?.options.map((option) => (
-                                <TouchableOpacity
+                                <SquishyButton
                                     key={`pred-${option.id}`}
-                                    style={[
-                                        styles.predictionButton,
-                                        prediction === option.id && styles.selectedPrediction
-                                    ]}
                                     onPress={() => handlePredictionSelect(option.id)}
+                                    variant={prediction === option.id ? 'primary' : 'ghost'}
+                                    style={styles.predictionButton}
                                 >
                                     <Typography variant="h4" style={styles.optionLabel}>{option.id}</Typography>
-                                </TouchableOpacity>
+                                </SquishyButton>
                             ))}
                         </View>
 

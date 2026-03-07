@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import { Svg, Circle, Rect } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout } from '../../components/ui';
@@ -28,9 +28,9 @@ const backZones = [
 const Zone = ({ zone, color, onPress }: { zone: any; color: string; onPress: () => void }) => {
     const Component = zone.shape === 'Circle' ? Circle : Rect;
     return (
-        <TouchableOpacity onPress={onPress}>
+        <SquishyButton onPress={onPress} variant="ghost" style={styles.zoneButton}>
             <Component {...zone.args} fill={color} opacity="0.4" />
-        </TouchableOpacity>
+        </SquishyButton>
     );
 };
 
@@ -182,6 +182,10 @@ const styles = StyleSheet.create({
     paletteButton: { 
         flex: 1, 
         marginHorizontal: SPACING.tiny 
+    },
+    zoneButton: {
+        padding: 0,
+        backgroundColor: 'transparent',
     },
 });
 

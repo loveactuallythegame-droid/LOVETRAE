@@ -32,14 +32,14 @@ export default function MicroMomentMuseum({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputAreaContainer}>
       <GlassCard>
         <Typography variant="h2">Curate a Moment</Typography>
         <Typography variant="body">Upload a photo of a small connection:</Typography>
         <SquishyButton onPress={upload} style={styles.upload} variant="ghost">
             <Typography variant="body">{hasPhoto ? "📸 Photo Selected" : "Tap to Upload Photo"}</Typography>
         </SquishyButton>
-        <Typography variant="body" style={{ marginTop: SPACING.regular }}>Write a caption:</Typography>
+        <Typography variant="body" style={styles.captionLabel}>Write a caption:</Typography>
         <TextInput
           style={styles.input}
           placeholder="Title this moment..."
@@ -74,12 +74,18 @@ export default function MicroMomentMuseum({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  inputAreaContainer: {
+    gap: SPACING.regular,
+  },
   upload: { 
     height: 100, 
     marginTop: SPACING.regular,
     borderStyle: 'dashed', 
     borderWidth: 1, 
     borderColor: COLORS.borderSubtle,
+  },
+  captionLabel: {
+    marginTop: SPACING.regular,
   },
   input: { 
     backgroundColor: COLORS.backgroundInput, 

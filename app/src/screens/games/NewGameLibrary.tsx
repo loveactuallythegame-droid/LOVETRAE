@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, ImageBackground } from 'react-native';
-import { ScreenLayout, GlassCard, Text, SquishyButton, Typography } from '../../components/ui';
+import { View, StyleSheet, ScrollView, TextInput, Alert, ImageBackground } from 'react-native';
+import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { Ionicons } from '@expo/vector-icons';
 import { Game } from '../../lib/supabase';
 import { MarcieHost } from '../../components/ai-host';
@@ -54,12 +54,12 @@ export default function NewGameLibrary({ navigation }: any) {
           
           {filtered.map((g, i) => (
             <View key={g.id} style={styles.gameCardWrapper}>
-              <TouchableOpacity onPress={() => {}} activeOpacity={0.9}>
-                <GlassCard style={styles.gameCard}>
+              <SquishyButton onPress={() => {}} style={styles.gameCard}>
+                <GlassCard>
                   <Typography variant="h3" style={styles.gameTitle}>{g.name}</Typography>
                   <Typography variant="body" style={styles.gameDescription}>{g.description}</Typography>
                 </GlassCard>
-              </TouchableOpacity>
+              </SquishyButton>
             </View>
           ))}
         </ScrollView>

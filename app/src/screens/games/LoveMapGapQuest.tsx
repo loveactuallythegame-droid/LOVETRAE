@@ -23,12 +23,12 @@ export default function LoveMapGapQuest({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.container}>
       <GlassCard>
         <Typography variant="h2">Map Gaps Detected</Typography>
-        <View style={{ gap: SPACING.small, marginVertical: SPACING.regular }}>
+        <View style={styles.gapsList}>
             {GAPS.map((g, i) => (
-                <Typography key={i} variant="body" style={{ color: g.includes('?') ? COLORS.error : COLORS.textPrimary }}>
+                <Typography key={i} variant="body" style={[styles.gapItem, { color: g.includes('?') ? COLORS.error : COLORS.textPrimary }]}>
                   • {g}
                 </Typography>
             ))}
@@ -69,6 +69,16 @@ export default function LoveMapGapQuest({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: SPACING.regular,
+  },
+  gapsList: {
+    gap: SPACING.small,
+    marginVertical: SPACING.regular,
+  },
+  gapItem: {
+    // color is dynamic based on g.includes('?')
+  },
   input: { 
     backgroundColor: COLORS.backgroundInput, 
     color: COLORS.textPrimary, 

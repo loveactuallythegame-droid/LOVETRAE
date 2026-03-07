@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { View, StyleSheet, Alert, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlassCard, Typography, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
@@ -21,7 +20,7 @@ export default function MemoryLaneDash({ route, navigation }: any) {
   }
 
   const inputArea = (
-    <View style={{ gap: SPACING.regular }}>
+    <View style={styles.inputWrapper}>
       <GlassCard>
         <Typography variant="h2">Recall Challenge</Typography>
         <Typography variant="body">Where did you have your first proper date?</Typography>
@@ -59,6 +58,9 @@ export default function MemoryLaneDash({ route, navigation }: any) {
 }
 
 const styles = StyleSheet.create({
+  inputWrapper: {
+    gap: SPACING.regular,
+  },
   input: { 
     backgroundColor: COLORS.backgroundInput, 
     color: COLORS.textPrimary, 
