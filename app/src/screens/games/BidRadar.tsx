@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, TextInput, Alert, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';

@@ -1,7 +1,7 @@
 /**
  * Newlywed Game - Game Show Category
  * Couples predict each other's answers to intimate questions
- * 
+ *
  * Backend Integration:
  * - Creates game session via useGameSession
  * - Tracks predictions and matches
@@ -10,7 +10,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
 // Backend integration

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Animated } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenLayout, GlassCard, Text, SquishyButton } from '../../components/ui';
 import { GameContainer } from '../../components/games/engine';
