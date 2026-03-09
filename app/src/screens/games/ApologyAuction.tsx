@@ -1,12 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions, Animated } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
-import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, ANIMATIONS, GRADIENTS } from '../../theme';
+import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, GRADIENTS } from '../../theme';
 
-import { auth, db } from '../../lib/firebaseClient';
-import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
 
 const { width } = Dimensions.get('window');
 
@@ -19,60 +21,27 @@ const APOLOGY_CARDS = [
 ];
 
 export default function ApologyAuction({ route, navigation }: any) {
-  const { gameId } = route.params || { gameId: 'apology-auction' };
+  const navigationHook = useNavigation();
+  const { gameId: routeGameId } = route.params || {};
+  
+  // Get game info from registry
+  const gameInfo = getGameByScreen('ApologyAuction');
+  const GAME_ID = gameInfo?.id || 'apology-auction';
+  const CATEGORY_ID = gameInfo?.categoryId || 'conflict-resolution';
+  
+  // Backend session
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading,
+    isSyncing
+  } = useGameSession(GAME_ID, CATEGORY_ID);
+  
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [playerScore, setPlayerScore] = useState(0);
   const [round, setRound] = useState(1);
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [partnerResponse, setPartnerResponse] = useState<any>(null);
-  const coupleId = useRef<string | null>(null);
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const profileRef = doc(db, 'profiles', user.uid);
-        const profileSnap = await getDoc(profileRef);
-        const couple_code = profileSnap.data()?.couple_code;
-
-        if (couple_code) {
-          coupleId.current = couple_code;
-          
-          const sessionRef = await addDoc(collection(db, 'game_sessions'), {
-            gameId,
-            userId: user.uid,
-            couple_id: couple_code,
-            createdAt: new Date(),
-            state: { round, selectedCard, score: playerScore },
-          });
-          setSessionId(sessionRef.id);
-          
-          // Set up real-time sync with partner
-          const q = query(
-            collection(db, 'game_sessions'),
-            where('couple_id', '==', couple_code),
-            where('gameId', '==', gameId),
-            where('userId', '!=', user.uid)
-          );
-          
-          const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-              if (change.type === "added" || change.type === "modified") {
-                const data = change.doc.data();
-                if (data.state) {
-                  setPartnerResponse(data.state);
-                }
-              }
-            });
-          });
-          
-          return () => unsubscribeSnapshot();
-        }
-      }
-    });
-
-    return () => unsubscribeAuth && unsubscribeAuth();
-  }, [gameId]);
+  const scaleAnim = React.useRef(new Animated.Value(1)).current;
 
   const selectCard = (cardId: string) => {
     setSelectedCard(cardId);
@@ -84,13 +53,43 @@ export default function ApologyAuction({ route, navigation }: any) {
     }).start();
   };
 
-  const submitBid = () => {
+  const submitBid = async () => {
     if (!selectedCard) return;
-    
+
     const card = APOLOGY_CARDS.find(c => c.id === selectedCard);
     if (card) {
-      setPlayerScore(prev => prev + card.value);
-      setRound(prev => prev + 1);
+      const newScore = playerScore + card.value;
+      const newRound = round + 1;
+      
+      setPlayerScore(newScore);
+      setRound(newRound);
+      
+      // Save to backend
+      await updateScore(newScore, [{
+        round: round,
+        selectedCard: card.id,
+        cardText: card.text,
+        cardType: card.type,
+        points: card.value
+      }]);
+      
+      // Check if game should end
+      if (newRound > 5) {
+        await completeGame(newScore, [{
+          completed: true,
+          totalRounds: 5,
+          finalScore: newScore,
+          averageScore: Math.round(newScore / 5)
+        }]);
+        
+        navigationHook.navigate('GameResults', {
+          score: newScore,
+          gameId: GAME_ID,
+          sessionId: session?.id
+        });
+        return;
+      }
+      
       setSelectedCard(null);
       Animated.spring(scaleAnim, {
         toValue: 1,
@@ -101,9 +100,26 @@ export default function ApologyAuction({ route, navigation }: any) {
     }
   };
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout showMarcie={true} marcieQuote="Loading apology auction...">
+        <View style={styles.loadingContainer}>
+          <Typography variant="body" center>Starting game...</Typography>
+        </View>
+      </ScreenLayout>
+    );
+  }
+
   return (
     <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Genuine apologies are the foundation of trust! Choose the most heartfelt option to win this auction.">
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
+      <View style={styles.container}>
+        {isSyncing && (
+          <View style={styles.syncIndicator}>
+            <Typography variant="caption" color={COLORS.success}>💾 Saving...</Typography>
+          </View>
+        )}
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
         <Typography variant="h1" style={styles.title}>
           The Love Arcade
         </Typography>
@@ -160,9 +176,9 @@ export default function ApologyAuction({ route, navigation }: any) {
               ))}
             </View>
 
-            <SquishyButton 
-              style={styles.submitButton} 
-              onPress={submitBid} 
+            <SquishyButton
+              style={styles.submitButton}
+              onPress={submitBid}
               disabled={!selectedCard}
             >
               <Typography variant="button" style={styles.buttonText}>
@@ -171,25 +187,13 @@ export default function ApologyAuction({ route, navigation }: any) {
             </SquishyButton>
           </LinearGradient>
         </GlassCard>
-        
-        {partnerResponse && (
-          <GlassCard style={styles.partnerCard}>
-            <Typography variant="caption" style={styles.partnerLabel}>
-              Partner's Choice:
-            </Typography>
-            <Typography variant="body" style={styles.partnerText}>
-              {partnerResponse.selectedCard 
-                ? `Selected card with value: ${partnerResponse.selectedCard}`
-                : 'Partner is selecting...'}
-            </Typography>
-          </GlassCard>
-        )}
 
         <View style={styles.scoreContainer}>
           <Typography variant="caption" style={styles.scoreLabel}>Your Score</Typography>
           <Typography variant="h2" style={styles.scoreValue}>{playerScore}</Typography>
         </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </ScreenLayout>
   );
 }
@@ -297,5 +301,20 @@ const styles = StyleSheet.create({
   },
   scoreValue: {
     color: COLORS.vibrantPink,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  syncIndicator: {
+    position: 'absolute',
+    top: SPACING.small,
+    right: SPACING.small,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.small,
+    zIndex: 1000,
   },
 });

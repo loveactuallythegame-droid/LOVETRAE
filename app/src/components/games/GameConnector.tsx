@@ -23,11 +23,11 @@ import {
   StyleSheet,
   ActivityIndicator,
   Alert,
+  Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { gamesApi, GameSession } from '../../lib/api';
 import { auth } from '../../lib/firebaseClient';
-import { useWebSocket } from '../../hooks/useWebSocket';
 import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS } from '../../theme';
 import { Typography, SquishyButton } from '../ui';
 
@@ -136,6 +136,49 @@ export const GameConnector: React.FC<GameConnectorProps> = ({
     }
   }, [session, onComplete]);
 
+  // Platform-safe reload function
+  const handleReload = () => {
+    if (Platform.OS === 'web') {
+      // On web, use window.location.reload()
+      window.location.reload();
+    } else {
+      // On mobile, reset error state to retry session creation
+      setError(null);
+      setLoading(true);
+      
+      // Retry creating the session
+      const retrySession = async () => {
+        try {
+          const currentUser = auth.currentUser;
+          
+          if (!currentUser) {
+            throw new Error('User not authenticated');
+          }
+
+          const token = await currentUser.getIdToken();
+          
+          const newSession = await gamesApi.createSession(
+            currentUser.uid,
+            gameId,
+            categoryId,
+            token
+          );
+          
+          setSession(newSession);
+          console.log(`[GameConnector] Session created on retry: ${newSession.id}`);
+        } catch (err) {
+          console.error('[GameConnector] Failed to create session on retry:', err);
+          setError(err instanceof Error ? err : new Error('Failed to create game session'));
+          onError?.(err instanceof Error ? err : new Error('Failed to create game session'));
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      retrySession();
+    }
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -162,7 +205,7 @@ export const GameConnector: React.FC<GameConnectorProps> = ({
             {error.message}
           </Typography>
           <SquishyButton
-            onPress={() => window.location.reload()}
+            onPress={handleReload}
             accessibilityLabel="Try Again"
           >
             <Typography variant="button" color={COLORS.textPrimary}>

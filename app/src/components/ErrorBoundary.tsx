@@ -1,44 +1,235 @@
-import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+/**
+ * Global Error Boundary
+ * Catches JavaScript errors anywhere in the child component tree
+ * Provides fallback UI and error reporting
+ */
 
-type State = { hasError: boolean; error?: any; info?: any };
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { ENV } from '../lib/env';
 
-export default class ErrorBoundary extends React.Component<{ children: React.ReactNode }, State> {
-  state: State = { hasError: false, error: undefined, info: undefined };
-  static getDerivedStateFromError(error: any) { return { hasError: true, error }; }
-  componentDidCatch(error: any, info: any) { 
-    try { console.warn('ErrorBoundary', error, info); } catch {}
+interface Props {
+  children: ReactNode;
+  fallback?: ReactNode;
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
+}
+
+interface State {
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: ErrorInfo | null;
+}
+
+class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null,
+    };
   }
-  handleReload = () => {
+
+  static getDerivedStateFromError(error: Error): State {
+    return {
+      hasError: true,
+      error,
+      errorInfo: null,
+    };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // Log error details
+    console.error('[ErrorBoundary] Caught error:', error);
+    console.error('[ErrorBoundary] Component stack:', errorInfo.componentStack);
+
+    this.setState({
+      error,
+      errorInfo,
+    });
+
+    // Report to Sentry if configured
+    if (ENV.SENTRY_DSN && typeof window !== 'undefined' && (window as any).Sentry) {
+      (window as any).Sentry.captureException(error, {
+        extra: {
+          componentStack: errorInfo.componentStack,
+        },
+      });
+    }
+
+    // Call custom error handler if provided
+    if (this.props.onError) {
+      this.props.onError(error, errorInfo);
+    }
+
+    // Send to backend analytics
+    this.reportError(error, errorInfo);
+  }
+
+  reportError = async (error: Error, errorInfo: ErrorInfo) => {
     try {
-      if (typeof window !== 'undefined' && window.location) window.location.reload();
-      else this.setState({ hasError: false, error: undefined, info: undefined });
-    } catch {
-      this.setState({ hasError: false, error: undefined, info: undefined });
+      await fetch(`${ENV.BACKEND_URL}/api/analytics/track`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_type: 'error_boundary_triggered',
+          properties: {
+            error_message: error.message,
+            error_stack: error.stack,
+            component_stack: errorInfo.componentStack,
+            app_version: ENV.APP_VERSION,
+          },
+        }),
+      });
+    } catch (e) {
+      // Silently fail - can't report error reporting failure
     }
   };
+
+  handleReset = () => {
+    this.setState({
+      hasError: false,
+      error: null,
+      errorInfo: null,
+    });
+  };
+
+  handleReload = () => {
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
+  };
+
   render() {
     if (this.state.hasError) {
-      const msg = typeof this.state.error?.message === 'string' ? this.state.error.message : 'Unexpected error';
+      // Custom fallback UI
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
       return (
-        <View style={styles.wrap}>
-          <View style={styles.card}>
+        <View style={styles.container}>
+          <ScrollView contentContainerStyle={styles.content}>
+            <Text style={styles.emoji}>😵</Text>
             <Text style={styles.title}>Something went wrong</Text>
-            <Text style={styles.msg}>{msg}</Text>
-            <Pressable onPress={this.handleReload} style={styles.btn}><Text style={styles.btnText}>Reload</Text></Pressable>
-          </View>
+            <Text style={styles.message}>
+              We apologize for the inconvenience. Our team has been notified.
+            </Text>
+
+            {__DEV__ && this.state.error && (
+              <View style={styles.debugContainer}>
+                <Text style={styles.debugTitle}>Debug Info:</Text>
+                <Text style={styles.debugText}>
+                  {this.state.error.toString()}
+                </Text>
+                {this.state.errorInfo && (
+                  <Text style={styles.debugStack}>
+                    {this.state.errorInfo.componentStack}
+                  </Text>
+                )}
+              </View>
+            )}
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={this.handleReset}>
+                <Text style={styles.buttonText}>Try Again</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={[styles.button, styles.secondaryButton]} 
+                onPress={this.handleReload}
+              >
+                <Text style={styles.secondaryButtonText}>Reload App</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
-      ) as any;
+      );
     }
-    return this.props.children as any;
+
+    return this.props.children;
   }
 }
 
 const styles = StyleSheet.create({
-  wrap: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#120016' },
-  card: { width: '88%', maxWidth: 520, padding: 16, borderRadius: 16, backgroundColor: 'rgba(26,10,31,0.9)', borderWidth: 1, borderColor: 'rgba(250,31,99,0.2)', gap: 10 },
-  title: { fontSize: 18, color: '#FA1F63' },
-  msg: { fontSize: 14, color: '#fff' },
-  btn: { alignSelf: 'flex-start', paddingHorizontal: 12, paddingVertical: 8, backgroundColor: '#5C1459', borderRadius: 10 },
-  btnText: { color: '#fff' },
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a2e',
+  },
+  content: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  emoji: {
+    fontSize: 64,
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  message: {
+    fontSize: 16,
+    color: '#888',
+    textAlign: 'center',
+    marginBottom: 32,
+    lineHeight: 24,
+  },
+  buttonContainer: {
+    width: '100%',
+    gap: 12,
+  },
+  button: {
+    backgroundColor: '#FA1F63',
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  secondaryButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#FA1F63',
+  },
+  secondaryButtonText: {
+    color: '#FA1F63',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  debugContainer: {
+    width: '100%',
+    backgroundColor: '#0a0a0a',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 24,
+  },
+  debugTitle: {
+    color: '#FA1F63',
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  debugText: {
+    color: '#ff6b6b',
+    fontSize: 12,
+    fontFamily: 'monospace',
+    marginBottom: 8,
+  },
+  debugStack: {
+    color: '#888',
+    fontSize: 10,
+    fontFamily: 'monospace',
+  },
 });
+
+export default ErrorBoundary;

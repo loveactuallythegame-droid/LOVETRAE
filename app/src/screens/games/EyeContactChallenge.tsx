@@ -7,8 +7,12 @@ import { auth, db } from '../../lib/firebaseClient';
 import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS, ANIMATIONS } from '../../theme';
 
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
+
 export default function EyeContactChallenge({ route, navigation }: any) {
-  const { gameId } = route.params || { gameId: 'eye-contact-challenge' };
+  const { gameId: routeGameId } = route.params || { gameId: 'eye-contact-challenge' };
   const [timeRemaining, setTimeRemaining] = useState(60);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [gameStarted, setGameStarted] = useState(false);
@@ -19,6 +23,22 @@ export default function EyeContactChallenge({ route, navigation }: any) {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [partnerReady, setPartnerReady] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('connecting');
+  const [responses, setResponses] = useState<Record<string, any>>({});
+
+  // Get game info from registry
+  const gameInfo = getGameByScreen('EyeContactChallenge');
+  const GAME_ID = gameInfo?.id || 'eye-contact-challenge';
+  const CATEGORY_ID = gameInfo?.categoryId || 'emotional-connection';
+
+  // Backend session
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading,
+    isSyncing,
+    partnerProgress
+  } = useGameSession(GAME_ID, CATEGORY_ID);
 
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
@@ -31,7 +51,7 @@ export default function EyeContactChallenge({ route, navigation }: any) {
           coupleId.current = couple_code;
           
           const sessionRef = await addDoc(collection(db, 'game_sessions'), {
-            gameId,
+            gameId: GAME_ID,
             userId: user.uid,
             couple_id: couple_code,
             createdAt: new Date(),
@@ -43,7 +63,7 @@ export default function EyeContactChallenge({ route, navigation }: any) {
           const q = query(
             collection(db, 'game_sessions'),
             where('couple_id', '==', couple_code),
-            where('gameId', '==', gameId),
+            where('gameId', '==', GAME_ID),
             where('userId', '!=', user.uid)
           );
           
@@ -70,7 +90,7 @@ export default function EyeContactChallenge({ route, navigation }: any) {
     });
 
     return () => unsubscribeAuth && unsubscribeAuth();
-  }, [gameId]);
+  }, [GAME_ID]);
 
   const startGame = () => {
     setGameStarted(true);
@@ -89,10 +109,20 @@ export default function EyeContactChallenge({ route, navigation }: any) {
     }, ANIMATIONS.duration.slow);
   };
 
-  const incrementScore = () => {
+  const incrementScore = async () => {
     if (gameStarted && timeRemaining > 0) {
-      setScore(prev => prev + 10);
-      setStreak(prev => prev + 1);
+      const newScore = score + 10;
+      const newStreak = streak + 1;
+      setScore(newScore);
+      setStreak(newStreak);
+      
+      // Update in backend
+      await updateScore(newScore, [{
+        questionId: 'tap',
+        response: 'connection_tap',
+        points: 10,
+        streak: newStreak
+      }]);
       
       // Update in Firebase
       if (sessionId) {
@@ -102,21 +132,32 @@ export default function EyeContactChallenge({ route, navigation }: any) {
             timeRemaining, 
             gameStarted, 
             gameCompleted: false, 
-            score: score + 10,
-            streak: streak + 1
+            score: newScore,
+            streak: newStreak
           }
         });
       }
     }
   };
 
-  const finishGame = () => {
+  const finishGame = async () => {
     setGameCompleted(true);
     setGameStarted(false);
     
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
+    
+    const achievements: string[] = [];
+    if (score >= 100) achievements.push('Deep Connection');
+    if (streak >= 5) achievements.push('Connection Streak');
+    
+    await completeGame(score, [{
+      questionId: 'final',
+      response: 'completed',
+      taps: score / 10,
+      streak: streak
+    }], achievements);
     
     // Update in Firebase
     if (sessionId) {
@@ -137,8 +178,24 @@ export default function EyeContactChallenge({ route, navigation }: any) {
     };
   }, []);
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Typography variant="body">Loading game...</Typography>
+        </View>
+      </ScreenLayout>
+    );
+  }
+
   const inputArea = (
     <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+      {isSyncing && (
+        <View style={{position: 'absolute', top: 10, right: 10, backgroundColor: 'rgba(0,0,0,0.7)', padding: 8, borderRadius: 8, zIndex: 1000}}>
+          <Typography variant="caption" style={{color: COLORS.success}}>💾 Saving...</Typography>
+        </View>
+      )}
       <GlassCard>
         <LinearGradient
           colors={[COLORS.backgroundCard, COLORS.backgroundSecondary]}
@@ -230,9 +287,13 @@ export default function EyeContactChallenge({ route, navigation }: any) {
                 You and your partner maintained eye contact and connected {score/10} times
               </Typography>
               <SquishyButton 
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate('GameResults', {
+                  score: score,
+                  gameId: GAME_ID,
+                  sessionId: session?.id
+                })}
               >
-                <Typography variant="button">Return to Menu</Typography>
+                <Typography variant="button">View Results</Typography>
               </SquishyButton>
             </View>
           )}
@@ -242,7 +303,7 @@ export default function EyeContactChallenge({ route, navigation }: any) {
   );
 
   const baseState = {
-    id: gameId,
+    id: routeGameId,
     title: 'Eye Contact Challenge',
     description: 'Connect with your partner through sustained eye contact',
     category: 'emotional-connection' as const,
@@ -272,7 +333,11 @@ export default function EyeContactChallenge({ route, navigation }: any) {
             state: JSON.stringify({ completed: true, finalScore: score, streak })
           });
         }
-        navigation.goBack();
+        navigation.navigate('GameResults', {
+          score: score,
+          gameId: GAME_ID,
+          sessionId: session?.id
+        });
       }} 
       sessionId={sessionId} 
     />

@@ -6,11 +6,29 @@ import { speakMarcie } from '../../lib/voice-engine';
 import { useAppStore } from '../../state/store';
 import { COLORS, SPACING, BORDER_RADIUS, ANIMATIONS } from '../../theme';
 
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
+
 export default function LieDetector({ route, navigation }: any) {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [permissionResponse, requestPermission] = Audio.usePermissions();
+
+  // Get game info from registry
+  const gameInfo = getGameByScreen('LieDetector');
+  const GAME_ID = gameInfo?.id || 'lie-detector';
+  const CATEGORY_ID = gameInfo?.categoryId || 'creative-chaos';
+
+  // Backend session
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading,
+    isSyncing
+  } = useGameSession(GAME_ID, CATEGORY_ID);
 
   useEffect(() => {
     speakMarcie("Partner, record your answer. I'm listening for fluency, steadiness, and filler words. Don't lie to me.");
@@ -49,10 +67,10 @@ export default function LieDetector({ route, navigation }: any) {
     analyzeRecording(uri);
   }
 
-  function analyzeRecording(uri: string | null) {
+  async function analyzeRecording(uri: string | null) {
     setAnalyzing(true);
     // Mock analysis since we don't have a real backend ML service connected for this demo
-    setTimeout(() => {
+    setTimeout(async () => {
       const fluency = Math.floor(Math.random() * 10) + 1; // 1-10
       const steadiness = Math.floor(Math.random() * 10) + 1;
       const fillerWords = Math.floor(Math.random() * 5); // 0-5
@@ -60,21 +78,47 @@ export default function LieDetector({ route, navigation }: any) {
       const score = (fluency * 2) + (steadiness * 2) - (fillerWords * 2);
       const total = Math.max(0, Math.min(25, 15 + Math.floor(Math.random() * 10))); // Mock total score / 25
 
-      setResult({
+      const analysisResult = {
         fluency,
         steadiness,
         fillerWords,
         score: total,
         passed: total > 18
-      });
+      };
+
+      setResult(analysisResult);
       setAnalyzing(false);
+
+      // Update score during analysis
+      await updateScore(total * 4, [{ fluency, steadiness, fillerWords, passed: total > 18 }]);
 
       if (total > 20) {
         speakMarcie("Ooh—24/25. Only slipped on 'uh' once. I'll allow it… this time.");
       } else {
         speakMarcie("Hmm. Too many pauses. Are you hiding something, or just thinking?");
       }
+
+      // Complete game after analysis
+      await completeGame(total * 4, [{
+        fluency,
+        steadiness,
+        fillerWords,
+        score: total,
+        passed: total > 18,
+        recordingUri: uri
+      }]);
     }, ANIMATIONS.duration.slower);
+  }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout showMarcie={true} marcieQuote="Calibrating lie detector...">
+        <View style={styles.loadingContainer}>
+          <Typography variant="body" center>Initializing session...</Typography>
+        </View>
+      </ScreenLayout>
+    );
   }
 
   return (
@@ -86,6 +130,12 @@ export default function LieDetector({ route, navigation }: any) {
           </SquishyButton>
           <Typography variant="h1">Lie Detector: Lite™</Typography>
         </View>
+
+        {isSyncing && (
+          <View style={styles.syncIndicator}>
+            <Typography variant="caption" color={COLORS.success}>💾 Saving...</Typography>
+          </View>
+        )}
 
         <GlassCard style={styles.card}>
           <Typography variant="body" style={styles.prompt}>
@@ -169,6 +219,22 @@ const styles = StyleSheet.create({
   },
   subPrompt: { 
     textAlign: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  syncIndicator: {
+    position: 'absolute',
+    top: SPACING.small,
+    right: SPACING.small,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.small,
+    zIndex: 1000,
+    alignSelf: 'flex-end',
   },
   recordContainer: { 
     alignItems: 'center', 

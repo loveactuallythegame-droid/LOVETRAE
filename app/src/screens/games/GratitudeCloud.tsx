@@ -1,78 +1,48 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, ScrollView, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { SquishyButton } from '../../components/ui';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 import { Typography, GlassCard, ScreenLayout } from '../../components/ui';
-import { GameContainer } from '../../components/games/engine';
-import { auth, db } from '../../lib/firebaseClient';
-import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, ANIMATIONS } from '../../theme';
+
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
 
 const { width } = Dimensions.get('window');
 
 type CloudWord = { text: string; weight: number; left: number; top: number; size: number };
 
 export default function GratitudeCloud({ route, navigation }: any) {
-  const { gameId } = route.params || { gameId: 'gratitude-cloud' };
+  const navigationHook = useNavigation();
+  
+  // Get game info from registry
+  const gameInfo = getGameByScreen('GratitudeCloud');
+  const GAME_ID = gameInfo?.id || 'gratitude-cloud';
+  const CATEGORY_ID = gameInfo?.categoryId || 'emotional-connection';
+  
+  // Backend session
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading,
+    isSyncing
+  } = useGameSession(GAME_ID, CATEGORY_ID);
+  
   const [input, setInput] = useState('');
   const [words, setWords] = useState<string[]>([]);
   const [cloud, setCloud] = useState<CloudWord[]>([]);
-  const sessionId = useRef<string | null>(null);
-  const coupleId = useRef<string | null>(null);
   const [partnerWords, setPartnerWords] = useState<string[]>([]);
-  const userId = useRef<string | null>(null);
 
-  useEffect(() => {
-    const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        userId.current = user.uid;
-        const profileRef = doc(db, 'profiles', user.uid);
-        const profileSnap = await getDoc(profileRef);
-        const couple_code = profileSnap.data()?.couple_code;
-
-        if (couple_code) {
-          coupleId.current = couple_code;
-          const sessionRef = await addDoc(collection(db, 'game_sessions'), {
-            gameId,
-            userId: user.uid,
-            couple_id: couple_code,
-            createdAt: new Date(),
-            state: { words: [] },
-          });
-          sessionId.current = sessionRef.id;
-
-          const q = query(
-            collection(db, 'game_sessions'),
-            where('couple_id', '==', couple_code),
-            where('gameId', '==', gameId)
-          );
-
-          const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-              if (change.type === "added" || change.type === "modified") {
-                if (change.doc.id !== sessionId.current) {
-                  const data = change.doc.data();
-                  if (data.state?.words) {
-                    setPartnerWords(data.state.words);
-                  }
-                }
-              }
-            });
-          });
-          return () => unsubscribeSnapshot();
-        }
-      }
-    });
-
-    return () => unsubscribeAuth && unsubscribeAuth();
-  }, [gameId]);
-
-  async function updateWordsInFirestore(newWords: string[]) {
-      if (sessionId.current) {
-          const sessionRef = doc(db, 'game_sessions', sessionId.current);
-          await updateDoc(sessionRef, {
-              state: { words: newWords }
-          });
-      }
+  async function updateWords(newWords: string[]) {
+    const score = newWords.length * 10;
+    await updateScore(score, [{
+      words: newWords,
+      wordCount: newWords.length,
+      points: score
+    }]);
   }
 
   function addWord(t: string) {
@@ -82,123 +52,153 @@ export default function GratitudeCloud({ route, navigation }: any) {
     if (!words.includes(cleaned)) {
         const newWords = [...words, cleaned];
         setWords(newWords);
-        updateWordsInFirestore(newWords);
+        updateWords(newWords);
     }
-    
+
     setInput('');
-    if (cleaned === 'tolerable') {
-      try { const { speakMarcie } = require('../../lib/voice-engine'); speakMarcie("I see you typed 'tolerable' three times. How romantic."); } catch {}
-    }
   }
 
   useEffect(() => {
     const items = words.map((w) => {
       const weight = Math.min(3, Math.max(1, w.length >= 8 ? 3 : w.length >= 5 ? 2 : 1));
       const size = TYPOGRAPHY.fontSize.bodyLarge + weight * 4;
-      return { 
-        text: w, 
-        weight, 
-        left: Math.random() * (width - 100), 
-        top: Math.random() * 160, 
-        size 
+      return {
+        text: w,
+        weight,
+        left: Math.random() * (width - 100),
+        top: Math.random() * 160,
+        size
       };
     });
     setCloud(items);
   }, [words]);
 
   const pulse = useSharedValue(1);
-  useEffect(() => { 
+  useEffect(() => {
     pulse.value = withRepeat(
-      withTiming(1.05, { duration: ANIMATIONS.duration.slow * 2.4, easing: Easing.inOut(Easing.ease) }), 
-      -1, 
+      withTiming(1.05, { duration: ANIMATIONS.duration.slow * 2.4, easing: Easing.inOut(Easing.ease) }),
+      -1,
       true
-    ); 
+    );
   }, []);
   const cloudStyle = useAnimatedStyle(() => ({ transform: [{ scale: pulse.value }] }));
-  
-  const inputArea = (
-    <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-      <GlassCard>
-        <View style={styles.gradientContainer}>
-          <Typography variant="body" style={styles.inputLabel}>
-            Type positive adjectives about your partner
-          </Typography>
-          <TextInput 
-            placeholder="Loving, brave, hilarious..." 
-            style={styles.input} 
-            value={input} 
-            onChangeText={setInput} 
-            onSubmitEditing={() => addWord(input)}
-            placeholderTextColor={COLORS.textHint}
-          />
+
+  const finishGame = async () => {
+    const score = words.length * 10;
+    await completeGame(score, [{
+      completed: true,
+      wordCount: words.length,
+      partnerWordCount: partnerWords.length,
+      totalWords: words.length + partnerWords.length
+    }]);
+    
+    navigationHook.navigate('GameResults', {
+      score,
+      gameId: GAME_ID,
+      sessionId: session?.id
+    });
+  };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout showMarcie={true} marcieQuote="Loading gratitude cloud...">
+        <View style={styles.loadingContainer}>
+          <Typography variant="body" center>Starting game...</Typography>
         </View>
-      </GlassCard>
-      
-      <View style={styles.cloudContainer}>
-        <Animated.View style={[styles.cloud, cloudStyle]}>
-          {cloud.map((c, i) => (
-            <Typography 
-              key={`me_${i}`} 
-              variant="body"
-              style={[styles.word, styles.myWord, { 
-                position: 'absolute', 
-                left: c.left, 
-                top: c.top, 
-                fontSize: c.size, 
-              }]}
-            >
-              {c.text}
-            </Typography>
-          ))}
-          {partnerWords.slice(0, 20).map((w, i) => (
-            <Typography 
-              key={`partner_${i}`} 
-              variant="body"
-              style={[styles.word, styles.partnerWord, { 
-                position: 'absolute', 
-                left: Math.random() * (width - 100), 
-                top: Math.random() * 160, 
-                fontSize: TYPOGRAPHY.fontSize.bodyLarge + 2, 
-              }]}
-            >
-              {w}
-            </Typography>
-          ))}
-        </Animated.View>
-      </View>
-    </ScrollView>
-  );
-
-  const uniqueCount = words.length;
-  const baseState = useMemo(() => ({
-    id: gameId,
-    title: 'Gratitude Cloud',
-    description: 'Rapid typing of gratitude adjectives',
-    category: 'emotional' as const,
-    difficulty: 'easy' as const,
-    xpReward: 30,
-    currentStep: 0,
-    totalTime: 60,
-    playerData: { vulnerabilityScore: Math.min(100, uniqueCount * 8), honestyScore: Math.min(100, uniqueCount * 6), completionTime: 0, partnerSync: 0 },
-  }), [gameId, uniqueCount]);
-
-  async function onComplete(res: { score: number; xpEarned: number }) {
-    const xp = Math.min(60, 30 + uniqueCount * 2);
-    if (sessionId.current) {
-        const sessionRef = doc(db, 'game_sessions', sessionId.current);
-        await updateDoc(sessionRef, {
-            finished_at: new Date().toISOString(),
-            score: res.score,
-            state: { words, xp }
-        });
-    }
-    navigation.goBack();
+      </ScreenLayout>
+    );
   }
 
-  return <GameContainer state={baseState} inputs={["text"]} inputArea={inputArea} onComplete={onComplete} />;
+  return (
+    <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Float your gratitude into the cloud.">
+      <View style={styles.container}>
+        {isSyncing && (
+          <View style={styles.syncIndicator}>
+            <Typography variant="caption" color={COLORS.success}>💾 Saving...</Typography>
+          </View>
+        )}
+        
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+          <GlassCard>
+            <View style={styles.gradientContainer}>
+              <Typography variant="body" style={styles.inputLabel}>
+                Type positive adjectives about your partner
+              </Typography>
+              <TextInput
+                placeholder="Loving, brave, hilarious..."
+                style={styles.input}
+                value={input}
+                onChangeText={setInput}
+                onSubmitEditing={() => addWord(input)}
+                placeholderTextColor={COLORS.textHint}
+              />
+            </View>
+          </GlassCard>
+
+          <View style={styles.cloudContainer}>
+            <Animated.View style={[styles.cloud, cloudStyle]}>
+              {cloud.map((c, i) => (
+                <Typography
+                  key={`me_${i}`}
+                  variant="body"
+                  style={[styles.word, styles.myWord, {
+                    position: 'absolute',
+                    left: c.left,
+                    top: c.top,
+                    fontSize: c.size,
+                  }]}
+                >
+                  {c.text}
+                </Typography>
+              ))}
+              {partnerWords.slice(0, 20).map((w, i) => (
+                <Typography
+                  key={`partner_${i}`}
+                  variant="body"
+                  style={[styles.word, styles.partnerWord, {
+                    position: 'absolute',
+                    left: Math.random() * (width - 100),
+                    top: Math.random() * 160,
+                    fontSize: TYPOGRAPHY.fontSize.bodyLarge + 2,
+                  }]}
+                >
+                  {w}
+                </Typography>
+              ))}
+            </Animated.View>
+          </View>
+        </ScrollView>
+        
+        <View style={styles.finishButtonContainer}>
+          <SquishyButton onPress={finishGame} variant="primary">
+            <Typography variant="button">Finish Cloud</Typography>
+          </SquishyButton>
+        </View>
+      </View>
+    </ScreenLayout>
+  );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  syncIndicator: {
+    position: 'absolute',
+    top: SPACING.small,
+    right: SPACING.small,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.small,
+    zIndex: 1000,
+  },
   scrollView: {
     flex: 1,
   },
@@ -213,13 +213,13 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.medium,
     color: COLORS.textPrimary,
   },
-  input: { 
+  input: {
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderWidth: 1, 
-    borderColor: COLORS.borderSubtle, 
-    borderRadius: BORDER_RADIUS.input, 
-    padding: SPACING.medium, 
-    color: COLORS.textPrimary, 
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
+    borderRadius: BORDER_RADIUS.input,
+    padding: SPACING.medium,
+    color: COLORS.textPrimary,
     marginTop: SPACING.medium,
     minHeight: 48,
     fontSize: TYPOGRAPHY.fontSize.bodyLarge
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     borderRadius: BORDER_RADIUS.card,
     padding: SPACING.medium,
   },
-  cloud: { 
+  cloud: {
     height: 220,
     width: '100%',
   },
@@ -250,5 +250,8 @@ const styles = StyleSheet.create({
   partnerWord: {
     color: COLORS.softViolet,
     fontWeight: '600',
+  },
+  finishButtonContainer: {
+    padding: SPACING.medium,
   },
 });

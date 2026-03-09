@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { MaterialIcons } from '@expo/vector-icons';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
+import { useGameSession } from '../../hooks';
+import { getGameByScreen } from '../../lib/gameRegistry';
+
+const GAME_ID = 'touch-map';
+const CATEGORY_ID = 'romance-hub';
 
 // Define the colors for the different states using theme tokens
 const stateColors = {
@@ -29,23 +34,55 @@ const TouchMapConfiguration = ({ navigation }: any) => {
         bodyParts.reduce((acc, part) => ({ ...acc, [part.id]: 'none' }), {})
     );
 
-    const toggleState = (partId: string) => {
+    const {
+        session,
+        loading,
+        isSyncing,
+        updateScore,
+        completeGame,
+    } = useGameSession(GAME_ID, CATEGORY_ID);
+
+    const toggleState = async (partId: string) => {
         setTouchMap(prevMap => {
             const currentState = prevMap[partId];
             const nextState: keyof typeof stateColors = currentState === 'none' ? 'like' : currentState === 'like' ? 'dislike' : 'none';
             return { ...prevMap, [partId]: nextState };
         });
+        // Update score based on configured parts
+        const configuredCount = Object.values(touchMap).filter(v => v !== 'none').length + 1;
+        const progress = Math.min((configuredCount / bodyParts.length) * 100, 100);
+        await updateScore(progress);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         console.log("Saving Touch Map:", touchMap);
-        // In a real app, this would be sent to a server.
+        await completeGame();
         navigation.goBack();
     };
+
+    if (loading) {
+        return (
+            <ScreenLayout showHeader={false}>
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color={COLORS.aquaTeal} />
+                    <Typography variant="body" style={styles.loadingText}>
+                        Loading game session...
+                    </Typography>
+                </View>
+            </ScreenLayout>
+        );
+    }
 
     return (
         <ScreenLayout showHeader={false} scrollable={true}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
+                {isSyncing && (
+                    <View style={styles.syncIndicator}>
+                        <ActivityIndicator size="small" color={COLORS.aquaTeal} />
+                        <Typography variant="caption" style={styles.syncText}>Syncing...</Typography>
+                    </View>
+                )}
+
                 <View style={styles.header}>
                     <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="ghost" size="small">
                         <MaterialIcons name="arrow-back" size={24} color={COLORS.textPrimary} />
@@ -105,6 +142,28 @@ const styles = StyleSheet.create({
     scrollContent: {
         padding: SPACING.screenPadding,
         alignItems: 'center',
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        marginTop: SPACING.regular,
+        color: COLORS.textSecondary,
+    },
+    syncIndicator: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'flex-end',
+        marginBottom: SPACING.small,
+        padding: SPACING.small,
+        backgroundColor: COLORS.backgroundCard,
+        borderRadius: BORDER_RADIUS.medium,
+    },
+    syncText: {
+        marginLeft: SPACING.small,
+        color: COLORS.textSecondary,
     },
     header: {
         flexDirection: 'row',

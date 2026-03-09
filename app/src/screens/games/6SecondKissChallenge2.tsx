@@ -6,14 +6,33 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenLayout, Typography, GlassCard } from '../../components/ui';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, SHADOWS, ANIMATIONS, GRADIENTS } from '../../theme';
 
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
+
+// Game Constants
+const GAME_ID = 'six-second-kiss';
+const CATEGORY_ID = 'romance-hub';
+const MAX_SCORE = 100;
+
 const SixSecondKissChallenge2 = () => {
     const [player1Hold, setPlayer1Hold] = useState(false);
     const [player2Hold, setPlayer2Hold] = useState(false);
     const [countdown, setCountdown] = useState(6);
     const [connection, setConnection] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
+    const [gameCompleted, setGameCompleted] = useState(false);
     const scaleAnim1 = useRef(new Animated.Value(1)).current;
     const scaleAnim2 = useRef(new Animated.Value(1)).current;
+
+    // Backend session
+    const { 
+        session, 
+        updateScore, 
+        completeGame, 
+        isLoading, 
+        isSyncing 
+    } = useGameSession(GAME_ID, CATEGORY_ID);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -22,13 +41,14 @@ const SixSecondKissChallenge2 = () => {
                 setCountdown(c => Math.max(0, c - 0.01));
                 setConnection(c => Math.min(100, c + 0.1));
             }, 10);
-        } else if (countdown <= 0) {
+        } else if (countdown <= 0 && !gameCompleted) {
             setIsRunning(false);
             setCountdown(0);
             setConnection(100);
+            finishGame();
         }
         return () => clearTimeout(timer);
-    }, [isRunning, countdown]);
+    }, [isRunning, countdown, gameCompleted]);
 
     useEffect(() => {
         setIsRunning(player1Hold && player2Hold);
@@ -51,6 +71,26 @@ const SixSecondKissChallenge2 = () => {
             useNativeDriver: true,
         }).start();
     }, [player2Hold]);
+
+    // Update score during gameplay
+    useEffect(() => {
+        if (connection > 0 && !gameCompleted && session) {
+            const score = Math.floor((connection / 100) * MAX_SCORE);
+            updateScore(score);
+        }
+    }, [connection, gameCompleted, session]);
+
+    const finishGame = async () => {
+        if (gameCompleted) return;
+        setGameCompleted(true);
+        
+        const finalScore = Math.floor((connection / 100) * MAX_SCORE);
+        await completeGame(finalScore, [{
+            completed: true,
+            connectionStrength: connection,
+            timeElapsed: 6 - countdown
+        }]);
+    };
 
     const PlayerTouchPoint = ({ player, onHold, isHolding, scaleAnim }: { 
         player: string; 
@@ -84,9 +124,27 @@ const SixSecondKissChallenge2 = () => {
         </Animated.View>
     );
 
+    // Loading state
+    if (isLoading) {
+        return (
+            <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Loading your kiss challenge...">
+                <View style={styles.loadingContainer}>
+                    <Typography variant="h2" style={styles.loadingText}>Loading...</Typography>
+                </View>
+            </ScreenLayout>
+        );
+    }
+
     return (
         <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Maintaining physical connection during this challenge helps strengthen emotional bonds. The 6-second rule is scientifically proven to deepen intimacy!">
             <View style={styles.content}>
+                {/* Sync Indicator */}
+                {isSyncing && (
+                    <View style={styles.syncIndicator}>
+                        <Typography variant="caption">💾 Saving...</Typography>
+                    </View>
+                )}
+
                 <Typography variant="h1" style={styles.title}>
                     The Love Arcade
                 </Typography>
@@ -142,6 +200,10 @@ const SixSecondKissChallenge2 = () => {
                         scaleAnim={scaleAnim2}
                     />
                 </View>
+
+                {session && (
+                    <Typography variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Typography>
+                )}
             </View>
         </ScreenLayout>
     );
@@ -257,6 +319,28 @@ const styles = StyleSheet.create({
     progressFillInner: {
         height: '100%', 
         borderRadius: BORDER_RADIUS.medium,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        textAlign: 'center',
+    },
+    syncIndicator: {
+        position: 'absolute',
+        top: SPACING.regular,
+        right: SPACING.regular,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.small,
+    },
+    sessionInfo: {
+        textAlign: 'center',
+        marginTop: SPACING.xlarge,
+        opacity: 0.3,
     },
 });
 

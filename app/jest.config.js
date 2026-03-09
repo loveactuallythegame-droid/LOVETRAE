@@ -1,24 +1,29 @@
 module.exports = {
-  testEnvironment: 'jsdom',
-  setupFiles: [],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  testEnvironmentOptions: { customExportConditions: ['react-native'] },
-  transform: {
-    '^.+\\.[tj]sx?$': 'babel-jest'
-  },
-  moduleNameMapper: {
-    '\\.(css|less|scss)$': 'identity-obj-proxy',
-    '^react-native$': 'react-native',
-    'react-native/jest/mock.js': '<rootDir>/jest.rn.mock.stub.js',
-    '^expo-linking$': '<rootDir>/jest.expo-linking.stub.js'
-  },
+  preset: 'jest-expo',
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|react-native-reanimated|expo|expo-.*|@expo|@supabase|@sentry|@gorhom)/)'
+    'node_modules/(?!((react-native.*|@react-native.*|expo.*|@expo.*|@unimodules.*)/))',
   ],
-  testPathIgnorePatterns: [
-    '<rootDir>/src/__tests__/(games|engine|navigation)\\.spec\\.tsx?'
-  ],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^@screens/(.*)$': '<rootDir>/src/screens/$1',
+  },
   collectCoverageFrom: [
-    'src/lib/**/*.{ts,tsx}'
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/**/index.ts',
+    '!src/**/*.stories.{ts,tsx}',
   ],
+  coverageThreshold: {
+    global: {
+      branches: 60,
+      functions: 60,
+      lines: 60,
+      statements: 60,
+    },
+  },
+  testEnvironment: 'node',
 };

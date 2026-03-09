@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
-import { GameContainer } from '../../components/games/engine';
 import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS, SPACING, BORDER_RADIUS, SHADOWS, GRADIENTS, ANIMATIONS, TYPOGRAPHY } from '../../theme';
-import { auth, db } from '../../lib/firebaseClient';
-import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
+import { COLORS, SPACING, BORDER_RADIUS, GRADIENTS, TYPOGRAPHY } from '../../theme';
+
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
 
 const DEFENSIVENESS_SCENARIOS = [
   {
@@ -41,75 +42,40 @@ const DEFENSIVENESS_SCENARIOS = [
 ];
 
 export default function DefensivenessDetox({ route, navigation }: any) {
-  const { gameId } = route.params || { gameId: 'defensiveness-detox' };
+  const { gameId: routeGameId } = route.params || {};
+  
+  // Get game info from registry
+  const gameInfo = getGameByScreen('DefensivenessDetox');
+  const GAME_ID = gameInfo?.id || 'defensiveness-detox';
+  const CATEGORY_ID = gameInfo?.categoryId || 'conflict-resolution';
+  
+  // Backend session
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading: sessionLoading,
+    isSyncing,
+    partnerProgress
+  } = useGameSession(GAME_ID, CATEGORY_ID);
+  
+  // Game state
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
-  const [sessionId, setSessionId] = useState<string | null>(null);
   const [gameCompleted, setGameCompleted] = useState(false);
   const [score, setScore] = useState(0);
   const [selectedResponse, setSelectedResponse] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [responses, setResponses] = useState<Record<string, string>>({});
-  const coupleId = useRef<string | null>(null);
   const [partnerResponse, setPartnerResponse] = useState<string | null>(null);
 
-  useEffect(() => {
-    const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const profileRef = doc(db, 'profiles', user.uid);
-        const profileSnap = await getDoc(profileRef);
-        const couple_code = profileSnap.data()?.couple_code;
-
-        if (couple_code) {
-          coupleId.current = couple_code;
-          
-          const sessionRef = await addDoc(collection(db, 'game_sessions'), {
-            gameId,
-            userId: user.uid,
-            couple_id: couple_code,
-            createdAt: new Date(),
-            state: { currentScenarioIndex, score, responses, completed: false },
-          });
-          setSessionId(sessionRef.id);
-          
-          // Set up real-time sync with partner
-          const q = query(
-            collection(db, 'game_sessions'),
-            where('couple_id', '==', couple_code),
-            where('gameId', '==', gameId),
-            where('userId', '!=', user.uid)
-          );
-          
-          const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-              if (change.type === "added" || change.type === "modified") {
-                const data = change.doc.data();
-                if (data.state?.responses) {
-                  // Get the latest response from partner
-                  const partnerResponses = data.state.responses;
-                  const currentScenarioId = DEFENSIVENESS_SCENARIOS[currentScenarioIndex]?.id;
-                  if (currentScenarioId && partnerResponses[currentScenarioId]) {
-                    setPartnerResponse(partnerResponses[currentScenarioId]);
-                  }
-                }
-              }
-            });
-          });
-          
-          return () => unsubscribeSnapshot();
-        }
-      }
-    });
-
-    return () => unsubscribeAuth && unsubscribeAuth();
-  }, [gameId, currentScenarioIndex]);
-
-  const selectResponse = (responseId: string) => {
+  const selectResponse = async (responseId: string) => {
     const currentScenario = DEFENSIVENESS_SCENARIOS[currentScenarioIndex];
     const response = currentScenario.responses.find(r => r.id === responseId);
     
     if (response) {
       setSelectedResponse(responseId);
-      setScore(prev => prev + response.points);
+      const newScore = score + response.points;
+      setScore(newScore);
       
       // Provide feedback based on response
       if (response.defensive) {
@@ -122,33 +88,70 @@ export default function DefensivenessDetox({ route, navigation }: any) {
       const newResponses = { ...responses, [currentScenario.id]: responseId };
       setResponses(newResponses);
       
-      // Update in Firebase
-      if (sessionId) {
-        const sessionRef = doc(db, 'game_sessions', sessionId);
-        updateDoc(sessionRef, {
-          state: { 
-            currentScenarioIndex, 
-            score: score + response.points,
-            responses: newResponses,
-            completed: currentScenarioIndex === DEFENSIVENESS_SCENARIOS.length - 1
-          }
-        });
-      }
+      // Update in backend
+      await updateScore(newScore, [{
+        scenarioId: currentScenario.id,
+        responseId: response.id,
+        response: response.text,
+        defensive: response.defensive,
+        points: response.points
+      }]);
     }
   };
 
-  const nextScenario = () => {
+  const nextScenario = async () => {
     if (currentScenarioIndex < DEFENSIVENESS_SCENARIOS.length - 1) {
       setCurrentScenarioIndex(prev => prev + 1);
       setSelectedResponse(null);
       setFeedback(null);
       setPartnerResponse(null);
     } else {
-      setGameCompleted(true);
+      await finishGame();
     }
+  };
+  
+  const finishGame = async () => {
+    setGameCompleted(true);
+    
+    // Calculate achievements
+    const achievements: string[] = [];
+    if (score > 50) achievements.push('Defensiveness Detox Master');
+    if (score > 30) achievements.push('Constructive Communicator');
+    
+    await completeGame(score, Object.entries(responses).map(([id, responseId]) => ({
+      scenarioId: id,
+      responseId
+    })), achievements);
+    
+    Alert.alert(
+      'Defensiveness Detox Complete! 🛡️',
+      `Final Score: ${score}\nAchievements: ${achievements.join(', ') || 'None'}`,
+      [
+        {
+          text: 'View Results',
+          onPress: () => navigation.navigate('GameResults', {
+            score: score,
+            gameId: GAME_ID,
+            sessionId: session?.id
+          })
+        },
+        { text: 'Exit', onPress: () => navigation.goBack() }
+      ]
+    );
   };
 
   const currentScenario = DEFENSIVENESS_SCENARIOS[currentScenarioIndex];
+
+  // Loading state
+  if (sessionLoading) {
+    return (
+      <ScreenLayout showMarcie={true} marcieQuote="Loading your detox session...">
+        <View style={styles.loadingContainer}>
+          <Typography variant="body" center>Starting Defensiveness Detox...</Typography>
+        </View>
+      </ScreenLayout>
+    );
+  }
 
   const inputArea = (
     <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
@@ -273,17 +276,7 @@ export default function DefensivenessDetox({ route, navigation }: any) {
             </Typography>
             <SquishyButton 
               style={styles.finishButton} 
-              onPress={() => {
-                if (sessionId) {
-                  const sessionRef = doc(db, 'game_sessions', sessionId);
-                  updateDoc(sessionRef, {
-                    finished_at: new Date().toISOString(),
-                    score: score,
-                    state: JSON.stringify({ completed: true, finalScore: score, responses })
-                  });
-                }
-                navigation.goBack();
-              }}
+              onPress={() => navigation.goBack()}
             >
               <LinearGradient
                 colors={GRADIENTS.primary.colors}
@@ -323,42 +316,16 @@ export default function DefensivenessDetox({ route, navigation }: any) {
     </ScrollView>
   );
 
-  const baseState = {
-    id: gameId,
-    title: 'Defensiveness Detox',
-    description: 'Practice recognizing and replacing defensive responses',
-    category: 'conflict-resolution' as const,
-    difficulty: 'medium' as const,
-    xpReward: 65,
-    currentStep: currentScenarioIndex,
-    totalTime: 600,
-    playerData: { 
-      vulnerabilityScore: score > 30 ? 80 : score > 10 ? 60 : 40, 
-      honestyScore: score > 30 ? 85 : score > 10 ? 65 : 45, 
-      completionTime: 0, 
-      partnerSync: partnerResponse ? 80 : 20 
-    },
-  };
-
   return (
-    <ScreenLayout showHeader={false} scrollable={true}>
-      <GameContainer 
-        state={baseState} 
-        inputs={["custom"]} 
-        inputArea={inputArea} 
-        onComplete={() => {
-          if (sessionId) {
-            const sessionRef = doc(db, 'game_sessions', sessionId);
-            updateDoc(sessionRef, {
-              finished_at: new Date().toISOString(),
-              score: score,
-              state: JSON.stringify({ completed: true, finalScore: score, responses })
-            });
-          }
-          navigation.goBack();
-        }} 
-        sessionId={sessionId} 
-      />
+    <ScreenLayout showHeader={false} scrollable={true} showMarcie={true} marcieQuote="Defense is the first act of war. Let's make peace.">
+      <View style={styles.container}>
+        {isSyncing && (
+          <View style={styles.syncIndicator}>
+            <Typography variant="caption" color={COLORS.success}>💾 Saving...</Typography>
+          </View>
+        )}
+        {inputArea}
+      </View>
     </ScreenLayout>
   );
 }
@@ -474,5 +441,20 @@ const styles = StyleSheet.create({
   },
   returnButtonText: {
     color: COLORS.backgroundPrimary,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  syncIndicator: {
+    position: 'absolute',
+    top: SPACING.small,
+    right: SPACING.small,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.small,
+    zIndex: 1000,
   },
 });

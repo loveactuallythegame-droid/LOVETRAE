@@ -1,12 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ScreenLayout } from '../../components/ui';
 import { Typography, GlassCard, SquishyButton } from '../../components/ui';
-import { GameContainer } from '../../components/games/engine';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS, GRADIENTS } from '../../theme';
-import { auth, db } from '../../lib/firebaseClient';
-import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
+
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
 
 const TRUTH_OR_TRUST_QUESTIONS = [
     {
@@ -47,103 +49,114 @@ const TRUTH_OR_TRUST_QUESTIONS = [
 ];
 
 export default function TruthOrTrust({ route, navigation }: any) {
-    const { gameId } = route.params || { gameId: 'truth-or-trust' };
+    const navigationHook = useNavigation();
+    const { gameId: routeGameId } = route.params || {};
+    
+    // Get game info from registry
+    const gameInfo = getGameByScreen('TruthOrTrust');
+    const GAME_ID = gameInfo?.id || 'truth-or-trust';
+    const CATEGORY_ID = gameInfo?.categoryId || 'emotional-connection';
+    
+    // Backend session
+    const {
+        session,
+        updateScore,
+        completeGame,
+        isLoading: sessionLoading,
+        isSyncing,
+        partnerProgress
+    } = useGameSession(GAME_ID, CATEGORY_ID);
+    
+    // Game state
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [sessionId, setSessionId] = useState<string | null>(null);
     const [responses, setResponses] = useState<Record<string, string>>({});
     const [currentResponse, setCurrentResponse] = useState('');
     const [gameCompleted, setGameCompleted] = useState(false);
-    const coupleId = useRef<string | null>(null);
     const [partnerResponse, setPartnerResponse] = useState<string | null>(null);
-    const userId = useRef<string | null>(null);
-
-    useEffect(() => {
-        const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                userId.current = user.uid;
-                const profileRef = doc(db, 'profiles', user.uid);
-                const profileSnap = await getDoc(profileRef);
-                const couple_code = profileSnap.data()?.couple_code;
-
-                if (couple_code) {
-                    coupleId.current = couple_code;
-                    
-                    const sessionRef = await addDoc(collection(db, 'game_sessions'), {
-                        gameId,
-                        userId: user.uid,
-                        couple_id: couple_code,
-                        createdAt: new Date(),
-                        state: { currentQuestionIndex, responses, completed: false },
-                    });
-                    setSessionId(sessionRef.id);
-                    
-                    // Set up real-time sync with partner
-                    const q = query(
-                        collection(db, 'game_sessions'),
-                        where('couple_id', '==', couple_code),
-                        where('gameId', '==', gameId),
-                        where('userId', '!=', user.uid)
-                    );
-                    
-                    const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-                        snapshot.docChanges().forEach((change) => {
-                            if (change.type === "added" || change.type === "modified") {
-                                const data = change.doc.data();
-                                if (data.state?.responses) {
-                                    // Get the latest response from partner
-                                    const partnerResponses = data.state.responses;
-                                    const currentQId = TRUTH_OR_TRUST_QUESTIONS[currentQuestionIndex]?.id;
-                                    if (currentQId && partnerResponses[currentQId]) {
-                                        setPartnerResponse(partnerResponses[currentQId]);
-                                    }
-                                }
-                            }
-                        });
-                    });
-                    
-                    return () => unsubscribeSnapshot();
-                }
-            }
-        });
-
-        return () => unsubscribeAuth && unsubscribeAuth();
-    }, [gameId, currentQuestionIndex]);
+    const [score, setScore] = useState(0);
 
     const handleResponseChange = (text: string) => {
         setCurrentResponse(text);
     };
 
-    const submitResponse = () => {
+    const submitResponse = async () => {
         const currentQ = TRUTH_OR_TRUST_QUESTIONS[currentQuestionIndex];
         if (currentQ) {
             const newResponses = { ...responses, [currentQ.id]: currentResponse };
             setResponses(newResponses);
             
-            // Update in Firebase
-            if (sessionId) {
-                const sessionRef = doc(db, 'game_sessions', sessionId);
-                updateDoc(sessionRef, {
-                    state: { 
-                        currentQuestionIndex, 
-                        responses: newResponses,
-                        completed: currentQuestionIndex === TRUTH_OR_TRUST_QUESTIONS.length - 1
-                    }
-                });
-            }
-            
+            // Calculate score based on response length and depth
+            const responsePoints = Math.min(20, Math.floor(currentResponse.length / 10));
+            const newScore = score + responsePoints;
+            setScore(newScore);
+
+            // Update in backend
+            await updateScore(newScore, [{
+                questionId: currentQ.id,
+                question: currentQ.question || currentQ.challenge,
+                response: currentResponse,
+                type: currentQ.type,
+                points: responsePoints
+            }]);
+
             if (currentQuestionIndex < TRUTH_OR_TRUST_QUESTIONS.length - 1) {
                 setCurrentQuestionIndex(prev => prev + 1);
                 setCurrentResponse('');
                 setPartnerResponse(null);
             } else {
-                setGameCompleted(true);
+                // Game completed
+                await finishGame(newScore, newResponses);
             }
         }
+    };
+    
+    const finishGame = async (finalScore: number, finalResponses: Record<string, string>) => {
+        setGameCompleted(true);
+        
+        // Calculate achievements
+        const achievements: string[] = [];
+        const totalResponses = Object.keys(finalResponses).length;
+        const avgResponseLength = Object.values(finalResponses).reduce((acc, r) => acc + r.length, 0) / totalResponses;
+        
+        if (avgResponseLength > 50) achievements.push('Deep Sharer');
+        if (totalResponses === TRUTH_OR_TRUST_QUESTIONS.length) achievements.push('Complete Honesty');
+        
+        await completeGame(finalScore, Object.entries(finalResponses).map(([id, response]) => ({
+            questionId: id,
+            response
+        })), achievements);
+        
+        Alert.alert(
+            'Truth or Trust Complete! 💕',
+            `Final Score: ${finalScore}\nAchievements: ${achievements.join(', ') || 'None'}`,
+            [
+                {
+                    text: 'View Results',
+                    onPress: () => navigationHook.navigate('GameResults', {
+                        score: finalScore,
+                        gameId: GAME_ID,
+                        sessionId: session?.id
+                    })
+                },
+                { text: 'Exit', onPress: () => navigationHook.goBack() }
+            ]
+        );
     };
 
     const currentQuestion = TRUTH_OR_TRUST_QUESTIONS[currentQuestionIndex];
     const responseType = currentQuestion?.type === 'truth' ? 'Truth Question' : 'Trust Challenge';
     const responseColor = currentQuestion?.type === 'truth' ? COLORS.emotionalConnection : COLORS.romanceHub;
+
+    // Loading state
+    if (sessionLoading) {
+        return (
+            <ScreenLayout showMarcie={true} marcieQuote="Loading your truth session...">
+                <View style={styles.loadingContainer}>
+                    <Typography variant="body" center>Starting Truth or Trust...</Typography>
+                </View>
+            </ScreenLayout>
+        );
+    }
 
     const inputArea = (
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
@@ -151,10 +164,10 @@ export default function TruthOrTrust({ route, navigation }: any) {
                 <>
                     <GlassCard>
                         <Typography variant="h1" center style={styles.gameTitle}>
-                            The Love Arcade
+                            Truth or Trust
                         </Typography>
                         <Typography variant="h2" center style={styles.subtitle}>
-                            +100 Games to Deepen Connection
+                            Share your truth, build your trust
                         </Typography>
 
                         <LinearGradient
@@ -257,17 +270,7 @@ export default function TruthOrTrust({ route, navigation }: any) {
                             You and your partner have shared {TRUTH_OR_TRUST_QUESTIONS.length} meaningful moments together.
                         </Typography>
                         <SquishyButton 
-                            onPress={() => {
-                                if (sessionId) {
-                                    const sessionRef = doc(db, 'game_sessions', sessionId);
-                                    updateDoc(sessionRef, {
-                                        finished_at: new Date().toISOString(),
-                                        score: TRUTH_OR_TRUST_QUESTIONS.length * 20,
-                                        state: JSON.stringify({ completed: true, responses })
-                                    });
-                                }
-                                navigation.goBack();
-                            }}
+                            onPress={() => navigation.goBack()}
                             size="large"
                         >
                             <Typography variant="button">Return to Menu</Typography>
@@ -278,41 +281,22 @@ export default function TruthOrTrust({ route, navigation }: any) {
         </ScrollView>
     );
 
-    const baseState = {
-        id: gameId,
-        title: 'Truth or Trust',
-        description: 'Choose between revealing truths or completing trust challenges',
-        category: 'emotional-connection' as const,
-        difficulty: 'medium' as const,
-        xpReward: 60,
-        currentStep: currentQuestionIndex,
-        totalTime: 900,
-        playerData: { 
-            vulnerabilityScore: Object.keys(responses).length > 3 ? 90 : Object.keys(responses).length > 1 ? 70 : 50, 
-            honestyScore: Object.keys(responses).length > 3 ? 85 : Object.keys(responses).length > 1 ? 65 : 45, 
-            completionTime: 0, 
-            partnerSync: partnerResponse ? 80 : 20 
-        },
-    };
-
     return (
-        <GameContainer 
-            state={baseState} 
-            inputs={["text"]} 
-            inputArea={inputArea} 
-            onComplete={() => {
-                if (sessionId) {
-                    const sessionRef = doc(db, 'game_sessions', sessionId);
-                    updateDoc(sessionRef, {
-                        finished_at: new Date().toISOString(),
-                        score: Object.keys(responses).length * 20,
-                        state: JSON.stringify({ completed: true, responses })
-                    });
-                }
-                navigation.goBack();
-            }} 
-            sessionId={sessionId} 
-        />
+        <ScreenLayout 
+            showHeader={false} 
+            scrollable={true} 
+            showMarcie={true} 
+            marcieQuote="Share your truth, darling. Vulnerability is the currency of connection."
+        >
+            <View style={styles.container}>
+                {isSyncing && (
+                    <View style={styles.syncIndicator}>
+                        <Typography variant="caption" color={COLORS.success}>💾 Saving...</Typography>
+                    </View>
+                )}
+                {inputArea}
+            </View>
+        </ScreenLayout>
     );
 }
 
@@ -396,5 +380,23 @@ const styles = StyleSheet.create({
     completedText: {
         marginBottom: SPACING.xlarge,
         color: COLORS.textPrimary,
+    },
+    container: {
+        flex: 1,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    syncIndicator: {
+        position: 'absolute',
+        top: SPACING.small,
+        right: SPACING.small,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        paddingHorizontal: SPACING.small,
+        paddingVertical: SPACING.tiny,
+        borderRadius: BORDER_RADIUS.small,
+        zIndex: 1000,
     },
 });

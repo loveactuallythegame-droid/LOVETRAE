@@ -1,14 +1,76 @@
-jest.useFakeTimers();
-jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
-jest.mock('expo-haptics', () => ({ selectionAsync: jest.fn(), notificationAsync: jest.fn() }));
-jest.mock('expo-av', () => ({ Audio: { Recording: class {}, requestPermissionsAsync: async () => ({ granted: true }) } }));
-jest.mock('expo-notifications', () => ({ requestPermissionsAsync: jest.fn(), scheduleNotificationAsync: jest.fn() }));
-jest.mock('./src/lib/voice-engine', () => ({ speakMarcie: jest.fn() }));
-jest.mock('expo-blur', () => ({ BlurView: () => null }));
-jest.mock('react-native-svg', () => 'Svg');
-jest.mock('react-native-gesture-handler', () => ({ GestureHandlerRootView: ({ children }: any) => children }));
-jest.mock('expo-linking', () => ({ createURL: (p: string) => `https://example.com${p}` }));
-jest.mock('expo-splash-screen', () => ({ preventAutoHideAsync: jest.fn(), hideAsync: jest.fn() }));
-jest.mock('expo-status-bar', () => ({ StatusBar: () => null }));
-jest.mock('lottie-react-native', () => 'LottieView');
-jest.mock('@react-navigation/native', () => ({ NavigationContainer: ({ children }: any) => children, createNavigationContainerRef: () => ({ isReady: () => true }), CommonActions: { navigate: jest.fn() } }));
+/**
+ * Jest Setup
+ * Global test configuration
+ */
+
+import '@testing-library/jest-native/extend-expect';
+
+// Mock Expo modules
+jest.mock('expo-constants', () => ({
+  default: {
+    expoConfig: {
+      extra: {},
+    },
+  },
+}));
+
+jest.mock('expo-secure-store', () => ({
+  getItemAsync: jest.fn(),
+  setItemAsync: jest.fn(),
+  deleteItemAsync: jest.fn(),
+}));
+
+// Mock Firebase
+jest.mock('./src/lib/firebaseClient', () => ({
+  auth: {
+    currentUser: null,
+    onAuthStateChanged: jest.fn((cb) => {
+      cb(null);
+      return jest.fn();
+    }),
+    signInWithEmailAndPassword: jest.fn(),
+    createUserWithEmailAndPassword: jest.fn(),
+    signOut: jest.fn(),
+  },
+  db: {},
+}));
+
+// Mock Sentry
+jest.mock('@sentry/react-native', () => ({
+  init: jest.fn(),
+  captureException: jest.fn(),
+  captureMessage: jest.fn(),
+}));
+
+// Mock PostHog
+jest.mock('posthog-react-native', () => ({
+  PostHogProvider: ({ children }: { children: React.ReactNode }) => children,
+  usePostHog: () => ({
+    capture: jest.fn(),
+    identify: jest.fn(),
+    reset: jest.fn(),
+  }),
+}));
+
+// Global fetch mock
+global.fetch = jest.fn();
+
+// Console suppressions in test
+const originalConsoleError = console.error;
+console.error = (...args: any[]) => {
+  // Suppress specific React Native warnings in tests
+  if (
+    typeof args[0] === 'string' &&
+    (args[0].includes('useNativeDriver') ||
+      args[0].includes('Require cycle') ||
+      args[0].includes(' deprecated '))
+  ) {
+    return;
+  }
+  originalConsoleError(...args);
+};
+
+// Cleanup after each test
+afterEach(() => {
+  jest.clearAllMocks();
+});

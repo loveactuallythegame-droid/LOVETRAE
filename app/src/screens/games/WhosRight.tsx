@@ -2,9 +2,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { Typography, GlassCard, SquishyButton, ScreenLayout } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
-import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, TYPOGRAPHY, BORDER_RADIUS } from '../../theme';
+
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
 
 type Segment = { text: string; label: 'criticism' | 'contempt' | 'defensiveness' | 'stonewalling' | 'neutral' };
 
@@ -17,21 +20,23 @@ const TRANSCRIPT: Segment[] = [
 ];
 
 export default function WhosRight({ route, navigation }: any) {
-  /* ... */
   const { gameId } = route.params || { gameId: 'whos-right' };
   const [selected, setSelected] = useState<Record<number, Segment['label']>>({});
-  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }: any) => {
-      const user = data.session?.user;
-      const couple_id = (await supabase.from('profiles').select('couple_code').eq('user_id', user?.id || '').single()).data?.couple_code;
-      if (user && couple_id) {
-        const session = await createGameSession(gameId, user.id, couple_id);
-        setSessionId(session.id);
-      }
-    });
-  }, [gameId]);
+  // Get game info from registry
+  const gameInfo = getGameByScreen('WhosRight');
+  const GAME_ID = gameInfo?.id || 'whos-right';
+  const CATEGORY_ID = gameInfo?.categoryId || 'conflict-resolution';
+
+  // Backend session
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading,
+    isSyncing,
+    partnerProgress
+  } = useGameSession(GAME_ID, CATEGORY_ID);
 
   function toggle(i: number, label: Segment['label']) {
     setSelected((s) => ({ ...s, [i]: s[i] === label ? undefined as any : label }));
@@ -47,10 +52,31 @@ export default function WhosRight({ route, navigation }: any) {
     if (accuracy < 50 && Object.keys(selected).length) speakMarcie("That's not criticism, that's a character assassination. Tone it down.");
   }, [accuracy, selected]);
 
+  // Update score when selections change
+  useEffect(() => {
+    if (Object.keys(selected).length > 0 && session) {
+      const selections = Object.entries(selected).map(([index, label]) => ({
+        index: parseInt(index),
+        selectedLabel: label,
+        isCorrect: TRANSCRIPT[parseInt(index)]?.label === label
+      }));
+      
+      updateScore(accuracy, selections);
+    }
+  }, [selected, accuracy]);
+
   const inputArea = (
     <View>
       <GlassCard>
         <Typography variant="instructions" center>Highlight harmful patterns</Typography>
+        
+        {/* Sync Indicator */}
+        {isSyncing && (
+          <View style={{backgroundColor: 'rgba(0,0,0,0.7)', padding: 8, borderRadius: 8, marginVertical: SPACING.small, alignSelf: 'center'}}>
+            <Typography variant="caption" style={{color: COLORS.success}}>💾 Saving...</Typography>
+          </View>
+        )}
+        
         {TRANSCRIPT.map((seg, i) => (
           <View key={i} style={styles.row}>
             <Typography variant="body">{seg.text}</Typography>
@@ -85,11 +111,36 @@ export default function WhosRight({ route, navigation }: any) {
 
   async function onComplete(res: { score: number; xpEarned: number }) {
     const xp = Math.min(110, 70 + Math.round(accuracy * 0.4));
-    if (sessionId) await updateGameSession(sessionId, { finished_at: new Date().toISOString(), score: res.score, state: JSON.stringify({ selected, accuracy, xp }) });
+    
+    // Determine achievements
+    const achievements: string[] = [];
+    if (accuracy >= 80) achievements.push('Pattern Master');
+    if (accuracy === 100) achievements.push('Perfect Score');
+    
+    // Complete the game
+    await completeGame(accuracy, Object.entries(selected).map(([index, label]) => ({
+      index: parseInt(index),
+      text: TRANSCRIPT[parseInt(index)]?.text,
+      selectedLabel: label,
+      correctLabel: TRANSCRIPT[parseInt(index)]?.label,
+      isCorrect: TRANSCRIPT[parseInt(index)]?.label === label
+    })), achievements);
+    
     navigation.goBack();
   }
 
-  return <GameContainer state={baseState} inputs={["text"]} inputArea={inputArea} onComplete={onComplete} sessionId={sessionId} />;
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Typography variant="body">Loading game...</Typography>
+        </View>
+      </ScreenLayout>
+    );
+  }
+
+  return <GameContainer state={baseState} inputs={["text"]} inputArea={inputArea} onComplete={onComplete} sessionId={session?.id} />;
 }
 
 const styles = StyleSheet.create({

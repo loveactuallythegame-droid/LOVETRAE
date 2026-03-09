@@ -6,25 +6,67 @@ import { GameContainer, HapticFeedbackSystem } from '../../components/games/engi
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, BORDER_RADIUS, TYPOGRAPHY } from '../../theme';
 
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
+
 const GAPS = ["Hobbies: Pottery", "Childhood Friend: ?", "Dream Vacation: ?"];
 
 export default function LoveMapGapQuest({ route, navigation }: any) {
   const { gameId } = route.params;
   const [question, setQuestion] = useState('');
 
-  function submit() {
+  // Get game info from registry (LoveMapGapQuest is part of memory-lane-map)
+  const gameInfo = getGameByScreen('LoveMapGapQuest');
+  const GAME_ID = gameInfo?.id || 'memory-lane-map';
+  const CATEGORY_ID = gameInfo?.categoryId || 'emotional-connection';
+
+  // Backend session
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading,
+    isSyncing
+  } = useGameSession(GAME_ID, CATEGORY_ID);
+
+  async function submit() {
     if (!question.includes('?')) {
       speakMarcie("That's not a question. Try again.");
       return;
     }
+
+    const score = 150;
     HapticFeedbackSystem.success();
     speakMarcie("Good question. Go ask them IRL.");
+
+    await completeGame(score, [
+      { question, gapsIdentified: GAPS.length, completed: true }
+    ]);
+
     Alert.alert("Quest Logged", "You identified a gap.", [{ text: "Done", onPress: () => navigation.goBack() }]);
+  }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout showMarcie={true} marcieQuote="Loading love map...">
+        <View style={styles.loadingContainer}>
+          <Typography variant="body" center>Initializing session...</Typography>
+        </View>
+      </ScreenLayout>
+    );
   }
 
   const inputArea = (
     <View style={styles.container}>
       <GlassCard>
+        {isSyncing && (
+          <View style={styles.syncIndicator}>
+            <Typography variant="caption" color={COLORS.success}>💾 Saving...</Typography>
+          </View>
+        )}
+
         <Typography variant="h2">Map Gaps Detected</Typography>
         <View style={styles.gapsList}>
             {GAPS.map((g, i) => (
@@ -71,6 +113,21 @@ export default function LoveMapGapQuest({ route, navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     gap: SPACING.regular,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  syncIndicator: {
+    position: 'absolute',
+    top: SPACING.small,
+    right: SPACING.small,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.small,
+    zIndex: 1000,
   },
   gapsList: {
     gap: SPACING.small,

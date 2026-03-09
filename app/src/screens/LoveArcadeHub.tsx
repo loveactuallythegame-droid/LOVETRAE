@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -12,6 +12,10 @@ import { COLORS, TYPOGRAPHY, SPACING, BORDER_RADIUS, SHADOWS, ANIMATIONS, GRADIE
 import { GlassCard, Typography, SquishyButton } from '../components/ui';
 import DrMarcieOverlay from '../components/DrMarcieOverlay';
 import * as Haptics from 'expo-haptics';
+
+// Backend integration
+import { useGameSession } from '../hooks/useGameSession';
+import { getGameByScreen } from '../lib/gameRegistry';
 
 const { width } = Dimensions.get('window');
 
@@ -178,6 +182,21 @@ export default function LoveArcadeHub({ navigation }: any) {
   const [titleGlowAnim] = useState(new Animated.Value(0.6));
   const [showMarcie, setShowMarcie] = useState(true);
 
+  // Get game info from registry for the hub
+  const gameInfo = getGameByScreen('LoveArcadeHub');
+  const GAME_ID = gameInfo?.id || 'love-arcade-hub';
+  const CATEGORY_ID = gameInfo?.categoryId || 'love-arcade';
+  
+  // Backend session (for tracking hub visit/engagement)
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading: sessionLoading,
+    isSyncing,
+    partnerProgress
+  } = useGameSession(GAME_ID, CATEGORY_ID);
+
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -216,6 +235,17 @@ export default function LoveArcadeHub({ navigation }: any) {
     navigation?.navigate(screenMap[game.id] || 'MainGameLibrary');
   };
 
+  // Loading state
+  if (sessionLoading) {
+    return (
+      <ScreenLayout showMarcie={true} marcieQuote="Loading the arcade...">
+        <View style={styles.loadingContainer}>
+          <Typography variant="body" center>Entering Love Arcade...</Typography>
+        </View>
+      </ScreenLayout>
+    );
+  }
+
   return (
     <ScreenLayout showHeader={false} scrollable={false}>
       <LinearGradient 
@@ -228,6 +258,13 @@ export default function LoveArcadeHub({ navigation }: any) {
         start={GRADIENTS.background.start}
         end={GRADIENTS.background.end}
       >
+        {/* Sync indicator */}
+        {isSyncing && (
+          <View style={styles.syncIndicator}>
+            <Typography variant="caption" color={COLORS.success}>💾 Saving...</Typography>
+          </View>
+        )}
+        
         <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
           {/* Header */}
           <View style={styles.header}>
@@ -582,5 +619,20 @@ const styles = StyleSheet.create({
   ritualDesc: {
     color: COLORS.textSecondary,
     textAlign: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  syncIndicator: {
+    position: 'absolute',
+    top: SPACING.small,
+    right: SPACING.small,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.small,
+    zIndex: 1000,
   },
 });

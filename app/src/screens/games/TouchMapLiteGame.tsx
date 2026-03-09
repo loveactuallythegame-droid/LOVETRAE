@@ -1,10 +1,14 @@
-
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { Svg, Circle, Path } from 'react-native-svg';
 import { ScreenLayout, GlassCard, SquishyButton, Typography } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useGameSession } from '../../hooks';
+import { getGameByScreen } from '../../lib/gameRegistry';
+
+const GAME_ID = 'touch-map';
+const CATEGORY_ID = 'romance-hub';
 
 const BodyPart = ({ 
     part, 
@@ -36,7 +40,7 @@ const BodyPart = ({
     );
 };
 
-const TouchMapLiteGame = () => {
+const TouchMapLiteGame = ({ navigation }: any) => {
     const [activeColor, setActiveColor] = useState('rgba(0,255,0,0.4)');
     const [userMap, setUserMap] = useState<Record<string, string>>({ head: 'rgba(255,255,255,0.1)' });
     const partnerMap: Record<string, string> = {
@@ -51,17 +55,54 @@ const TouchMapLiteGame = () => {
     };
     const bodyParts = Object.keys(partnerMap);
 
-    const handlePartPress = (part: string) => {
+    const {
+        session,
+        loading,
+        isSyncing,
+        updateScore,
+        completeGame,
+    } = useGameSession(GAME_ID, CATEGORY_ID);
+
+    const handlePartPress = async (part: string) => {
         setUserMap(prev => ({ ...prev, [part]: activeColor }));
+        // Update score based on configured parts
+        const configuredCount = Object.keys(userMap).length + 1;
+        const progress = Math.min((configuredCount / bodyParts.length) * 100, 100);
+        await updateScore(progress);
+    };
+
+    const handleComplete = async () => {
+        await completeGame();
+        navigation?.goBack?.();
     };
     
     const mismatches = Object.keys(userMap).filter(part => userMap[part] && userMap[part] !== partnerMap[part]).length;
     const syncRate = Math.round(((bodyParts.length - mismatches) / bodyParts.length) * 100);
 
+    if (loading) {
+        return (
+            <ScreenLayout showHeader={false}>
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color={COLORS.aquaTeal} />
+                    <Typography variant="body" style={styles.loadingText}>
+                        Loading game session...
+                    </Typography>
+                </View>
+            </ScreenLayout>
+        );
+    }
+
     return (
         <ScreenLayout showHeader={false} scrollable={true}>
             <LinearGradient colors={[COLORS.deepCosmic, COLORS.backgroundSecondary]} style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
+                    {isSyncing && (
+                        <View style={styles.syncIndicator}>
+                            <ActivityIndicator size="small" color={COLORS.aquaTeal} />
+                            <Typography variant="caption" style={styles.syncText}>Syncing...</Typography>
+                        </View>
+                    )}
+
                     <Typography variant="h1" center>Touch Map Lite</Typography>
                     <Typography variant="body" center style={styles.subtitle}>Where is it okay to touch?</Typography>
 
@@ -131,6 +172,10 @@ const TouchMapLiteGame = () => {
                             <Typography variant="h1" style={[styles.statValue, {color: COLORS.warning}]}>{mismatches}</Typography>
                         </GlassCard>
                     </View>
+
+                    <SquishyButton onPress={handleComplete} style={styles.completeButton} variant="primary">
+                        <Typography variant="button">Complete Game</Typography>
+                    </SquishyButton>
                 </ScrollView>
             </LinearGradient>
         </ScreenLayout>
@@ -145,6 +190,28 @@ const styles = StyleSheet.create({
     safeArea: { 
         flex: 1, 
         backgroundColor: COLORS.deepCosmic 
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        marginTop: SPACING.regular,
+        color: COLORS.textSecondary,
+    },
+    syncIndicator: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'flex-end',
+        marginBottom: SPACING.small,
+        padding: SPACING.small,
+        backgroundColor: COLORS.backgroundCard,
+        borderRadius: BORDER_RADIUS.medium,
+    },
+    syncText: {
+        marginLeft: SPACING.small,
+        color: COLORS.textSecondary,
     },
     subtitle: { 
         color: COLORS.textSecondary, 
@@ -181,7 +248,8 @@ const styles = StyleSheet.create({
     },
     statsContainer: { 
         flexDirection: 'row', 
-        justifyContent: 'space-around' 
+        justifyContent: 'space-around',
+        marginBottom: SPACING.large,
     },
     statBox: { 
         padding: SPACING.regular, 
@@ -196,6 +264,10 @@ const styles = StyleSheet.create({
     },
     statValue: { 
         color: COLORS.textPrimary 
+    },
+    completeButton: {
+        marginTop: SPACING.regular,
+        marginBottom: SPACING.xlarge,
     },
 });
 

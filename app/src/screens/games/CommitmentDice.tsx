@@ -1,9 +1,17 @@
-import { useMemo, useState } from 'react';
-import { View, StyleSheet, TextInput, Alert, Image } from 'react-native';
+import { useMemo, useState, useEffect } from 'react';
+import { View, StyleSheet, TextInput, Alert, Image, ActivityIndicator } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
+
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+
+// Game Constants
+const GAME_ID = 'commitment-dice';
+const CATEGORY_ID = 'romance-hub';
+const MAX_SCORE = 100;
 
 const PROMPTS = ["Text one reason you chose them today", "Send a photo of your favorite memory", "Commit to one chore this week"];
 
@@ -12,6 +20,16 @@ export default function CommitmentDice({ route, navigation }: any) {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState('');
   const [rolled, setRolled] = useState(false);
+  const [gameCompleted, setGameCompleted] = useState(false);
+
+  // Backend session
+  const { 
+    session, 
+    updateScore, 
+    completeGame, 
+    isLoading, 
+    isSyncing 
+  } = useGameSession(GAME_ID, CATEGORY_ID);
 
   function roll() {
     setRolled(true);
@@ -19,20 +37,43 @@ export default function CommitmentDice({ route, navigation }: any) {
     setPrompt(p);
     speakMarcie(p);
     HapticFeedbackSystem.heavyImpact();
+    
+    // Update score for rolling
+    updateScore(20);
   }
 
-  function submit() {
+  async function submit() {
     if (!response) {
       speakMarcie("You can't commit to nothing. Type something.");
       return;
     }
+    
+    if (gameCompleted) return;
+    setGameCompleted(true);
+    
     speakMarcie("Commitment logged. I'll be watching.");
     HapticFeedbackSystem.success();
+    
+    // Complete the game
+    const finalScore = 50 + Math.min(response.length, 50);
+    await completeGame(finalScore, [{
+      completed: true,
+      prompt: prompt,
+      responseLength: response.length
+    }]);
+    
     Alert.alert("Commitment Sent", "Your partner has been notified.", [{ text: "Done", onPress: () => navigation.goBack() }]);
   }
 
   const inputArea = (
     <View style={styles.inputAreaGap}>
+      {/* Sync Indicator */}
+      {isSyncing && (
+        <View style={styles.syncIndicator}>
+          <Typography variant="caption">💾 Saving...</Typography>
+        </View>
+      )}
+
       <GlassCard>
         {/* Dr. Marcie Section */}
         <View style={styles.drMarcieSection}>
@@ -71,6 +112,10 @@ export default function CommitmentDice({ route, navigation }: any) {
                 </SquishyButton>
             </View>
         )}
+
+        {session && (
+          <Typography variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Typography>
+        )}
       </GlassCard>
     </View>
   );
@@ -86,6 +131,18 @@ export default function CommitmentDice({ route, navigation }: any) {
     totalTime: 60,
     playerData: { vulnerabilityScore: 0, honestyScore: 0, completionTime: 0, partnerSync: 0 },
   }), [gameId]);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout showHeader={false} scrollable={true}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.gradientStart} />
+          <Typography variant="h2" style={styles.loadingText}>Loading Commitment Dice...</Typography>
+        </View>
+      </ScreenLayout>
+    );
+  }
 
   return <GameContainer state={baseState} inputs={[]} inputArea={inputArea} onComplete={() => navigation.goBack()} />;
 }
@@ -158,5 +215,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(252, 199, 56, 0.2)',
     borderRadius: BORDER_RADIUS.large,
     padding: SPACING.regular,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    textAlign: 'center',
+    marginTop: SPACING.regular,
+  },
+  syncIndicator: {
+    position: 'absolute',
+    top: SPACING.regular,
+    right: SPACING.regular,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.small,
+    zIndex: 1,
+  },
+  sessionInfo: {
+    textAlign: 'center',
+    marginTop: SPACING.xlarge,
+    opacity: 0.3,
   },
 });

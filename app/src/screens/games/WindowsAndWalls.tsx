@@ -3,9 +3,12 @@ import { View, StyleSheet, PanResponder, GestureResponderHandlers } from 'react-
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { ScreenLayout, GlassCard, Typography } from '../../components/ui';
 import { GameContainer, HapticFeedbackSystem } from '../../components/games/engine';
-import { createGameSession, updateGameSession, supabase } from '../../lib/supabase';
 import { speakMarcie } from '../../lib/voice-engine';
 import { COLORS, BORDER_RADIUS, SPACING, ANIMATIONS } from '../../theme';
+
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
 
 type Behavior = { text: string; category: 'window' | 'wall' };
 
@@ -22,63 +25,58 @@ export default function WindowsAndWalls({ route, navigation }: any) {
   const { gameId } = route.params || { gameId: 'windows-walls' };
   const [index, setIndex] = useState(0);
   const [decisions, setDecisions] = useState<{ choice: 'window' | 'wall'; correct: boolean }[]>([]);
-  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
-  const coupleId = useRef<string | null>(null);
-  const partnerDecisions = useRef<any[]>([]);
+  const [score, setScore] = useState(0);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(async ({ data }: any) => {
-      const user = data.session?.user;
-      const couple_id = (await supabase.from('profiles').select('couple_code').eq('user_id', user?.id || '').single()).data?.couple_code;
-      if (user && couple_id) {
-        coupleId.current = couple_id;
-        const session = await createGameSession(gameId, user.id, couple_id);
-        setSessionId(session.id);
-        supabase
-          .channel('windows_walls_sync')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'game_sessions', filter: `couple_id=eq.${couple_id}` }, (payload) => {
-            const row: any = payload.new;
-            if (row && row.game_id === gameId && row.id !== session.id) {
-              try { const st = JSON.parse(row.state || '{}'); if (st.decisions) partnerDecisions.current = st.decisions; } catch { }
-            }
-          })
-          .subscribe();
-      }
-    });
-  }, [gameId]);
+  // Get game info from registry
+  const gameInfo = getGameByScreen('WindowsAndWalls');
+  const GAME_ID = gameInfo?.id || 'windows-and-walls';
+  const CATEGORY_ID = gameInfo?.categoryId || 'healing-hospital';
+
+  // Backend session
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading,
+    isSyncing,
+    partnerProgress
+  } = useGameSession(GAME_ID, CATEGORY_ID);
 
   const x = useSharedValue(0);
   const rotate = useSharedValue(0);
   const style = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }, { rotate: `${rotate.value}deg` }] }));
+  
   const pan = useMemo<GestureResponderHandlers>(() => {
     return PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (_, g) => { x.value = g.dx; rotate.value = g.dx * 0.05; },
-      onPanResponderRelease: (_, g) => {
+      onPanResponderRelease: async (_, g) => {
         const choice = g.dx > 60 ? 'wall' : g.dx < -60 ? 'window' : null;
         if (choice) {
           const item = BEHAVIORS[index];
 
-          // Scoring Logic:
-          // 1. If partner has played, "correct" means agreeing with partner (sync).
-          // 2. If partner hasn't played, "correct" means matching the general definition.
-          const partnerDecision = partnerDecisions.current[index];
-          const correct = partnerDecision
-            ? (choice === partnerDecision.choice)
-            : (choice === item.category);
-          
-          // For this game, "correct" is subjective but we can check if it matches the general "healthy" categorization
-          // Or we can say "correct" if it matches partner? Let's use the predefined category for "healthy boundary" vs "unhealthy secrecy" logic
-          // Actually, "Window" (Transparency) vs "Wall" (Privacy).
-          // Let's assume the user is sorting them.
+          // "Correct" if it matches the predefined category
           const isCorrect = (choice === item.category);
 
-          setDecisions((d) => [...d, { choice, correct: isCorrect }]);
+          const newDecisions = [...decisions, { choice, correct: isCorrect }];
+          setDecisions(newDecisions);
+          
+          // Calculate and update score
+          const correctCount = newDecisions.filter(d => d.correct).length;
+          const newScore = Math.min(100, correctCount * 15);
+          setScore(newScore);
+          
+          // Update in backend
+          await updateScore(newScore, newDecisions.map((d, i) => ({
+            behavior: BEHAVIORS[i]?.text,
+            choice: d.choice,
+            correct: d.correct
+          })));
+          
           HapticFeedbackSystem.selection();
 
           if (item.text.includes('phone') && choice === 'window') {
             speakMarcie("Checking your partner's phone isn't a window, honey. It's a magnifying glass.");
-            // Marcie's specific line for phone/transparency
             speakMarcie("You think checking your partner's phone is a 'window'? Honey, that's a wrecking ball.");
           }
 
@@ -86,16 +84,23 @@ export default function WindowsAndWalls({ route, navigation }: any) {
           rotate.value = withTiming(0, { duration: ANIMATIONS.duration.normal });
           const next = Math.min(BEHAVIORS.length - 1, index + 1);
           setIndex(next);
-          if (sessionId) updateGameSession(sessionId, { state: JSON.stringify({ decisions: [...decisions, { choice, correct: isCorrect }] }) });
+          
+          // Complete game if all behaviors are sorted
+          if (next === BEHAVIORS.length - 1 && newDecisions.length === BEHAVIORS.length - 1) {
+            // Will complete on next render
+          }
         } else {
           x.value = withTiming(0, { duration: ANIMATIONS.duration.normal });
           rotate.value = withTiming(0, { duration: ANIMATIONS.duration.normal });
         }
       },
     }).panHandlers;
-  }, [index, decisions, sessionId]);
+  }, [index, decisions, session]);
 
-  const alignment = Math.min(100, Math.round((decisions.length && partnerDecisions.current.length) ? (decisions.filter((d, i) => partnerDecisions.current[i]?.choice === d.choice).length / Math.min(decisions.length, partnerDecisions.current.length)) * 100 : 0));
+  const alignment = useMemo(() => {
+    const correctCount = decisions.filter(d => d.correct).length;
+    return decisions.length ? Math.round((correctCount / decisions.length) * 100) : 0;
+  }, [decisions]);
 
   const baseState = useMemo(() => ({
     id: gameId,
@@ -109,10 +114,22 @@ export default function WindowsAndWalls({ route, navigation }: any) {
     playerData: { vulnerabilityScore: 60, honestyScore: 60, completionTime: index * 5, partnerSync: alignment },
   }), [gameId, index, alignment]);
 
-  function onComplete(res: { score: number; xpEarned: number }) {
+  async function onComplete(res: { score: number; xpEarned: number }) {
     const boundaryBonus = Math.min(30, decisions.filter(d => d.correct).length * 5);
     const xp = Math.min(100, 70 + boundaryBonus);
-    if (sessionId) updateGameSession(sessionId, { finished_at: new Date().toISOString(), score: res.score, state: JSON.stringify({ decisions, alignment, xp }) });
+    
+    // Determine achievements
+    const achievements: string[] = [];
+    if (alignment >= 80) achievements.push('Boundary Expert');
+    if (decisions.length === BEHAVIORS.length) achievements.push('Complete Sort');
+    
+    // Complete the game
+    await completeGame(score, decisions.map((d, i) => ({
+      behavior: BEHAVIORS[i]?.text,
+      choice: d.choice,
+      correct: d.correct
+    })), achievements);
+    
     navigation.goBack();
   }
 
@@ -120,6 +137,19 @@ export default function WindowsAndWalls({ route, navigation }: any) {
     <View>
       <GlassCard>
         <Typography variant="body">Swipe LEFT for Window (Transparency), RIGHT for Wall (Privacy)</Typography>
+        
+        {/* Sync Indicator */}
+        {isSyncing && (
+          <View style={{backgroundColor: 'rgba(0,0,0,0.7)', padding: 8, borderRadius: 8, marginVertical: SPACING.small, alignSelf: 'center'}}>
+            <Typography variant="caption" style={{color: COLORS.success}}>💾 Saving...</Typography>
+          </View>
+        )}
+        
+        {/* Progress Indicator */}
+        <View style={{flexDirection: 'row', justifyContent: 'center', marginVertical: SPACING.small}}>
+          <Typography variant="caption">{index + 1} / {BEHAVIORS.length}</Typography>
+        </View>
+        
         <Animated.View style={[styles.card, style]} {...pan}>
           <Typography variant="h2">{BEHAVIORS[index]?.text}</Typography>
         </Animated.View>
@@ -127,13 +157,29 @@ export default function WindowsAndWalls({ route, navigation }: any) {
           <Typography variant="caption" color={COLORS.success}>← Window</Typography>
           <Typography variant="caption" color={COLORS.error}>Wall →</Typography>
         </View>
+        
+        {/* Score display */}
+        <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: SPACING.regular}}>
+          <Typography variant="caption">Score: {score} XP | Alignment: {alignment}%</Typography>
+        </View>
       </GlassCard>
     </View>
   );
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Typography variant="body">Loading game...</Typography>
+        </View>
+      </ScreenLayout>
+    );
+  }
+
   return (
     <ScreenLayout showHeader={false} scrollable={false}>
-      <GameContainer state={baseState} inputs={["slider"]} inputArea={inputArea} onComplete={onComplete} sessionId={sessionId} />
+      <GameContainer state={baseState} inputs={["slider"]} inputArea={inputArea} onComplete={onComplete} sessionId={session?.id} />
     </ScreenLayout>
   );
 }

@@ -1,103 +1,70 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ScreenLayout, Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SPACING, BORDER_RADIUS, GRADIENTS } from '../../theme';
-import { auth, db } from '../../lib/firebaseClient';
-import { doc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
+
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+import { getGameByScreen } from '../../lib/gameRegistry';
 
 const ICEBERG_QUESTIONS = [
   {
     id: '1',
-    visible: "We always laugh together", 
+    visible: "We always laugh together",
     hidden: "But I sometimes feel lonely even when we're together",
     category: "Connection"
   },
   {
     id: '2',
-    visible: "We have similar goals for our future", 
+    visible: "We have similar goals for our future",
     hidden: "But we disagree on how to achieve them",
     category: "Goals"
   },
   {
     id: '3',
-    visible: "We're physically intimate regularly", 
+    visible: "We're physically intimate regularly",
     hidden: "But I crave more emotional intimacy",
     category: "Intimacy"
   },
   {
     id: '4',
-    visible: "We rarely argue", 
+    visible: "We rarely argue",
     hidden: "Because I avoid conflict by shutting down",
     category: "Communication"
   },
   {
     id: '5',
-    visible: "We have many friends in common", 
+    visible: "We have many friends in common",
     hidden: "But I sometimes feel like we're living separate social lives",
     category: "Social"
   }
 ];
 
 export default function TheIceberg({ route, navigation }: any) {
-  const { gameId } = route.params || { gameId: 'the-iceberg' };
+  const navigationHook = useNavigation();
+  
+  // Get game info from registry
+  const gameInfo = getGameByScreen('TheIceberg');
+  const GAME_ID = gameInfo?.id || 'the-iceberg';
+  const CATEGORY_ID = gameInfo?.categoryId || 'healing-hospital';
+  
+  // Backend session
+  const {
+    session,
+    updateScore,
+    completeGame,
+    isLoading,
+    isSyncing
+  } = useGameSession(GAME_ID, CATEGORY_ID);
+  
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [sessionId, setSessionId] = useState<string | null>(null);
   const [responses, setResponses] = useState<Record<string, {above: number, below: number}>>({});
   const [gameCompleted, setGameCompleted] = useState(false);
   const [aboveSliderValue, setAboveSliderValue] = useState(50);
   const [belowSliderValue, setBelowSliderValue] = useState(50);
-  const coupleId = useRef<string | null>(null);
-  const [partnerResponse, setPartnerResponse] = useState<any>(null);
-
-  useEffect(() => {
-    const unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const profileRef = doc(db, 'profiles', user.uid);
-        const profileSnap = await getDoc(profileRef);
-        const couple_code = profileSnap.data()?.couple_code;
-
-        if (couple_code) {
-          coupleId.current = couple_code;
-          
-          const sessionRef = await addDoc(collection(db, 'game_sessions'), {
-            gameId,
-            userId: user.uid,
-            couple_id: couple_code,
-            createdAt: new Date(),
-            state: { currentQuestionIndex, responses, completed: false },
-          });
-          setSessionId(sessionRef.id);
-          
-          const q = query(
-            collection(db, 'game_sessions'),
-            where('couple_id', '==', couple_code),
-            where('gameId', '==', gameId),
-            where('userId', '!=', user.uid)
-          );
-          
-          const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-              if (change.type === "added" || change.type === "modified") {
-                const data = change.doc.data();
-                if (data.state?.responses) {
-                  const partnerResponses = data.state.responses;
-                  const currentQId = ICEBERG_QUESTIONS[currentQuestionIndex]?.id;
-                  if (currentQId && partnerResponses[currentQId]) {
-                    setPartnerResponse(partnerResponses[currentQId]);
-                  }
-                }
-              }
-            });
-          });
-          
-          return () => unsubscribeSnapshot();
-        }
-      }
-    });
-
-    return () => unsubscribeAuth && unsubscribeAuth();
-  }, [gameId, currentQuestionIndex]);
+  const [score, setScore] = useState(0);
 
   const handleAboveSliderChange = (value: number) => {
     setAboveSliderValue(Math.round(value));
@@ -107,45 +74,72 @@ export default function TheIceberg({ route, navigation }: any) {
     setBelowSliderValue(Math.round(value));
   };
 
-  const submitResponse = () => {
+  const submitResponse = async () => {
     const currentQ = ICEBERG_QUESTIONS[currentQuestionIndex];
     if (currentQ) {
-      const newResponses = { 
-        ...responses, 
-        [currentQ.id]: { 
-          above: aboveSliderValue, 
-          below: belowSliderValue 
-        } 
+      const newResponses = {
+        ...responses,
+        [currentQ.id]: {
+          above: aboveSliderValue,
+          below: belowSliderValue
+        }
       };
       setResponses(newResponses);
       
-      if (sessionId) {
-        const sessionRef = doc(db, 'game_sessions', sessionId);
-        updateDoc(sessionRef, {
-          state: { 
-            currentQuestionIndex, 
-            responses: newResponses,
-            completed: currentQuestionIndex === ICEBERG_QUESTIONS.length - 1
-          }
-        });
-      }
+      const newScore = Object.keys(newResponses).length * 20;
+      setScore(newScore);
       
+      // Save to backend
+      await updateScore(newScore, [{
+        questionId: currentQ.id,
+        category: currentQ.category,
+        above: aboveSliderValue,
+        below: belowSliderValue
+      }]);
+
       if (currentQuestionIndex < ICEBERG_QUESTIONS.length - 1) {
         setCurrentQuestionIndex(prev => prev + 1);
         setAboveSliderValue(50);
         setBelowSliderValue(50);
-        setPartnerResponse(null);
       } else {
         setGameCompleted(true);
+        await completeGame(newScore, [{
+          responses: newResponses,
+          completed: true,
+          totalQuestions: ICEBERG_QUESTIONS.length
+        }]);
+        
+        navigationHook.navigate('GameResults', {
+          score: newScore,
+          gameId: GAME_ID,
+          sessionId: session?.id
+        });
       }
     }
   };
 
   const currentQuestion = ICEBERG_QUESTIONS[currentQuestionIndex];
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout showMarcie={true} marcieQuote="Loading iceberg...">
+        <View style={styles.loadingContainer}>
+          <Typography variant="body" center>Starting game...</Typography>
+        </View>
+      </ScreenLayout>
+    );
+  }
+
   return (
-    <ScreenLayout showHeader={true} scrollable={true}>
+    <ScreenLayout showHeader={true} scrollable={true} showMarcie={true} marcieQuote="What's visible above the surface? What's hidden below?">
       <View style={styles.container}>
+        {isSyncing && (
+          <View style={styles.syncIndicator}>
+            <Typography variant="caption" color={COLORS.success}>💾 Saving...</Typography>
+          </View>
+        )}
+        
         <Typography variant="h1" center>The Love Arcade</Typography>
         <Typography variant="h2" center>+100 Games to Deepen Connection</Typography>
 
@@ -163,11 +157,11 @@ export default function TheIceberg({ route, navigation }: any) {
                   {currentQuestionIndex + 1}/{ICEBERG_QUESTIONS.length}
                 </Typography>
               </View>
-              
+
               <Typography variant="h3" color={COLORS.emotionalConnection}>
                 {currentQuestion.category}
               </Typography>
-              
+
               <View style={styles.icebergContainer}>
                 <View style={styles.aboveWater}>
                   <Typography variant="body" center>Above Water (Visible)</Typography>
@@ -175,11 +169,11 @@ export default function TheIceberg({ route, navigation }: any) {
                     {currentQuestion.visible}
                   </Typography>
                 </View>
-                
+
                 <View style={styles.waterLine}>
                   <Typography variant="caption" color={COLORS.aquaTeal} center>Surface Level</Typography>
                 </View>
-                
+
                 <View style={styles.belowWater}>
                   <Typography variant="body" center>Below Water (Hidden)</Typography>
                   <Typography variant="body" center color={COLORS.textSecondary}>
@@ -187,7 +181,7 @@ export default function TheIceberg({ route, navigation }: any) {
                   </Typography>
                 </View>
               </View>
-              
+
               <View style={styles.sliderContainer}>
                 <View style={styles.sliderRow}>
                   <Typography variant="caption" style={styles.sliderLabel}>
@@ -205,7 +199,7 @@ export default function TheIceberg({ route, navigation }: any) {
                     </SquishyButton>
                   </View>
                 </View>
-                
+
                 <View style={styles.sliderRow}>
                   <Typography variant="caption" style={styles.sliderLabel}>
                     Hidden: {belowSliderValue}%
@@ -223,7 +217,7 @@ export default function TheIceberg({ route, navigation }: any) {
                   </View>
                 </View>
               </View>
-              
+
               <SquishyButton onPress={submitResponse}>
                 <Typography variant="h2">
                   {currentQuestionIndex === ICEBERG_QUESTIONS.length - 1 ? 'Finish Game' : 'Next Question'}
@@ -245,49 +239,20 @@ export default function TheIceberg({ route, navigation }: any) {
               <Typography variant="body" center>
                 You and your partner have explored the depths of your relationship dynamics.
               </Typography>
-              <SquishyButton 
-                onPress={() => {
-                  if (sessionId) {
-                    const sessionRef = doc(db, 'game_sessions', sessionId);
-                    updateDoc(sessionRef, {
-                      finished_at: new Date().toISOString(),
-                      score: Object.keys(responses).length * 20,
-                      state: JSON.stringify({ completed: true, responses })
-                    });
-                  }
-                  navigation.goBack();
-                }}
+              <Typography variant="h3" center style={styles.finalScore}>
+                Final Score: {score}
+              </Typography>
+              <SquishyButton
+                onPress={() => navigationHook.navigate('GameResults', {
+                  score,
+                  gameId: GAME_ID,
+                  sessionId: session?.id
+                })}
                 style={styles.returnButton}
               >
-                <Typography variant="h2">Return to Menu</Typography>
+                <Typography variant="h2">View Results</Typography>
               </SquishyButton>
             </LinearGradient>
-          </GlassCard>
-        )}
-
-        {partnerResponse && (
-          <GlassCard style={styles.partnerCard}>
-            <Typography variant="sass" color={COLORS.aquaTeal}>
-              Partner's Response:
-            </Typography>
-            <View style={styles.partnerSliderContainer}>
-              <View style={styles.sliderRow}>
-                <Typography variant="caption" style={styles.sliderLabel}>
-                  Visible: {partnerResponse.above}%
-                </Typography>
-                <View style={styles.partnerSlider}>
-                  <View style={[styles.partnerSliderFill, { width: `${partnerResponse.above}%`, backgroundColor: COLORS.gradientStart }]} />
-                </View>
-              </View>
-              <View style={styles.sliderRow}>
-                <Typography variant="caption" style={styles.sliderLabel}>
-                  Hidden: {partnerResponse.below}%
-                </Typography>
-                <View style={styles.partnerSlider}>
-                  <View style={[styles.partnerSliderFill, { width: `${partnerResponse.below}%`, backgroundColor: COLORS.lavenderPurple }]} />
-                </View>
-              </View>
-            </View>
           </GlassCard>
         )}
       </View>
@@ -298,6 +263,22 @@ export default function TheIceberg({ route, navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     gap: SPACING.regular,
+    flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  syncIndicator: {
+    position: 'absolute',
+    top: SPACING.small,
+    right: SPACING.small,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.small,
+    zIndex: 1000,
   },
   gradientContainer: {
     padding: SPACING.regular,
@@ -361,21 +342,8 @@ const styles = StyleSheet.create({
   returnButton: {
     marginTop: SPACING.regular,
   },
-  partnerCard: {
-    marginTop: SPACING.regular,
-  },
-  partnerSliderContainer: {
-    marginTop: SPACING.regular,
-  },
-  partnerSlider: {
-    height: SPACING.regular,
-    backgroundColor: COLORS.backgroundInput,
-    borderRadius: BORDER_RADIUS.round,
-    overflow: 'hidden',
-    flex: 1,
-  },
-  partnerSliderFill: {
-    height: '100%',
-    borderRadius: BORDER_RADIUS.round,
+  finalScore: {
+    marginTop: SPACING.xlarge,
+    color: COLORS.vibrantPink,
   },
 });

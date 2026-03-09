@@ -1,7 +1,15 @@
-import { useState } from 'react';
-import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import { ScreenLayout, GlassCard, Typography, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
+
+// Backend integration
+import { useGameSession } from '../../hooks/useGameSession';
+
+// Game Constants
+const GAME_ID = 'touch-map';
+const CATEGORY_ID = 'romance-hub';
+const MAX_SCORE = 100;
 
 type Zone = 'Head' | 'Chest' | 'Hands' | 'Legs' | 'Back';
 const ZONES: Zone[] = ['Head', 'Chest', 'Hands', 'Legs', 'Back'];
@@ -13,6 +21,13 @@ const ZONE_COLORS = {
   red: COLORS.error,
 };
 
+const COMFORT_SCORES: Record<string, number> = {
+  [ZONE_COLORS.green]: 3,
+  [ZONE_COLORS.yellow]: 1,
+  [ZONE_COLORS.red]: 0,
+  [ZONE_COLORS.white]: 0,
+};
+
 export default function TouchMap({ navigation }: any) {
   const [colors, setColors] = useState<Record<Zone, string>>({
     Head: ZONE_COLORS.white, 
@@ -21,6 +36,16 @@ export default function TouchMap({ navigation }: any) {
     Legs: ZONE_COLORS.white, 
     Back: ZONE_COLORS.white
   });
+  const [gameCompleted, setGameCompleted] = useState(false);
+
+  // Backend session
+  const { 
+    session, 
+    updateScore, 
+    completeGame, 
+    isLoading, 
+    isSyncing 
+  } = useGameSession(GAME_ID, CATEGORY_ID);
 
   function cycleColor(z: Zone) {
     const current = colors[z];
@@ -30,12 +55,58 @@ export default function TouchMap({ navigation }: any) {
     else if (current === ZONE_COLORS.yellow) next = ZONE_COLORS.red;
     else next = ZONE_COLORS.white;
 
-    setColors({ ...colors, [z]: next });
+    const newColors = { ...colors, [z]: next };
+    setColors(newColors);
+    
+    // Calculate and update score
+    const score = calculateScore(newColors);
+    updateScore(score);
+  }
+
+  function calculateScore(currentColors: Record<Zone, string>): number {
+    const totalScore = Object.values(currentColors).reduce((sum, color) => {
+      return sum + (COMFORT_SCORES[color] || 0);
+    }, 0);
+    // Max possible score is 15 (5 zones * 3 points each), normalize to 100
+    return Math.floor((totalScore / 15) * MAX_SCORE);
+  }
+
+  async function syncWithPartner() {
+    if (gameCompleted) return;
+    setGameCompleted(true);
+    
+    const finalScore = calculateScore(colors);
+    await completeGame(finalScore, [{
+      completed: true,
+      zones: colors,
+      greenZones: Object.entries(colors).filter(([_, c]) => c === ZONE_COLORS.green).map(([z]) => z),
+      yellowZones: Object.entries(colors).filter(([_, c]) => c === ZONE_COLORS.yellow).map(([z]) => z),
+      redZones: Object.entries(colors).filter(([_, c]) => c === ZONE_COLORS.red).map(([z]) => z),
+    }]);
+  }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <ScreenLayout showHeader={false} scrollable={true}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.gradientStart} />
+          <Typography variant="h2" style={styles.loadingText}>Loading Touch Map...</Typography>
+        </View>
+      </ScreenLayout>
+    );
   }
 
   return (
     <ScreenLayout showHeader={false} scrollable={true}>
       <ScrollView contentContainerStyle={styles.content}>
+        {/* Sync Indicator */}
+        {isSyncing && (
+          <View style={styles.syncIndicator}>
+            <Typography variant="caption">💾 Saving...</Typography>
+          </View>
+        )}
+
         <View style={styles.header}>
           <SquishyButton onPress={() => navigation.goBack()} style={styles.backBtn} variant="secondary" size="small">
             <Typography variant="body">Back</Typography>
@@ -61,14 +132,24 @@ export default function TouchMap({ navigation }: any) {
             ))}
           </View>
 
-          <SquishyButton style={[styles.btn, styles.syncButton]}>
-             <Typography variant="h2" color={COLORS.textPrimary}>Sync with Partner</Typography>
+          <SquishyButton 
+            style={[styles.btn, styles.syncButton]}
+            onPress={syncWithPartner}
+            disabled={gameCompleted}
+          >
+             <Typography variant="h2" color={COLORS.textPrimary}>
+               {gameCompleted ? 'Synced!' : 'Sync with Partner'}
+             </Typography>
           </SquishyButton>
 
           <Typography variant="sass" center style={styles.hintText}>
              "They marked 'Chest' yellow... you green. Wanna unpack that?"
           </Typography>
         </GlassCard>
+
+        {session && (
+          <Typography variant="caption" style={styles.sessionInfo}>Session: {session.id.slice(0, 8)}...</Typography>
+        )}
       </ScrollView>
     </ScreenLayout>
   );
@@ -136,5 +217,29 @@ const styles = StyleSheet.create({
   },
   hintText: {
     marginTop: SPACING.xxlarge,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    textAlign: 'center',
+    marginTop: SPACING.regular,
+  },
+  syncIndicator: {
+    position: 'absolute',
+    top: SPACING.regular,
+    right: SPACING.regular,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingHorizontal: SPACING.small,
+    paddingVertical: SPACING.tiny,
+    borderRadius: BORDER_RADIUS.small,
+    zIndex: 1,
+  },
+  sessionInfo: {
+    textAlign: 'center',
+    marginTop: SPACING.xlarge,
+    opacity: 0.3,
   },
 });
