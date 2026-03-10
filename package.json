@@ -10,8 +10,7 @@
     "test:backend": "cd backend && python -m pytest",
     "deploy:backend": "render-deploy --serviceId <YOUR_SERVICE_ID>",
     "deploy:app": "cd app && expo publish",
-    "seed:firebase": "cd scripts && ts-node seedGames.ts",
-    "postinstall": "cd app && npm install && cd ../backend && pip install -r requirements.txt"
+    "seed:firebase": "cd scripts && ts-node seedGames.ts"
   },
   "keywords": [
     "couples",
@@ -28,6 +27,7 @@
     "typescript": "~5.9.2"
   },
   "dependencies": {
+    "@google-cloud/text-to-speech": "^6.4.0",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "expo-linear-gradient": "^15.0.8",
     "firebase": "^10.14.1"

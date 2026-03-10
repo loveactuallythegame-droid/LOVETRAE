@@ -11,6 +11,9 @@ exports.analyzeUserInput = analyzeUserInput;
 exports.synthesizeSpeech = synthesizeSpeech;
 
 exports.calculateGameResults = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'The function must be called while authenticated.');
+  }
   const { gameId, user1Answers, user2Answers } = data;
   const db = admin.firestore();
 
@@ -37,8 +40,15 @@ exports.calculateGameResults = functions.https.onCall(async (data, context) => {
       throw "User not found";
     }
 
-    const user1Trust = user1Doc.data().trust_thermometer || 50;
-    const user2Trust = user2Doc.data().trust_thermometer || 50;
+    const user1Data = user1Doc.data();
+    const user2Data = user2Doc.data();
+
+    if (!user1Data || !user2Data) {
+        throw "User data not found";
+    }
+
+    const user1Trust = user1Data.trust_thermometer || 50;
+    const user2Trust = user2Data.trust_thermometer || 50;
 
     const newTrust = (user1Trust + user2Trust + score) / 3;
 

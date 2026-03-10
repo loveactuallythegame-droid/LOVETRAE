@@ -12,7 +12,7 @@
     "indexes": "firestore.indexes.json"
   },
   "functions": {
-    "source": "admin",
+    "source": "functions",
     "runtime": "nodejs20"
   }
 }
