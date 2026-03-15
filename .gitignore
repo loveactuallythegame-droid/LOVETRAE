@@ -1,0 +1,12 @@
+
+# Firebase service account key
+serviceAccountKey.json
+node_modules
+-e 
+# Environment files
+*.env
+*.env.*
+-e 
+# Environment files
+*.env
+*.env.*
