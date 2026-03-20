@@ -6,7 +6,7 @@ import { storage } from '../lib/firebaseClient';
 import { ref, getDownloadURL } from 'firebase/storage';
 
 // Base storage bucket URL (updated based on firebaseClient.ts storageBucket)
-const STORAGE_BUCKET = "lovetrae-app.appspot.com"; // Adjust if necessary
+const STORAGE_BUCKET = "love-actually-thegame.appspot.com"; 
 
 /**
  * Get a Firebase Storage URL for a given path
