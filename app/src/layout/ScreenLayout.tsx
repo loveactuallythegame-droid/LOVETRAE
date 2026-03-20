@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, SPACING } from '../theme';
 import { Header } from '../components/ui';
-import DrMarcieOverlay from '../components/DrMarcieOverlay';
+import DrMarcieOverlay, { MarcieAnimation, MarciePosition } from '../components/DrMarcieOverlay';
 
 interface ScreenLayoutProps {
   children: ReactNode;
@@ -16,8 +16,8 @@ interface ScreenLayoutProps {
   onNavPress?: (screen: string) => void;
   showMarcie?: boolean;
   marcieQuote?: string;
-  marcieAnimation?: 'idle' | 'intro' | 'point' | 'celebrate' | 'thinking' | 'nod' | 'shake' | 'waiting' | 'correct' | 'wrong' | 'shocked' | 'laugh' | 'shrug' | 'impatient' | 'detective' | 'listening' | 'warning' | 'jeopardy' | 'roast' | 'healing' | 'sos';
-  marciePosition?: 'bottom-right' | 'bottom-left' | 'bottom-center' | 'top-right' | 'top-left' | 'center' | 'floating';
+  marcieAnimation?: MarcieAnimation;
+  marciePosition?: MarciePosition;
 }
 
 export default function ScreenLayout({

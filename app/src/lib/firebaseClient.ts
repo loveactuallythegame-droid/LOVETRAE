@@ -1,6 +1,7 @@
 import { initializeApp, FirebaseApp, getApp, getApps } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
 import { getFirestore, Firestore } from "firebase/firestore";
+import { getStorage, FirebaseStorage } from "firebase/storage";
 import { ENV } from './env';
 
 const firebaseConfig = {
@@ -15,6 +16,7 @@ const firebaseConfig = {
 let app: FirebaseApp;
 let auth: Auth;
 let db: Firestore;
+let storage: FirebaseStorage;
 
 // Check if Firebase is properly configured
 const isFirebaseConfigured = firebaseConfig.apiKey && firebaseConfig.apiKey.length > 0;
@@ -28,17 +30,18 @@ if (isFirebaseConfigured) {
   }
   auth = getAuth(app);
   db = getFirestore(app);
+  storage = getStorage(app);
 } else {
   // Create mock objects when Firebase is not configured
   console.warn("Firebase not configured. Using mock objects for development.");
-  
+
   // Create mock implementations
   app = {
     name: '[DEFAULT]',
     options: firebaseConfig,
     delete: async () => Promise.resolve()
   } as FirebaseApp;
-  
+
   auth = {
     onAuthStateChanged: (callback: any) => {
       console.log("Mock Auth: Automatically logging in developer user");
@@ -58,10 +61,14 @@ if (isFirebaseConfigured) {
       return Promise.resolve();
     }
   } as any;
-  
+
   db = {
     // Minimal mock implementation
   } as Firestore;
+
+  storage = {
+    // Minimal mock implementation
+  } as FirebaseStorage;
 }
 
-export { app, auth, db, isFirebaseConfigured };
+export { app, auth, db, storage, isFirebaseConfigured };

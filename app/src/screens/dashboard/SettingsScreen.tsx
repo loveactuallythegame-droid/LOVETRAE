@@ -5,6 +5,7 @@ import { Typography, GlassCard, SquishyButton } from '../../components/ui';
 import { COLORS, SPACING, BORDER_RADIUS } from '../../theme';
 import { useAuth } from '../../hooks/useAuth';
 import { userApi } from '../../lib/api';
+import { MARCIE_QUOTES } from '../../constants/marcieQuotes';
 
 const SARCASM_LEVELS = [
   { level: 1, name: "Tough Love Rookie", description: "Straight-talking aunt who doesn't sugarcoat." },
@@ -65,7 +66,12 @@ export default function SettingsScreen({ navigation }: any) {
   };
 
   return (
-    <ScreenLayout showHeader={true}>
+    <ScreenLayout 
+      showHeader={true}
+      showMarcie={true}
+      marcieAnimation="settings"
+      marcieQuote={MARCIE_QUOTES.settings}
+    >
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <Typography variant="header" style={styles.title}>SETTINGS</Typography>
@@ -167,7 +173,7 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
   },
   sectionTitle: {
-    marginBottom: 0,
+    marginBottom: SPACING.regular,
   },
   settingItem: {
     flexDirection: 'row',
@@ -197,41 +203,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   selectedText: {
-    color: COLORS.textPrimary,
-  },
-});
-
-
-const styles = StyleSheet.create({
-  content: {
-    padding: SPACING.screenPadding,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: SPACING.xlarge,
-  },
-  title: {
-    marginBottom: SPACING.small,
-  },
-  subtitle: {
-    color: COLORS.textSecondary,
-  },
-  sectionTitle: {
-    marginBottom: SPACING.regular,
-  },
-  settingItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: SPACING.regular,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.divider,
-  },
-  pickerContainer: {
-    flexDirection: 'row',
-    gap: SPACING.small,
-  },
-  selectedPickerText: {
     color: COLORS.textPrimary,
   },
 });

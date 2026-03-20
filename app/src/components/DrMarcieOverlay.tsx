@@ -6,9 +6,12 @@ import {
   ViewStyle,
   Animated as RNAnimated,
   Easing,
+  Platform,
 } from 'react-native';
+import { Video, ResizeMode } from 'expo-av';
 import { COLORS, GRADIENTS, BORDER_RADIUS, SPACING, SHADOWS, ANIMATIONS } from '../theme';
 import Typography from './ui/Typography';
+import { ASSETS } from '../utils/assets';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -33,7 +36,24 @@ export type MarcieAnimation =
   | 'jeopardy'
   | 'roast'
   | 'healing'
-  | 'sos';
+  | 'sos'
+  | 'welcome'
+  | 'error'
+  | 'success'
+  | 'loading'
+  | 'lost'
+  | 'settings'
+  | 'notification'
+  | 'empty'
+  | 'login'
+  | 'logout'
+  | 'search'
+  | 'permissions'
+  | 'delete'
+  | 'uploading'
+  | 'syncing'
+  | 'offline'
+  | 'wrapUp';
 
 export type MarciePosition = 
   | 'bottom-right'
@@ -57,30 +77,6 @@ interface DrMarcieOverlayProps {
   zIndex?: number;
 }
 
-const ANIMATION_FILES: Record<MarcieAnimation, string> = {
-  intro: 'marcie-intro.webm',
-  idle: 'marcie-idle.webm',
-  point: 'marcie-point.webm',
-  celebrate: 'marcie-celebrate.webm',
-  thinking: 'marcie-thinking.webm',
-  nod: 'marcie-nod.webm',
-  shake: 'marcie-shake.webm',
-  waiting: 'marcie-waiting.webm',
-  correct: 'marcie-correct.webm',
-  wrong: 'marcie-wrong.webm',
-  shocked: 'marcie-shocked.webm',
-  laugh: 'marcie-laugh.webm',
-  shrug: 'marcie-shrug.webm',
-  impatient: 'marcie-impatient.webm',
-  detective: 'marcie-detective.webm',
-  listening: 'marcie-listening.webm',
-  warning: 'marcie-warning.webm',
-  jeopardy: 'marcie-jeopardy.webm',
-  roast: 'marcie-roast-delivery.webm',
-  healing: 'marcie-healing-intro.webm',
-  sos: 'marcie-sos-intro.webm',
-};
-
 const SIZE_CONFIG = {
   small: { width: 100, height: 100 },
   medium: { width: 150, height: 150 },
@@ -88,13 +84,43 @@ const SIZE_CONFIG = {
 };
 
 /**
+ * Helper to get the correct animation source
+ */
+const getAnimationSource = (animation: MarcieAnimation) => {
+  // Use the new videoAnimations if available
+  if (animation in ASSETS.videoAnimations) {
+    return (ASSETS.videoAnimations as any)[animation];
+  }
+  
+  // Fallback to traditional animations
+  switch (animation) {
+    case 'idle': return ASSETS.animations.idle;
+    case 'intro': return ASSETS.animations.intro;
+    case 'correct': return ASSETS.animations.correct;
+    case 'wrong': return ASSETS.animations.wrong;
+    case 'thinking': return ASSETS.animations.thinking;
+    case 'waiting': return ASSETS.animations.waiting;
+    case 'laugh': return ASSETS.animations.laugh;
+    case 'shrug': return ASSETS.animations.shrug;
+    case 'impatient': return ASSETS.animations.impatient;
+    case 'detective': return ASSETS.animations.detective;
+    case 'listening': return ASSETS.animations.listening;
+    case 'shocked': return ASSETS.animations.shocked;
+    case 'warning': return ASSETS.animations.warning;
+    case 'jeopardy': return ASSETS.animations.jeopardy;
+    case 'roast': return ASSETS.animations.roast;
+    case 'healing': return ASSETS.animations.healing;
+    case 'sos': return ASSETS.animations.sos;
+    default: return ASSETS.animations.idle;
+  }
+};
+
+/**
  * Get position style with safe area consideration
- * Positions DrMarcie to not overlap with interactive buttons
  */
 const getPositionStyle = (position: MarciePosition): ViewStyle => {
   const base: ViewStyle = { position: 'absolute' };
-  // Safe margin to avoid overlapping buttons
-  const safeBottomMargin = 120; // Increased to avoid button overlap
+  const safeBottomMargin = 120;
   const sideMargin = SPACING.screenPadding;
   
   switch (position) {
@@ -117,13 +143,6 @@ const getPositionStyle = (position: MarciePosition): ViewStyle => {
   }
 };
 
-/**
- * DrMarcieOverlay Component
- * 
- * Displays Dr. Marcie character overlay with speech bubble.
- * Positioned to not overlap with interactive buttons.
- * Uses theme tokens for all styling.
- */
 export default function DrMarcieOverlay({
   animation = 'idle',
   position = 'bottom-right',
@@ -141,7 +160,6 @@ export default function DrMarcieOverlay({
   const fadeAnim = useRef(new RNAnimated.Value(0)).current;
   const floatAnim = useRef(new RNAnimated.Value(0)).current;
 
-  const animationFile = ANIMATION_FILES[currentAnimation];
   const sizeConfig = SIZE_CONFIG[size];
 
   useEffect(() => {
@@ -228,9 +246,19 @@ export default function DrMarcieOverlay({
         <View style={[styles.glowEffect, { width: sizeConfig.width, height: sizeConfig.height }]} />
         
         <View style={[styles.character, { width: sizeConfig.width, height: sizeConfig.height }]}>
-          <View style={styles.placeholderCharacter}>
-            <View style={styles.hairIndicator} />
-          </View>
+          <Video
+            source={getAnimationSource(currentAnimation)}
+            style={StyleSheet.absoluteFill}
+            resizeMode={ResizeMode.COVER}
+            shouldPlay
+            isLooping
+            isMuted={true}
+            onPlaybackStatusUpdate={(status) => {
+              if (status.isLoaded && status.didJustFinish) {
+                onAnimationComplete?.();
+              }
+            }}
+          />
         </View>
 
         <View style={styles.crown} />
@@ -290,19 +318,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.vibrantPink,
     opacity: 0.2,
     transform: [{ scale: 1.2 }],
-  },
-  placeholderCharacter: {
-    flex: 1,
-    backgroundColor: COLORS.richPlum,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  hairIndicator: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: COLORS.crimsonRed,
-    opacity: 0.8,
   },
   crown: {
     position: 'absolute',
